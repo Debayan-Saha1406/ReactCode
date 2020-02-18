@@ -29,9 +29,19 @@ class Login extends Component {
     }
   };
 
-  handleClick = (e, state) => {
+  handleLogin = (e) => {
     e.preventDefault();
-    console.log("Clicked", state);
+    const emailData = { ...this.state.emailData };
+    const passwordData = {...this.state.passwordData};
+    if(emailData.email === "")
+    {
+        emailData.errorClassName = "wrap-input100 validate-input alert-validate";
+    }
+    if(passwordData.password === "")
+    {
+        passwordData.errorClassName = "wrap-input100 validate-input alert-validate";
+    }
+    this.setState({emailData, passwordData});
   };
 
   handleChange = (name, value) => {
@@ -145,7 +155,7 @@ class Login extends Component {
               <div className="container-login100-form-btn">
                 <button
                   className="login100-form-btn"
-                  onClick={e => this.handleClick(e, this.state)}
+                  onClick={e => this.handleLogin(e)}
                 >
                   Login
                 </button>
