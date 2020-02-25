@@ -1,13 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Login from './Components/LoginComponent';
+import React from "react";
+import "./App.css";
+import Login from "./Components/LoginComponent";
 
 function App() {
   return (
-    <div className="App">
-      <Login></Login>
-    </div>
+      <div className="App">
+        <Login></Login>
+      </div>
   );
 }
 

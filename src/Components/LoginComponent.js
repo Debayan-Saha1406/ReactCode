@@ -11,6 +11,8 @@ import "../vendor/select2/select2.min.css";
 import "../vendor/daterangepicker/daterangepicker.css";
 import image from "../images/bg-01.jpg";
 
+import { Redirect } from 'react-router'
+
 const style = {
   backgroundImage: `url(${image})`
 };
@@ -26,7 +28,9 @@ class Login extends Component {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input"
-    }
+    },
+    isAdmin : false,
+    isRegisteredUser: false
   };
 
   handleLogin = (e) => {
@@ -42,10 +46,17 @@ class Login extends Component {
         passwordData.errorClassName = "wrap-input100 validate-input alert-validate";
     }
     this.setState({emailData, passwordData});
+    if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
+      this.setState({isAdmin : true})
+    }
+    else{
+      this.setState({isRegisteredUser : true})
+    }
   };
 
+  navigate
+
   handleChange = (name, value) => {
-    debugger;
     if (name === "email") {
       const emailData = { ...this.state.emailData };
       this.validate(name, value, emailData);
@@ -89,6 +100,13 @@ class Login extends Component {
   }
 
   render() {
+    if (this.state.isAdmin) {
+      return <Redirect to='/admin' />
+    }
+
+    if(this.state.isRegisteredUser){
+      return <Redirect to="/user"/>
+    }
     return (
       <div className="limiter">
         <div className="container-login100">
