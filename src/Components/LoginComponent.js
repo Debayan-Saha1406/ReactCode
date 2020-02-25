@@ -12,6 +12,8 @@ import "../vendor/daterangepicker/daterangepicker.css";
 import image from "../images/bg-01.jpg";
 
 import { Redirect } from 'react-router'
+import { Link } from "react-router-dom";
+import {validateEmail, validatePassword} from "../Common/CommonService";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -54,8 +56,6 @@ class Login extends Component {
     }
   };
 
-  navigate
-
   handleChange = (name, value) => {
     if (name === "email") {
       const emailData = { ...this.state.emailData };
@@ -68,36 +68,14 @@ class Login extends Component {
 
   validate(name, value, data) {
     if (name === "email") {
-      if (value.trim() === "") {
-        data.className = "input100";
-      } else {
-        data.className = "input100 has-val";
-      }
-      if (
-        value
-          .trim()
-          .match(
-            /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/
-          ) == null
-      ) {
-        data.errorClassName = "wrap-input100 validate-input alert-validate";
-      } else {
-        data.errorClassName = "wrap-input100 validate-input";
-      }
-      data.email = value;
+      validateEmail(value, data);
       this.setState({ emailData: data });
     } else {
-      if (value.trim() === "") {
-        data.className = "input100";
-        data.errorClassName = "wrap-input100 validate-input alert-validate";
-      } else {
-        data.className = "input100 has-val";
-        data.errorClassName = "wrap-input100 validate-input";
-      }
-      data.password = value;
+      validatePassword(value, data);
       this.setState({ passwordData: data });
     }
   }
+
 
   render() {
     if (this.state.isAdmin) {
@@ -164,9 +142,9 @@ class Login extends Component {
                 </div>
 
                 <div>
-                  <a href="#" className="txt1">
+                  <Link to = {'/forgotPassword'} className="txt1">
                     Forgot Password?
-                  </a>
+                  </Link>
                 </div>
               </div>
 
