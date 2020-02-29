@@ -11,10 +11,11 @@ import "../vendor/select2/select2.min.css";
 import "../vendor/daterangepicker/daterangepicker.css";
 import image from "../images/bg-01.jpg";
 
-import { Redirect } from 'react-router'
+import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import {validateEmail, validatePassword} from "../Common/CommonService";
+import { validateEmail, validatePassword } from "../Common/CommonService";
 import { constants } from "../Common/Constants";
+import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -32,40 +33,43 @@ class Login extends Component {
       className: "input100",
       errorClassName: "wrap-input100 validate-input"
     },
-    isAdmin : false,
+    isAdmin: false,
     isRegisteredUser: false,
     rememberMe: false
   };
 
-  componentDidMount(){
+  componentDidMount() {
     const userDetails = JSON.parse(localStorage.getItem(constants.userDetails));
-    if(userDetails){
-      if(userDetails.rememberMe){
-        const emailData = {...this.state.emailData};
-        const passwordData = {...this.state.passwordData}; 
+    if (userDetails) {
+      if (userDetails.rememberMe) {
+        const emailData = { ...this.state.emailData };
+        const passwordData = { ...this.state.passwordData };
         emailData.email = userDetails.emailData.email;
         emailData.className = "input100 has-val";
-        passwordData.password = userDetails.passwordData.password
+        passwordData.password = userDetails.passwordData.password;
         passwordData.className = "input100 has-val";
-        this.setState({ emailData, passwordData, rememberMe:userDetails.rememberMe });
+        this.setState({
+          emailData,
+          passwordData,
+          rememberMe: userDetails.rememberMe
+        });
+      }
     }
-  }
   }
 
-  handleLogin = (e) => {
+  handleLogin = e => {
     e.preventDefault();
     const emailData = { ...this.state.emailData };
-    const passwordData = {...this.state.passwordData};
-    if(emailData.email === "")
-    {
-        emailData.errorClassName = "wrap-input100 validate-input alert-validate";
+    const passwordData = { ...this.state.passwordData };
+    if (emailData.email === "") {
+      emailData.errorClassName = "wrap-input100 validate-input alert-validate";
     }
-    if(passwordData.password === "")
-    {
-        passwordData.errorClassName = "wrap-input100 validate-input alert-validate";
+    if (passwordData.password === "") {
+      passwordData.errorClassName =
+        "wrap-input100 validate-input alert-validate";
     }
-    this.setState({emailData, passwordData});
-    
+    this.setState({ emailData, passwordData });
+
     localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
     alert("LoggedIn");
     // if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
@@ -96,18 +100,17 @@ class Login extends Component {
     }
   }
 
-  handleCheckboxChange = () =>{
-    this.setState({rememberMe: !this.state.rememberMe})
-  }
-
+  handleCheckboxChange = () => {
+    this.setState({ rememberMe: !this.state.rememberMe });
+  };
 
   render() {
     if (this.state.isAdmin) {
-      return <Redirect to='/admin' />
+      return <Redirect to="/admin" />;
     }
 
-    if(this.state.isRegisteredUser){
-      return <Redirect to="/user"/>
+    if (this.state.isRegisteredUser) {
+      return <Redirect to="/user" />;
     }
     return (
       <div className="limiter">
@@ -143,7 +146,6 @@ class Login extends Component {
                   className={this.state.passwordData.className}
                   type="password"
                   name="password"
-                  
                   onChange={e =>
                     this.handleChange(e.target.name, e.target.value)
                   }
@@ -153,6 +155,9 @@ class Login extends Component {
                 <span className="label-input100">Password</span>
               </div>
 
+              <PasswordStrengthChecker
+                password={this.state.passwordData.password}
+              ></PasswordStrengthChecker>
               <div className="flex-sb-m w-full p-t-3 p-b-32">
                 <div className="contact100-form-checkbox">
                   <input
@@ -161,7 +166,7 @@ class Login extends Component {
                     checked={this.state.rememberMe}
                     type="checkbox"
                     name="remember-me"
-                    onChange = {this.handleCheckboxChange}
+                    onChange={this.handleCheckboxChange}
                   />
                   <label className="label-checkbox100" htmlFor="ckb1">
                     Remember me
@@ -169,7 +174,7 @@ class Login extends Component {
                 </div>
 
                 <div>
-                  <Link to = {'/forgotPassword'} className="txt1">
+                  <Link to={"/forgotPassword"} className="txt1">
                     Forgot Password?
                   </Link>
                 </div>
