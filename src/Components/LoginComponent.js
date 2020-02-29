@@ -154,10 +154,10 @@ class Login extends Component {
                 <span className="focus-input100"></span>
                 <span className="label-input100">Password</span>
               </div>
-
               <PasswordStrengthChecker
                 password={this.state.passwordData.password}
               ></PasswordStrengthChecker>
+              <br></br>
               <div className="flex-sb-m w-full p-t-3 p-b-32">
                 <div className="contact100-form-checkbox">
                   <input

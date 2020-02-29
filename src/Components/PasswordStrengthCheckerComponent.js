@@ -1,5 +1,29 @@
 import React, { Component } from "react";
+import '../css/passwordChecker.css'
 
+let strengthIndicator;
+const tooltip = {
+  position: 'relative',
+  display: 'inlineBlock',
+  borderBottom: '1px dotted black'
+}
+
+const tooltipText = {
+  visibility: 'hidden',
+  width: '120px',
+  backgroundColor: 'black',
+  color: '#fff',
+  textAlign: 'center',
+  borderRadius: '6px',
+  padding: '5px 0',
+  
+  /* Position the tooltip */
+  position: 'absolute',
+  zIndex: '1',
+  top: '100%',
+  left: '50%',
+  marginLeft: '-60px'
+}
 class PasswordStrengthChecker extends Component {
   state = {
     passwordStrength: {
@@ -17,8 +41,9 @@ class PasswordStrengthChecker extends Component {
       small: false
     },
     passwordMeter: {
-      width: '0%'
-    }
+      width: "0%"
+    },
+    progressBarColor: "progress-bar-danger"
   };
 
   componentDidUpdate(prevProps) {
@@ -28,15 +53,14 @@ class PasswordStrengthChecker extends Component {
   }
 
   checkPassword = password => {
-    const passwordStrengthValue = { ...this.state.passwordStrengthValue };
-    const passwordStrength = {...this.state.passwordStrength};
-    let passwordMeter = {...this.state.passwordMeter};
+    debugger;
+    let passwordStrengthValue = {};
+    const passwordStrength = { ...this.state.passwordStrength };
+    let passwordMeter = { ...this.state.passwordMeter };
     if (password.length >= 7) {
       passwordStrengthValue.length = true;
-    } 
+    }
 
-
-    //Need to reduce it too 
     for (let index = 0; index < password.length; index++) {
       let char = password.charCodeAt(index);
       if (!passwordStrengthValue.caps && char >= 65 && char <= 90) {
@@ -55,24 +79,36 @@ class PasswordStrengthChecker extends Component {
       }
     }
 
-    let strengthIndicator = 0;
-    for(let metric in passwordStrengthValue) {
-    if(passwordStrengthValue[metric] === true) {
-         strengthIndicator++;
-  }
-}
+    strengthIndicator = 0;
+    for (let metric in passwordStrengthValue) {
+      if (passwordStrengthValue[metric] === true) {
+        strengthIndicator++;
+      }
+    }
 
-console.log("Your password: " + password + " ( " + passwordStrength[strengthIndicator] + " )");
-    if(strengthIndicator === 0)
-        passwordMeter.width = '0%' ;
-    else if(strengthIndicator === 1)
-        passwordMeter.width = '25%' ;
-    else if(strengthIndicator === 2)
-        passwordMeter.width = '50%' ;
-    else if(strengthIndicator === 3)
-        passwordMeter.width = '75%' ;
-    else 
-        passwordMeter.width = '100%' ;
+    console.log(
+      "Your password: " +
+        password +
+        " ( " +
+        passwordStrength[strengthIndicator] +
+        " )"
+    );
+    if (strengthIndicator === 0) {
+      passwordMeter.width = "0%";
+      this.setState({ progressBarColor: "progress-bar-danger" });
+    } else if (strengthIndicator === 1) {
+      passwordMeter.width = "25%";
+      this.setState({ progressBarColor: "progress-bar-danger" });
+    } else if (strengthIndicator === 2) {
+      passwordMeter.width = "50%";
+      this.setState({ progressBarColor: "progress-bar-warning" });
+    } else if (strengthIndicator === 3) {
+      passwordMeter.width = "75%";
+      this.setState({ progressBarColor: "progress-bar-info" });
+    } else {
+      passwordMeter.width = "100%";
+      this.setState({ progressBarColor: "progress-bar-success" });
+    }
 
     this.setState({ passwordStrengthValue, passwordMeter, passwordStrength });
   };
@@ -80,25 +116,18 @@ console.log("Your password: " + password + " ( " + passwordStrength[strengthIndi
   render() {
     return (
       <div className="progress">
-        <div
-          className="progress-bar progress-bar-striped active"
-          role="progressbar"
-          aria-valuenow="40"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          style={this.state.passwordMeter}
-        >
-            Hi
-          {/* {this.state.passwordMeter.width <= 20
-            ? this.state.passwordStrength.VeryWeak
-            : this.state.passwordMeter.width > 20 && this.state.passwordMeter.width <= 40 
-            ? this.state.passwordStrength.Weak
-            : this.state.passwordMeter.width > 40 && this.state.passwordMeter.width <= 60
-            ? this.state.passwordStrength.Medium
-            : this.state.passwordMeter.width > 60 && this.state.passwordMeter.width <= 80
-            ? this.state.passwordStrength.Strong
-            : this.state.passwordStrength.VeryStrong} */}
-        </div>
+        {this.props.password.length > 0 && (
+          <div
+            className={`progress-bar progress-bar-striped ${this.state.progressBarColor}`}
+            role="progressbar"
+            aria-valuenow="40"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            style={this.state.passwordMeter}
+          >
+              {this.state.passwordStrength[strengthIndicator]}
+          </div>
+        )}
       </div>
     );
   }
