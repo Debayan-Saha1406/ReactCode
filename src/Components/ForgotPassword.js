@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import image from "../images/bg-01.jpg";
 import {validateEmail} from "../Common/CommonService";
+import { Link } from 'react-router-dom';
 
 const style = {
   backgroundImage: `url(${image})`
@@ -25,12 +26,18 @@ class ForgotPassword extends Component {
     this.setState({ emailData });
   };
 
+ 
+
   render() {
     return (
       <div className="limiter">
+        
         <div className="container-login100">
           <div className="wrap-login100">
             <form className="login100-form validate-form">
+              <div className = "arrow">
+              <Link to={'/'}><i className="fa fa-arrow-left" aria-hidden="true" ></i></Link>
+            </div>
               <span className="login100-form-title p-b-43">
                 Forgot Password
               </span>

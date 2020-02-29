@@ -14,6 +14,7 @@ import image from "../images/bg-01.jpg";
 import { Redirect } from 'react-router'
 import { Link } from "react-router-dom";
 import {validateEmail, validatePassword} from "../Common/CommonService";
+import { constants } from "../Common/Constants";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -32,8 +33,24 @@ class Login extends Component {
       errorClassName: "wrap-input100 validate-input"
     },
     isAdmin : false,
-    isRegisteredUser: false
+    isRegisteredUser: false,
+    rememberMe: false
   };
+
+  componentDidMount(){
+    const userDetails = JSON.parse(localStorage.getItem(constants.userDetails));
+    if(userDetails){
+      if(userDetails.rememberMe){
+        const emailData = {...this.state.emailData};
+        const passwordData = {...this.state.passwordData}; 
+        emailData.email = userDetails.emailData.email;
+        emailData.className = "input100 has-val";
+        passwordData.password = userDetails.passwordData.password
+        passwordData.className = "input100 has-val";
+        this.setState({ emailData, passwordData, rememberMe:userDetails.rememberMe });
+    }
+  }
+  }
 
   handleLogin = (e) => {
     e.preventDefault();
@@ -48,12 +65,15 @@ class Login extends Component {
         passwordData.errorClassName = "wrap-input100 validate-input alert-validate";
     }
     this.setState({emailData, passwordData});
-    if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
-      this.setState({isAdmin : true})
-    }
-    else{
-      this.setState({isRegisteredUser : true})
-    }
+    
+    localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
+    alert("LoggedIn");
+    // if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
+    //   this.setState({isAdmin : true})
+    // }
+    // else{
+    //   this.setState({isRegisteredUser : true})
+    // }
   };
 
   handleChange = (name, value) => {
@@ -74,6 +94,10 @@ class Login extends Component {
       validatePassword(value, data);
       this.setState({ passwordData: data });
     }
+  }
+
+  handleCheckboxChange = () =>{
+    this.setState({rememberMe: !this.state.rememberMe})
   }
 
 
@@ -119,6 +143,7 @@ class Login extends Component {
                   className={this.state.passwordData.className}
                   type="password"
                   name="password"
+                  
                   onChange={e =>
                     this.handleChange(e.target.name, e.target.value)
                   }
@@ -133,8 +158,10 @@ class Login extends Component {
                   <input
                     className="input-checkbox100"
                     id="ckb1"
+                    checked={this.state.rememberMe}
                     type="checkbox"
                     name="remember-me"
+                    onChange = {this.handleCheckboxChange}
                   />
                   <label className="label-checkbox100" htmlFor="ckb1">
                     Remember me
@@ -155,26 +182,6 @@ class Login extends Component {
                 >
                   Login
                 </button>
-              </div>
-
-              <div className="text-center p-t-46 p-b-20">
-                <span className="txt2">or sign up using</span>
-              </div>
-
-              <div className="login100-form-social flex-c-m">
-                <a
-                  href="#"
-                  className="login100-form-social-item flex-c-m bg1 m-r-5"
-                >
-                  <i className="fa fa-facebook-f" aria-hidden="true"></i>
-                </a>
-
-                <a
-                  href="#"
-                  className="login100-form-social-item flex-c-m bg2 m-r-5"
-                >
-                  <i className="fa fa-twitter" aria-hidden="true"></i>
-                </a>
               </div>
             </form>
 
