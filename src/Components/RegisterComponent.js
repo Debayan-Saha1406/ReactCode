@@ -68,9 +68,9 @@ class Register extends Component {
       this.setState({ passwordData });
       if (confirmPasswordData) {
         if (passwordData.password === confirmPasswordData.password) {
-          this.setState({ passwordMatchIcon: "check"});
+          this.setState({ passwordMatchIcon: "check", iconColor: "green"});
         } else {
-          this.setState({ passwordMatchIcon: "close" });
+          this.setState({ passwordMatchIcon: "close" , iconColor: "red"});
         }
       }
     } else if (name === "name") {
