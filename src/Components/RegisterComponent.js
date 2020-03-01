@@ -57,39 +57,56 @@ class Register extends Component {
   };
 
   handleChange = (name, value) => {
-    
     if (name === "email") {
-      const emailData = { ...this.state.emailData };
-      this.validate(name, value, emailData);
-      this.setState({ emailData });
+      this.handleEmailChange(name, value);
     } else if (name === "password") {
-      passwordData = { ...this.state.passwordData };
-      this.validate(name, value, passwordData);
-      this.setState({ passwordData });
-      if (confirmPasswordData) {
-        if (passwordData.password === confirmPasswordData.password) {
-          this.setState({ passwordMatchIcon: "check", iconColor: "green"});
-        } else {
-          this.setState({ passwordMatchIcon: "close" , iconColor: "red"});
-        }
-      }
+      this.handlePasswordChange(name, value);
     } else if (name === "name") {
-      const nameData = { ...this.state.nameData };
-      this.validate(name, value, nameData);
-      this.setState({ nameData });
+      this.handleNameChange(name, value);
     } else {
-      confirmPasswordData = { ...this.state.confirmPasswordData };
-      this.validate(name, value, confirmPasswordData);
-      this.setState({confirmPasswordData});
-      if (passwordData) {
-        if (passwordData.password === confirmPasswordData.password) {
-          this.setState({ passwordMatchIcon: "check", iconColor: "green"});
-        } else {
-          this.setState({ passwordMatchIcon: "close", iconColor: "red" });
-        }
-      }
+      this.handleConfirmPasswordChange(name, value);
     }
   };
+
+  handleConfirmPasswordChange(name, value) {
+    confirmPasswordData = { ...this.state.confirmPasswordData };
+    this.validate(name, value, confirmPasswordData);
+    this.setState({ confirmPasswordData });
+    if (passwordData) {
+      if (passwordData.password === confirmPasswordData.password) {
+        this.setState({ passwordMatchIcon: "check", iconColor: "green" });
+      }
+      else {
+        this.setState({ passwordMatchIcon: "close", iconColor: "red" });
+      }
+    }
+  }
+
+  handleNameChange(name, value) {
+    const nameData = { ...this.state.nameData };
+    this.validate(name, value, nameData);
+    this.setState({ nameData });
+  }
+
+  handlePasswordChange(name, value) {
+    passwordData = { ...this.state.passwordData };
+    this.validate(name, value, passwordData);
+    this.setState({ passwordData });
+    if (confirmPasswordData) {
+      if (passwordData.password === confirmPasswordData.password) {
+        this.setState({ passwordMatchIcon: "check", iconColor: "green" });
+      }
+      else {
+        this.setState({ passwordMatchIcon: "close", iconColor: "red" });
+      }
+    }
+  }
+
+  handleEmailChange(name, value) {
+    const emailData = { ...this.state.emailData };
+    this.validate(name, value, emailData);
+    this.setState({ emailData });
+  }
 
   validate(name, value, data) {
     if (name === "email") {
@@ -116,7 +133,6 @@ class Register extends Component {
           <div className="wrap-login100">
             <form className="register-form validate-form">
               <span className="login100-form-title p-b-43">Register</span>
-
               <div
                 className={this.state.nameData.errorClassName}
                 data-validate="Name is required"
