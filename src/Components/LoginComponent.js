@@ -9,7 +9,7 @@ import "../vendor/css-hamburgers/hamburgers.min.css";
 import "../vendor/animsition/css/animsition.min.css";
 import "../vendor/select2/select2.min.css";
 import "../vendor/daterangepicker/daterangepicker.css";
-import image from "../images/bg-01.jpg";
+import image from "../images/Login.png";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";

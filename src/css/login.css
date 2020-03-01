@@ -35,6 +35,8 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.4s;
+    border-style: solid;
+    border-color: antiquewhite;
 }
 
 .register-form-btn:hover{   

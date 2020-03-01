@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
-import image from "../images/bg-01.jpg";
+import image from "../images/RegisterButton.jpg";
 import {
   validateEmail,
   validatePassword,
@@ -83,7 +83,7 @@ class Register extends Component {
       this.setState({confirmPasswordData});
       if (passwordData) {
         if (passwordData.password === confirmPasswordData.password) {
-          this.setState({ passwordMatchIcon: "check", iconColor: "black"});
+          this.setState({ passwordMatchIcon: "check", iconColor: "green"});
         } else {
           this.setState({ passwordMatchIcon: "close", iconColor: "red" });
         }
@@ -181,7 +181,6 @@ class Register extends Component {
               <PasswordStrengthChecker
                 password={this.state.passwordData.password}
               ></PasswordStrengthChecker>
-              <br></br>
               <div
                 className={this.state.confirmPasswordData.errorClassName}
                 data-validate="Password is required"
@@ -210,7 +209,7 @@ class Register extends Component {
                   </div>
                 </React.Fragment>
               )}
-              {/* confirm password needs to be done here */}
+
               <div className="container-login100-form-btn">
                 <button
                   className="login100-form-btn"

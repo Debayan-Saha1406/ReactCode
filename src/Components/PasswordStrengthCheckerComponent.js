@@ -112,6 +112,7 @@ class PasswordStrengthChecker extends Component {
           </div>
         )}
       </div>
+     
     );
   }
 }

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import image from "../images/bg-01.jpg";
+import image from "../images/forgotPassword.png";
 import {validateEmail} from "../Common/CommonService";
 import { Link } from 'react-router-dom';
+import "../css/forgotPassword.css";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -35,13 +36,11 @@ class ForgotPassword extends Component {
         <div className="container-login100">
           <div className="wrap-login100">
             <form className="login100-form validate-form">
-              <div className = "arrow">
-              <Link to={'/'}><i className="fa fa-arrow-left" aria-hidden="true" ></i></Link>
-            </div>
-              <span className="login100-form-title p-b-43">
+              <span className="login100-form-title forgot-password">
                 Forgot Password
               </span>
-
+              <div>To recover your password, you need to enter your registered email address. We will sent the recovery code to your email.</div>
+              <br></br>
               <div
                 className={this.state.emailData.errorClassName}
                 data-validate="Valid email is required: ex@abc.xyz"
@@ -66,6 +65,10 @@ class ForgotPassword extends Component {
                 >
                   Send email
                 </button>
+              </div>
+              <br></br>
+              <div align="center">
+                <Link to={"/login"}>Click here To Go Back To Login </Link>
               </div>
             </form>
 
