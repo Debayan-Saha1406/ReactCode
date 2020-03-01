@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { validateEmail, validatePassword } from "../Common/CommonService";
 import { constants } from "../Common/Constants";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
+import '../css/login.css'
 
 const style = {
   backgroundImage: `url(${image})`
@@ -35,7 +36,9 @@ class Login extends Component {
     },
     isAdmin: false,
     isRegisteredUser: false,
-    rememberMe: false
+    rememberMe: false,
+    dataType: "password",
+    eyeState: ""
   };
 
   componentDidMount() {
@@ -104,6 +107,18 @@ class Login extends Component {
     this.setState({ rememberMe: !this.state.rememberMe });
   };
 
+  handleEyeClick = () => {
+    const state = { ...this.state };
+    this.setState({
+      dataType: state.dataType === "text" ? "password" : "text",
+      eyeState: state.dataType === "text" ? "" : "-slash"
+    });
+  };
+
+  handleRegister = () => {
+
+  }
+
   render() {
     if (this.state.isAdmin) {
       return <Redirect to="/admin" />;
@@ -144,7 +159,7 @@ class Login extends Component {
               >
                 <input
                   className={this.state.passwordData.className}
-                  type="password"
+                  type={this.state.dataType}
                   name="password"
                   onChange={e =>
                     this.handleChange(e.target.name, e.target.value)
@@ -154,6 +169,16 @@ class Login extends Component {
                 <span className="focus-input100"></span>
                 <span className="label-input100">Password</span>
               </div>
+              {this.state.passwordData.password.length > 0  && <React.Fragment> 
+                <div className="eye-icon"><i
+                className={`fa fa-eye${this.state.eyeState}`}
+                
+                aria-hidden="true"
+                onClick={this.handleEyeClick}
+              ></i>
+              </div>
+              </React.Fragment>
+              }
               <PasswordStrengthChecker
                 password={this.state.passwordData.password}
               ></PasswordStrengthChecker>
@@ -186,6 +211,15 @@ class Login extends Component {
                   onClick={e => this.handleLogin(e)}
                 >
                   Login
+                </button>
+              </div>
+              <br></br>
+              <div className="container-login100-form-btn">
+                <button
+                  className="login100-form-btn"
+                  onClick={e => this.handleRegister(e)}
+                >
+                  Register
                 </button>
               </div>
             </form>

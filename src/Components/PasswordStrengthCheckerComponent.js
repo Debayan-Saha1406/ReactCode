@@ -31,7 +31,8 @@ class PasswordStrengthChecker extends Component {
       1: "Weak",
       2: "Medium",
       3: "Strong",
-      4: "Very Strong"
+      4: "Very Strong",
+      5: "Excellent"
     },
     passwordStrengthValue: {
       caps: false,
@@ -93,19 +94,24 @@ class PasswordStrengthChecker extends Component {
         passwordStrength[strengthIndicator] +
         " )"
     );
+
+    
     if (strengthIndicator === 0) {
       passwordMeter.width = "0%";
       this.setState({ progressBarColor: "progress-bar-danger" });
     } else if (strengthIndicator === 1) {
-      passwordMeter.width = "25%";
+      passwordMeter.width = "20%";
       this.setState({ progressBarColor: "progress-bar-danger" });
     } else if (strengthIndicator === 2) {
-      passwordMeter.width = "50%";
-      this.setState({ progressBarColor: "progress-bar-warning" });
+      passwordMeter.width = "40%";
+      this.setState({ progressBarColor: "progress-bar-danger-warning" });
     } else if (strengthIndicator === 3) {
-      passwordMeter.width = "75%";
+      passwordMeter.width = "60%";
+      this.setState({ progressBarColor: "progress-bar-warning" });
+    } else if(strengthIndicator === 4){
+      passwordMeter.width = "80%";
       this.setState({ progressBarColor: "progress-bar-info" });
-    } else {
+    }else{
       passwordMeter.width = "100%";
       this.setState({ progressBarColor: "progress-bar-success" });
     }
