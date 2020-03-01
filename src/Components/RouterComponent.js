@@ -5,17 +5,19 @@ import Login from "./LoginComponent";
 import Admin from "./AdminComponent";
 import User from "./UserComponent";
 import ForgotPassword from "./ForgotPassword";
+import Register from "./RegisterComponent";
 
 class Router extends Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={Login} />
+          <Route exact path="/login" component={Login} />
           <Route path="/admin" component={Admin} />
           <Route path="/user" component={User} />
           <Route path="/forgotPassword" component={ForgotPassword} />
-          <Redirect from="*" to="/" />
+          <Route path="/register" component={Register} />
+          <Redirect from="*" to="/login" />
         </Switch>
       </BrowserRouter>
     );

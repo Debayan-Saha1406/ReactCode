@@ -1,0 +1,11 @@
+.eye-icon{
+    content: "\f12a";
+    font-family: FontAwesome;
+    display: block;
+    position: absolute;
+    z-index: 110;
+    font-size: 16px;
+    top: 62%;
+    transform: translateY(-50%);
+    right: 5%;
+}

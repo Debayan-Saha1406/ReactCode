@@ -15,8 +15,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { validateEmail, validatePassword } from "../Common/CommonService";
 import { constants } from "../Common/Constants";
-import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
-import '../css/login.css'
+import '../css/login.css';
 
 const style = {
   backgroundImage: `url(${image})`
@@ -115,9 +114,6 @@ class Login extends Component {
     });
   };
 
-  handleRegister = () => {
-
-  }
 
   render() {
     if (this.state.isAdmin) {
@@ -170,7 +166,7 @@ class Login extends Component {
                 <span className="label-input100">Password</span>
               </div>
               {this.state.passwordData.password.length > 0  && <React.Fragment> 
-                <div className="eye-icon"><i
+                <div className="eyeIcon"><i
                 className={`fa fa-eye${this.state.eyeState}`}
                 
                 aria-hidden="true"
@@ -179,9 +175,6 @@ class Login extends Component {
               </div>
               </React.Fragment>
               }
-              <PasswordStrengthChecker
-                password={this.state.passwordData.password}
-              ></PasswordStrengthChecker>
               <br></br>
               <div className="flex-sb-m w-full p-t-3 p-b-32">
                 <div className="contact100-form-checkbox">
@@ -215,12 +208,13 @@ class Login extends Component {
               </div>
               <br></br>
               <div className="container-login100-form-btn">
+              <Link to={"/register"} className="register">
                 <button
-                  className="login100-form-btn"
-                  onClick={e => this.handleRegister(e)}
+                  className="register-form-btn"
                 >
                   Register
                 </button>
+                </Link>
               </div>
             </form>
 

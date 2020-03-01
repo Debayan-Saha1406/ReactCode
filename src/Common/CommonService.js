@@ -31,3 +31,16 @@ export const validatePassword = (value, data) => {
     data.password = value;
   }
 
+  export const validateName = (value, data) => {
+    if (value.trim() === "") {
+      data.className = "input100";
+      data.errorClassName = "wrap-input100 validate-input alert-validate";
+    }
+    else {
+      data.className = "input100 has-val";
+      data.errorClassName = "wrap-input100 validate-input";
+    }
+    data.name = value;
+  }
+  
+
