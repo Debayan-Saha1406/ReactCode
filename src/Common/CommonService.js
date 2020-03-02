@@ -12,8 +12,10 @@ export const validateEmail = (value, data) => {
       ) == null
   ) {
     data.errorClassName = "wrap-input100 validate-input alert-validate";
+    data.isErrorExist = true;
   } else {
     data.errorClassName = "wrap-input100 validate-input";
+    data.isErrorExist = false;
   }
   data.email = value;
 };
@@ -23,10 +25,13 @@ export const validatePassword = (value, data) => {
     if (value.trim() === "") {
       data.className = "input100";
       data.errorClassName = "wrap-input100 validate-input alert-validate";
+      data.isErrorExist = true;
+     
     }
     else {
       data.className = "input100 has-val";
       data.errorClassName = "wrap-input100 validate-input";
+      data.isErrorExist = false;
     }
     data.password = value;
   }
@@ -35,10 +40,12 @@ export const validatePassword = (value, data) => {
     if (value.trim() === "") {
       data.className = "input100";
       data.errorClassName = "wrap-input100 validate-input alert-validate";
+      data.isErrorExist = true;
     }
     else {
       data.className = "input100 has-val";
       data.errorClassName = "wrap-input100 validate-input";
+      data.isErrorExist = false;
     }
     data.name = value;
   }

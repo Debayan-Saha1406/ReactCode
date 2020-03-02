@@ -19,6 +19,12 @@ class ForgotPassword extends Component {
 
   handlClick = e => {
     e.preventDefault();
+    const state = {...this.state};
+    if (state.emailData.email === "") {
+      state.emailData.errorClassName = "wrap-input100 validate-input alert-validate";
+    }
+   
+    this.setState({ state });
   };
 
   handleChange = (value) => {
@@ -26,8 +32,6 @@ class ForgotPassword extends Component {
     validateEmail(value, emailData);
     this.setState({ emailData });
   };
-
- 
 
   render() {
     return (

@@ -25,22 +25,26 @@ class Register extends Component {
     emailData: {
       email: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist : true
     },
     nameData: {
       name: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist : true
     },
     passwordData: {
       password: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist : true
     },
     confirmPasswordData: {
       password: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist : true
     },
     dataType: "password",
     eyeState: "",
@@ -50,16 +54,23 @@ class Register extends Component {
 
   handleRegister = e => {
     e.preventDefault();
-    const emailData = { ...this.state.emailData };
-    const passwordData = { ...this.state.passwordData };
-    if (emailData.email === "") {
-      emailData.errorClassName = "wrap-input100 validate-input alert-validate";
+    const state = {...this.state}
+    if (state.emailData.email === "") {
+      state.emailData.errorClassName = "wrap-input100 validate-input alert-validate";
     }
-    if (passwordData.password === "") {
-      passwordData.errorClassName =
+    if (state.passwordData.password === "") {
+      state.passwordData.errorClassName =
         "wrap-input100 validate-input alert-validate";
     }
-    this.setState({ emailData, passwordData });
+
+    if (state.nameData.name === "") {
+      state.nameData.errorClassName = "wrap-input100 validate-input alert-validate";
+    }
+
+    if(state.confirmPasswordData.password ===""){
+      state.confirmPasswordData.errorClassName = "wrap-input100 validate-input alert-validate";
+    }
+    this.setState({ state });
   };
 
   handleChange = (name, value) => {

@@ -16,12 +16,14 @@ class Login extends Component {
     emailData: {
       email: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist: true
     },
     passwordData: {
       password: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist: true
     },
     isAdmin: false,
     isRegisteredUser: false,
@@ -51,19 +53,22 @@ class Login extends Component {
 
   handleLogin = e => {
     e.preventDefault();
-    const emailData = { ...this.state.emailData };
-    const passwordData = { ...this.state.passwordData };
-    if (emailData.email === "") {
-      emailData.errorClassName = "wrap-input100 validate-input alert-validate";
+    const state = {...this.state};
+    if (state.emailData.email === "") {
+      state.emailData.errorClassName = "wrap-input100 validate-input alert-validate";
     }
-    if (passwordData.password === "") {
-      passwordData.errorClassName =
+    if (state.passwordData.password === "") {
+      state.passwordData.errorClassName =
         "wrap-input100 validate-input alert-validate";
     }
-    this.setState({ emailData, passwordData });
+    this.setState({ state });
 
     localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
-    alert("LoggedIn");
+    console.log(this.state);
+    if(!this.state.emailData.isErrorExist &&  !this.state.passwordData.isErrorExist){
+      alert("LoggedIn");
+    }
+    
     // if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
     //   this.setState({isAdmin : true})
     // }
