@@ -8,6 +8,12 @@ import {
 } from "../Common/CommonService";
 import { Link } from "react-router-dom";
 import "../css/register.css";
+import "../css/main.css";
+import "../css/util.css";
+import "../css/login.css";
+import "../css/passwordChecker.css";
+import "../css/forgotPassword.css";
+import "../../src/vendor/bootstrap/css/bootstrap.min.css"
 
 const style = {
   backgroundImage: `url(${image})`
@@ -182,7 +188,7 @@ class Register extends Component {
                 />
                 <span className="focus-input100"></span>
                 <span className="label-input100">Password</span>
-              </div>
+              
               {this.state.passwordData.password.length > 0 && (
                 <React.Fragment>
                   <div className="eye-icon">
@@ -194,6 +200,7 @@ class Register extends Component {
                   </div>
                 </React.Fragment>
               )}
+              </div>
               <PasswordStrengthChecker
                 password={this.state.passwordData.password}
               ></PasswordStrengthChecker>
@@ -212,7 +219,7 @@ class Register extends Component {
                 />
                 <span className="focus-input100"></span>
                 <span className="label-input100">Confirm Password</span>
-              </div>
+              
               {this.state.confirmPasswordData.password.length > 0 && (
                 <React.Fragment>
                   <div className="check-icon">
@@ -225,7 +232,7 @@ class Register extends Component {
                   </div>
                 </React.Fragment>
               )}
-
+              </div>
               <div className="container-login100-form-btn">
                 <button
                   className="login100-form-btn"
