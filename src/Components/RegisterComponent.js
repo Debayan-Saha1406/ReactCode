@@ -238,7 +238,6 @@ class Register extends Component {
                       className={`fa fa-${this.state.passwordMatchIcon}`}
                       style ={{color: `${this.state.iconColor}`}}
                       aria-hidden="true"
-                      onClick={this.handleConfirmPassword}
                     ></i>
                   </div>
                 </React.Fragment>

@@ -13,7 +13,8 @@ class ForgotPassword extends Component {
     emailData: {
       email: "",
       className: "input100",
-      errorClassName: "wrap-input100 validate-input"
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist: true
     }
   };
 
