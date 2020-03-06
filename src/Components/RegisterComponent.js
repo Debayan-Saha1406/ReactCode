@@ -5,7 +5,7 @@ import {
   validateEmail,
   validatePassword,
   validateName
-} from "../Common/CommonService";
+} from "../Services/ValidationService";
 import { Link } from "react-router-dom";
 import "../css/register.css";
 import "../css/main.css";
@@ -13,7 +13,14 @@ import "../css/util.css";
 import "../css/login.css";
 import "../css/passwordChecker.css";
 import "../css/forgotPassword.css";
-import "../../src/vendor/bootstrap/css/bootstrap.min.css"
+import "../../src/vendor/bootstrap/css/bootstrap.min.css";
+import {
+  handleEyeIconChange,
+  handleDataTypeChange,
+  handlePasswordMatchIcon,
+  handlePasswordMatchIconColor,
+  handlePasswordErrorClassName
+} from "../Services/PasswordService";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -26,25 +33,25 @@ class Register extends Component {
       email: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist : true
+      isErrorExist: true
     },
     nameData: {
       name: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist : true
+      isErrorExist: true
     },
     passwordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist : true
+      isErrorExist: true
     },
     confirmPasswordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist : true
+      isErrorExist: true
     },
     dataType: "password",
     eyeState: "",
@@ -54,22 +61,21 @@ class Register extends Component {
 
   handleRegister = e => {
     e.preventDefault();
-    const state = {...this.state}
+    debugger;
+    const state = { ...this.state };
     if (state.emailData.email === "") {
-      state.emailData.errorClassName = "wrap-input100 validate-input alert-validate";
+      state.emailData.errorClassName =
+        "wrap-input100 validate-input alert-validate";
     }
-    if (state.passwordData.password === "") {
-      state.passwordData.errorClassName =
+   
+    if (state.nameData.name === "") {
+      state.nameData.errorClassName =
         "wrap-input100 validate-input alert-validate";
     }
 
-    if (state.nameData.name === "") {
-      state.nameData.errorClassName = "wrap-input100 validate-input alert-validate";
-    }
+    state.passwordData.errorClassName = handlePasswordErrorClassName(state.passwordData);
+    state.confirmPasswordData.errorClassName = handlePasswordErrorClassName(state.confirmPasswordData);
 
-    if(state.confirmPasswordData.password ===""){
-      state.confirmPasswordData.errorClassName = "wrap-input100 validate-input alert-validate";
-    }
     this.setState({ state });
   };
 
@@ -90,12 +96,15 @@ class Register extends Component {
     this.validate(name, value, confirmPasswordData);
     this.setState({ confirmPasswordData });
     if (passwordData) {
-      if (passwordData.password === confirmPasswordData.password) {
-        this.setState({ passwordMatchIcon: "check", iconColor: "green" });
-      }
-      else {
-        this.setState({ passwordMatchIcon: "close", iconColor: "red" });
-      }
+      const passwordMatchIcon = handlePasswordMatchIcon(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      const iconColor = handlePasswordMatchIconColor(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      this.setState({ passwordMatchIcon, iconColor });
     }
   }
 
@@ -110,12 +119,15 @@ class Register extends Component {
     this.validate(name, value, passwordData);
     this.setState({ passwordData });
     if (confirmPasswordData) {
-      if (passwordData.password === confirmPasswordData.password) {
-        this.setState({ passwordMatchIcon: "check", iconColor: "green" });
-      }
-      else {
-        this.setState({ passwordMatchIcon: "close", iconColor: "red" });
-      }
+      const passwordMatchIcon = handlePasswordMatchIcon(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      const iconColor = handlePasswordMatchIconColor(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      this.setState({ passwordMatchIcon, iconColor });
     }
   }
 
@@ -137,9 +149,11 @@ class Register extends Component {
 
   handleEyeClick = () => {
     const state = { ...this.state };
+    const dataType = handleDataTypeChange(state.dataType);
+    const eyeState = handleEyeIconChange(state.dataType);
     this.setState({
-      dataType: state.dataType === "text" ? "password" : "text",
-      eyeState: state.dataType === "text" ? "" : "-slash"
+      dataType,
+      eyeState
     });
   };
 
@@ -199,18 +213,18 @@ class Register extends Component {
                 />
                 <span className="focus-input100"></span>
                 <span className="label-input100">Password</span>
-              
-              {this.state.passwordData.password.length > 0 && (
-                <React.Fragment>
-                  <div className="eye-icon">
-                    <i
-                      className={`fa fa-eye${this.state.eyeState}`}
-                      aria-hidden="true"
-                      onClick={this.handleEyeClick}
-                    ></i>
-                  </div>
-                </React.Fragment>
-              )}
+
+                {this.state.passwordData.password.length > 0 && (
+                  <React.Fragment>
+                    <div className="eye-icon">
+                      <i
+                        className={`fa fa-eye${this.state.eyeState}`}
+                        aria-hidden="true"
+                        onClick={this.handleEyeClick}
+                      ></i>
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
               <PasswordStrengthChecker
                 password={this.state.passwordData.password}
@@ -230,18 +244,18 @@ class Register extends Component {
                 />
                 <span className="focus-input100"></span>
                 <span className="label-input100">Confirm Password</span>
-              
-              {this.state.confirmPasswordData.password.length > 0 && (
-                <React.Fragment>
-                  <div className="check-icon">
-                    <i
-                      className={`fa fa-${this.state.passwordMatchIcon}`}
-                      style ={{color: `${this.state.iconColor}`}}
-                      aria-hidden="true"
-                    ></i>
-                  </div>
-                </React.Fragment>
-              )}
+
+                {this.state.confirmPasswordData.password.length > 0 && (
+                  <React.Fragment>
+                    <div className="check-icon">
+                      <i
+                        className={`fa fa-${this.state.passwordMatchIcon}`}
+                        style={{ color: `${this.state.iconColor}` }}
+                        aria-hidden="true"
+                      ></i>
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
               <div className="container-login100-form-btn">
                 <button

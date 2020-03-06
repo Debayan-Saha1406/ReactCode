@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import image from "../images/forgotPassword.png";
-import {validateEmail} from "../Common/CommonService";
+import {validateEmail} from "../Services/ValidationService";
 import { Link } from 'react-router-dom';
 import "../css/forgotPassword.css";
 

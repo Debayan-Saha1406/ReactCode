@@ -1,18 +1,24 @@
 import React, { Component } from "react";
 import image from "../images/resetPassword.jpg";
-import { validatePassword } from "../Common/CommonService";
+import { validatePassword } from "../Services/ValidationService";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
 import { Redirect } from "react-router-dom";
+import {
+  handleEyeIconChange,
+  handleDataTypeChange,
+  handlePasswordMatchIcon,
+  handlePasswordMatchIconColor
+} from "../Services/PasswordService";
 
 const style = {
   backgroundImage: `url(${image})`
 };
 
-let newPasswordData, confirmPasswordData;
+let passwordData, confirmPasswordData;
 
 class ResetPassword extends Component {
   state = {
-    newPasswordData: {
+    passwordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
@@ -28,27 +34,25 @@ class ResetPassword extends Component {
     eyeState: "",
     passwordMatchIcon: "close",
     iconColor: "red",
-    redirectToLogin : false
+    redirectToLogin: false
   };
 
   handleChange = (name, value) => {
     if (name === "password") {
-        this.handlePasswordChange(name, value);
+      this.handlePasswordChange(name, value);
     } else {
       this.handleConfirmPasswordChange(name, value);
     }
   };
 
   handlePasswordChange(name, value) {
-    newPasswordData = { ...this.state.newPasswordData };
-    this.validate(name, value, newPasswordData);
-    this.setState({ newPasswordData });
+    passwordData = { ...this.state.passwordData };
+    this.validate(name, value, passwordData);
+    this.setState({ passwordData });
     if (confirmPasswordData) {
-      if (newPasswordData.password === confirmPasswordData.password) {
-        this.setState({ passwordMatchIcon: "check", iconColor: "green" });
-      } else {
-        this.setState({ passwordMatchIcon: "close", iconColor: "red" });
-      }
+      const passwordMatchIcon = handlePasswordMatchIcon(passwordData.password, confirmPasswordData.password);
+        const iconColor = handlePasswordMatchIconColor(passwordData.password, confirmPasswordData.password);
+        this.setState({ passwordMatchIcon, iconColor });
     }
   }
 
@@ -56,25 +60,22 @@ class ResetPassword extends Component {
     validatePassword(value, data);
   }
 
-
   handleConfirmPasswordChange(name, value) {
-     confirmPasswordData = { ...this.state.confirmPasswordData };
+    confirmPasswordData = { ...this.state.confirmPasswordData };
     this.validate(name, value, confirmPasswordData);
     this.setState({ confirmPasswordData });
-    if (newPasswordData) {
-      if (newPasswordData.password === confirmPasswordData.password) {
-        this.setState({ passwordMatchIcon: "check", iconColor: "green" });
-      } else {
-        this.setState({ passwordMatchIcon: "close", iconColor: "red" });
+    if (passwordData) {
+        const passwordMatchIcon = handlePasswordMatchIcon(passwordData.password, confirmPasswordData.password);
+        const iconColor = handlePasswordMatchIconColor(passwordData.password, confirmPasswordData.password);
+        this.setState({ passwordMatchIcon, iconColor });
       }
-    }
   }
 
   handleReset = e => {
     e.preventDefault();
     const state = { ...this.state };
-    if (state.newPasswordData.password === "") {
-      state.newPasswordData.errorClassName =
+    if (state.passwordData.password === "") {
+      state.passwordData.errorClassName =
         "wrap-input100 validate-input alert-validate";
     }
 
@@ -85,27 +86,30 @@ class ResetPassword extends Component {
 
     this.setState({ state });
 
-    if(this.state.iconColor !== "green"){
-        alert("Passwords Do Not Match")
+    if (this.state.iconColor !== "green") {
+      alert("Passwords Do Not Match");
+    } else if (
+      !this.state.passwordData.isErrorExist &&
+      !this.state.confirmPasswordData.isErrorExist
+    ) {
+      this.setState({ redirectToLogin: true });
     }
-    else if(!this.state.newPasswordData.isErrorExist &&  !this.state.confirmPasswordData.isErrorExist){
-       this.setState({redirectToLogin : true})
-      }
-   
   };
 
   handleEyeClick = () => {
     const state = { ...this.state };
+    const dataType = handleDataTypeChange(state.dataType);
+    const eyeState = handleEyeIconChange(state.dataType);
     this.setState({
-      dataType: state.dataType === "text" ? "password" : "text",
-      eyeState: state.dataType === "text" ? "" : "-slash"
+      dataType,
+      eyeState
     });
   };
 
   render() {
-      if(this.state.redirectToLogin){
-        return <Redirect to = "/login"></Redirect>
-      }
+    if (this.state.redirectToLogin) {
+      return <Redirect to="/login"></Redirect>;
+    }
     return (
       <div className="limiter">
         <div className="container-login100">
@@ -116,22 +120,22 @@ class ResetPassword extends Component {
               </span>
               <br></br>
               <div
-                className={this.state.newPasswordData.errorClassName}
+                className={this.state.passwordData.errorClassName}
                 data-validate="Password is required"
               >
                 <input
-                  className={this.state.newPasswordData.className}
+                  className={this.state.passwordData.className}
                   type={this.state.dataType}
                   name="password"
                   onChange={e =>
                     this.handleChange(e.target.name, e.target.value)
                   }
-                  value={this.state.newPasswordData.email}
+                  value={this.state.passwordData.email}
                 />
                 <span className="focus-input100"></span>
                 <span className="label-input100">New Password</span>
 
-                {this.state.newPasswordData.password.length > 0 && (
+                {this.state.passwordData.password.length > 0 && (
                   <React.Fragment>
                     <div className="eye-icon">
                       <i
@@ -144,7 +148,7 @@ class ResetPassword extends Component {
                 )}
               </div>
               <PasswordStrengthChecker
-                password={this.state.newPasswordData.password}
+                password={this.state.passwordData.password}
               ></PasswordStrengthChecker>
               <div
                 className={this.state.confirmPasswordData.errorClassName}
