@@ -18,9 +18,11 @@ import {
   handleEyeIconChange,
   handleDataTypeChange,
   handlePasswordMatchIcon,
-  handlePasswordMatchIconColor,
-  handlePasswordErrorClassName
+  handlePasswordMatchIconColor
 } from "../Services/PasswordService";
+
+import {handlePasswordErrorClassName, handleErrorClassName} from "../Services/ErrorClassNameService"
+import { InputTypes } from "../Common/Enums/InputType";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -61,20 +63,12 @@ class Register extends Component {
 
   handleRegister = e => {
     e.preventDefault();
-    debugger;
     const state = { ...this.state };
-    if (state.emailData.email === "") {
-      state.emailData.errorClassName =
-        "wrap-input100 validate-input alert-validate";
-    }
-   
-    if (state.nameData.name === "") {
-      state.nameData.errorClassName =
-        "wrap-input100 validate-input alert-validate";
-    }
 
-    state.passwordData.errorClassName = handlePasswordErrorClassName(state.passwordData);
-    state.confirmPasswordData.errorClassName = handlePasswordErrorClassName(state.confirmPasswordData);
+    state.nameData.errorClassName = handleErrorClassName(InputTypes.Name, state.nameData.name);
+    state.emailData.errorClassName = handleErrorClassName(InputTypes.Email,state.emailData.email);
+    state.passwordData.errorClassName = handleErrorClassName(InputTypes.Password,  state.passwordData.password);
+    state.confirmPasswordData.errorClassName = handleErrorClassName(InputTypes.ConfirmPassword,  state.confirmPasswordData.password);
 
     this.setState({ state });
   };

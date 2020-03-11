@@ -21,9 +21,3 @@ export const handlePasswordMatchIconColor = (password, confirmPassword) => {
 
   return "red";
 };
-
-export const handlePasswordErrorClassName = (passwordData) => {
-  if (passwordData.password === "") {
-     return "wrap-input100 validate-input alert-validate";
-  }
-}

@@ -9,6 +9,8 @@ import {
   handlePasswordMatchIcon,
   handlePasswordMatchIconColor
 } from "../Services/PasswordService";
+import { handleErrorClassName } from "../Services/ErrorClassNameService";
+import { InputTypes } from "../Common/Enums/InputType";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -74,15 +76,8 @@ class ResetPassword extends Component {
   handleReset = e => {
     e.preventDefault();
     const state = { ...this.state };
-    if (state.passwordData.password === "") {
-      state.passwordData.errorClassName =
-        "wrap-input100 validate-input alert-validate";
-    }
-
-    if (state.confirmPasswordData.password === "") {
-      state.confirmPasswordData.errorClassName =
-        "wrap-input100 validate-input alert-validate";
-    }
+    state.passwordData.errorClassName = handleErrorClassName(InputTypes.Password,  state.passwordData.password);
+    state.confirmPasswordData.errorClassName = handleErrorClassName(InputTypes.ConfirmPassword,  state.confirmPasswordData.password);
 
     this.setState({ state });
 

@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { validateEmail, validatePassword } from "../Services/ValidationService";
 import { constants } from "../Common/Constants";
 import '../css/login.css';
+import { handleErrorClassName } from "../Services/ErrorClassNameService";
+import { InputTypes } from "../Common/Enums/InputType";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -54,13 +56,10 @@ class Login extends Component {
   handleLogin = e => {
     e.preventDefault();
     const state = {...this.state};
-    if (state.emailData.email === "") {
-      state.emailData.errorClassName = "wrap-input100 validate-input alert-validate";
-    }
-    if (state.passwordData.password === "") {
-      state.passwordData.errorClassName =
-        "wrap-input100 validate-input alert-validate";
-    }
+
+    state.emailData.errorClassName = handleErrorClassName(InputTypes.Email,state.emailData.email);
+    state.passwordData.errorClassName = handleErrorClassName(InputTypes.Password,  state.passwordData.password);
+
     this.setState({ state });
 
     localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
