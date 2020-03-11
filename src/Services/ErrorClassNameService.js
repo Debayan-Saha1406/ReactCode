@@ -1,4 +1,5 @@
-import { InputTypes } from "../Common/Enums/InputType";
+import { InputTypes } from "../Common/Constants";
+
 
   export const handleErrorClassName = (inputType, value) => {
       debugger;

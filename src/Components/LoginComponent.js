@@ -4,10 +4,9 @@ import image from "../images/Login.png";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { validateEmail, validatePassword } from "../Services/ValidationService";
-import { constants } from "../Common/Constants";
+import { constants, InputTypes } from "../Common/Constants";
 import '../css/login.css';
 import { handleErrorClassName } from "../Services/ErrorClassNameService";
-import { InputTypes } from "../Common/Enums/InputType";
 
 const style = {
   backgroundImage: `url(${image})`

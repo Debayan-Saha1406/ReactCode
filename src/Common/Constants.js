@@ -14,3 +14,10 @@ export const constants = {
         5: "Excellent"
       },
 }
+
+export const InputTypes = {
+  Email: "Email",
+  Password: "Password",
+  ConfirmPassword: "ConfirmPassword",
+  Name:"Name"
+};

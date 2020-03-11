@@ -21,8 +21,8 @@ import {
   handlePasswordMatchIconColor
 } from "../Services/PasswordService";
 
-import {handlePasswordErrorClassName, handleErrorClassName} from "../Services/ErrorClassNameService"
-import { InputTypes } from "../Common/Enums/InputType";
+import {handleErrorClassName} from "../Services/ErrorClassNameService";
+import { InputTypes } from "../Common/Constants";
 
 const style = {
   backgroundImage: `url(${image})`

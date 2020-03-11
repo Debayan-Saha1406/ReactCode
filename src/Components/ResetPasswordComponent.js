@@ -10,7 +10,7 @@ import {
   handlePasswordMatchIconColor
 } from "../Services/PasswordService";
 import { handleErrorClassName } from "../Services/ErrorClassNameService";
-import { InputTypes } from "../Common/Enums/InputType";
+import { InputTypes } from "../Common/Constants";
 
 const style = {
   backgroundImage: `url(${image})`
