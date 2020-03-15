@@ -1,5 +1,6 @@
-export const apiConstants = {
-    
+export const apiUrl = {
+    baseUrl:"https://reqres.in/ai",
+    users: "users?page=2"
 }
 
 
@@ -21,3 +22,10 @@ export const InputTypes = {
   ConfirmPassword: "ConfirmPassword",
   Name:"Name"
 };
+
+export const httpVerbs = {
+  Post: "POST",
+  Get: "GET",
+  Put:"PUT",
+  Delete:"DELETE"
+}

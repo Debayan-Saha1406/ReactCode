@@ -4,9 +4,11 @@ import image from "../images/Login.png";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { validateEmail, validatePassword } from "../Services/ValidationService";
-import { constants, InputTypes } from "../Common/Constants";
+import { constants, InputTypes } from "../Shared/Constants";
 import '../css/login.css';
 import { handleErrorClassName } from "../Services/ErrorClassNameService";
+import ServiceProvider from "../Services/ServiceProvider";
+import { apiUrl } from './../Shared/Constants';
 
 const style = {
   backgroundImage: `url(${image})`
@@ -66,7 +68,15 @@ class Login extends Component {
     if(!this.state.emailData.isErrorExist &&  !this.state.passwordData.isErrorExist){
       alert("LoggedIn");
     }
-    
+
+    //Sample API Call For Reference
+    ServiceProvider
+      .get(apiUrl.users)
+      .then((response) => {
+        alert(`New Message with id ${response.id} created!`);
+      });
+
+
     // if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
     //   this.setState({isAdmin : true})
     // }

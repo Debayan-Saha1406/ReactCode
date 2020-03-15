@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import '../css/passwordChecker.css';
-import { constants } from "../Common/Constants";
+import { constants } from "../Shared/Constants";
 
 let strengthIndicator;
 class PasswordStrengthChecker extends Component {
