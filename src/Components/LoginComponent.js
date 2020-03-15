@@ -9,6 +9,7 @@ import '../css/login.css';
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
 import ServiceProvider from "../Shared/Services/ServiceProvider";
 import { apiUrl } from './../Shared/Constants';
+import { ToastContainer } from 'react-toastify';
 
 const style = {
   backgroundImage: `url(${image})`
@@ -73,7 +74,6 @@ class Login extends Component {
     ServiceProvider
       .get(apiUrl.users)
       .then((response) => {
-        alert(`New Message with id ${response.id} created!`);
       });
 
 
@@ -128,6 +128,7 @@ class Login extends Component {
     }
     return (
       <div className="limiter">
+       
         <div className="container-login100">
           <div className="wrap-login100">
             <form className="login100-form validate-form">
@@ -221,6 +222,7 @@ class Login extends Component {
                   Register
                 </button>
                 </Link>
+                {<ToastContainer autoClose={8000} />}
               </div>
             </form>
 

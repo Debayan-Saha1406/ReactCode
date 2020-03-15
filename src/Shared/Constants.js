@@ -1,5 +1,5 @@
 export const apiUrl = {
-    baseUrl:"https://reqres.in/ai",
+    baseUrl:"https://reqres.in/api",
     users: "users?page=2"
 }
 
@@ -28,4 +28,11 @@ export const httpVerbs = {
   Get: "GET",
   Put:"PUT",
   Delete:"DELETE"
+}
+
+export const statusCode ={
+    500 : "Something Went Wrong !",
+    404 : "Resource Not Found", 
+    400 : "Bad Request"
+
 }
