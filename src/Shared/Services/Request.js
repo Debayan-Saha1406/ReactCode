@@ -1,5 +1,5 @@
 import axios     from 'axios'
-import { apiUrl } from '../Shared/Constants';
+import { apiUrl } from '../Constants';
 
 const token = "";
 

@@ -1,4 +1,4 @@
-import { InputTypes } from "../Shared/Constants";
+import { InputTypes } from "../Constants";
 
 
   export const handleErrorClassName = (inputType, value) => {

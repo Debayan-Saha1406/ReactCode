@@ -21,7 +21,7 @@ import {
   handlePasswordMatchIconColor
 } from "../Services/PasswordService";
 
-import {handleErrorClassName} from "../Services/ErrorClassNameService";
+import {handleErrorClassName} from "../Shared/Services/ErrorClassNameService";
 import { InputTypes } from "../Shared/Constants";
 
 const style = {

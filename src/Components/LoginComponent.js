@@ -3,11 +3,11 @@ import image from "../images/Login.png";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import { validateEmail, validatePassword } from "../Services/ValidationService";
+import { validateEmail, validatePassword } from "../Shared/Services/ValidationService";
 import { constants, InputTypes } from "../Shared/Constants";
 import '../css/login.css';
-import { handleErrorClassName } from "../Services/ErrorClassNameService";
-import ServiceProvider from "../Services/ServiceProvider";
+import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
+import ServiceProvider from "../Shared/Services/ServiceProvider";
 import { apiUrl } from './../Shared/Constants';
 
 const style = {
