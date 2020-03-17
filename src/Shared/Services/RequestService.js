@@ -1,7 +1,7 @@
 import axios from "axios";
-import { apiUrl, statusCode } from "../Constants";
-import { toast } from "react-toastify";
+import { apiUrl} from "../Constants";
 import "react-toastify/dist/ReactToastify.css";
+import {showToast} from "../../Provider/ToastProvider";
 
 const token = "";
 
@@ -32,12 +32,6 @@ const request = async function(options) {
     return onError(error);
   }
 };
-
-function showToast(status) {
-  toast.error(statusCode[status], {
-    position: toast.POSITION.TOP_RIGHT
-  });
-}
 
 export default request;
 

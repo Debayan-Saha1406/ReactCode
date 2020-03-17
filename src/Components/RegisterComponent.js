@@ -5,7 +5,7 @@ import {
   validateEmail,
   validatePassword,
   validateName
-} from "../Services/ValidationService";
+} from "../Shared/Services/ValidationService";
 import { Link } from "react-router-dom";
 import "../css/register.css";
 import "../css/main.css";
@@ -19,7 +19,7 @@ import {
   handleDataTypeChange,
   handlePasswordMatchIcon,
   handlePasswordMatchIconColor
-} from "../Services/PasswordService";
+} from "../Shared/Services/PasswordService";
 
 import {handleErrorClassName} from "../Shared/Services/ErrorClassNameService";
 import { InputTypes } from "../Shared/Constants";

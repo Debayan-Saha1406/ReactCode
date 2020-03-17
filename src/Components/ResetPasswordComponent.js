@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import image from "../images/resetPassword.jpg";
-import { validatePassword } from "../Services/ValidationService";
+import { validatePassword } from "../Shared/Services/ValidationService";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
 import { Redirect } from "react-router-dom";
 import {
@@ -8,7 +8,7 @@ import {
   handleDataTypeChange,
   handlePasswordMatchIcon,
   handlePasswordMatchIconColor
-} from "../Services/PasswordService";
+} from "../Shared/Services/PasswordService";
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
 import { InputTypes } from "../Shared/Constants";
 

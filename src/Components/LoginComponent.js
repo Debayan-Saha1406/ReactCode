@@ -7,9 +7,10 @@ import { validateEmail, validatePassword } from "../Shared/Services/ValidationSe
 import { constants, InputTypes } from "../Shared/Constants";
 import '../css/login.css';
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
-import ServiceProvider from "../Shared/Services/ServiceProvider";
+import ServiceProvider from "../Provider/ServiceProvider";
 import { apiUrl } from './../Shared/Constants';
 import { ToastContainer } from 'react-toastify';
+import {getLocalStorageItem} from "../Provider/LocalStorageProvider";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -37,7 +38,7 @@ class Login extends Component {
   };
 
   componentDidMount() {
-    const userDetails = JSON.parse(localStorage.getItem(constants.userDetails));
+    const userDetails = JSON.parse(getLocalStorageItem(constants.userDetails));
     if (userDetails) {
       if (userDetails.rememberMe) {
         const emailData = { ...this.state.emailData };

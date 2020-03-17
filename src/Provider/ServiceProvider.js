@@ -1,5 +1,5 @@
-import request from './Request';
-import { httpVerbs } from '../Constants';
+import request from '../Shared/Services/RequestService';
+import { httpVerbs } from '../Shared/Constants';
 
 function get(url) {
   return request({
