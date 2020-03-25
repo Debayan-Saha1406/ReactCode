@@ -10,7 +10,8 @@ class Navbar extends Component {
           <span className="navbar-toggler-icon"></span>
         </button>
       
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent"> {/* Need to add collapsing and show to navbar-collapse class */}
+
           <ul className="navbar-nav mr-auto">
           <form className="form-inline my-2 my-lg-0">
             <input className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"/>
@@ -33,7 +34,7 @@ class Navbar extends Component {
                 </i>
                 Dropdown
               </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown"> {/* Need to add Show here */}
                 <a className="dropdown-item" href="#">Action</a>
                 <a className="dropdown-item" href="#">Another action</a>
                 <div className="dropdown-divider"></div>
