@@ -13,12 +13,13 @@ class Navbar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent"> {/* Need to add collapsing and show to navbar-collapse class */}
 
           <ul className="navbar-nav mr-auto">
+          
+          </ul>
+          <ul className="navbar-nav ">
           <form className="form-inline my-2 my-lg-0">
             <input className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"/>
             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
-          </ul>
-          <ul className="navbar-nav ">
             <li className="nav-item">
               <a className="nav-link" href="#">
                 <i className="fa fa-bell">
