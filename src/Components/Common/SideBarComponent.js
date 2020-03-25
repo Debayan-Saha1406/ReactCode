@@ -2,18 +2,34 @@ import React, { Component } from 'react';
 import "../../css/sideBar.css";
 
 class SideBar extends Component {
-    state = {  }
+    state = { 
+      isSideBarOpen : true,
+      sideBarClassName : "toggled"
+     }
+
+    handleSideBar = () =>{
+      const state = {...this.state};
+      debugger;
+      if(state.isSideBarOpen){
+        state.sideBarClassName = ""
+      }else{
+        state.sideBarClassName = "toggled"
+      }
+
+      state.isSideBarOpen = !state.isSideBarOpen;
+      this.setState(state);
+    }
     render() { 
-        return ( <div className="page-wrapper chiller-theme toggled">
+        return ( <div className={`page-wrapper chiller-theme ${this.state.sideBarClassName}`}>
         <a id="show-sidebar" className="btn btn-sm btn-dark" href="#">
-        <i className="fa fa-bars"></i>
+        <i className="fa fa-bars" onClick={this.handleSideBar}></i>
         </a>
         <nav id="sidebar" className="sidebar-wrapper">
         <div className="sidebar-content">
           <div className="sidebar-brand">
             <a href="#">pro sidebar</a>
             <div id="close-sidebar">
-            <i className="fa fa-times" aria-hidden="true"></i>
+            <i className="fa fa-times" aria-hidden="true" onClick={this.handleSideBar}></i>
             </div>
           </div>
           <div className="sidebar-header">
