@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../css/sideBar.css";
 import { connect } from 'react-redux';
-import {toggleSideBar} from "../../Store/Actions/actionCreator";
+import {toggleAsyncSideBar} from "../../Store/Actions/actionCreator";
 
 class SideBar extends Component {
     state = { 
@@ -109,7 +109,7 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = dispatch => {
   return {
-      onSideBarToggle : () => {dispatch(toggleSideBar())}
+      onSideBarToggle : () => {dispatch(toggleAsyncSideBar())}
   }
 }
  
