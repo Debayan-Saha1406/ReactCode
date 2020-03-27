@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import "../../css/navBar.css";
+import { connect } from 'react-redux';
+import  * as actionTypes  from "../../Store/Actions/actions"
+import {toggleNavBarDropDown} from  "../../Store/Actions/actionCreator";
+
 
 class Navbar extends Component {
     state = {  }
@@ -29,13 +33,16 @@ class Navbar extends Component {
               </a>
             </li>
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a className="nav-link dropdown-toggle" 
+                onClick={this.props.onNavBarToggle}
+                href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i className="fa fa-envelope-o">
                   <span className="badge badge-primary">11</span>
                 </i>
                 Dropdown
+    
               </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown"> {/* Need to add Show here */}
+              <div className={`dropdown-menu ${this.props.showDropDown}`} aria-labelledby="navbarDropdown"> 
                 <a className="dropdown-item" href="#">Action</a>
                 <a className="dropdown-item" href="#">Another action</a>
                 <div className="dropdown-divider"></div>
@@ -48,5 +55,18 @@ class Navbar extends Component {
       </nav> );
     }
 }
+
+const mapStateToProps = (state) =>{
+
+  return {
+    showDropDown : state.navBarReducer.showDropDown
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      onNavBarToggle : () => {dispatch(toggleNavBarDropDown())}
+  }
+}
  
-export default Navbar;
+export default connect(mapStateToProps,mapDispatchToProps) (Navbar);

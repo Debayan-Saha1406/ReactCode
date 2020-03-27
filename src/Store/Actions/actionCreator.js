@@ -8,6 +8,12 @@ export const toggleSideBar = () => {
   };
 };
 
+export const toggleNavBarDropDown = () => {
+  return {
+    type: actionTypes.TOGGLE_NAVBAR_DROPDOWN
+  };
+};
+
 export const toggleAsyncSideBar = () => {
   return dispatch => {
     ServiceProvider

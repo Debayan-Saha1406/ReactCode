@@ -6,10 +6,12 @@ import Router from "./Components/RouterComponent";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { sideBarReducer } from './Store/Reducers/sideBarReducer';
+import { navBarReducer } from './Store/Reducers/navBarReducer';
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-  sideBarReducer
+  sideBarReducer,
+  navBarReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
