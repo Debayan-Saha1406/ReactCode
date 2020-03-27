@@ -5,7 +5,7 @@ const initialState = {
     sideBarClassName: "toggled"
   };
 
-export const reducer = (state = initialState, action) => {
+export const sideBarReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.TOGGLE_SIDEBAR:
       const copiedState = changeSideBarClassName(state);

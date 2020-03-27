@@ -102,8 +102,9 @@ class SideBar extends Component {
 }
 
 const mapStateToProps = (state) =>{
+
   return {
-    sideBarClassName : state.sideBarClassName
+    sideBarClassName : state.sideBarReducer.sideBarClassName
   }
 }
 

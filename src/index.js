@@ -4,11 +4,15 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Router from "./Components/RouterComponent";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import { reducer } from './Store/Reducers/reducer';
+import { createStore, applyMiddleware, combineReducers } from "redux";
+import { sideBarReducer } from './Store/Reducers/sideBarReducer';
 import thunk from "redux-thunk";
 
-const store = createStore(reducer, applyMiddleware(thunk))
+const rootReducer = combineReducers({
+  sideBarReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 ReactDOM.render(
   <Provider store={store}>
