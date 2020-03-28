@@ -11,6 +11,7 @@ import ServiceProvider from "../Provider/ServiceProvider";
 import { apiUrl } from './../Shared/Constants';
 import { ToastContainer } from 'react-toastify';
 import {getLocalStorageItem} from "../Provider/LocalStorageProvider";
+import Admin from "./AdminComponent";
 
 const style = {
   backgroundImage: `url(${image})`
@@ -68,7 +69,7 @@ class Login extends Component {
     localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
     console.log(this.state);
     if(!this.state.emailData.isErrorExist &&  !this.state.passwordData.isErrorExist){
-      alert("LoggedIn");
+      this.setState({isAdmin:true});
     }
 
     //Sample API Call For Reference

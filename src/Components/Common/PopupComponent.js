@@ -1,19 +1,18 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const PopupComponent = () => {
+const PopupComponent = (props) => {
   return (
-    <Modal show={true}>
-      {/* onHide Function Needs to be Implemented for closing popup  */}
-      <Modal.Header closeButton>
-        <Modal.Title>Modal title</Modal.Title>
+    <Modal show={props.showPopup}>
+      <Modal.Header >
+        <Modal.Title>{props.modalTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Modal body text goes here.</p>
+        <p>{props.modalBody}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary">Close</Button>
-        <Button variant="primary">Save changes</Button>
+  <Button variant="secondary" onClick={props.togglePopUp} >{props.modalCancelButtonText}</Button>
+  <Button variant="primary" onClick={props.togglePopUp} >{props.modalOKButtonText}</Button>
       </Modal.Footer>
     </Modal>
   );

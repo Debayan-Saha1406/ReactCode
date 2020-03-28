@@ -1,26 +1,28 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
+import { Redirect } from "react-router";
 import "../../css/navBar.css";
 import { connect } from 'react-redux';
 import  * as actionTypes  from "../../Store/Actions/actions"
 import {toggleNavBarDropDown} from  "../../Store/Actions/actionCreator";
+import { removeLocalStorageItem } from '../../Provider/LocalStorageProvider';
 
 
 class Navbar extends Component {
   state = {
-    showDropDown: '',
-    isDropdownToggle: true
+    redirectToLogin:false
   }
 
-  handleDropdownToggle = () => {
-    const state = { ...this.state };
-    state.isDropdownToggle ? this.setState({
-      showDropDown: 'show',
-      isDropdownToggle: !this.state.isDropdownToggle
-    }) : this.setState({ showDropDown: '', isDropdownToggle: !this.state.isDropdownToggle })
-  };
+  handleLogout=()=>{
+    this.setState({redirectToLogin:true});
+    removeLocalStorageItem();
+  }
 
   render() {
+    if(this.state.redirectToLogin){
+     return  <Redirect to="/login" />;
+  
+    }
     return (<nav className="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" >Traverse</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +61,9 @@ class Navbar extends Component {
                 <a className="dropdown-item" href="#">Action</a>
                 <a className="dropdown-item" href="#">Another action</a>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">Something else here</a>
+                <a className="dropdown-item" onClick={this.handleLogout}>Logout</a>
+
+
               </div>
             </li>
           </ul>
