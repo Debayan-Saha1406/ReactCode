@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import "../../css/sideBar.css";
 import { connect } from 'react-redux';
