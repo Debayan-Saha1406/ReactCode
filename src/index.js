@@ -3,9 +3,23 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Router from "./Components/RouterComponent";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware, combineReducers } from "redux";
+import { sideBarReducer } from './Store/Reducers/sideBarReducer';
+import { navBarReducer } from './Store/Reducers/navBarReducer';
+import thunk from "redux-thunk";
+
+const rootReducer = combineReducers({
+  sideBarReducer,
+  navBarReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 ReactDOM.render(
-  <Router />,
+  <Provider store={store}>
+  <Router />
+  </Provider>,
   document.getElementById("root")
 );
 

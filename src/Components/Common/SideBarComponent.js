@@ -1,36 +1,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import "../../css/sideBar.css";
+import { connect } from 'react-redux';
+import {toggleAsyncSideBar} from "../../Store/Actions/actionCreator";
 
 class SideBar extends Component {
     state = { 
-      isSideBarOpen : true,
-      sideBarClassName : "toggled"
      }
 
-    handleSideBar = () =>{
-      const state = {...this.state};
-      debugger;
-      if(state.isSideBarOpen){
-        state.sideBarClassName = ""
-      }else{
-        state.sideBarClassName = "toggled"
-      }
-
-      state.isSideBarOpen = !state.isSideBarOpen;
-      this.setState(state);
-    }
     render() { 
-        return ( <div className={`page-wrapper chiller-theme ${this.state.sideBarClassName}`}>
+        return ( <div className={`page-wrapper chiller-theme ${this.props.sideBarClassName}`}>
         <a id="show-sidebar" className="btn btn-sm btn-dark" href="#">
-        <i className="fa fa-bars" onClick={this.handleSideBar}></i>
+        <i className="fa fa-bars" onClick={this.props.onSideBarToggle}></i>
         </a>
         <nav id="sidebar" className="sidebar-wrapper">
         <div className="sidebar-content">
           <div className="sidebar-brand">
             <a href="#">pro sidebar</a>
             <div id="close-sidebar">
-            <i className="fa fa-times" aria-hidden="true" onClick={this.handleSideBar}></i>
+            <i className="fa fa-times" aria-hidden="true" onClick={this.props.onSideBarToggle}></i>
             </div>
           </div>
           <div className="sidebar-header">
@@ -113,5 +101,18 @@ class SideBar extends Component {
       </nav></div>);
     }
 }
+
+const mapStateToProps = (state) =>{
+
+  return {
+    sideBarClassName : state.sideBarReducer.sideBarClassName
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      onSideBarToggle : () => {dispatch(toggleAsyncSideBar())}
+  }
+}
  
-export default SideBar;
+export default connect(mapStateToProps,mapDispatchToProps)(SideBar);

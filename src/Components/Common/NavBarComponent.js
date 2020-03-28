@@ -1,6 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import "../../css/navBar.css";
+import { connect } from 'react-redux';
+import  * as actionTypes  from "../../Store/Actions/actions"
+import {toggleNavBarDropDown} from  "../../Store/Actions/actionCreator";
+
 
 class Navbar extends Component {
   state = {
@@ -40,28 +44,44 @@ class Navbar extends Component {
               </i>
               Test
               </a>
-          </li>
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle"
-              onClick={this.handleDropdownToggle} id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i className="fa fa-envelope-o">
-                <span className="badge badge-primary">11</span>
-              </i>
-              Dropdown
+            </li>
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" 
+                onClick={this.props.onNavBarToggle}
+                href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i className="fa fa-envelope-o">
+                  <span className="badge badge-primary">11</span>
+                </i>
+                Dropdown
+    
               </a>
-            <div className={`dropdown-menu ${this.state.showDropDown}`}
-              aria-labelledby="navbarDropdown">
-              <a className="dropdown-item">Action</a>
-              <a className="dropdown-item">Another action</a>
-              <div className="dropdown-divider"></div>
-              <a className="dropdown-item">Something else here</a>
-            </div>
-          </li>
-        </ul>
+              <div className={`dropdown-menu ${this.props.showDropDown}`} aria-labelledby="navbarDropdown"> 
+                <a className="dropdown-item" href="#">Action</a>
+                <a className="dropdown-item" href="#">Another action</a>
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+          
+        </div>
+      </nav> );
+    }
+}
 
-      </div>
-    </nav>);
+const mapStateToProps = (state) =>{
+
+  return {
+    showDropDown : state.navBarReducer.showDropDown
   }
 }
 
-export default Navbar;
+const mapDispatchToProps = dispatch => {
+  return {
+      onNavBarToggle : () => {dispatch(toggleNavBarDropDown())}
+  }
+}
+ 
+export default connect(mapStateToProps,mapDispatchToProps) (Navbar);
+  }
+}
