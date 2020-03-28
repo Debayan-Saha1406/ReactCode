@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import Navbar from "./Common/NavBarComponent";
 import SideBar from "./Common/SideBarComponent";
+import PopupComponent from "./Common/PopupComponent";
 
 class Admin extends Component {
-  state = {};
+  state = {
+  };
+
   render() {
     return (
       <React.Fragment>
         <Navbar></Navbar>
+        <PopupComponent></PopupComponent>
         <SideBar></SideBar>
       </React.Fragment>
     );
