@@ -3,14 +3,17 @@ import Navbar from "./Common/NavBarComponent";
 import SideBar from "./Common/SideBarComponent";
 import PopupComponent from "./Common/PopupComponent";
 import { getLocalStorageItem } from "../Provider/LocalStorageProvider";
+import { Redirect } from "react-router-dom";
 
 class Admin extends Component {
   state = {
-    showPopup: false
+    showPopup: false,
+    showLoginPage:false
   };
 
   togglePopUp = () => {
-    this.setState({ showPopup: !this.state.showPopup });
+    this.setState({ showPopup: true ,
+      showLoginPage: true});
   }
 
   componentDidMount()  {
@@ -18,8 +21,11 @@ class Admin extends Component {
       this.setState({ showPopup: true }); 
     }  
     }
-    
+
   render() {
+    if(this.state.showLoginPage){
+      return <Redirect to ="/login"/>
+    }
     return (
       <React.Fragment>
         <Navbar></Navbar>

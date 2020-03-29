@@ -11,8 +11,8 @@ const PopupComponent = (props) => {
         <p>{props.modalBody}</p>
       </Modal.Body>
       <Modal.Footer>
-  <Button variant="secondary" onClick={props.togglePopUp} >{props.modalCancelButtonText}</Button>
-  <Button variant="primary" onClick={props.togglePopUp} >{props.modalOKButtonText}</Button>
+  <Button variant="secondary" name="NoButton"onClick={(event)=>props.togglePopUp(event)} >{props.modalCancelButtonText}</Button>
+  <Button variant="primary" name="YesButton" onClick={(event)=>props.togglePopUp(event)} >{props.modalOKButtonText}</Button>
       </Modal.Footer>
     </Modal>
   );

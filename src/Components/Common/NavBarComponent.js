@@ -6,16 +6,29 @@ import { connect } from 'react-redux';
 import  * as actionTypes  from "../../Store/Actions/actions"
 import {toggleNavBarDropDown} from  "../../Store/Actions/actionCreator";
 import { removeLocalStorageItem } from '../../Provider/LocalStorageProvider';
+import PopupComponent from './PopupComponent';
 
 
 class Navbar extends Component {
   state = {
-    redirectToLogin:false
+    redirectToLogin:false,
+    showPopup:false,
+    confirmLogout:false
   }
 
   handleLogout=()=>{
-    this.setState({redirectToLogin:true});
-    removeLocalStorageItem();
+    this.setState({showPopup:true});
+  }
+
+  togglePopUp=(event)=>{
+    if(event.target.name==="NoButton"){
+      this.setState({showPopup:false});
+    }
+    else{
+      this.setState({redirectToLogin:true});
+      removeLocalStorageItem();
+    }
+    
   }
 
   render() {
@@ -23,7 +36,7 @@ class Navbar extends Component {
      return  <Redirect to="/login" />;
   
     }
-    return (<nav className="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+    return (<div><nav className="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
       <a className="navbar-brand" >Traverse</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -67,9 +80,17 @@ class Navbar extends Component {
               </div>
             </li>
           </ul>
+           
           
         </div>
-      </nav> );
+      </nav>   <div> {this.state.showPopup && <PopupComponent showPopup={this.state.showPopup}
+            togglePopUp={this.togglePopUp} modalTitle={"Confirm Logout"} 
+           modalBody={"Do you really want to logout? If is Yes press OK button else press NO"}
+           modalCancelButtonText={"NO"} modalOKButtonText={"Yes"}
+           > </PopupComponent>} </div> 
+      
+      </div>
+      );
     }
 }
 
