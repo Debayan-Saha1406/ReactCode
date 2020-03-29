@@ -27,6 +27,7 @@ class Admin extends Component {
     if (this.state.redirectToLogin) {
       return <Redirect to="/login" />;
     }
+    
     return (
       <React.Fragment>
         {this.state.showUnAuthorizedPopup && <PopupComponent

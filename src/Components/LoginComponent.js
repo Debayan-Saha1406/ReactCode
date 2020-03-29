@@ -35,7 +35,8 @@ class Login extends Component {
     isRegisteredUser: false,
     rememberMe: false,
     dataType: "password",
-    eyeState: ""
+    eyeState: "",
+    redirectToAdmin:false
   };
 
   componentDidMount() {
@@ -119,9 +120,14 @@ class Login extends Component {
     });
   };
 
+  componentDidMount(){
+    if((getLocalStorageItem("userDetails"))!==null)
+    this.setState({ redirectToAdmin: true});
+  }
+
 
   render() {
-    if (this.state.isAdmin) {
+    if (this.state.isAdmin || this.state.redirectToAdmin) {
       return <Redirect to="/admin" />;
     }
 
