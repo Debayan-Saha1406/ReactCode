@@ -14,11 +14,11 @@ class SideBar extends Component {
 
   render() {
     return (
-      <nav id="sidebar" className={this.props.sideBarclassNameName}>
+      <nav id="sidebar" className={this.props.sideBarClassName}>
         <div className="p-4 pt-5">
           <a href="#" className="img logo rounded-circle mb-5" style={style}></a>
           <ul className="list-unstyled components mb-5">
-            <li classNameName="active">
+            <li className="active">
               <a
                 href="#homeSubmenu"
                 data-toggle="collapse"
@@ -78,7 +78,7 @@ class SideBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    sideBarclassNameName: state.sideBarReducer.sideBarclassNameName
+    sideBarClassName: state.sideBarReducer.sideBarClassName
   };
 };
 
