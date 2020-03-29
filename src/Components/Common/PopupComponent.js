@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
+import "../../css/navBar.css";
 
 const PopupComponent = props => {
   return (
@@ -22,6 +23,7 @@ const PopupComponent = props => {
         <Button
           variant="primary"
           name="Yes"
+          id="buttonColor"
           onClick={props.togglePopUp}
         >
           {props.modalOKButtonText}

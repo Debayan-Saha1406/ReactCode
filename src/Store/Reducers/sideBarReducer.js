@@ -2,7 +2,7 @@ import * as actionTypes from "../Actions/actions";
 
 const initialState = {
     isSideBarOpen: true,
-    sideBarClassName: "toggled"
+    sideBarClassName: ""
   };
 
 export const sideBarReducer = (state = initialState, action) => {
@@ -22,10 +22,10 @@ export const sideBarReducer = (state = initialState, action) => {
 function changeSideBarClassName(state) {
     const copiedState = { ...state };
     if (copiedState.isSideBarOpen) {
-        copiedState.sideBarClassName = "";
+        copiedState.sideBarClassName = "active";
     }
     else {
-        copiedState.sideBarClassName = "toggled";
+        copiedState.sideBarClassName = "";
     }
     return copiedState;
 }

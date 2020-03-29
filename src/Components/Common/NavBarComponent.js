@@ -3,22 +3,24 @@ import React, { Component } from "react";
 import { Redirect } from "react-router";
 import "../../css/navBar.css";
 import { connect } from "react-redux";
-import { toggleNavBarDropDown } from "../../Store/Actions/actionCreator";
+import { toggleNavBarDropDown,toggleSideBar  } from "../../Store/Actions/actionCreator";
+import PopupComponent from './PopupComponent';
 import { removeLocalStorageItem } from "../../Provider/LocalStorageProvider";
-import PopupComponent from "./PopupComponent";
+
+const cursorStyle = {
+  cursor: "pointer"
+}
 
 class Navbar extends Component {
   state = {
-    redirectToLogin: false,
-    showPopup: false
+    showPopup : false,
   };
 
-  handleLogout = () => {
-    this.setState({ showPopup: true });
-  };
+  handleLogout = ()=>{
+    this.setState({showPopup:true})
+  }
 
-  togglePopUp = event => {
-    this.props.onNavBarToggle();
+  handleLogoutAction = event => {
     if (event.target.name === "No") {
       this.setState({ showPopup: false });
     } else {
@@ -32,112 +34,64 @@ class Navbar extends Component {
       return <Redirect to="/login" />;
     }
     return (
-      <div>
-        <nav className="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
-          <a className="navbar-brand">Traverse</a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <button type="button" id="buttonColor" className="btn btn-primary" onClick={this.props.onSideBarToggle}>
+          <i className="fa fa-bars"></i>
+          <span className="sr-only">Toggle Menu</span>
+        </button>
+        <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i className="fa fa-bars"></i>
+        </button>
 
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            {/* Need to add collapsing and show to navbar-collapse class */}
-            <ul className="navbar-nav mr-auto"></ul>
-            <ul className="navbar-nav ">
-              <form className="form-inline my-2 my-lg-0">
-                <input
-                  className="form-control mr-sm-2"
-                  type="text"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button
-                  className="btn btn-outline-success my-2 my-sm-0"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </form>
-              <li className="nav-item">
-                <a className="nav-link">
-                  <i className="fa fa-bell">
-                    <span className="badge badge-info">11</span>
-                  </i>
-                  Test
-                </a>
-              </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  onClick={this.props.onNavBarToggle}
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i className="fa fa-envelope-o">
-                    <span className="badge badge-primary">11</span>
-                  </i>
-                  Dropdown
-                </a>
-                <div
-                  className={`dropdown-menu ${this.props.showDropDown}`}
-                  aria-labelledby="navbarDropdown"
-                >
-                  <a className="dropdown-item" href="#">
-                    Action
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Another action
-                  </a>
-                  <div className="dropdown-divider"></div>
-                  <a className="dropdown-item" onClick={this.handleLogout}>
-                    Logout
-                  </a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <div>
-          {this.state.showPopup && (
-            <PopupComponent
-              showPopup={this.state.showPopup}
-              togglePopUp={this.togglePopUp}
-              modalTitle="Confirm Logout"
-              modalBody= "Do you really want to logout?"
-              modalCancelButtonText="No"
-              modalOKButtonText="Yes"
-              showCancelButton = {true}
-            >
-            </PopupComponent>
-          )}
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="nav navbar-nav ml-auto">
+            <li className="nav-item active">
+                <a className="nav-link" href="#">Home</a>
+            </li>
+            <li className="nav-item">
+                <a className="nav-link" href="#">About</a>
+            </li>
+            <li className="nav-item">
+                <a className="nav-link" href="#">Portfolio</a>
+            </li>
+            <li className="nav-item">
+                <a className="nav-link" onClick={this.handleLogout} style={cursorStyle}>Logout</a>
+            </li>
+          </ul>
         </div>
       </div>
+      {this.state.showPopup && (
+              <PopupComponent
+                showPopup={this.state.showPopup}
+                togglePopUp={this.handleLogoutAction}
+                modalTitle="Confirm Logout"
+                modalBody="Do you really want to logout?"
+                modalCancelButtonText="No"
+                modalOKButtonText="Yes"
+                showCancelButton={true}
+              ></PopupComponent>
+            )}
+    </nav>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    showDropDown: state.navBarReducer.showDropDown
+   // showDropDown: state.navBarReducer.showDropDown
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onNavBarToggle: () => {
-      dispatch(toggleNavBarDropDown());
+    // onNavBarToggle: () => {
+    //   dispatch(toggleNavBarDropDown());
+    // }, 
+    onSideBarToggle: () => {
+      dispatch(toggleSideBar());
     }
+
   };
 };
 

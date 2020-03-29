@@ -2,130 +2,91 @@
 import React, { Component } from "react";
 import "../../css/sideBar.css";
 import { connect } from "react-redux";
-import { toggleAsyncSideBar } from "../../Store/Actions/actionCreator";
+import image from "../../images/logo.jpg";
+import "../../css/style.css";
+
+const style = {
+  backgroundImage: `url(${image})`
+};
 
 class SideBar extends Component {
   state = {};
 
   render() {
     return (
-      <div
-        className={`page-wrapper chiller-theme ${this.props.sideBarClassName}`}
-      >
-        <a id="show-sidebar" className="btn btn-sm btn-dark" href="#">
-          <i className="fa fa-bars" onClick={this.props.onSideBarToggle}></i>
-        </a>
-        <nav id="sidebar" className="sidebar-wrapper">
-          <div className="sidebar-content">
-            <div className="sidebar-brand">
-              <a href="#">pro sidebar</a>
-              <div id="close-sidebar">
-                <i
-                  className="fa fa-times"
-                  aria-hidden="true"
-                  onClick={this.props.onSideBarToggle}
-                ></i>
-              </div>
-            </div>
-            <div className="sidebar-header">
-              <div className="user-pic">
-                <img
-                  className="img-responsive img-rounded"
-                  src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
-                  alt="User picture"
-                />
-              </div>
-              <div className="user-info">
-                <span className="user-name">
-                  Jhon
-                  <strong>Smith</strong>
-                </span>
-                <span className="user-role">Administrator</span>
-              </div>
-            </div>
-            {/* <!-- sidebar-header  --> */}
-            <div className="sidebar-menu">
-              <ul>
-                <li className="header-menu">
-                  <span>General</span>
+      <nav id="sidebar" className={this.props.sideBarclassNameName}>
+        <div className="p-4 pt-5">
+          <a href="#" className="img logo rounded-circle mb-5" style={style}></a>
+          <ul className="list-unstyled components mb-5">
+            <li classNameName="active">
+              <a
+                href="#homeSubmenu"
+                data-toggle="collapse"
+                aria-expanded="false"
+                className="dropdown-toggle"
+              >
+                Home
+              </a>
+              <ul className="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                  <a href="#">Home 1</a>
                 </li>
-                <li className="sidebar-dropdown">
-                  <div className="sidebar-submenu">
-                    <ul>
-                      <li>
-                        <a href="#">
-                          Dashboard 1
-                          <span className="badge badge-pill badge-success">
-                            Pro
-                          </span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">Dashboard 2</a>
-                      </li>
-                      <li>
-                        <a href="#">Dashboard 3</a>
-                      </li>
-                    </ul>
-                  </div>
+                <li>
+                  <a href="#">Home 2</a>
                 </li>
-                <li className="sidebar-dropdown">
-                  <a href="#">
-                    <i className="fa fa-shopping-cart"></i>
-                    <span>E-commerce</span>
-                  </a>
-                  <div className="sidebar-submenu">
-                    <ul>
-                      <li>
-                        <a href="#">Products</a>
-                      </li>
-                      <li>
-                        <a href="#">Orders</a>
-                      </li>
-                      <li>
-                        <a href="#">Credit cart</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li className="sidebar-dropdown">
-                  <a href="#">
-                    <i className="fa fa-globe"></i>
-                    <span>Maps</span>
-                  </a>
-                  <div className="sidebar-submenu">
-                    <ul>
-                      <li>
-                        <a href="#">Google maps</a>
-                      </li>
-                      <li>
-                        <a href="#">Open street map</a>
-                      </li>
-                    </ul>
-                  </div>
+                <li>
+                  <a href="#">Home 3</a>
                 </li>
               </ul>
-            </div>
-            {/* <!-- sidebar-menu  --> */}
-          </div>
-          {/* <!-- sidebar-content  --> */}
-        </nav>
-      </div>
+            </li>
+            <li>
+              <a href="#">About</a>
+            </li>
+            <li>
+              <a
+                href="#pageSubmenu"
+                data-toggle="collapse"
+                aria-expanded="false"
+                className="dropdown-toggle"
+              >
+                Pages
+              </a>
+              <ul className="collapse list-unstyled" id="pageSubmenu">
+                <li>
+                  <a href="#">Page 1</a>
+                </li>
+                <li>
+                  <a href="#">Page 2</a>
+                </li>
+                <li>
+                  <a href="#">Page 3</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">Portfolio</a>
+            </li>
+            <li>
+              <a href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    sideBarClassName: state.sideBarReducer.sideBarClassName
+    sideBarclassNameName: state.sideBarReducer.sideBarclassNameName
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSideBarToggle: () => {
-      dispatch(toggleAsyncSideBar());
-    }
+    // onSideBarToggle: () => {
+    //   dispatch(toggleSideBar());
+    // }
   };
 };
 
