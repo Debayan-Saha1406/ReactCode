@@ -7,11 +7,13 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { sideBarReducer } from './Store/Reducers/sideBarReducer';
 import { navBarReducer } from './Store/Reducers/navBarReducer';
+import { userDetailsReducer } from './Store/Reducers/userDetailsReducer';
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
   sideBarReducer,
-  navBarReducer
+  navBarReducer,
+  userDetails: userDetailsReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))

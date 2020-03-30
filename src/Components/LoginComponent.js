@@ -3,14 +3,17 @@ import image from "../images/Login.png";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import { validateEmail, validatePassword } from "../Shared/Services/ValidationService";
+import {
+  validateEmail,
+  validatePassword
+} from "../Shared/Services/ValidationService";
 import { constants, InputTypes } from "../Shared/Constants";
-import '../css/login.css';
+import "../css/login.css";
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
 import ServiceProvider from "../Provider/ServiceProvider";
-import { apiUrl } from './../Shared/Constants';
-import { ToastContainer } from 'react-toastify';
-import {getLocalStorageItem} from "../Provider/LocalStorageProvider";
+import { apiUrl } from "./../Shared/Constants";
+import { ToastContainer } from "react-toastify";
+import { getLocalStorageItem } from "../Provider/LocalStorageProvider";
 import Admin from "./AdminComponent";
 
 const style = {
@@ -36,10 +39,14 @@ class Login extends Component {
     rememberMe: false,
     dataType: "password",
     eyeState: "",
-    redirectToAdmin:false
+    redirectToAdmin: false
   };
 
   componentDidMount() {
+    if (getLocalStorageItem("userDetails") !== null) {
+      this.setState({ redirectToAdmin: true });
+    }
+
     const userDetails = JSON.parse(getLocalStorageItem(constants.userDetails));
     if (userDetails) {
       if (userDetails.rememberMe) {
@@ -60,25 +67,30 @@ class Login extends Component {
 
   handleLogin = e => {
     e.preventDefault();
-    const state = {...this.state};
+    const state = { ...this.state };
 
-    state.emailData.errorClassName = handleErrorClassName(InputTypes.Email,state.emailData.email);
-    state.passwordData.errorClassName = handleErrorClassName(InputTypes.Password,  state.passwordData.password);
+    state.emailData.errorClassName = handleErrorClassName(
+      InputTypes.Email,
+      state.emailData.email
+    );
+    state.passwordData.errorClassName = handleErrorClassName(
+      InputTypes.Password,
+      state.passwordData.password
+    );
 
     this.setState({ state });
 
     localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
     console.log(this.state);
-    if(!this.state.emailData.isErrorExist &&  !this.state.passwordData.isErrorExist){
-      this.setState({isAdmin:true});
+    if (
+      !this.state.emailData.isErrorExist &&
+      !this.state.passwordData.isErrorExist
+    ) {
+      this.setState({ isAdmin: true });
     }
 
     //Sample API Call For Reference
-    ServiceProvider
-      .get(apiUrl.users)
-      .then((response) => {
-      });
-
+    ServiceProvider.get(apiUrl.users).then(response => {});
 
     // if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
     //   this.setState({isAdmin : true})
@@ -120,12 +132,6 @@ class Login extends Component {
     });
   };
 
-  componentDidMount(){
-    if((getLocalStorageItem("userDetails"))!==null)
-    this.setState({ redirectToAdmin: true});
-  }
-
-
   render() {
     if (this.state.isAdmin || this.state.redirectToAdmin) {
       return <Redirect to="/admin" />;
@@ -136,7 +142,6 @@ class Login extends Component {
     }
     return (
       <div className="limiter">
-       
         <div className="container-login100">
           <div className="wrap-login100">
             <form className="login100-form validate-form">
@@ -176,19 +181,18 @@ class Login extends Component {
                 />
                 <span className="focus-input100"></span>
                 <span className="label-input100">Password</span>
-              
-              {this.state.passwordData.password.length > 0  && <React.Fragment> 
-                <div className="eyeIcon"><i
-                className={`fa fa-eye${this.state.eyeState}`}
-                
-                aria-hidden="true"
-                onClick={this.handleEyeClick}
-              ></i>
-              </div>
-              
-              </React.Fragment>
-              
-              }
+
+                {this.state.passwordData.password.length > 0 && (
+                  <React.Fragment>
+                    <div className="eyeIcon">
+                      <i
+                        className={`fa fa-eye${this.state.eyeState}`}
+                        aria-hidden="true"
+                        onClick={this.handleEyeClick}
+                      ></i>
+                    </div>
+                  </React.Fragment>
+                )}
               </div>
               <br></br>
               <div className="flex-sb-m w-full p-t-3 p-b-32">
@@ -223,12 +227,8 @@ class Login extends Component {
               </div>
               <br></br>
               <div className="container-login100-form-btn">
-              <Link to={"/register"} className="register">
-                <button
-                  className="register-form-btn"
-                >
-                  Register
-                </button>
+                <Link to={"/register"} className="register">
+                  <button className="register-form-btn">Register</button>
                 </Link>
                 {<ToastContainer autoClose={8000} />}
               </div>

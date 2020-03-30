@@ -9,7 +9,7 @@ const PopupComponent = props => {
         <Modal.Title>{props.modalTitle}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{props.modalBody}</p>
+        {props.modalBody ? <p>{props.modalBody}</p> : <p>{props.component}</p>}
       </Modal.Body>
       <Modal.Footer>
         {props.showCancelButton && <Button

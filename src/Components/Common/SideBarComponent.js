@@ -4,19 +4,50 @@ import "../../css/sideBar.css";
 import { connect } from "react-redux";
 import image from "../../images/logo.jpg";
 import "../../css/style.css";
+import PopupComponent from "./PopupComponent";
+import EditDetailsComponent from './EditDetailsComponent';
 
 const style = {
   backgroundImage: `url(${image})`
 };
 
+const centeralignStyle ={
+  textAlign: "center"
+};
+
 class SideBar extends Component {
-  state = {};
+  state = {
+    userData: {
+      firstName: "John",
+      lastName: "Snow"
+    },
+    showPopup: false
+  };
+
+  handleEditPopup = () => {
+    this.setState({ showPopup: true });
+  };
+
+  handlePopupClick = () => {
+    this.setState({ showPopup: false });
+  };
 
   render() {
     return (
       <nav id="sidebar" className={this.props.sideBarClassName}>
         <div className="p-4 pt-5">
-          <a href="#" className="img logo rounded-circle mb-5" style={style}></a>
+          <a
+            href="#"
+            className="img logo rounded-circle mb-5"
+            style={style}
+          ></a>
+          <label>{this.state.userData.firstName}</label>
+          <label>{this.state.userData.lastName}</label>
+          <i
+            class="fa fa-pencil"
+            aria-hidden="true"
+            onClick={this.handleEditPopup}
+          ></i>
           <ul className="list-unstyled components mb-5">
             <li className="active">
               <a
@@ -71,6 +102,17 @@ class SideBar extends Component {
             </li>
           </ul>
         </div>
+        {this.state.showPopup && (
+          <PopupComponent
+            showPopup={this.state.showPopup}
+            modalTitle={"Edit Details"}
+            showCancelButton={true}
+            modalCancelButtonText={"Cancel"}
+            modalOKButtonText={"Update"}
+            togglePopUp={this.handlePopupClick}
+            component = {<EditDetailsComponent/>}
+          ></PopupComponent>
+        )}
       </nav>
     );
   }
