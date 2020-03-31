@@ -23,3 +23,11 @@ export const toggleAsyncSideBar = () => {
       });
   };
 };
+
+export const updateUserDetails = (event) => {
+  return{
+    type: actionTypes.UPDATE_USERDETAILS,
+    name:event.target.name,
+    value:event.target.value
+  };
+};

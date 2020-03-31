@@ -41,8 +41,8 @@ class SideBar extends Component {
             className="img logo rounded-circle mb-5"
             style={style}
           ></a>
-          <label>{this.state.userData.firstName}</label>
-          <label>{this.state.userData.lastName}</label>
+          <label>{this.props.firstName}</label>
+          <label>{this.props.lastName}</label>
           <i
             class="fa fa-pencil"
             aria-hidden="true"
@@ -120,7 +120,9 @@ class SideBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    sideBarClassName: state.sideBarReducer.sideBarClassName
+    sideBarClassName: state.sideBarReducer.sideBarClassName,
+    firstName:state.userDetails.firstName,
+    lastName:state.userDetails.lastName
   };
 };
 
