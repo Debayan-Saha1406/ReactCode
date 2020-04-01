@@ -24,10 +24,17 @@ export const toggleAsyncSideBar = () => {
   };
 };
 
-export const updateUserDetails = (event) => {
+export const handleInputChange = (state) => {
   return{
-    type: actionTypes.UPDATE_USERDETAILS,
-    name:event.target.name,
-    value:event.target.value
+    type: actionTypes.HANDLE_INPUTCHANGE,
+    updatedFirstName:state.firstName,
+    updatedLastName:state.lastName
   };
 };
+
+export const updateUserDetails = () => {
+  return{
+    type: actionTypes.UPDATE_USER_DETAILS
+  };
+};
+

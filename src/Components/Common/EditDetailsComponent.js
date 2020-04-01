@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateUserDetails } from "../../Store/Actions/actionCreator";
+import { handleInputChange } from "../../Store/Actions/actionCreator";
+import "../../css/sideBar.css";
 
 
 class EditDetailsComponent extends Component {
@@ -16,6 +17,11 @@ class EditDetailsComponent extends Component {
     });
   }
 
+  handleChange = (event) =>{
+    this.setState({[event.target.name]: event.target.value},() => { this.props.handleChange(this.state) })
+    
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -23,21 +29,21 @@ class EditDetailsComponent extends Component {
           <label>First Name</label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="exampleInputFirstName"
             aria-describedby="emailHelp"
             name="firstName"
-            onChange={this.props.handleChange}
+            onChange={this.handleChange}
             value={this.state.firstName}
           />
         </div>
         <div class="form-group">
-          <label >Last Name</label>
+          <label>Last Name</label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="exampleInputLastName"
-            onChange={this.props.handleChange}
+            onChange={this.handleChange}
             name="lastName"
             value={this.state.lastName}
           />
@@ -56,8 +62,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleChange: (event) => {
-      dispatch(updateUserDetails(event));
+    handleChange: (state) => {
+      dispatch(handleInputChange(state));
     }
 
   };

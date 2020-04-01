@@ -6,21 +6,15 @@ import image from "../../images/logo.jpg";
 import "../../css/style.css";
 import PopupComponent from "./PopupComponent";
 import EditDetailsComponent from './EditDetailsComponent';
+import { updateUserDetails } from './../../Store/Actions/actionCreator';
 
 const style = {
   backgroundImage: `url(${image})`
 };
 
-const centeralignStyle ={
-  textAlign: "center"
-};
 
 class SideBar extends Component {
   state = {
-    userData: {
-      firstName: "John",
-      lastName: "Snow"
-    },
     showPopup: false
   };
 
@@ -28,9 +22,17 @@ class SideBar extends Component {
     this.setState({ showPopup: true });
   };
 
-  handlePopupClick = () => {
+  handlePopupClick = (event) => {
+    if(event.target.name === "Yes"){
+      this.props.onUpdateClick();
+    }
+    
     this.setState({ showPopup: false });
   };
+
+  handleUserDetails = (firstName, lastName) =>{
+    console.log(this.state)
+  }
 
   render() {
     return (
@@ -41,13 +43,16 @@ class SideBar extends Component {
             className="img logo rounded-circle mb-5"
             style={style}
           ></a>
-          <label>{this.props.firstName}</label>
-          <label>{this.props.lastName}</label>
+          <div style={{marginTop: "-20px" , marginBottom :"20px"}} align="center">
+          <label style={{marginRight: "5px"}}>{this.props.firstName}</label>
+          <label style={{marginRight: "5px"}}>{this.props.lastName}</label>
           <i
-            class="fa fa-pencil"
+            className="fa fa-pencil"
             aria-hidden="true"
+            style={{cursor:'pointer'}}
             onClick={this.handleEditPopup}
           ></i>
+          </div>
           <ul className="list-unstyled components mb-5">
             <li className="active">
               <a
@@ -128,9 +133,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // onSideBarToggle: () => {
-    //   dispatch(toggleSideBar());
-    // }
+    onUpdateClick: () => {
+      dispatch(updateUserDetails());
+    }
   };
 };
 

@@ -14,6 +14,7 @@ const cursorStyle = {
 class Navbar extends Component {
   state = {
     showPopup : false,
+    show : ""
   };
 
   handleLogout = ()=>{
@@ -29,6 +30,10 @@ class Navbar extends Component {
     }
   };
 
+  handleNavbarDropDown = () =>{
+    this.setState({show : (this.state.show === "show" ? "" : "show")})
+  }
+
   render() {
     if (this.state.redirectToLogin) {
       return <Redirect to="/login" />;
@@ -41,10 +46,10 @@ class Navbar extends Component {
           <span className="sr-only">Toggle Menu</span>
         </button>
         <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i className="fa fa-bars"></i>
+            <i className="fa fa-bars" onClick={this.handleNavbarDropDown}></i>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className={`collapse navbar-collapse ${this.state.show}`} id="navbarSupportedContent">
           <ul className="nav navbar-nav ml-auto">
             <li className="nav-item active">
                 <a className="nav-link" href="#">Home</a>
