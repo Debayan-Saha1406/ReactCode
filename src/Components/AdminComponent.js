@@ -6,6 +6,7 @@ import { getLocalStorageItem} from "../Provider/LocalStorageProvider";
 import { Redirect } from "react-router-dom";
 import "../css/style.css";
 import Main from "./MainComponent";
+import Test from "./TestComponent.js";
 
 class Admin extends Component {
   state = {
@@ -18,6 +19,7 @@ class Admin extends Component {
   };
 
   componentDidMount() {
+    console.log(this);
     if (getLocalStorageItem("userDetails") === null) {
       this.setState({ showUnAuthorizedPopup: true });
     }
@@ -43,7 +45,7 @@ class Admin extends Component {
           <SideBar></SideBar>
           <div id="content" className="p-4 p-md-5">
             <Navbar></Navbar>
-            <Main></Main>
+            {this.props.subRoute === "Home" ? <Test></Test> : <Main></Main>}
           </div>
         </div>
         }

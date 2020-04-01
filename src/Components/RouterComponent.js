@@ -14,6 +14,7 @@ class Router extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route path='/admin/Home' render={() => <Admin subRoute={"Home"}/>} />
           <Route path="/admin" component={Admin} />
           <Route path="/user" component={User} />
           <Route path="/forgotPassword" component={ForgotPassword} />

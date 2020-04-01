@@ -51,14 +51,8 @@ class Navbar extends Component {
 
         <div className={`collapse navbar-collapse ${this.state.show}`} id="navbarSupportedContent">
           <ul className="nav navbar-nav ml-auto">
-            <li className="nav-item active">
-                <a className="nav-link" href="#">Home</a>
-            </li>
             <li className="nav-item">
-                <a className="nav-link" href="#">About</a>
-            </li>
-            <li className="nav-item">
-                <a className="nav-link" href="#">Portfolio</a>
+                <i className="fa fa-bell" aria-hidden="true" style={{marginRight : "5px", marginTop : "11px"}}></i>
             </li>
             <li className="nav-item">
                 <a className="nav-link" onClick={this.handleLogout} style={cursorStyle}>Logout</a>

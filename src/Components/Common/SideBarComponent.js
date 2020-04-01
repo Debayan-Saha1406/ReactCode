@@ -7,6 +7,7 @@ import "../../css/style.css";
 import PopupComponent from "./PopupComponent";
 import EditDetailsComponent from './EditDetailsComponent';
 import { updateUserDetails } from './../../Store/Actions/actionCreator';
+import { Link } from 'react-router-dom';
 
 const style = {
   backgroundImage: `url(${image})`
@@ -55,14 +56,14 @@ class SideBar extends Component {
           </div>
           <ul className="list-unstyled components mb-5">
             <li className="active">
-              <a
+            <Link to={"/admin/Home"}
                 href="#homeSubmenu"
                 data-toggle="collapse"
                 aria-expanded="false"
                 className="dropdown-toggle"
               >
                 Home
-              </a>
+              </Link>
               <ul className="collapse list-unstyled" id="homeSubmenu">
                 <li>
                   <a href="#">Home 1</a>
@@ -76,7 +77,7 @@ class SideBar extends Component {
               </ul>
             </li>
             <li>
-              <a href="#">About</a>
+              <Link to={"/admin"}>About</Link>
             </li>
             <li>
               <a
