@@ -19,7 +19,7 @@ class SideBar extends Component {
   state = {
     showPopup: false,
     showPencilIcon: false,
-    pencilIconOpacity: 0,
+    iconOpacity: 0,
     imageOpacity: 1
   };
 
@@ -36,11 +36,11 @@ class SideBar extends Component {
   };
 
   onMouseOver = () => {
-    this.setState({ pencilIconOpacity: 1, imageOpacity: "15%" });
+    this.setState({ iconOpacity: 1, imageOpacity: "15%" });
   };
 
   onMouseOut = () => {
-    this.setState({ pencilIconOpacity: 0, imageOpacity: 1 });
+    this.setState({ iconOpacity: 0, imageOpacity: 1 });
   };
 
   render() {
@@ -74,7 +74,7 @@ class SideBar extends Component {
                   id="pencilHover"
                   style={{
                     cursor: "pointer",
-                    opacity: `${this.state.pencilIconOpacity}`
+                    opacity: `${this.state.iconOpacity}`
                   }}
                   onMouseOver={this.onMouseOver}
                 ></i>
@@ -87,7 +87,7 @@ class SideBar extends Component {
                 id="trash"
                 style={{
                   cursor: "pointer",
-                  opacity: `${this.state.pencilIconOpacity}`
+                  opacity: `${this.state.iconOpacity}`
                 }}
                 onMouseOver={this.onMouseOver}
                 onClick={this.props.onDeleteImage}
