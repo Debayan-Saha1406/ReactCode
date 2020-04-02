@@ -1,6 +1,6 @@
 import * as actionTypes from "../Actions/actions";
 import ServiceProvider from "../../Provider/ServiceProvider";
-import { apiUrl } from './../../Shared/Constants';
+import { apiUrl } from "./../../Shared/Constants";
 
 export const toggleSideBar = () => {
   return {
@@ -16,25 +16,36 @@ export const toggleNavBarDropDown = () => {
 
 export const toggleAsyncSideBar = () => {
   return dispatch => {
-    ServiceProvider
-      .get(apiUrl.users)
-      .then((response) => {
-        dispatch(toggleSideBar());
-      });
+    ServiceProvider.get(apiUrl.users).then(response => {
+      dispatch(toggleSideBar());
+    });
   };
 };
 
-export const handleInputChange = (state) => {
-  return{
+export const handleInputChange = state => {
+  return {
     type: actionTypes.HANDLE_INPUTCHANGE,
-    updatedFirstName:state.firstName,
-    updatedLastName:state.lastName
+    updatedFirstName: state.firstName,
+    updatedLastName: state.lastName
   };
 };
 
 export const updateUserDetails = () => {
-  return{
+  return {
     type: actionTypes.UPDATE_USER_DETAILS
   };
 };
 
+export const updateProfileImage = image => {
+  return {
+    type: actionTypes.UPDATE_PROFILE_IMAGE,
+    profileImage: image
+  };
+};
+
+export const deleteProfileImage = image => {
+  return {
+    type: actionTypes.DELETE_PROFILE_IMAGE,
+    profileImage: image
+  };
+};

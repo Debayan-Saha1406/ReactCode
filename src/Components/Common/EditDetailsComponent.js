@@ -3,12 +3,11 @@ import { connect } from "react-redux";
 import { handleInputChange } from "../../Store/Actions/actionCreator";
 import "../../css/sideBar.css";
 
-
 class EditDetailsComponent extends Component {
   state = {
-    firstName: '',
-    lastName: ''
-  }
+    firstName: "",
+    lastName: ""
+  };
 
   componentDidMount() {
     this.setState({
@@ -17,10 +16,11 @@ class EditDetailsComponent extends Component {
     });
   }
 
-  handleChange = (event) =>{
-    this.setState({[event.target.name]: event.target.value},() => { this.props.handleChange(this.state) })
-    
-  }
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value }, () => {
+      this.props.handleChange(this.state);
+    });
+  };
 
   render() {
     return (
@@ -50,7 +50,7 @@ class EditDetailsComponent extends Component {
         </div>
       </React.Fragment>
     );
-  };
+  }
 }
 
 const mapStateToProps = state => {
@@ -62,11 +62,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleChange: (state) => {
+    handleChange: state => {
       dispatch(handleInputChange(state));
     }
-
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditDetailsComponent);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditDetailsComponent);

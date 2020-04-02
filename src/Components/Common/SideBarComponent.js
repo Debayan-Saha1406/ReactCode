@@ -1,62 +1,117 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import "../../css/sideBar.css";
 import { connect } from "react-redux";
-import image from "../../images/logo.jpg";
+import image from "../../images/bg-01.jpg";
 import "../../css/style.css";
 import PopupComponent from "./PopupComponent";
-import EditDetailsComponent from './EditDetailsComponent';
-import { updateUserDetails } from './../../Store/Actions/actionCreator';
-import { Link } from 'react-router-dom';
-
-const style = {
-  backgroundImage: `url(${image})`
-};
-
+import EditDetailsComponent from "./EditDetailsComponent";
+import {
+  updateUserDetails,
+  updateProfileImage,
+  deleteProfileImage
+} from "./../../Store/Actions/actionCreator";
+import { Link } from "react-router-dom";
+import { ImagePicker } from "react-file-picker";
 
 class SideBar extends Component {
   state = {
-    showPopup: false
+    showPopup: false,
+    showPencilIcon: false,
+    pencilIconOpacity: 0,
+    imageOpacity: 1
   };
 
   handleEditPopup = () => {
     this.setState({ showPopup: true });
   };
 
-  handlePopupClick = (event) => {
-    if(event.target.name === "Yes"){
+  handlePopupClick = event => {
+    if (event.target.name === "Yes") {
       this.props.onUpdateClick();
     }
-    
+
     this.setState({ showPopup: false });
   };
 
-  handleUserDetails = (firstName, lastName) =>{
-    console.log(this.state)
-  }
+  onMouseOver = () => {
+    this.setState({ pencilIconOpacity: 1, imageOpacity: "15%" });
+  };
+
+  onMouseOut = () => {
+    this.setState({ pencilIconOpacity: 0, imageOpacity: 1 });
+  };
 
   render() {
     return (
       <nav id="sidebar" className={this.props.sideBarClassName}>
         <div className="p-4 pt-5">
-          <a
-            href="#"
-            className="img logo rounded-circle mb-5"
-            style={style}
-          ></a>
-          <div style={{marginTop: "-20px" , marginBottom :"20px"}} align="center">
-          <label style={{marginRight: "5px"}}>{this.props.firstName}</label>
-          <label style={{marginRight: "5px"}}>{this.props.lastName}</label>
-          <i
-            className="fa fa-pencil"
-            aria-hidden="true"
-            style={{cursor:'pointer'}}
-            onClick={this.handleEditPopup}
-          ></i>
+          <div style={{ position: "relative", left: 0, top: 0 }}>
+            <a
+              className="img logo rounded-circle mb-5"
+              style={{
+                backgroundImage: `url(${this.props.image})`,
+                opacity: `${this.state.imageOpacity}`
+              }}
+              onMouseOver={this.onMouseOver}
+              onMouseOut={this.onMouseOut}
+            ></a>
+            <ImagePicker
+              extensions={["jpg", "jpeg", "png"]}
+              dims={{
+                minWidth: 100,
+                maxWidth: 5500,
+                minHeight: 100,
+                maxHeight: 5500
+              }}
+              onChange={image => this.props.onFileChange(image)}
+              onError={errMsg => console.log(errMsg)}
+            >
+              <div id="editPencil">
+                <i
+                  class="fa fa-pencil fa-lg"
+                  id="pencilHover"
+                  style={{
+                    cursor: "pointer",
+                    opacity: `${this.state.pencilIconOpacity}`
+                  }}
+                  onMouseOver={this.onMouseOver}
+                ></i>
+              </div>
+            </ImagePicker>
+            <div id="editTrash">
+              <i
+                class="fa fa-trash"
+                aria-hidden="true"
+                id="trash"
+                style={{
+                  cursor: "pointer",
+                  opacity: `${this.state.pencilIconOpacity}`
+                }}
+                onMouseOver={this.onMouseOver}
+                onClick={this.props.onDeleteImage}
+              ></i>
+            </div>
+          </div>
+          <div
+            style={{ marginTop: "-20px", marginBottom: "20px" }}
+            align="center"
+          >
+            <label style={{ marginRight: "5px" }}>{this.props.firstName}</label>
+            <label style={{ marginRight: "5px" }}>{this.props.lastName}</label>
+            <i
+              className="fa fa-pencil"
+              aria-hidden="true"
+              id="pencil"
+              style={{ cursor: "pointer" }}
+              onClick={this.handleEditPopup}
+            ></i>
           </div>
           <ul className="list-unstyled components mb-5">
             <li className="active">
-            <Link to={"/admin/Home"}
+              <Link
+                to={"/admin/Home"}
                 href="#homeSubmenu"
                 data-toggle="collapse"
                 aria-expanded="false"
@@ -116,7 +171,7 @@ class SideBar extends Component {
             modalCancelButtonText={"Cancel"}
             modalOKButtonText={"Update"}
             togglePopUp={this.handlePopupClick}
-            component = {<EditDetailsComponent/>}
+            component={<EditDetailsComponent />}
           ></PopupComponent>
         )}
       </nav>
@@ -127,8 +182,9 @@ class SideBar extends Component {
 const mapStateToProps = state => {
   return {
     sideBarClassName: state.sideBarReducer.sideBarClassName,
-    firstName:state.userDetails.firstName,
-    lastName:state.userDetails.lastName
+    firstName: state.userDetails.firstName,
+    lastName: state.userDetails.lastName,
+    image: state.userDetails.profileImage
   };
 };
 
@@ -136,6 +192,12 @@ const mapDispatchToProps = dispatch => {
   return {
     onUpdateClick: () => {
       dispatch(updateUserDetails());
+    },
+    onFileChange: selectedImage => {
+      dispatch(updateProfileImage(selectedImage));
+    },
+    onDeleteImage: () => {
+      dispatch(deleteProfileImage());
     }
   };
 };
