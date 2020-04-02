@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import "../../css/sideBar.css";
 import { connect } from "react-redux";
-import image from "../../images/bg-01.jpg";
 import "../../css/style.css";
 import PopupComponent from "./PopupComponent";
 import EditDetailsComponent from "./EditDetailsComponent";
@@ -13,9 +12,9 @@ import {
   deleteProfileImage
 } from "./../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
-import { ImagePicker } from "react-file-picker";
 import { showErrorMessage } from "../../Provider/ToastProvider";
 import { ToastContainer } from "react-toastify";
+import { ImagePickerProvider } from "../../Provider/ImagePickerProvider";
 
 class SideBar extends Component {
   state = {
@@ -23,7 +22,7 @@ class SideBar extends Component {
     showPencilIcon: false,
     iconOpacity: 0,
     imageOpacity: 1,
-    isCorrectFileFormat: true
+    hasUploadErrors: true
   };
 
   handleEditPopup = () => {
@@ -48,7 +47,7 @@ class SideBar extends Component {
 
   handleIncorrectFileFormat = errMsg => {
     this.setState({
-      isCorrectFileFormat: false,
+      hasUploadErrors: false,
       iconOpacity: 0,
       imageOpacity: 1
     });
@@ -67,7 +66,7 @@ class SideBar extends Component {
     return (
       <nav id="sidebar" className={this.props.sideBarClassName}>
         <div className="p-4 pt-5">
-          {!this.state.isCorrectFileFormat && <ToastContainer></ToastContainer>}
+          {!this.state.hasUploadErrors && <ToastContainer></ToastContainer>}
           <div style={{ position: "relative", left: 0, top: 0 }}>
             <a
               className="img logo rounded-circle mb-5"
@@ -78,29 +77,25 @@ class SideBar extends Component {
               onMouseOver={this.onMouseOver}
               onMouseOut={this.onMouseOut}
             ></a>
-            <ImagePicker
-              extensions={["jpg", "jpeg", "png"]}
-              dims={{
-                minWidth: 100,
-                maxWidth: 5500,
-                minHeight: 100,
-                maxHeight: 5500
-              }}
-              onChange={image => this.handleFileChange(image)}
-              onError={errMsg => this.handleIncorrectFileFormat(errMsg)}
-            >
-              <div id="editPencil">
-                <i
-                  class="fa fa-pencil fa-lg"
-                  id="pencilHover"
-                  style={{
-                    cursor: "pointer",
-                    opacity: `${this.state.iconOpacity}`
-                  }}
-                  onMouseOver={this.onMouseOver}
-                ></i>
-              </div>
-            </ImagePicker>
+            <ImagePickerProvider
+              handleFileChange={image => this.handleFileChange(image)}
+              handleIncorrectFileFormat={errMsg =>
+                this.handleIncorrectFileFormat(errMsg)
+              }
+              fileComponent={
+                <div id="editPencil">
+                  <i
+                    class="fa fa-pencil fa-lg"
+                    id="pencilHover"
+                    style={{
+                      cursor: "pointer",
+                      opacity: `${this.state.iconOpacity}`
+                    }}
+                    onMouseOver={this.onMouseOver}
+                  ></i>
+                </div>
+              }
+            ></ImagePickerProvider>
             <div id="editTrash">
               <i
                 class="fa fa-trash"

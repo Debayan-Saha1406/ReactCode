@@ -13,7 +13,10 @@ import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
 import ServiceProvider from "../Provider/ServiceProvider";
 import { apiUrl } from "./../Shared/Constants";
 import { ToastContainer } from "react-toastify";
-import { getLocalStorageItem } from "../Provider/LocalStorageProvider";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem
+} from "../Provider/LocalStorageProvider";
 import Admin from "./AdminComponent";
 
 const style = {
@@ -80,8 +83,8 @@ class Login extends Component {
 
     this.setState({ state });
 
-    localStorage.setItem(constants.userDetails, JSON.stringify(this.state));
-    console.log(this.state);
+    setLocalStorageItem(constants.userDetails, JSON.stringify(this.state));
+
     if (
       !this.state.emailData.isErrorExist &&
       !this.state.passwordData.isErrorExist
