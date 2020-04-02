@@ -14,13 +14,16 @@ import {
 } from "./../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
 import { ImagePicker } from "react-file-picker";
+import { showErrorMessage } from "../../Provider/ToastProvider";
+import { ToastContainer } from "react-toastify";
 
 class SideBar extends Component {
   state = {
     showPopup: false,
     showPencilIcon: false,
     iconOpacity: 0,
-    imageOpacity: 1
+    imageOpacity: 1,
+    isCorrectFileFormat: true
   };
 
   handleEditPopup = () => {
@@ -43,10 +46,28 @@ class SideBar extends Component {
     this.setState({ iconOpacity: 0, imageOpacity: 1 });
   };
 
+  handleIncorrectFileFormat = errMsg => {
+    this.setState({
+      isCorrectFileFormat: false,
+      iconOpacity: 0,
+      imageOpacity: 1
+    });
+    showErrorMessage(errMsg);
+  };
+
+  handleFileChange = image => {
+    this.setState({
+      iconOpacity: 0,
+      imageOpacity: 1
+    });
+    this.props.onFileChange(image);
+  };
+
   render() {
     return (
       <nav id="sidebar" className={this.props.sideBarClassName}>
         <div className="p-4 pt-5">
+          {!this.state.isCorrectFileFormat && <ToastContainer></ToastContainer>}
           <div style={{ position: "relative", left: 0, top: 0 }}>
             <a
               className="img logo rounded-circle mb-5"
@@ -65,8 +86,8 @@ class SideBar extends Component {
                 minHeight: 100,
                 maxHeight: 5500
               }}
-              onChange={image => this.props.onFileChange(image)}
-              onError={errMsg => console.log(errMsg)}
+              onChange={image => this.handleFileChange(image)}
+              onError={errMsg => this.handleIncorrectFileFormat(errMsg)}
             >
               <div id="editPencil">
                 <i
