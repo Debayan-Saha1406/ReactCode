@@ -2,17 +2,24 @@ import {
   UPDATE_USER_DETAILS,
   HANDLE_INPUTCHANGE,
   UPDATE_PROFILE_IMAGE,
-  DELETE_PROFILE_IMAGE
+  DELETE_PROFILE_IMAGE,
 } from "../Actions/actions";
 import image from "../../images/logo.jpg";
 import avatar from "../../images/avatar.jpg";
+import { SAVE_USER_DATA } from "./../Actions/actions";
+import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
+import { constants } from "../../Shared/Constants";
+
+const getUserDetails = () => {
+  return JSON.parse(getLocalStorageItem(constants.userDetails));
+};
 
 const initialState = {
-  firstName: "Heena",
-  lastName: "Verma",
+  firstName: getUserDetails().firstName,
+  lastName: getUserDetails().lastName,
   updatedFirstName: "",
   updatedLastName: "",
-  profileImage: image
+  profileImage: image,
 };
 
 export const userDetailsReducer = (state = initialState, action) => {
@@ -21,7 +28,7 @@ export const userDetailsReducer = (state = initialState, action) => {
       return {
         ...state,
         updatedFirstName: action.updatedFirstName,
-        updatedLastName: action.updatedLastName
+        updatedLastName: action.updatedLastName,
       };
     case UPDATE_USER_DETAILS:
       return {
@@ -33,17 +40,23 @@ export const userDetailsReducer = (state = initialState, action) => {
           ? state.updatedLastName
           : state.lastName,
         updatedFirstName: "",
-        updatedLastName: ""
+        updatedLastName: "",
+      };
+    case SAVE_USER_DATA:
+      return {
+        ...state,
+        firstName: action.userData.firstName,
+        lastName: action.userData.lastName,
       };
     case UPDATE_PROFILE_IMAGE:
       return {
         ...state,
-        profileImage: action.profileImage
+        profileImage: action.profileImage,
       };
     case DELETE_PROFILE_IMAGE:
       return {
         ...state,
-        profileImage: avatar
+        profileImage: avatar,
       };
 
     default:

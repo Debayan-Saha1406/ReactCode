@@ -1,23 +1,23 @@
 import axios from "axios";
-import { apiUrl} from "../Constants";
+import { apiUrl } from "../Constants";
 import "react-toastify/dist/ReactToastify.css";
-import {showToast} from "../../Provider/ToastProvider";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 
 const token = "";
 
 const client = axios.create({
   baseURL: apiUrl.baseUrl,
-  auth: { Authorization: "Bearer " + { token } }
+  auth: { Authorization: "Bearer " + { token } },
 });
 
-const request = async function(options) {
-  const onSuccess = function(response) {
+const request = async function (options) {
+  const onSuccess = function (response) {
     return response.data;
   };
 
-  const onError = function(error) {
+  const onError = function (error) {
     if (error.response) {
-      showToast(error.response.status);
+      showErrorMessage(error.response.data);
     } else {
       console.log("Error Message:", error.message);
     }
@@ -34,6 +34,3 @@ const request = async function(options) {
 };
 
 export default request;
-
-
-

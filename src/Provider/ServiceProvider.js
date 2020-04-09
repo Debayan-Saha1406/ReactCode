@@ -1,23 +1,24 @@
-import request from '../Shared/Services/RequestService';
-import { httpVerbs } from '../Shared/Constants';
+import request from "../Shared/Services/RequestService";
+import { httpVerbs } from "../Shared/Constants";
 
 function get(url) {
   return request({
-    url:    url,
-    method: httpVerbs.Get
+    url: url,
+    method: httpVerbs.Get,
   });
 }
 
-function create(url, data) {
-    return request({
-      url:    url,
-      method: httpVerbs.Post,
-      data:  data
-    });
-  }
+function post(url, data) {
+  return request({
+    url: url,
+    method: httpVerbs.Post,
+    data: data,
+  });
+}
 
-  const ServiceProvider = {
-    get, create
-  }
-  
-  export default ServiceProvider;
+const ServiceProvider = {
+  get,
+  post,
+};
+
+export default ServiceProvider;

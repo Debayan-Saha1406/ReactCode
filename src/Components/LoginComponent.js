@@ -5,7 +5,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import {
   validateEmail,
-  validatePassword
+  validatePassword,
 } from "../Shared/Services/ValidationService";
 import { constants, InputTypes } from "../Shared/Constants";
 import "../css/login.css";
@@ -15,12 +15,14 @@ import { apiUrl } from "./../Shared/Constants";
 import { ToastContainer } from "react-toastify";
 import {
   getLocalStorageItem,
-  setLocalStorageItem
+  setLocalStorageItem,
 } from "../Provider/LocalStorageProvider";
-import Admin from "./AdminComponent";
+import { showErrorMessage } from "../Provider/ToastProvider";
+import { connect } from "react-redux";
+import { saveUserData } from "../Store/Actions/actionCreator";
 
 const style = {
-  backgroundImage: `url(${image})`
+  backgroundImage: `url(${image})`,
 };
 
 class Login extends Component {
@@ -29,20 +31,20 @@ class Login extends Component {
       email: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
     passwordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
     isAdmin: false,
     isRegisteredUser: false,
     rememberMe: false,
     dataType: "password",
     eyeState: "",
-    redirectToAdmin: false
+    redirectToAdmin: false,
   };
 
   componentDidMount() {
@@ -62,45 +64,48 @@ class Login extends Component {
         this.setState({
           emailData,
           passwordData,
-          rememberMe: userDetails.rememberMe
+          rememberMe: userDetails.rememberMe,
         });
       }
     }
   }
 
-  handleLogin = e => {
+  handleLogin = (e) => {
     e.preventDefault();
     const state = { ...this.state };
 
     state.emailData.errorClassName = handleErrorClassName(
-      InputTypes.Email,
-      state.emailData.email
+      state.emailData.isErrorExist
     );
     state.passwordData.errorClassName = handleErrorClassName(
-      InputTypes.Password,
-      state.passwordData.password
+      state.passwordData.isErrorExist
     );
 
     this.setState({ state });
 
-    setLocalStorageItem(constants.userDetails, JSON.stringify(this.state));
+    const body = {
+      email: this.state.emailData.email,
+      password: this.state.passwordData.password,
+    };
 
     if (
       !this.state.emailData.isErrorExist &&
       !this.state.passwordData.isErrorExist
     ) {
-      this.setState({ isAdmin: true });
+      ServiceProvider.post(apiUrl.login, body).then((response) => {
+        if (response.isAdmin) {
+          this.setState({ isAdmin: true }, () => {
+            setLocalStorageItem(
+              constants.userDetails,
+              JSON.stringify(response)
+            );
+            this.props.saveUserData(response);
+          });
+        } else {
+          showErrorMessage("You are not authorized to Login");
+        }
+      });
     }
-
-    //Sample API Call For Reference
-    ServiceProvider.get(apiUrl.users).then(response => {});
-
-    // if (this.state.emailData.email === "admin@gmail.com" && this.state.passwordData.password === "admin") {
-    //   this.setState({isAdmin : true})
-    // }
-    // else{
-    //   this.setState({isRegisteredUser : true})
-    // }
   };
 
   handleChange = (name, value) => {
@@ -131,7 +136,7 @@ class Login extends Component {
     const state = { ...this.state };
     this.setState({
       dataType: state.dataType === "text" ? "password" : "text",
-      eyeState: state.dataType === "text" ? "" : "-slash"
+      eyeState: state.dataType === "text" ? "" : "-slash",
     });
   };
 
@@ -160,7 +165,7 @@ class Login extends Component {
                   className={this.state.emailData.className}
                   type="text"
                   name="email"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.emailData.email}
@@ -177,7 +182,7 @@ class Login extends Component {
                   className={this.state.passwordData.className}
                   type={this.state.dataType}
                   name="password"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.passwordData.password}
@@ -223,7 +228,7 @@ class Login extends Component {
               <div className="container-login100-form-btn">
                 <button
                   className="login100-form-btn"
-                  onClick={e => this.handleLogin(e)}
+                  onClick={(e) => this.handleLogin(e)}
                 >
                   Login
                 </button>
@@ -245,4 +250,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveUserData: (userData) => {
+      dispatch(saveUserData(userData));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Login);
