@@ -9,12 +9,18 @@ import EditDetailsComponent from "./EditDetailsComponent";
 import {
   updateUserDetails,
   updateProfileImage,
-  deleteProfileImage
+  deleteProfileImage,
 } from "./../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
 import { showErrorMessage } from "../../Provider/ToastProvider";
 import { ToastContainer } from "react-toastify";
 import { ImagePickerProvider } from "../../Provider/ImagePickerProvider";
+import ServiceProvider from "./../../Provider/ServiceProvider";
+import { apiUrl, constants } from "../../Shared/Constants";
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from "./../../Provider/LocalStorageProvider";
 
 class SideBar extends Component {
   state = {
@@ -22,16 +28,28 @@ class SideBar extends Component {
     showPencilIcon: false,
     iconOpacity: 0,
     imageOpacity: 1,
-    hasUploadErrors: true
+    hasUploadErrors: true,
   };
 
   handleEditPopup = () => {
     this.setState({ showPopup: true });
   };
 
-  handlePopupClick = event => {
-    if (event.target.name === "Yes") {
-      this.props.onUpdateClick();
+  handlePopupClick = (event) => {
+    if (
+      event.target.name === "Yes" &&
+      (this.props.updatedFirstName !== "" || this.props.updatedLastName !== "")
+    ) {
+      const body = {
+        firstName: this.props.updatedFirstName,
+        lastName: this.props.updatedLastName,
+      };
+      ServiceProvider.put(apiUrl.update, this.props.userId, body).then(
+        (response) => {
+          this.updateLocalStorage();
+          this.props.onUpdateClick();
+        }
+      );
     }
 
     this.setState({ showPopup: false });
@@ -45,22 +63,29 @@ class SideBar extends Component {
     this.setState({ iconOpacity: 0, imageOpacity: 1 });
   };
 
-  handleIncorrectFileFormat = errMsg => {
+  handleIncorrectFileFormat = (errMsg) => {
     this.setState({
       hasUploadErrors: false,
       iconOpacity: 0,
-      imageOpacity: 1
+      imageOpacity: 1,
     });
     showErrorMessage(errMsg);
   };
 
-  handleFileChange = image => {
+  handleFileChange = (image) => {
     this.setState({
       iconOpacity: 0,
-      imageOpacity: 1
+      imageOpacity: 1,
     });
     this.props.onFileChange(image);
   };
+
+  updateLocalStorage() {
+    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    userInfo.firstName = this.props.updatedFirstName;
+    userInfo.lastName = this.props.updatedLastName;
+    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+  }
 
   render() {
     return (
@@ -72,14 +97,14 @@ class SideBar extends Component {
               className="img logo rounded-circle mb-5"
               style={{
                 backgroundImage: `url(${this.props.image})`,
-                opacity: `${this.state.imageOpacity}`
+                opacity: `${this.state.imageOpacity}`,
               }}
               onMouseOver={this.onMouseOver}
               onMouseOut={this.onMouseOut}
             ></a>
             <ImagePickerProvider
-              handleFileChange={image => this.handleFileChange(image)}
-              handleIncorrectFileFormat={errMsg =>
+              handleFileChange={(image) => this.handleFileChange(image)}
+              handleIncorrectFileFormat={(errMsg) =>
                 this.handleIncorrectFileFormat(errMsg)
               }
               fileComponent={
@@ -89,7 +114,7 @@ class SideBar extends Component {
                     id="pencilHover"
                     style={{
                       cursor: "pointer",
-                      opacity: `${this.state.iconOpacity}`
+                      opacity: `${this.state.iconOpacity}`,
                     }}
                     onMouseOver={this.onMouseOver}
                   ></i>
@@ -103,7 +128,7 @@ class SideBar extends Component {
                 id="trash"
                 style={{
                   cursor: "pointer",
-                  opacity: `${this.state.iconOpacity}`
+                  opacity: `${this.state.iconOpacity}`,
                 }}
                 onMouseOver={this.onMouseOver}
                 onClick={this.props.onDeleteImage}
@@ -195,26 +220,29 @@ class SideBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     sideBarClassName: state.sideBarReducer.sideBarClassName,
+    userId: state.userDetails.userId,
     firstName: state.userDetails.firstName,
     lastName: state.userDetails.lastName,
-    image: state.userDetails.profileImage
+    image: state.userDetails.profileImage,
+    updatedFirstName: state.userDetails.updatedFirstName,
+    updatedLastName: state.userDetails.updatedLastName,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     onUpdateClick: () => {
       dispatch(updateUserDetails());
     },
-    onFileChange: selectedImage => {
+    onFileChange: (selectedImage) => {
       dispatch(updateProfileImage(selectedImage));
     },
     onDeleteImage: () => {
       dispatch(deleteProfileImage());
-    }
+    },
   };
 };
 

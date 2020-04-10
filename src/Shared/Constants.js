@@ -1,9 +1,10 @@
 export const apiUrl = {
   baseUrl:
     // "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/",
-    "https://localhost:44357/",
+    "https://localhost:44357/api",
   users: "users?page=2",
-  login: "api/login",
+  login: "/login",
+  update: `/userInfo/`,
 };
 
 export const constants = {

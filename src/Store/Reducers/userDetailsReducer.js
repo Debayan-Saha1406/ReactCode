@@ -4,7 +4,7 @@ import {
   UPDATE_PROFILE_IMAGE,
   DELETE_PROFILE_IMAGE,
 } from "../Actions/actions";
-import image from "../../images/logo.jpg";
+import image from "../../images/avatar.jpg";
 import avatar from "../../images/avatar.jpg";
 import { SAVE_USER_DATA } from "./../Actions/actions";
 import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
@@ -15,8 +15,9 @@ const getUserDetails = () => {
 };
 
 const initialState = {
-  firstName: getUserDetails().firstName,
-  lastName: getUserDetails().lastName,
+  userId: getUserDetails() ? getUserDetails().userId : 0,
+  firstName: getUserDetails() ? getUserDetails().firstName : "",
+  lastName: getUserDetails() ? getUserDetails().lastName : "",
   updatedFirstName: "",
   updatedLastName: "",
   profileImage: image,

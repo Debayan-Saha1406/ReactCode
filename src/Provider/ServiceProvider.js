@@ -16,9 +16,18 @@ function post(url, data) {
   });
 }
 
+function put(url, id, data) {
+  return request({
+    url: url + id,
+    method: httpVerbs.Put,
+    data: data,
+  });
+}
+
 const ServiceProvider = {
   get,
   post,
+  put,
 };
 
 export default ServiceProvider;
