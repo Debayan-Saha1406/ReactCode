@@ -5,7 +5,6 @@ import {
   DELETE_PROFILE_IMAGE,
 } from "../Actions/actions";
 import image from "../../images/avatar.jpg";
-import avatar from "../../images/avatar.jpg";
 import { SAVE_USER_DATA } from "./../Actions/actions";
 import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
 import { constants } from "../../Shared/Constants";
@@ -18,6 +17,7 @@ const initialState = {
   userId: getUserDetails() ? getUserDetails().userId : 0,
   firstName: getUserDetails() ? getUserDetails().firstName : "",
   lastName: getUserDetails() ? getUserDetails().lastName : "",
+  email: getUserDetails() ? getUserDetails().email : "",
   updatedFirstName: "",
   updatedLastName: "",
   profileImage: getUserDetails() ? getUserDetails().profileImageUrl : image,
@@ -57,7 +57,7 @@ export const userDetailsReducer = (state = initialState, action) => {
     case DELETE_PROFILE_IMAGE:
       return {
         ...state,
-        profileImage: avatar,
+        profileImage: action.profileImage,
       };
 
     default:

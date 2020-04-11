@@ -21,6 +21,7 @@ import {
   getLocalStorageItem,
   setLocalStorageItem,
 } from "./../../Provider/LocalStorageProvider";
+import avatar from "../../images/avatar.jpg";
 
 class SideBar extends Component {
   state = {
@@ -29,6 +30,8 @@ class SideBar extends Component {
     iconOpacity: 0,
     imageOpacity: 1,
     hasUploadErrors: true,
+    showDeleteProfileImagePopup: false,
+    showTrashIcon: true,
   };
 
   handleEditPopup = () => {
@@ -54,6 +57,26 @@ class SideBar extends Component {
 
     this.setState({ showPopup: false });
   };
+
+  deleteProfileImageClick = (event) => {
+    if (event.target.name === "Yes") {
+      this.props.onDeleteImage(this.props.userId, avatar);
+      this.deleteProfileImageFromLocalStorage();
+      this.setState({ showTrashIcon: false });
+    }
+
+    this.setState({
+      showDeleteProfileImagePopup: false,
+      iconOpacity: 0,
+      imageOpacity: 1,
+    });
+  };
+
+  deleteProfileImageFromLocalStorage() {
+    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    userInfo.profileImageUrl = avatar;
+    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+  }
 
   updateLocalStorage() {
     const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
@@ -81,6 +104,7 @@ class SideBar extends Component {
       hasUploadErrors: false,
       iconOpacity: 0,
       imageOpacity: 1,
+      showTrashIcon: false,
     });
     showErrorMessage(errMsg);
   };
@@ -89,11 +113,25 @@ class SideBar extends Component {
     this.setState({
       iconOpacity: 0,
       imageOpacity: 1,
+      showTrashIcon: true,
     });
 
     this.props.onFileChange(image, this.props.userId);
     this.updateProfileImage(image);
   };
+
+  deleteProfileImage = () => {
+    this.setState({ showDeleteProfileImagePopup: true });
+  };
+
+  componentDidMount() {
+    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    if (!userInfo.profileImageUrl) {
+      this.setState({ showTrashIcon: false });
+    } else {
+      this.setState({ showTrashIcon: true });
+    }
+  }
 
   render() {
     return (
@@ -129,19 +167,21 @@ class SideBar extends Component {
                 </div>
               }
             ></ImagePickerProvider>
-            <div id="editTrash">
-              <i
-                class="fa fa-trash"
-                aria-hidden="true"
-                id="trash"
-                style={{
-                  cursor: "pointer",
-                  opacity: `${this.state.iconOpacity}`,
-                }}
-                onMouseOver={this.onMouseOver}
-                onClick={this.props.onDeleteImage}
-              ></i>
-            </div>
+            {this.state.showTrashIcon && (
+              <div id="editTrash">
+                <i
+                  class="fa fa-trash"
+                  aria-hidden="true"
+                  id="trash"
+                  style={{
+                    cursor: "pointer",
+                    opacity: `${this.state.iconOpacity}`,
+                  }}
+                  onMouseOver={this.onMouseOver}
+                  onClick={this.deleteProfileImage}
+                ></i>
+              </div>
+            )}
           </div>
           <div
             style={{ marginTop: "-20px", marginBottom: "20px" }}
@@ -156,7 +196,9 @@ class SideBar extends Component {
               style={{ cursor: "pointer" }}
               onClick={this.handleEditPopup}
             ></i>
+            <label style={{ marginRight: "5px" }}>{this.props.email}</label>
           </div>
+
           <ul className="list-unstyled components mb-5">
             <li className="active">
               <Link
@@ -212,6 +254,17 @@ class SideBar extends Component {
             </li>
           </ul>
         </div>
+        {this.state.showDeleteProfileImagePopup && (
+          <PopupComponent
+            showPopup={this.state.showDeleteProfileImagePopup}
+            modalTitle={"Delete Profile Image"}
+            showCancelButton={true}
+            modalCancelButtonText={"Cancel"}
+            modalOKButtonText={"Delete"}
+            togglePopUp={this.deleteProfileImageClick}
+            modalBody={"Are You Sure You Want To Delete Your Profile Image?"}
+          ></PopupComponent>
+        )}
         {this.state.showPopup && (
           <PopupComponent
             showPopup={this.state.showPopup}
@@ -231,6 +284,7 @@ class SideBar extends Component {
 const mapStateToProps = (state) => {
   return {
     sideBarClassName: state.sideBarReducer.sideBarClassName,
+    email: state.userDetails.email,
     userId: state.userDetails.userId,
     firstName: state.userDetails.firstName,
     lastName: state.userDetails.lastName,
@@ -248,8 +302,8 @@ const mapDispatchToProps = (dispatch) => {
     onFileChange: (selectedImage, userId) => {
       dispatch(handleProfileImage(selectedImage, userId));
     },
-    onDeleteImage: () => {
-      dispatch(deleteProfileImage());
+    onDeleteImage: (userId, defaultImage) => {
+      dispatch(deleteProfileImage(userId, defaultImage));
     },
   };
 };

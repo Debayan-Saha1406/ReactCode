@@ -55,10 +55,18 @@ export const updateProfileImage = (image) => {
   };
 };
 
-export const deleteProfileImage = (image) => {
+export const deleteProfileImage = (userId, defaultImage) => {
+  return (dispatch) => {
+    ServiceProvider.deleteItem(apiUrl.profileImage, userId).then((response) => {
+      dispatch(deleteProfileImageFromStore(defaultImage));
+    });
+  };
+};
+
+export const deleteProfileImageFromStore = (defaultImage) => {
   return {
     type: actionTypes.DELETE_PROFILE_IMAGE,
-    profileImage: image,
+    profileImage: defaultImage,
   };
 };
 

@@ -24,10 +24,18 @@ function put(url, id, data) {
   });
 }
 
+function deleteItem(url, id) {
+  return request({
+    url: url + id,
+    method: httpVerbs.Delete,
+  });
+}
+
 const ServiceProvider = {
   get,
   post,
   put,
+  deleteItem,
 };
 
 export default ServiceProvider;
