@@ -8,7 +8,7 @@ import PopupComponent from "./PopupComponent";
 import EditDetailsComponent from "./EditDetailsComponent";
 import {
   updateUserDetails,
-  updateProfileImage,
+  handleProfileImage,
   deleteProfileImage,
 } from "./../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
@@ -55,6 +55,19 @@ class SideBar extends Component {
     this.setState({ showPopup: false });
   };
 
+  updateLocalStorage() {
+    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    userInfo.firstName = this.props.updatedFirstName;
+    userInfo.lastName = this.props.updatedLastName;
+    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+  }
+
+  updateProfileImage(image) {
+    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    userInfo.profileImageUrl = image;
+    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+  }
+
   onMouseOver = () => {
     this.setState({ iconOpacity: 1, imageOpacity: "15%" });
   };
@@ -77,15 +90,10 @@ class SideBar extends Component {
       iconOpacity: 0,
       imageOpacity: 1,
     });
-    this.props.onFileChange(image);
-  };
 
-  updateLocalStorage() {
-    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
-    userInfo.firstName = this.props.updatedFirstName;
-    userInfo.lastName = this.props.updatedLastName;
-    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
-  }
+    this.props.onFileChange(image, this.props.userId);
+    this.updateProfileImage(image);
+  };
 
   render() {
     return (
@@ -237,8 +245,8 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateClick: () => {
       dispatch(updateUserDetails());
     },
-    onFileChange: (selectedImage) => {
-      dispatch(updateProfileImage(selectedImage));
+    onFileChange: (selectedImage, userId) => {
+      dispatch(handleProfileImage(selectedImage, userId));
     },
     onDeleteImage: () => {
       dispatch(deleteProfileImage());

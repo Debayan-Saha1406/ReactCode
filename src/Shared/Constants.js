@@ -5,6 +5,7 @@ export const apiUrl = {
   users: "users?page=2",
   login: "/login",
   update: `/userInfo/`,
+  profileImage: "/profileImage/",
 };
 
 export const constants = {

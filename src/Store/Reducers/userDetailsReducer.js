@@ -20,7 +20,7 @@ const initialState = {
   lastName: getUserDetails() ? getUserDetails().lastName : "",
   updatedFirstName: "",
   updatedLastName: "",
-  profileImage: image,
+  profileImage: getUserDetails() ? getUserDetails().profileImageUrl : image,
 };
 
 export const userDetailsReducer = (state = initialState, action) => {

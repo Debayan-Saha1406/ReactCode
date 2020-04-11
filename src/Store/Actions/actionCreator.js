@@ -36,6 +36,18 @@ export const updateUserDetails = () => {
   };
 };
 
+export const handleProfileImage = (image, userId) => {
+  let updatedImage = handleFileData(image);
+  return (dispatch) => {
+    const body = {
+      image: updatedImage,
+    };
+    ServiceProvider.put(apiUrl.profileImage, userId, body).then((response) => {
+      dispatch(updateProfileImage(image));
+    });
+  };
+};
+
 export const updateProfileImage = (image) => {
   return {
     type: actionTypes.UPDATE_PROFILE_IMAGE,
@@ -56,3 +68,13 @@ export const saveUserData = (userData) => {
     userData: userData,
   };
 };
+
+function handleFileData(image) {
+  let updatedImage;
+  if (image[image.indexOf("/") + 1] === "j")
+    updatedImage = image.replace("data:image/jpeg;base64,", "");
+  else {
+    updatedImage = image.replace("data:image/png;base64,", "");
+  }
+  return updatedImage;
+}
