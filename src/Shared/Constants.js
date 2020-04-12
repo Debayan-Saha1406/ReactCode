@@ -6,6 +6,7 @@ export const apiUrl = {
   login: "/login",
   update: `/userInfo/`,
   profileImage: "/profileImage/",
+  register: "/register",
 };
 
 export const constants = {

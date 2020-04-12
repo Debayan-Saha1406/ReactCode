@@ -4,9 +4,10 @@ import image from "../images/RegisterButton.jpg";
 import {
   validateEmail,
   validatePassword,
-  validateName
+  validateName,
+  handleLastName,
 } from "../Shared/Services/ValidationService";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "../css/register.css";
 import "../css/main.css";
 import "../css/util.css";
@@ -18,14 +19,17 @@ import {
   handleEyeIconChange,
   handleDataTypeChange,
   handlePasswordMatchIcon,
-  handlePasswordMatchIconColor
+  handlePasswordMatchIconColor,
 } from "../Shared/Services/PasswordService";
 
-import {handleErrorClassName} from "../Shared/Services/ErrorClassNameService";
-import { InputTypes } from "../Shared/Constants";
+import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
+import { apiUrl } from "./../Shared/Constants";
+import ServiceProvider from "./../Provider/ServiceProvider";
+import PopupComponent from "./Common/PopupComponent";
+import { ToastContainer } from "react-toastify";
 
 const style = {
-  backgroundImage: `url(${image})`
+  backgroundImage: `url(${image})`,
 };
 let passwordData, confirmPasswordData;
 
@@ -35,42 +39,81 @@ class Register extends Component {
       email: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
-    nameData: {
+    firstNameData: {
       name: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+    },
+    lastNameData: {
+      name: "",
+      className: "input100",
+      errorClassName: "wrap-input100",
+      isErrorExist: true,
     },
     passwordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
     confirmPasswordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
     dataType: "password",
     eyeState: "",
     passwordMatchIcon: "close",
-    iconColor: "red"
+    iconColor: "red",
+    hasPasswordError: true,
+    showRedirectPopup: false,
+    redirectToLogin: false,
   };
 
-  handleRegister = e => {
+  handleRegister = (e) => {
     e.preventDefault();
     const state = { ...this.state };
 
-    state.nameData.errorClassName = handleErrorClassName(InputTypes.Name, state.nameData.name);
-    state.emailData.errorClassName = handleErrorClassName(InputTypes.Email,state.emailData.email);
-    state.passwordData.errorClassName = handleErrorClassName(InputTypes.Password,  state.passwordData.password);
-    state.confirmPasswordData.errorClassName = handleErrorClassName(InputTypes.ConfirmPassword,  state.confirmPasswordData.password);
+    state.firstNameData.errorClassName = handleErrorClassName(
+      state.firstNameData.isErrorExist
+    );
 
+    state.emailData.errorClassName = handleErrorClassName(
+      state.emailData.isErrorExist
+    );
+    state.passwordData.errorClassName = handleErrorClassName(
+      state.passwordData.isErrorExist
+    );
+    state.confirmPasswordData.errorClassName = handleErrorClassName(
+      state.confirmPasswordData.isErrorExist
+    );
+
+    console.log(this.state);
     this.setState({ state });
+
+    if (
+      !this.state.emailData.isErrorExist &&
+      !this.state.passwordData.isErrorExist &&
+      !this.state.firstNameData.isErrorExist &&
+      !this.state.confirmPasswordData.isErrorExist &&
+      !this.state.hasPasswordError
+    ) {
+      const body = {
+        email: this.state.emailData.email.trim(),
+        password: this.state.passwordData.password.trim(),
+        firstName: this.state.firstNameData.name.trim(),
+        lastName:
+          this.state.lastNameData.name.trim() === ""
+            ? null
+            : this.state.lastNameData.name.trim(),
+      };
+      ServiceProvider.post(apiUrl.register, body).then((response) => {
+        this.setState({ showRedirectPopup: true });
+      });
+    }
   };
 
   handleChange = (name, value) => {
@@ -78,8 +121,10 @@ class Register extends Component {
       this.handleEmailChange(name, value);
     } else if (name === "password") {
       this.handlePasswordChange(name, value);
-    } else if (name === "name") {
-      this.handleNameChange(name, value);
+    } else if (name === "firstName") {
+      this.handleFirstName(name, value);
+    } else if (name === "lastName") {
+      this.handleLastName(name, value);
     } else {
       this.handleConfirmPasswordChange(name, value);
     }
@@ -98,14 +143,27 @@ class Register extends Component {
         passwordData.password,
         confirmPasswordData.password
       );
-      this.setState({ passwordMatchIcon, iconColor });
+
+      let hasPasswordError;
+      if (iconColor === "green") {
+        hasPasswordError = false;
+      } else {
+        hasPasswordError = true;
+      }
+      this.setState({ passwordMatchIcon, iconColor, hasPasswordError });
     }
   }
 
-  handleNameChange(name, value) {
-    const nameData = { ...this.state.nameData };
-    this.validate(name, value, nameData);
-    this.setState({ nameData });
+  handleFirstName(name, value) {
+    const firstNameData = { ...this.state.firstNameData };
+    this.validate(name, value, firstNameData);
+    this.setState({ firstNameData });
+  }
+
+  handleLastName(name, value) {
+    const lastNameData = { ...this.state.lastNameData };
+    handleLastName(value, lastNameData);
+    this.setState({ lastNameData });
   }
 
   handlePasswordChange(name, value) {
@@ -121,7 +179,13 @@ class Register extends Component {
         passwordData.password,
         confirmPasswordData.password
       );
-      this.setState({ passwordMatchIcon, iconColor });
+      let hasPasswordError;
+      if (iconColor === "green") {
+        hasPasswordError = false;
+      } else {
+        hasPasswordError = true;
+      }
+      this.setState({ passwordMatchIcon, iconColor, hasPasswordError });
     }
   }
 
@@ -147,11 +211,19 @@ class Register extends Component {
     const eyeState = handleEyeIconChange(state.dataType);
     this.setState({
       dataType,
-      eyeState
+      eyeState,
     });
   };
 
+  handleRedirect = () => {
+    this.setState({ redirectToLogin: true });
+  };
+
   render() {
+    if (this.state.redirectToLogin) {
+      return <Redirect to="/login"></Redirect>;
+    }
+
     return (
       <div className="limiter">
         <div className="container-login100">
@@ -159,20 +231,34 @@ class Register extends Component {
             <form className="register-form validate-form">
               <span className="login100-form-title p-b-43">Register</span>
               <div
-                className={this.state.nameData.errorClassName}
-                data-validate="Name is required"
+                className={this.state.firstNameData.errorClassName}
+                data-validate="First Name is required"
               >
                 <input
-                  className={this.state.nameData.className}
+                  className={this.state.firstNameData.className}
                   type="text"
-                  name="name"
-                  onChange={e =>
+                  name="firstName"
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
-                  value={this.state.nameData.email}
+                  value={this.state.firstNameData.name}
                 />
                 <span className="focus-input100"></span>
-                <span className="label-input100">Name</span>
+                <span className="label-input100">First Name</span>
+              </div>
+
+              <div className={this.state.lastNameData.errorClassName}>
+                <input
+                  className={this.state.lastNameData.className}
+                  type="text"
+                  name="lastName"
+                  onChange={(e) =>
+                    this.handleChange(e.target.name, e.target.value)
+                  }
+                  value={this.state.lastNameData.name}
+                />
+                <span className="focus-input100"></span>
+                <span className="label-input100">Last Name</span>
               </div>
 
               <div
@@ -183,7 +269,7 @@ class Register extends Component {
                   className={this.state.emailData.className}
                   type="text"
                   name="email"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.emailData.email}
@@ -200,7 +286,7 @@ class Register extends Component {
                   className={this.state.passwordData.className}
                   type={this.state.dataType}
                   name="password"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.passwordData.password}
@@ -220,9 +306,11 @@ class Register extends Component {
                   </React.Fragment>
                 )}
               </div>
-              <PasswordStrengthChecker
-                password={this.state.passwordData.password}
-              ></PasswordStrengthChecker>
+              {this.state.passwordData.password.length > 0 && (
+                <PasswordStrengthChecker
+                  password={this.state.passwordData.password}
+                ></PasswordStrengthChecker>
+              )}
               <div
                 className={this.state.confirmPasswordData.errorClassName}
                 data-validate="Password is required"
@@ -231,7 +319,7 @@ class Register extends Component {
                   className={this.state.confirmPasswordData.className}
                   type={this.state.dataType}
                   name="confirmPassword"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.confirmPasswordData.password}
@@ -254,7 +342,7 @@ class Register extends Component {
               <div className="container-login100-form-btn">
                 <button
                   className="login100-form-btn"
-                  onClick={e => this.handleRegister(e)}
+                  onClick={(e) => this.handleRegister(e)}
                 >
                   Register
                 </button>
@@ -267,6 +355,17 @@ class Register extends Component {
             <div className="login100-more" style={style}></div>
           </div>
         </div>
+        {this.state.showRedirectPopup && (
+          <PopupComponent
+            modalTitle="Navigate To Login"
+            modalBody="You will now need to enter your credentials to login"
+            modalOKButtonText="OK"
+            showCancelButton={false}
+            showPopup={this.state.showRedirectPopup}
+            togglePopUp={this.handleRedirect}
+          ></PopupComponent>
+        )}
+        {<ToastContainer autoClose={3000} />}
       </div>
     );
   }

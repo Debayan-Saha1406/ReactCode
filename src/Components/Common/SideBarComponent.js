@@ -126,10 +126,12 @@ class SideBar extends Component {
 
   componentDidMount() {
     const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
-    if (!userInfo.profileImageUrl) {
-      this.setState({ showTrashIcon: false });
-    } else {
-      this.setState({ showTrashIcon: true });
+    if (userInfo) {
+      if (!userInfo.profileImageUrl) {
+        this.setState({ showTrashIcon: false });
+      } else {
+        this.setState({ showTrashIcon: true });
+      }
     }
   }
 
@@ -156,7 +158,7 @@ class SideBar extends Component {
               fileComponent={
                 <div id="editPencil">
                   <i
-                    class="fa fa-pencil fa-lg"
+                    className="fa fa-pencil fa-lg"
                     id="pencilHover"
                     style={{
                       cursor: "pointer",
@@ -170,7 +172,7 @@ class SideBar extends Component {
             {this.state.showTrashIcon && (
               <div id="editTrash">
                 <i
-                  class="fa fa-trash"
+                  className="fa fa-trash"
                   aria-hidden="true"
                   id="trash"
                   style={{
@@ -196,6 +198,7 @@ class SideBar extends Component {
               style={{ cursor: "pointer" }}
               onClick={this.handleEditPopup}
             ></i>
+            <br></br>
             <label style={{ marginRight: "5px" }}>{this.props.email}</label>
           </div>
 

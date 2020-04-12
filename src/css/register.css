@@ -1,33 +1,31 @@
-.eye-icon{
-    content: "\f12a";
-    font-family: FontAwesome;
-    display: block;
-    position: absolute;
-    z-index: 110;
-    font-size: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 18px;
+.eye-icon {
+  content: "\f12a";
+  font-family: FontAwesome;
+  display: block;
+  position: absolute;
+  z-index: 110;
+  font-size: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 18px;
 }
 
-
-.register-form{
-    width: 560px;
-    min-height: 100vh;
-    display: block;
-    background-color: #f7f7f7;
-    padding: 110px 55px 55px 55px;
+.register-form {
+  width: 560px;
+  min-height: 100vh;
+  display: block;
+  background-color: #f7f7f7;
+  padding: 40px 55px 55px 55px;
 }
 
-
-.check-icon{
-    content: "\f12a";
-    font-family: FontAwesome;
-    display: block;
-    position: absolute;
-    z-index: 110;
-    font-size: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 18px;
+.check-icon {
+  content: "\f12a";
+  font-family: FontAwesome;
+  display: block;
+  position: absolute;
+  z-index: 110;
+  font-size: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 18px;
 }

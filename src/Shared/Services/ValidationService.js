@@ -20,34 +20,37 @@ export const validateEmail = (value, data) => {
   data.email = value;
 };
 
-
 export const validatePassword = (value, data) => {
-    if (value.trim() === "") {
-      data.className = "input100";
-      data.errorClassName = "wrap-input100 validate-input alert-validate";
-      data.isErrorExist = true;
-     
-    }
-    else {
-      data.className = "input100 has-val";
-      data.errorClassName = "wrap-input100 validate-input";
-      data.isErrorExist = false;
-    }
-    data.password = value;
+  if (value.trim() === "") {
+    data.className = "input100";
+    data.errorClassName = "wrap-input100 validate-input alert-validate";
+    data.isErrorExist = true;
+  } else {
+    data.className = "input100 has-val";
+    data.errorClassName = "wrap-input100 validate-input";
+    data.isErrorExist = false;
   }
+  data.password = value;
+};
 
-  export const validateName = (value, data) => {
-    if (value.trim() === "") {
-      data.className = "input100";
-      data.errorClassName = "wrap-input100 validate-input alert-validate";
-      data.isErrorExist = true;
-    }
-    else {
-      data.className = "input100 has-val";
-      data.errorClassName = "wrap-input100 validate-input";
-      data.isErrorExist = false;
-    }
-    data.name = value;
+export const validateName = (value, data) => {
+  if (value.trim() === "") {
+    data.className = "input100";
+    data.errorClassName = "wrap-input100 validate-input alert-validate";
+    data.isErrorExist = true;
+  } else {
+    data.className = "input100 has-val";
+    data.errorClassName = "wrap-input100 validate-input";
+    data.isErrorExist = false;
   }
-  
+  data.name = value;
+};
 
+export const handleLastName = (value, data) => {
+  if (value.trim() === "") {
+    data.className = "input100";
+  } else {
+    data.className = "input100 has-val";
+  }
+  data.name = value;
+};
