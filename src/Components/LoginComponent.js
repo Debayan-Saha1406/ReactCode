@@ -20,6 +20,7 @@ import {
 import { showErrorMessage } from "../Provider/ToastProvider";
 import { connect } from "react-redux";
 import { saveUserData } from "../Store/Actions/actionCreator";
+import avatar from "../images/avatar.jpg";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -95,10 +96,14 @@ class Login extends Component {
       ServiceProvider.post(apiUrl.login, body).then((response) => {
         if (response.isAdmin) {
           this.setState({ isAdmin: true }, () => {
+            if (response.profileImageUrl === null) {
+              response.profileImageUrl = avatar;
+            }
             setLocalStorageItem(
               constants.userDetails,
               JSON.stringify(response)
             );
+
             this.props.saveUserData(response);
           });
         } else {

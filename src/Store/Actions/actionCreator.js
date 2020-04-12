@@ -71,6 +71,7 @@ export const deleteProfileImageFromStore = (defaultImage) => {
 };
 
 export const saveUserData = (userData) => {
+  debugger;
   return {
     type: actionTypes.SAVE_USER_DATA,
     userData: userData,

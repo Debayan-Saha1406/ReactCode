@@ -20,10 +20,15 @@ const initialState = {
   email: getUserDetails() ? getUserDetails().email : "",
   updatedFirstName: "",
   updatedLastName: "",
-  profileImage: getUserDetails() ? getUserDetails().profileImageUrl : image,
+  profileImage: getUserDetails()
+    ? getUserDetails().profileImageUrl !== null
+      ? getUserDetails().profileImageUrl
+      : image
+    : image,
 };
 
 export const userDetailsReducer = (state = initialState, action) => {
+  debugger;
   switch (action.type) {
     case HANDLE_INPUTCHANGE:
       return {
@@ -46,8 +51,11 @@ export const userDetailsReducer = (state = initialState, action) => {
     case SAVE_USER_DATA:
       return {
         ...state,
+        userId: action.userData.userId,
         firstName: action.userData.firstName,
         lastName: action.userData.lastName,
+        email: action.userData.email,
+        profileImage: action.userData.profileImageUrl,
       };
     case UPDATE_PROFILE_IMAGE:
       return {
