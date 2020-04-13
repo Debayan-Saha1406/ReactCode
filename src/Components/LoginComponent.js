@@ -19,8 +19,10 @@ import {
 } from "../Provider/LocalStorageProvider";
 import { showErrorMessage } from "../Provider/ToastProvider";
 import { connect } from "react-redux";
-import { saveUserData } from "../Store/Actions/actionCreator";
+import { saveUserData, toggleLoader } from "../Store/Actions/actionCreator";
 import avatar from "../images/avatar.jpg";
+
+import LoaderProvider from "./../Provider/LoaderProvider";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -84,30 +86,37 @@ class Login extends Component {
 
     this.setState({ state });
 
-    const body = {
-      email: this.state.emailData.email,
-      password: this.state.passwordData.password,
-    };
-
     if (
       !this.state.emailData.isErrorExist &&
       !this.state.passwordData.isErrorExist
     ) {
+      const body = {
+        email: this.state.emailData.email,
+        password: this.state.passwordData.password,
+      };
+      this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.login, body).then((response) => {
-        if (response.isAdmin) {
-          this.setState({ isAdmin: true }, () => {
-            if (response.profileImageUrl === null) {
-              response.profileImageUrl = avatar;
-            }
-            setLocalStorageItem(
-              constants.userDetails,
-              JSON.stringify(response)
-            );
+        if (response.status === 200) {
+          if (response.data.isAdmin) {
+            this.setState({ isAdmin: true }, () => {
+              if (response.data.profileImageUrl === null) {
+                response.data.profileImageUrl = avatar;
+              }
+              setLocalStorageItem(
+                constants.userDetails,
+                JSON.stringify(response.data)
+              );
 
-            this.props.saveUserData(response);
-          });
+              this.props.saveUserData(response.data);
+              this.props.toggleLoader(false, 1);
+            });
+          } else {
+            this.props.toggleLoader(false, 1);
+            showErrorMessage("You are not authorized to Login");
+          }
         } else {
-          showErrorMessage("You are not authorized to Login");
+          this.props.toggleLoader(false, 1);
+          showErrorMessage(response.data);
         }
       });
     }
@@ -155,7 +164,19 @@ class Login extends Component {
     }
     return (
       <div className="limiter">
-        <div className="container-login100">
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
+          </div>
+        </div>
+        <div
+          className="container-login100"
+          style={{
+            opacity: this.props.screenOpacity,
+          }}
+        >
           <div className="wrap-login100">
             <form className="login100-form validate-form">
               <span className="login100-form-title p-b-43">
@@ -255,12 +276,22 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    showLoader: state.uiDetails.showLoader,
+    screenOpacity: state.uiDetails.screenOpacity,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     saveUserData: (userData) => {
       dispatch(saveUserData(userData));
     },
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
   };
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

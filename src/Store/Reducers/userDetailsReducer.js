@@ -28,7 +28,6 @@ const initialState = {
 };
 
 export const userDetailsReducer = (state = initialState, action) => {
-  debugger;
   switch (action.type) {
     case HANDLE_INPUTCHANGE:
       return {

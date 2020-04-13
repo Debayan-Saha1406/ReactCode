@@ -27,6 +27,10 @@ import { apiUrl } from "./../Shared/Constants";
 import ServiceProvider from "./../Provider/ServiceProvider";
 import PopupComponent from "./Common/PopupComponent";
 import { ToastContainer } from "react-toastify";
+import { showErrorMessage } from "../Provider/ToastProvider";
+import { toggleLoader } from "../Store/Actions/actionCreator";
+import { connect } from "react-redux";
+import LoaderProvider from "./../Provider/LoaderProvider";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -110,8 +114,15 @@ class Register extends Component {
             ? null
             : this.state.lastNameData.name.trim(),
       };
+      this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.register, body).then((response) => {
-        this.setState({ showRedirectPopup: true });
+        if (response.status === 200) {
+          this.setState({ showRedirectPopup: true });
+          this.props.toggleLoader(false, 1);
+        } else {
+          showErrorMessage(response.data);
+          this.props.toggleLoader(false, 1);
+        }
       });
     }
   };
@@ -226,7 +237,19 @@ class Register extends Component {
 
     return (
       <div className="limiter">
-        <div className="container-login100">
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
+          </div>
+        </div>
+        <div
+          className="container-login100"
+          style={{
+            opacity: this.props.screenOpacity,
+          }}
+        >
           <div className="wrap-login100">
             <form className="register-form validate-form">
               <span className="login100-form-title p-b-43">Register</span>
@@ -371,4 +394,19 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => {
+  return {
+    showLoader: state.uiDetails.showLoader,
+    screenOpacity: state.uiDetails.screenOpacity,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

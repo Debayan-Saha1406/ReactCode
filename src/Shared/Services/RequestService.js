@@ -12,17 +12,11 @@ const client = axios.create({
 
 const request = async function (options) {
   const onSuccess = function (response) {
-    return response.data;
+    return response;
   };
 
   const onError = function (error) {
-    if (error.response) {
-      showErrorMessage(error.response.data);
-    } else {
-      console.log("Error Message:", error.message);
-    }
-
-    return Promise.reject(error.response || error.message);
+    return error.response || error.message;
   };
 
   try {
