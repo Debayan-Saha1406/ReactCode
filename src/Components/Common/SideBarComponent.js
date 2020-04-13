@@ -22,6 +22,7 @@ import {
   setLocalStorageItem,
 } from "./../../Provider/LocalStorageProvider";
 import avatar from "../../images/avatar.jpg";
+import { toggleLoader } from "./../../Store/Actions/actionCreator";
 
 class SideBar extends Component {
   state = {
@@ -47,10 +48,17 @@ class SideBar extends Component {
         firstName: this.props.updatedFirstName,
         lastName: this.props.updatedLastName,
       };
+      this.props.toggleLoader(true, "15%");
       ServiceProvider.put(apiUrl.update, this.props.userId, body).then(
         (response) => {
-          this.updateLocalStorage();
-          this.props.onUpdateClick();
+          if (response.status === 200) {
+            this.updateLocalStorage();
+            this.props.onUpdateClick();
+            this.props.toggleLoader(false, 1);
+          } else {
+            showErrorMessage(response.data);
+            this.props.toggleLoader(false, 1);
+          }
         }
       );
     }
@@ -137,9 +145,14 @@ class SideBar extends Component {
 
   render() {
     return (
-      <nav id="sidebar" className={this.props.sideBarClassName}>
+      <nav
+        id="sidebar"
+        className={this.props.sideBarClassName}
+        style={{
+          opacity: this.props.screenOpacity,
+        }}
+      >
         <div className="p-4 pt-5">
-          {!this.state.hasUploadErrors && <ToastContainer></ToastContainer>}
           <div style={{ position: "relative", left: 0, top: 0 }}>
             <a
               className="img logo rounded-circle mb-5"
@@ -279,6 +292,7 @@ class SideBar extends Component {
             component={<EditDetailsComponent />}
           ></PopupComponent>
         )}
+        {!this.state.hasUploadErrors && <ToastContainer></ToastContainer>}
       </nav>
     );
   }
@@ -294,6 +308,7 @@ const mapStateToProps = (state) => {
     image: state.userDetails.profileImage,
     updatedFirstName: state.userDetails.updatedFirstName,
     updatedLastName: state.userDetails.updatedLastName,
+    screenOpacity: state.uiDetails.screenOpacity,
   };
 };
 
@@ -307,6 +322,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     onDeleteImage: (userId, defaultImage) => {
       dispatch(deleteProfileImage(userId, defaultImage));
+    },
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
     },
   };
 };

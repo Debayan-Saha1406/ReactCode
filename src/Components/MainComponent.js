@@ -1,10 +1,15 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class Main extends Component {
   state = {};
   render() {
     return (
-      <React.Fragment>
+      <div
+        style={{
+          opacity: this.props.screenOpacity,
+        }}
+      >
         <h2 className="mb-4">Sidebar #01</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -24,9 +29,15 @@ class Main extends Component {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
-      </React.Fragment>
+      </div>
     );
   }
 }
 
-export default Main;
+const mapStateToProps = (state) => {
+  return {
+    screenOpacity: state.uiDetails.screenOpacity,
+  };
+};
+
+export default connect(mapStateToProps, null)(Main);

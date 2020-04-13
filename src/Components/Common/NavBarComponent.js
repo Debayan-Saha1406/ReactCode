@@ -5,26 +5,26 @@ import "../../css/navBar.css";
 import { connect } from "react-redux";
 import {
   toggleNavBarDropDown,
-  toggleSideBar
+  toggleSideBar,
 } from "../../Store/Actions/actionCreator";
 import PopupComponent from "./PopupComponent";
 import { removeLocalStorageItem } from "../../Provider/LocalStorageProvider";
 
 const cursorStyle = {
-  cursor: "pointer"
+  cursor: "pointer",
 };
 
 class Navbar extends Component {
   state = {
     showPopup: false,
-    show: ""
+    show: "",
   };
 
   handleLogout = () => {
     this.setState({ showPopup: true });
   };
 
-  handleLogoutAction = event => {
+  handleLogoutAction = (event) => {
     if (event.target.name === "No") {
       this.setState({ showPopup: false });
     } else {
@@ -42,7 +42,12 @@ class Navbar extends Component {
       return <Redirect to="/login" />;
     }
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav
+        className="navbar navbar-expand-lg navbar-light bg-light"
+        style={{
+          opacity: this.props.screenOpacity,
+        }}
+      >
         <div className="container-fluid">
           <button
             type="button"
@@ -105,20 +110,20 @@ class Navbar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    // showDropDown: state.navBarReducer.showDropDown
+    screenOpacity: state.uiDetails.screenOpacity,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     // onNavBarToggle: () => {
     //   dispatch(toggleNavBarDropDown());
     // },
     onSideBarToggle: () => {
       dispatch(toggleSideBar());
-    }
+    },
   };
 };
 

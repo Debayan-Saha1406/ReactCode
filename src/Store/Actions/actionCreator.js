@@ -1,6 +1,7 @@
 import * as actionTypes from "../Actions/actions";
 import ServiceProvider from "../../Provider/ServiceProvider";
 import { apiUrl } from "./../../Shared/Constants";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 
 export const toggleSideBar = () => {
   return {
@@ -42,8 +43,16 @@ export const handleProfileImage = (image, userId) => {
     const body = {
       image: updatedImage,
     };
+
+    dispatch(toggleLoader(true, "15%"));
     ServiceProvider.put(apiUrl.profileImage, userId, body).then((response) => {
-      dispatch(updateProfileImage(image));
+      if (response.status === 200) {
+        dispatch(updateProfileImage(image));
+        dispatch(toggleLoader(false, 1));
+      } else {
+        showErrorMessage(response.data);
+        dispatch(toggleLoader(false, 1));
+      }
     });
   };
 };
@@ -57,8 +66,15 @@ export const updateProfileImage = (image) => {
 
 export const deleteProfileImage = (userId, defaultImage) => {
   return (dispatch) => {
+    dispatch(toggleLoader(true, "15%"));
     ServiceProvider.deleteItem(apiUrl.profileImage, userId).then((response) => {
-      dispatch(deleteProfileImageFromStore(defaultImage));
+      if (response.status === 200) {
+        dispatch(deleteProfileImageFromStore(defaultImage));
+        dispatch(toggleLoader(false, 1));
+      } else {
+        showErrorMessage(response.data);
+        dispatch(toggleLoader(false, 1));
+      }
     });
   };
 };
