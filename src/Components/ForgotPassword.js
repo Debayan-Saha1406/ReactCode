@@ -36,11 +36,10 @@ class ForgotPassword extends Component {
     this.setState({ state });
 
     if (!this.state.emailData.isErrorExist) {
-      ServiceProvider.getWithParams(
-        apiUrl.forgotPassword,
-        "email",
-        this.state.emailData.email
-      ).then((response) => {
+      const body = {
+        email: this.state.email,
+      };
+      ServiceProvider.post(apiUrl.forgotPassword, body).then((response) => {
         if (!response) {
           showErrorMessage("Mail Not Sent Due To Technical Issue");
         } else {
