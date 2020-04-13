@@ -46,6 +46,19 @@ export const validateName = (value, data) => {
   data.name = value;
 };
 
+export const validateToken = (value, data) => {
+  if (value.trim() === "") {
+    data.className = "input100";
+    data.errorClassName = "wrap-input100 validate-input alert-validate";
+    data.isErrorExist = true;
+  } else {
+    data.className = "input100 has-val";
+    data.errorClassName = "wrap-input100 validate-input";
+    data.isErrorExist = false;
+  }
+  data.token = value;
+};
+
 export const handleLastName = (value, data) => {
   if (value.trim() === "") {
     data.className = "input100";

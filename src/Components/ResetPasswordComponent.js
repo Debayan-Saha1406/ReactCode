@@ -1,93 +1,175 @@
 import React, { Component } from "react";
 import image from "../images/resetPassword.jpg";
-import { validatePassword } from "../Shared/Services/ValidationService";
+import {
+  validatePassword,
+  validateToken,
+  validateEmail,
+} from "../Shared/Services/ValidationService";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
 import { Redirect } from "react-router-dom";
 import {
   handleEyeIconChange,
   handleDataTypeChange,
   handlePasswordMatchIcon,
-  handlePasswordMatchIconColor
+  handlePasswordMatchIconColor,
 } from "../Shared/Services/PasswordService";
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
-import { InputTypes } from "../Shared/Constants";
+import ServiceProvider from "./../Provider/ServiceProvider";
+import "../css/forgotPassword.css";
+import { apiUrl } from "./../Shared/Constants";
+import { ToastContainer } from "react-toastify";
+import PopupComponent from "./Common/PopupComponent";
 
 const style = {
-  backgroundImage: `url(${image})`
+  backgroundImage: `url(${image})`,
 };
 
 let passwordData, confirmPasswordData;
 
 class ResetPassword extends Component {
   state = {
+    emailData: {
+      email: "",
+      className: "input100",
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist: true,
+    },
+    resetToken: {
+      token: "",
+      className: "input100",
+      errorClassName: "wrap-input100 validate-input",
+      isErrorExist: true,
+    },
     passwordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
     confirmPasswordData: {
       password: "",
       className: "input100",
       errorClassName: "wrap-input100 validate-input",
-      isErrorExist: true
+      isErrorExist: true,
     },
     dataType: "password",
     eyeState: "",
     passwordMatchIcon: "close",
     iconColor: "red",
-    redirectToLogin: false
+    redirectToLogin: false,
+    passwordMatch: false,
+    showRedirectPopup: false,
   };
 
   handleChange = (name, value) => {
     if (name === "password") {
       this.handlePasswordChange(name, value);
+    } else if (name === "resetToken") {
+      this.handleTokenChange(name, value);
+    } else if (name === "email") {
+      this.handleEmailChange(name, value);
     } else {
       this.handleConfirmPasswordChange(name, value);
     }
   };
 
+  handleEmailChange = (name, value) => {
+    const emailData = { ...this.state.emailData };
+    validateEmail(value, emailData);
+    this.setState({ emailData });
+  };
+
+  handleTokenChange = (name, value) => {
+    const resetToken = { ...this.state.resetToken };
+    validateToken(value, resetToken);
+    this.setState({ resetToken });
+  };
+
   handlePasswordChange(name, value) {
     passwordData = { ...this.state.passwordData };
-    this.validate(name, value, passwordData);
+    validatePassword(value, passwordData);
     this.setState({ passwordData });
     if (confirmPasswordData) {
-      const passwordMatchIcon = handlePasswordMatchIcon(passwordData.password, confirmPasswordData.password);
-        const iconColor = handlePasswordMatchIconColor(passwordData.password, confirmPasswordData.password);
-        this.setState({ passwordMatchIcon, iconColor });
+      const passwordMatchIcon = handlePasswordMatchIcon(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      const iconColor = handlePasswordMatchIconColor(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      let passwordMatch = this.handlePasswordMatchStatus(iconColor);
+      this.setState({ passwordMatchIcon, iconColor, passwordMatch });
     }
   }
 
-  validate(name, value, data) {
-    validatePassword(value, data);
+  handlePasswordMatchStatus(iconColor) {
+    let passwordMatch;
+    if (iconColor === "green") {
+      passwordMatch = true;
+    } else {
+      passwordMatch = false;
+    }
+    return passwordMatch;
   }
 
   handleConfirmPasswordChange(name, value) {
     confirmPasswordData = { ...this.state.confirmPasswordData };
-    this.validate(name, value, confirmPasswordData);
+    validatePassword(value, confirmPasswordData);
     this.setState({ confirmPasswordData });
     if (passwordData) {
-        const passwordMatchIcon = handlePasswordMatchIcon(passwordData.password, confirmPasswordData.password);
-        const iconColor = handlePasswordMatchIconColor(passwordData.password, confirmPasswordData.password);
-        this.setState({ passwordMatchIcon, iconColor });
-      }
+      const passwordMatchIcon = handlePasswordMatchIcon(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      const iconColor = handlePasswordMatchIconColor(
+        passwordData.password,
+        confirmPasswordData.password
+      );
+      let passwordMatch = this.handlePasswordMatchStatus(iconColor);
+      this.setState({ passwordMatchIcon, iconColor, passwordMatch });
+    }
   }
 
-  handleReset = e => {
+  handleOk = () => {
+    this.setState({ redirectToLogin: true });
+  };
+
+  handleReset = (e) => {
     e.preventDefault();
     const state = { ...this.state };
-    state.passwordData.errorClassName = handleErrorClassName(InputTypes.Password,  state.passwordData.password);
-    state.confirmPasswordData.errorClassName = handleErrorClassName(InputTypes.ConfirmPassword,  state.confirmPasswordData.password);
 
+    state.emailData.errorClassName = handleErrorClassName(
+      state.emailData.isErrorExist
+    );
+
+    state.resetToken.errorClassName = handleErrorClassName(
+      state.resetToken.isErrorExist
+    );
+    state.passwordData.errorClassName = handleErrorClassName(
+      state.passwordData.isErrorExist
+    );
+    state.confirmPasswordData.errorClassName = handleErrorClassName(
+      state.confirmPasswordData.isErrorExist
+    );
+    console.log(this.state);
     this.setState({ state });
 
-    if (this.state.iconColor !== "green") {
-      alert("Passwords Do Not Match");
-    } else if (
+    if (
       !this.state.passwordData.isErrorExist &&
-      !this.state.confirmPasswordData.isErrorExist
+      !this.state.emailData.isErrorExist &&
+      !this.state.confirmPasswordData.isErrorExist &&
+      !this.state.resetToken.isErrorExist &&
+      this.state.passwordMatch
     ) {
-      this.setState({ redirectToLogin: true });
+      const body = {
+        email: this.state.emailData.email,
+        token: this.state.resetToken.token,
+        newPassword: this.state.passwordData.password,
+      };
+      ServiceProvider.post(apiUrl.resetPassword, body).then((response) => {
+        this.setState({ showRedirectPopup: true });
+      });
     }
   };
 
@@ -97,7 +179,7 @@ class ResetPassword extends Component {
     const eyeState = handleEyeIconChange(state.dataType);
     this.setState({
       dataType,
-      eyeState
+      eyeState,
     });
   };
 
@@ -109,11 +191,46 @@ class ResetPassword extends Component {
       <div className="limiter">
         <div className="container-login100">
           <div className="wrap-login100">
-            <form className="login100-form validate-form">
+            <form className="login100-form validate-form" id="resetForm">
               <span className="login100-form-title forgot-password">
                 Reset Password
               </span>
               <br></br>
+
+              <div
+                className={this.state.emailData.errorClassName}
+                data-validate="Valid email is required: ex@abc.xyz"
+              >
+                <input
+                  className={this.state.emailData.className}
+                  type="text"
+                  name="email"
+                  onChange={(e) =>
+                    this.handleChange(e.target.name, e.target.value)
+                  }
+                  value={this.state.emailData.email}
+                />
+                <span className="focus-input100"></span>
+                <span className="label-input100">Email</span>
+              </div>
+
+              <div
+                className={this.state.resetToken.errorClassName}
+                data-validate="Token is required"
+              >
+                <input
+                  className={this.state.resetToken.className}
+                  type="text"
+                  name="resetToken"
+                  onChange={(e) =>
+                    this.handleChange(e.target.name, e.target.value)
+                  }
+                  value={this.state.passwordData.email}
+                />
+                <span className="focus-input100"></span>
+                <span className="label-input100">Token</span>
+              </div>
+
               <div
                 className={this.state.passwordData.errorClassName}
                 data-validate="Password is required"
@@ -122,7 +239,7 @@ class ResetPassword extends Component {
                   className={this.state.passwordData.className}
                   type={this.state.dataType}
                   name="password"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.passwordData.email}
@@ -142,9 +259,11 @@ class ResetPassword extends Component {
                   </React.Fragment>
                 )}
               </div>
-              <PasswordStrengthChecker
-                password={this.state.passwordData.password}
-              ></PasswordStrengthChecker>
+              {this.state.passwordData.password.length > 0 && (
+                <PasswordStrengthChecker
+                  password={this.state.passwordData.password}
+                ></PasswordStrengthChecker>
+              )}
               <div
                 className={this.state.confirmPasswordData.errorClassName}
                 data-validate="Confirm Password is required"
@@ -153,7 +272,7 @@ class ResetPassword extends Component {
                   className={this.state.confirmPasswordData.className}
                   type={this.state.dataType}
                   name="confirmPassword"
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleChange(e.target.name, e.target.value)
                   }
                   value={this.state.confirmPasswordData.email}
@@ -177,7 +296,7 @@ class ResetPassword extends Component {
               <div className="container-login100-form-btn">
                 <button
                   className="login100-form-btn"
-                  onClick={e => this.handleReset(e)}
+                  onClick={(e) => this.handleReset(e)}
                 >
                   Reset
                 </button>
@@ -188,6 +307,17 @@ class ResetPassword extends Component {
             <div className="login100-more" style={style}></div>
           </div>
         </div>
+        {this.state.showRedirectPopup && (
+          <PopupComponent
+            showPopup={this.state.showRedirectPopup}
+            togglePopUp={this.handleOk}
+            modalTitle="Reset Password Successful"
+            modalBody="You will be navigated to Login where you can login with your new password"
+            modalOKButtonText="Ok"
+            showCancelButton={false}
+          ></PopupComponent>
+        )}
+        {<ToastContainer autoClose={3000}></ToastContainer>}
       </div>
     );
   }
