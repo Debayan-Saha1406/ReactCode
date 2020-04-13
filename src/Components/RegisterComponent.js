@@ -95,7 +95,6 @@ class Register extends Component {
       state.confirmPasswordData.isErrorExist
     );
 
-    console.log(this.state);
     this.setState({ state });
 
     if (

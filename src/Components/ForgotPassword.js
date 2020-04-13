@@ -9,6 +9,9 @@ import { ToastContainer } from "react-toastify";
 import { showErrorMessage } from "../Provider/ToastProvider";
 import { showSuccessMessage } from "./../Provider/ToastProvider";
 import PopupComponent from "./Common/PopupComponent";
+import { toggleLoader } from "../Store/Actions/actionCreator";
+import { connect } from "react-redux";
+import LoaderProvider from "./../Provider/LoaderProvider";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -37,13 +40,21 @@ class ForgotPassword extends Component {
 
     if (!this.state.emailData.isErrorExist) {
       const body = {
-        email: this.state.email,
+        email: this.state.emailData.email,
       };
+      this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.forgotPassword, body).then((response) => {
-        if (!response) {
-          showErrorMessage("Mail Not Sent Due To Technical Issue");
+        if (response.status === 200) {
+          if (!response) {
+            showErrorMessage("Mail Not Sent Due To Technical Issue");
+            this.props.toggleLoader(false, 1);
+          } else {
+            this.setState({ showRedirectPopup: true });
+            this.props.toggleLoader(false, 1);
+          }
         } else {
-          this.setState({ showRedirectPopup: true });
+          showErrorMessage(response.data);
+          this.props.toggleLoader(false, 1);
         }
       });
     }
@@ -65,7 +76,19 @@ class ForgotPassword extends Component {
     }
     return (
       <div className="limiter">
-        <div className="container-login100">
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
+          </div>
+        </div>
+        <div
+          className="container-login100"
+          style={{
+            opacity: this.props.screenOpacity,
+          }}
+        >
           <div className="wrap-login100">
             <form className="login100-form validate-form">
               <span className="login100-form-title forgot-password">
@@ -124,4 +147,19 @@ class ForgotPassword extends Component {
   }
 }
 
-export default ForgotPassword;
+const mapStateToProps = (state) => {
+  return {
+    showLoader: state.uiDetails.showLoader,
+    screenOpacity: state.uiDetails.screenOpacity,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

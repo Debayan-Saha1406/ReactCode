@@ -19,6 +19,10 @@ import "../css/forgotPassword.css";
 import { apiUrl } from "./../Shared/Constants";
 import { ToastContainer } from "react-toastify";
 import PopupComponent from "./Common/PopupComponent";
+import { toggleLoader } from "../Store/Actions/actionCreator";
+import { connect } from "react-redux";
+import LoaderProvider from "./../Provider/LoaderProvider";
+import { showErrorMessage } from "../Provider/ToastProvider";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -167,8 +171,15 @@ class ResetPassword extends Component {
         token: this.state.resetToken.token,
         newPassword: this.state.passwordData.password,
       };
+      this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.resetPassword, body).then((response) => {
-        this.setState({ showRedirectPopup: true });
+        if (response.status === 200) {
+          this.setState({ showRedirectPopup: true });
+          this.props.toggleLoader(false, 1);
+        } else {
+          showErrorMessage(response.data);
+          this.props.toggleLoader(false, 1);
+        }
       });
     }
   };
@@ -189,7 +200,19 @@ class ResetPassword extends Component {
     }
     return (
       <div className="limiter">
-        <div className="container-login100">
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
+          </div>
+        </div>
+        <div
+          className="container-login100"
+          style={{
+            opacity: this.props.screenOpacity,
+          }}
+        >
           <div className="wrap-login100">
             <form className="login100-form validate-form" id="resetForm">
               <span className="login100-form-title forgot-password">
@@ -323,4 +346,19 @@ class ResetPassword extends Component {
   }
 }
 
-export default ResetPassword;
+const mapStateToProps = (state) => {
+  return {
+    showLoader: state.uiDetails.showLoader,
+    screenOpacity: state.uiDetails.screenOpacity,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);
