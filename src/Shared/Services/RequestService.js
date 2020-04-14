@@ -28,8 +28,8 @@ const request = async function (options) {
 
   try {
     token =
-      JSON.parse(getLocalStorageItem(constants.userDetails)) !== null
-        ? JSON.parse(getLocalStorageItem(constants.userDetails)).accessToken
+      getLocalStorageItem(constants.userDetails) !== null
+        ? getLocalStorageItem(constants.userDetails).accessToken
         : null;
     const response = await client(options);
     return onSuccess(response);

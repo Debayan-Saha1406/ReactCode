@@ -55,7 +55,7 @@ class Login extends Component {
       this.setState({ redirectToAdmin: true });
     }
 
-    const userDetails = JSON.parse(getLocalStorageItem(constants.userDetails));
+    const userDetails = getLocalStorageItem(constants.userDetails);
     if (userDetails) {
       if (userDetails.rememberMe) {
         const emailData = { ...this.state.emailData };
@@ -102,10 +102,7 @@ class Login extends Component {
               if (response.data.data.profileImageUrl === null) {
                 response.data.data.profileImageUrl = avatar;
               }
-              setLocalStorageItem(
-                constants.userDetails,
-                JSON.stringify(response.data.data)
-              );
+              setLocalStorageItem(constants.userDetails, response.data.data);
 
               this.props.saveUserData(response.data.data);
               this.props.toggleLoader(false, 1);

@@ -335,7 +335,7 @@ class ResetPassword extends Component {
             showPopup={this.state.showRedirectPopup}
             togglePopUp={this.handleOk}
             modalTitle="Reset Password Successful"
-            modalBody="You will be navigated to Login where you can login with your new password"
+            modalBody="You Can Sign In With Your New Password"
             modalOKButtonText="Ok"
             showCancelButton={false}
           ></PopupComponent>

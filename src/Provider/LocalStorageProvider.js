@@ -1,5 +1,5 @@
-export const getLocalStorageItem = key => {
-  return localStorage.getItem(key);
+export const getLocalStorageItem = (key) => {
+  return JSON.parse(localStorage.getItem(key));
 };
 
 export const removeLocalStorageItem = () => {
@@ -7,5 +7,5 @@ export const removeLocalStorageItem = () => {
 };
 
 export const setLocalStorageItem = (key, value) => {
-  localStorage.setItem(key, value);
+  localStorage.setItem(key, JSON.stringify(value));
 };

@@ -137,7 +137,7 @@ class ForgotPassword extends Component {
             showPopup={this.state.showRedirectPopup}
             togglePopUp={this.handleOk}
             modalTitle="Reset Password"
-            modalBody="You will now be redirected to a page where you can reset your password"
+            modalBody="Your Password Reset Email Has Been Sent. Please Check Your Inbox To Continue."
             modalOKButtonText="Ok"
             showCancelButton={false}
           ></PopupComponent>

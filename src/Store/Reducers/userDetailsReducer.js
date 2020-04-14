@@ -10,7 +10,7 @@ import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
 import { constants } from "../../Shared/Constants";
 
 const getUserDetails = () => {
-  return JSON.parse(getLocalStorageItem(constants.userDetails));
+  return getLocalStorageItem(constants.userDetails);
 };
 
 const initialState = {

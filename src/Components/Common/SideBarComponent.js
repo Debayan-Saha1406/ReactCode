@@ -81,7 +81,7 @@ class SideBar extends Component {
   };
 
   deleteProfileImageFromLocalStorage() {
-    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo !== null) {
       userInfo.profileImageUrl = avatar;
       setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
@@ -89,7 +89,7 @@ class SideBar extends Component {
   }
 
   updateLocalStorage() {
-    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo !== null) {
       userInfo.firstName = this.props.updatedFirstName;
       userInfo.lastName = this.props.updatedLastName;
@@ -98,7 +98,7 @@ class SideBar extends Component {
   }
 
   updateProfileImage(image) {
-    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo !== null) {
       userInfo.profileImageUrl = image;
       setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
@@ -139,7 +139,7 @@ class SideBar extends Component {
   };
 
   componentDidMount() {
-    const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
+    const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo) {
       if (!userInfo.profileImageUrl) {
         this.setState({ showTrashIcon: false });
