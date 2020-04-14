@@ -53,7 +53,7 @@ class ForgotPassword extends Component {
             this.props.toggleLoader(false, 1);
           }
         } else {
-          showErrorMessage(response.data);
+          showErrorMessage(response.data.errors);
           this.props.toggleLoader(false, 1);
         }
       });

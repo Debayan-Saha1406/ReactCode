@@ -50,7 +50,7 @@ export const handleProfileImage = (image, userId) => {
         dispatch(updateProfileImage(image));
         dispatch(toggleLoader(false, 1));
       } else {
-        showErrorMessage(response.data);
+        showErrorMessage(response.data.errors);
         dispatch(toggleLoader(false, 1));
       }
     });
@@ -72,7 +72,7 @@ export const deleteProfileImage = (userId, defaultImage) => {
         dispatch(deleteProfileImageFromStore(defaultImage));
         dispatch(toggleLoader(false, 1));
       } else {
-        showErrorMessage(response.data);
+        showErrorMessage(response.data.errors);
         dispatch(toggleLoader(false, 1));
       }
     });

@@ -6,17 +6,17 @@ import "../../css/sideBar.css";
 class EditDetailsComponent extends Component {
   state = {
     firstName: "",
-    lastName: ""
+    lastName: "",
   };
 
   componentDidMount() {
     this.setState({
       firstName: this.props.firstName,
-      lastName: this.props.lastName
+      lastName: this.props.lastName,
     });
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value }, () => {
       this.props.handleChange(this.state);
     });
@@ -25,7 +25,7 @@ class EditDetailsComponent extends Component {
   render() {
     return (
       <React.Fragment>
-        <div class="form-group">
+        <div className="form-group">
           <label>First Name</label>
           <input
             type="text"
@@ -37,7 +37,7 @@ class EditDetailsComponent extends Component {
             value={this.state.firstName}
           />
         </div>
-        <div class="form-group">
+        <div className="form-group">
           <label>Last Name</label>
           <input
             type="text"
@@ -53,18 +53,18 @@ class EditDetailsComponent extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     firstName: state.userDetails.firstName,
-    lastName: state.userDetails.lastName
+    lastName: state.userDetails.lastName,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    handleChange: state => {
+    handleChange: (state) => {
       dispatch(handleInputChange(state));
-    }
+    },
   };
 };
 

@@ -119,7 +119,7 @@ class Register extends Component {
           this.setState({ showRedirectPopup: true });
           this.props.toggleLoader(false, 1);
         } else {
-          showErrorMessage(response.data);
+          showErrorMessage(response.data.errors);
           this.props.toggleLoader(false, 1);
         }
       });

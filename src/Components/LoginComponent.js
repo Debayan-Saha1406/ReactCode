@@ -97,17 +97,17 @@ class Login extends Component {
       this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.login, body).then((response) => {
         if (response.status === 200) {
-          if (response.data.isAdmin) {
+          if (response.data.data.isAdmin) {
             this.setState({ isAdmin: true }, () => {
-              if (response.data.profileImageUrl === null) {
-                response.data.profileImageUrl = avatar;
+              if (response.data.data.profileImageUrl === null) {
+                response.data.data.profileImageUrl = avatar;
               }
               setLocalStorageItem(
                 constants.userDetails,
-                JSON.stringify(response.data)
+                JSON.stringify(response.data.data)
               );
 
-              this.props.saveUserData(response.data);
+              this.props.saveUserData(response.data.data);
               this.props.toggleLoader(false, 1);
             });
           } else {
@@ -116,7 +116,7 @@ class Login extends Component {
           }
         } else {
           this.props.toggleLoader(false, 1);
-          showErrorMessage(response.data);
+          showErrorMessage(response.data.errors);
         }
       });
     }

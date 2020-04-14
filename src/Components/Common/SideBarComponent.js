@@ -56,7 +56,7 @@ class SideBar extends Component {
             this.props.onUpdateClick();
             this.props.toggleLoader(false, 1);
           } else {
-            showErrorMessage(response.data);
+            showErrorMessage(response.data.errors);
             this.props.toggleLoader(false, 1);
           }
         }
@@ -82,21 +82,27 @@ class SideBar extends Component {
 
   deleteProfileImageFromLocalStorage() {
     const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
-    userInfo.profileImageUrl = avatar;
-    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+    if (userInfo !== null) {
+      userInfo.profileImageUrl = avatar;
+      setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+    }
   }
 
   updateLocalStorage() {
     const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
-    userInfo.firstName = this.props.updatedFirstName;
-    userInfo.lastName = this.props.updatedLastName;
-    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+    if (userInfo !== null) {
+      userInfo.firstName = this.props.updatedFirstName;
+      userInfo.lastName = this.props.updatedLastName;
+      setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+    }
   }
 
   updateProfileImage(image) {
     const userInfo = JSON.parse(getLocalStorageItem(constants.userDetails));
-    userInfo.profileImageUrl = image;
-    setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+    if (userInfo !== null) {
+      userInfo.profileImageUrl = image;
+      setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+    }
   }
 
   onMouseOver = () => {

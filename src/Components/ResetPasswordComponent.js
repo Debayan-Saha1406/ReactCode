@@ -177,7 +177,7 @@ class ResetPassword extends Component {
           this.setState({ showRedirectPopup: true });
           this.props.toggleLoader(false, 1);
         } else {
-          showErrorMessage(response.data);
+          showErrorMessage(response.data.errors);
           this.props.toggleLoader(false, 1);
         }
       });
@@ -239,7 +239,7 @@ class ResetPassword extends Component {
 
               <div
                 className={this.state.resetToken.errorClassName}
-                data-validate="Token is required"
+                data-validate="Recovery Code is required"
               >
                 <input
                   className={this.state.resetToken.className}
@@ -251,7 +251,7 @@ class ResetPassword extends Component {
                   value={this.state.passwordData.email}
                 />
                 <span className="focus-input100"></span>
-                <span className="label-input100">Token</span>
+                <span className="label-input100">Recovery Code</span>
               </div>
 
               <div

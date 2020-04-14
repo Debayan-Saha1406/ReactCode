@@ -1,13 +1,20 @@
 import axios from "axios";
-import { apiUrl } from "../Constants";
+import { apiUrl, constants } from "../Constants";
 import "react-toastify/dist/ReactToastify.css";
 import { showErrorMessage } from "../../Provider/ToastProvider";
+import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
 
-const token = "";
+let token = "";
 
 const client = axios.create({
   baseURL: apiUrl.baseUrl,
-  auth: { Authorization: "Bearer " + { token } },
+  headers: {
+    Authorization: {
+      toString() {
+        return `Bearer ${token}`;
+      },
+    },
+  },
 });
 
 const request = async function (options) {
@@ -20,6 +27,10 @@ const request = async function (options) {
   };
 
   try {
+    token =
+      JSON.parse(getLocalStorageItem(constants.userDetails)) !== null
+        ? JSON.parse(getLocalStorageItem(constants.userDetails)).accessToken
+        : null;
     const response = await client(options);
     return onSuccess(response);
   } catch (error) {
