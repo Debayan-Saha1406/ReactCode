@@ -96,7 +96,7 @@ class ForgotPassword extends Component {
               </span>
               <div>
                 To recover your password, you need to enter your registered
-                email address. We will sent the recovery code to your email.
+                email address. We will send the recovery code to your email.
               </div>
               <br></br>
               <div
