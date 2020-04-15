@@ -8,7 +8,12 @@ import {
   toggleSideBar,
 } from "../../Store/Actions/actionCreator";
 import PopupComponent from "./PopupComponent";
-import { removeLocalStorageItem } from "../../Provider/LocalStorageProvider";
+import {
+  removeLocalStorageItem,
+  clearLocalStorage,
+} from "../../Provider/LocalStorageProvider";
+import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
+import { constants } from "../../Shared/Constants";
 
 const cursorStyle = {
   cursor: "pointer",
@@ -29,7 +34,11 @@ class Navbar extends Component {
       this.setState({ showPopup: false });
     } else {
       this.setState({ redirectToLogin: true });
-      removeLocalStorageItem();
+      if (getLocalStorageItem(constants.loginDetails).rememberMe)
+        removeLocalStorageItem(constants.userDetails);
+      else {
+        clearLocalStorage();
+      }
     }
   };
 

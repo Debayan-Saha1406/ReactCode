@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c6d98d9e.chunk.css",
+    "main.js": "/static/js/main.767120df.chunk.js",
+    "main.js.map": "/static/js/main.767120df.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.ad540005.js",
+    "runtime-main.js.map": "/static/js/runtime-main.ad540005.js.map",
+    "static/css/2.eb4edab8.chunk.css": "/static/css/2.eb4edab8.chunk.css",
+    "static/js/2.62eddcba.chunk.js": "/static/js/2.62eddcba.chunk.js",
+    "static/js/2.62eddcba.chunk.js.map": "/static/js/2.62eddcba.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.8f6b06920b4c14f9b2a2b7fd85183e93.js": "/precache-manifest.8f6b06920b4c14f9b2a2b7fd85183e93.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.eb4edab8.chunk.css.map": "/static/css/2.eb4edab8.chunk.css.map",
+    "static/css/main.c6d98d9e.chunk.css.map": "/static/css/main.c6d98d9e.chunk.css.map",
+    "static/js/2.62eddcba.chunk.js.LICENSE.txt": "/static/js/2.62eddcba.chunk.js.LICENSE.txt",
+    "static/media/Login.png": "/static/media/Login.cdad3e9f.png",
+    "static/media/main.css": "/static/media/Poppins-SemiBold.e63b93df.ttf",
+    "static/media/RegisterButton.jpg": "/static/media/RegisterButton.6c5246b0.jpg",
+    "static/media/forgotPassword.png": "/static/media/forgotPassword.2274b047.png",
+    "static/media/resetPassword.jpg": "/static/media/resetPassword.87ac1a87.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ad540005.js",
+    "static/css/2.eb4edab8.chunk.css",
+    "static/js/2.62eddcba.chunk.js",
+    "static/css/main.c6d98d9e.chunk.css",
+    "static/js/main.767120df.chunk.js"
+  ]
+}

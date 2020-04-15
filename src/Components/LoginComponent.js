@@ -48,26 +48,29 @@ class Login extends Component {
     dataType: "password",
     eyeState: "",
     redirectToAdmin: false,
+    isFormDirty: false,
+    isEmailTextboxTouched: false,
+    isPasswordTextboxTouched: false,
   };
 
   componentDidMount() {
-    if (getLocalStorageItem("userDetails") !== null) {
+    if (getLocalStorageItem(constants.userDetails.accessToken) !== null) {
       this.setState({ redirectToAdmin: true });
     }
 
-    const userDetails = getLocalStorageItem(constants.userDetails);
-    if (userDetails) {
-      if (userDetails.rememberMe) {
+    const loginDetails = getLocalStorageItem(constants.loginDetails);
+    if (loginDetails) {
+      if (loginDetails.rememberMe) {
         const emailData = { ...this.state.emailData };
         const passwordData = { ...this.state.passwordData };
-        emailData.email = userDetails.emailData.email;
+        emailData.email = loginDetails.email;
         emailData.className = "input100 has-val";
-        passwordData.password = userDetails.passwordData.password;
+        passwordData.password = loginDetails.password;
         passwordData.className = "input100 has-val";
         this.setState({
           emailData,
           passwordData,
-          rememberMe: userDetails.rememberMe,
+          rememberMe: loginDetails.rememberMe,
         });
       }
     }
@@ -76,6 +79,7 @@ class Login extends Component {
   handleLogin = (e) => {
     e.preventDefault();
     const state = { ...this.state };
+    this.handleRememberMeCases(state);
 
     state.emailData.errorClassName = handleErrorClassName(
       state.emailData.isErrorExist
@@ -85,7 +89,38 @@ class Login extends Component {
     );
 
     this.setState({ state });
+    this.SendLoginRequest();
+  };
 
+  handleChange = (name, value) => {
+    if (name === "email") {
+      const emailData = { ...this.state.emailData };
+      this.validate(name, value, emailData);
+    } else {
+      const passwordData = { ...this.state.passwordData };
+      this.validate(name, value, passwordData);
+    }
+  };
+
+  handleRememberMeCases(state) {
+    const loginDetails = getLocalStorageItem(constants.loginDetails);
+    if (
+      loginDetails &&
+      !this.state.isEmailTextboxTouched &&
+      !this.state.isPasswordTextboxTouched
+    ) {
+      state.emailData.email = loginDetails.email;
+      state.passwordData.password = loginDetails.password;
+      state.emailData.isErrorExist = false;
+      state.passwordData.isErrorExist = false;
+    } else if (loginDetails && this.state.isEmailTextboxTouched) {
+      state.passwordData.isErrorExist = false;
+    } else if (loginDetails && this.state.isPasswordTextboxTouched) {
+      state.emailData.isErrorExist = false;
+    }
+  }
+
+  SendLoginRequest() {
     if (
       !this.state.emailData.isErrorExist &&
       !this.state.passwordData.isErrorExist
@@ -103,7 +138,11 @@ class Login extends Component {
                 response.data.data.profileImageUrl = avatar;
               }
               setLocalStorageItem(constants.userDetails, response.data.data);
-
+              setLocalStorageItem(constants.loginDetails, {
+                email: this.state.emailData.email,
+                password: this.state.passwordData.password,
+                rememberMe: this.state.rememberMe,
+              });
               this.props.saveUserData(response.data.data);
               this.props.toggleLoader(false, 1);
             });
@@ -117,25 +156,23 @@ class Login extends Component {
         }
       });
     }
-  };
-
-  handleChange = (name, value) => {
-    if (name === "email") {
-      const emailData = { ...this.state.emailData };
-      this.validate(name, value, emailData);
-    } else {
-      const passwordData = { ...this.state.passwordData };
-      this.validate(name, value, passwordData);
-    }
-  };
+  }
 
   validate(name, value, data) {
     if (name === "email") {
       validateEmail(value, data);
-      this.setState({ emailData: data });
+      this.setState({
+        emailData: data,
+        isFormDirty: true,
+        isEmailTextboxTouched: true,
+      });
     } else {
       validatePassword(value, data);
-      this.setState({ passwordData: data });
+      this.setState({
+        passwordData: data,
+        isFormDirty: true,
+        isPasswordTextboxTouched: true,
+      });
     }
   }
 

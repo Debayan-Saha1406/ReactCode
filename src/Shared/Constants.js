@@ -13,6 +13,7 @@ export const apiUrl = {
 
 export const constants = {
   userDetails: "userDetails",
+  loginDetails: "loginDetails",
   passwordStrength: {
     0: "Very Weak",
     1: "Weak",
