@@ -33,6 +33,7 @@ class SideBar extends Component {
     hasUploadErrors: true,
     showDeleteProfileImagePopup: false,
     showTrashIcon: true,
+    activeLink: "Dashboard",
   };
 
   handleEditPopup = () => {
@@ -149,6 +150,10 @@ class SideBar extends Component {
     }
   }
 
+  handleSideMenuClick = (activeLink) => {
+    this.setState({ activeLink });
+  };
+
   render() {
     return (
       <nav
@@ -222,36 +227,37 @@ class SideBar extends Component {
           </div>
 
           <ul className="list-unstyled components mb-5">
-            <li className="active">
-              <Link to={"/admin/Home"}>Dashboard</Link>
-            </li>
+            {this.state.activeLink === "Dashboard" ? (
+              <li className="active">
+                <Link to={"/admin"}>Dashboard</Link>
+              </li>
+            ) : (
+              <li>
+                <Link to={"/admin"}>Dashboard</Link>
+              </li>
+            )}
             <li>
-              <Link to={"/admin"}>About</Link>
+              <Link to={"/admin"}>Movies</Link>
             </li>
-            <li>
-              <a
-                href="#pageSubmenu"
-                data-toggle="collapse"
-                aria-expanded="false"
-                className="dropdown-toggle"
-              >
-                Pages
-              </a>
-              <ul className="collapse list-unstyled" id="pageSubmenu">
-                <li>
-                  <a href="#">Page 1</a>
-                </li>
-                <li>
-                  <a href="#">Page 2</a>
-                </li>
-                <li>
-                  <a href="#">Page 3</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#">Portfolio</a>
-            </li>
+            {this.state.activeLink === "Users" ? (
+              <li className="active">
+                <Link
+                  to={"/admin/Users"}
+                  onClick={() => this.handleSideMenuClick("Users")}
+                >
+                  Users
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to={"/admin/Users"}
+                  onClick={() => this.handleSideMenuClick("Users")}
+                >
+                  Users
+                </Link>
+              </li>
+            )}
             <li>
               <a href="#">Contact</a>
             </li>

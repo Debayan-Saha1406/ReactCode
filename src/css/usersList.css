@@ -1,0 +1,247 @@
+.user-data {
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  padding-top: 44px;
+}
+
+.m-b-40 {
+  margin-bottom: 40px;
+}
+
+.user-data .title-3 {
+  padding-left: 40px;
+  padding-right: 55px;
+}
+
+.m-b-30 {
+  margin-bottom: 30px;
+}
+
+.title-3 {
+  text-transform: capitalize;
+  font-weight: 400;
+  font-size: 24px;
+  color: #333;
+}
+
+.user-data .filters {
+  padding-left: 40px;
+  padding-right: 55px;
+}
+
+.m-b-45 {
+  margin-bottom: 45px;
+}
+
+.table-data {
+  height: 472px;
+  overflow-y: auto;
+}
+
+.table-responsive {
+  padding-right: 1px;
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  margin: 0;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+.table-data .table td {
+  border-top: none;
+  border-bottom: 1px solid #f2f2f2;
+  padding-top: 23px;
+  padding-bottom: 33px;
+  padding-left: 40px;
+  padding-right: 10px;
+}
+
+.table-data thead tr td {
+  font-size: 12px;
+  font-weight: 600;
+  color: gray;
+  text-transform: uppercase;
+}
+
+.table td,
+.table th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.table-data__info h6 {
+  font-size: 14px;
+  color: gray;
+  text-transform: capitalize;
+  font-weight: 400;
+}
+
+.table-data__info span a {
+  font-size: 12px;
+  color: #999;
+}
+
+.role.admin {
+  background: #fa4251;
+}
+
+.role {
+  display: inline-block;
+  line-height: 30px;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 15px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-transform: capitalize;
+}
+
+.rs-select2--sm {
+  width: 114px;
+}
+
+.select2-hidden-accessible {
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+}
+
+.select2-container {
+  display: block;
+  max-width: 100% !important;
+  width: auto !important;
+  outline: none;
+}
+
+.select2-container {
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+  position: relative;
+  vertical-align: middle;
+}
+
+.rs-select2--trans .select2-container--default .select2-selection--single {
+  border: none;
+  outline: none;
+}
+
+.select2-container--default .select2-selection--single {
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.select2-container .select2-selection--single {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  height: 28px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.rs-select2--trans
+  .select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  color: gray;
+  font-size: 14px;
+  padding-left: 0;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  color: #444;
+  line-height: 28px;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  display: block;
+  padding-left: 8px;
+  padding-right: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: 26px;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 20px;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow
+  b {
+  border-color: #888 transparent transparent transparent;
+  border-style: solid;
+  border-width: 5px 4px 0 4px;
+  height: 0;
+  left: 50%;
+  margin-left: -4px;
+  margin-top: -2px;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+.role.user {
+  background: #00b5e9;
+}
+
+.role.member {
+  background: #57b846;
+}

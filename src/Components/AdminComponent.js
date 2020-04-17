@@ -6,11 +6,9 @@ import { getLocalStorageItem } from "../Provider/LocalStorageProvider";
 import { Redirect } from "react-router-dom";
 import "../css/style.css";
 import Main from "./MainComponent";
-import Test from "./TestComponent.js";
 import LoaderProvider from "./../Provider/LoaderProvider";
-
-import { toggleLoader } from "../Store/Actions/actionCreator";
 import { connect } from "react-redux";
+import UsersList from "./UsersList.js";
 
 class Admin extends Component {
   state = {
@@ -59,7 +57,11 @@ class Admin extends Component {
             <SideBar></SideBar>
             <div id="content" className="p-4 p-md-5">
               <Navbar></Navbar>
-              {this.props.subRoute === "Home" ? <Test></Test> : <Main></Main>}
+              {this.props.subRoute === "Users" ? (
+                <UsersList></UsersList>
+              ) : (
+                <Main></Main>
+              )}
             </div>
           </div>
         )}
