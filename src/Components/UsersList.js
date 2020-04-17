@@ -4,6 +4,10 @@ import "../css/usersList.css";
 import ServiceProvider from "./../Provider/ServiceProvider";
 import { apiUrl } from "../Shared/Constants";
 import PopupComponent from "./Common/PopupComponent";
+import LoaderProvider from "./../Provider/LoaderProvider";
+
+import { connect } from "react-redux";
+import { toggleLoader } from "../Store/Actions/actionCreator";
 
 class UsersList extends Component {
   state = {
@@ -14,9 +18,11 @@ class UsersList extends Component {
   };
 
   componentDidMount() {
+    this.props.toggleLoader(true, "15%");
     ServiceProvider.get(apiUrl.users).then((response) => {
       if (response.status === 200) {
         this.setState({ users: response.data.data });
+        this.props.toggleLoader(false, 1);
       }
     });
   }
@@ -142,9 +148,30 @@ class UsersList extends Component {
             showCancelButton={true}
           ></PopupComponent>
         )}
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default UsersList;
+const mapStateToProps = (state) => {
+  return {
+    showLoader: state.uiDetails.showLoader,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersList);
