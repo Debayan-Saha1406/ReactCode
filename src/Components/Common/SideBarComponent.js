@@ -223,26 +223,7 @@ class SideBar extends Component {
 
           <ul className="list-unstyled components mb-5">
             <li className="active">
-              <Link
-                to={"/admin/Home"}
-                href="#homeSubmenu"
-                data-toggle="collapse"
-                aria-expanded="false"
-                className="dropdown-toggle"
-              >
-                Home
-              </Link>
-              <ul className="collapse list-unstyled" id="homeSubmenu">
-                <li>
-                  <a href="#">Home 1</a>
-                </li>
-                <li>
-                  <a href="#">Home 2</a>
-                </li>
-                <li>
-                  <a href="#">Home 3</a>
-                </li>
-              </ul>
+              <Link to={"/admin/Home"}>Dashboard</Link>
             </li>
             <li>
               <Link to={"/admin"}>About</Link>

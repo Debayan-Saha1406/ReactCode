@@ -1,0 +1,112 @@
+.card {
+  -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  padding-right: 35px;
+  border-radius: 10px !important;
+  background: #fff;
+  overflow: hidden;
+  padding-bottom: 80px;
+}
+
+.chart-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+  -moz-box-align: baseline;
+  -ms-flex-align: baseline;
+  align-items: baseline;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.chart-note {
+  text-transform: capitalize;
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 14px;
+}
+
+.chart-note .dot {
+  margin-right: 7px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+}
+
+.dot--blue {
+  background: #00b5e9;
+}
+
+.dot--green {
+  background: #00ad5f;
+}
+
+.chart-statis {
+  display: inline-block;
+  margin-right: 35px;
+}
+
+.chart-statis .index {
+  font-size: 18px;
+  color: #333;
+}
+
+.chart-statis .label {
+  display: block;
+  text-transform: capitalize;
+  line-height: 1.2;
+}
+
+.incre i {
+  color: #63c76a;
+}
+
+.zmdi {
+  display: inline-block;
+  font: normal normal normal 14px/1 "Material-Design-Iconic-Font";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.recent-report {
+  padding-bottom: 65px;
+  margin-bottom: 60px;
+}
+
+.au-card {
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  padding-right: 35px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.title-2 {
+  text-transform: capitalize;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1;
+}
