@@ -3,20 +3,20 @@ import React, { Component } from "react";
 import "../css/usersList.css";
 import ServiceProvider from "./../Provider/ServiceProvider";
 import { apiUrl } from "../Shared/Constants";
+import PopupComponent from "./Common/PopupComponent";
 
 class UsersList extends Component {
   state = {
     users: [],
     isDropdownOpen: false,
     indexClicked: -1,
+    showBlockPopup: false,
   };
 
   componentDidMount() {
     ServiceProvider.get(apiUrl.users).then((response) => {
       if (response.status === 200) {
-        this.setState({ users: response.data.data }, () => {
-          console.log(this.state.users);
-        });
+        this.setState({ users: response.data.data });
       }
     });
   }
@@ -28,15 +28,29 @@ class UsersList extends Component {
     });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.indexClicked !== this.state.indexClicked) {
+      this.setState({ isDropdownOpen: true });
+    }
+  }
+
+  handleBlockAction = () => {
+    this.setState({ showBlockPopup: true });
+  };
+
+  handlePopupButtonClick = () => {
+    this.setState({ showBlockPopup: false, isDropdownOpen: false });
+  };
+
   render() {
     return (
-      <div class="user-data m-b-40">
-        <h3 class="title-3 m-b-30">
-          <i class="zmdi zmdi-account-calendar"></i>user data
+      <div className="user-data m-b-40">
+        <h3 className="title-3 m-b-30">
+          <i className="zmdi zmdi-account-calendar"></i>user data
         </h3>
-        <div class="filters m-b-45"></div>
-        <div class="table-responsive table-data">
-          <table class="table">
+        <div className="filters m-b-45"></div>
+        <div className="table-responsive table-data">
+          <table className="table">
             <thead>
               <tr>
                 <td>id</td>
@@ -53,7 +67,7 @@ class UsersList extends Component {
                 <tr key={user.userId}>
                   <td>{user.userId}</td>
                   <td>
-                    <div class="table-data__info">
+                    <div className="table-data__info">
                       <h6>
                         {user.firstName} {user.lastName}
                       </h6>
@@ -62,44 +76,49 @@ class UsersList extends Component {
                   <td>{user.email}</td>
                   <td>
                     {user.isAdmin ? (
-                      <span class="role member">Admin</span>
+                      <span className="role member">Admin</span>
                     ) : (
-                      <span class="role user">User</span>
+                      <span className="role user">User</span>
                     )}
                   </td>
                   <td>
                     {user.isActive ? (
-                      <span class="role member">Active</span>
+                      <span className="role member">Active</span>
                     ) : (
-                      <span class="role admin">Blocked</span>
+                      <span className="role admin">Blocked</span>
                     )}
                   </td>
                   <td>
-                    <div class="dropdown">
+                    <div className="dropdown">
                       <i
-                        class="fa fa-ellipsis-v"
+                        className="fa fa-ellipsis-v"
                         onClick={() => this.handleThreeDotMenu(index)}
                         style={{ cursor: "pointer" }}
                       ></i>
                       {this.state.indexClicked === index &&
                       this.state.isDropdownOpen ? (
                         <div
-                          class="dropdown-menu show"
+                          className="dropdown-menu show"
+                          id="dropdown"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a class="dropdown-item" href="#">
-                            Action
+                          <a className="dropdown-item" href="#">
+                            Manage Access
                           </a>
-                          <a class="dropdown-item" href="#">
-                            Another action
+                          <a
+                            className="dropdown-item"
+                            onClick={this.handleBlockAction}
+                          >
+                            Block
                           </a>
-                          <a class="dropdown-item" href="#">
+                          <a className="dropdown-item" href="#">
                             Something else here
                           </a>
                         </div>
                       ) : (
                         <div
-                          class="dropdown-menu"
+                          className="dropdown-menu"
+                          id="dropdown"
                           aria-labelledby="dropdownMenuButton"
                         >
                           {" "}
@@ -112,6 +131,17 @@ class UsersList extends Component {
             </tbody>
           </table>
         </div>
+        {this.state.showBlockPopup && (
+          <PopupComponent
+            showPopup={this.state.showBlockPopup}
+            togglePopUp={this.handlePopupButtonClick}
+            modalTitle="Block User"
+            modalBody="Are You Sure You Want To Block This User?"
+            modalOKButtonText="Yes"
+            modalCancelButtonText="No"
+            showCancelButton={true}
+          ></PopupComponent>
+        )}
       </div>
     );
   }

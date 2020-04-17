@@ -140,6 +140,7 @@ class SideBar extends Component {
   };
 
   componentDidMount() {
+    console.log(this.props);
     const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo) {
       if (!userInfo.profileImageUrl) {

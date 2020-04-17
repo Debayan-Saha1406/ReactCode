@@ -245,3 +245,7 @@ strong {
 .role.member {
   background: #57b846;
 }
+
+#dropdown {
+  margin-left: -80px;
+}
