@@ -6,7 +6,9 @@ class ToggleUserStatus extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value }, () => {
+      this.props.reason(this.state.reason);
+    });
   };
   render() {
     return (

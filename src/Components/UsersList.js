@@ -8,6 +8,9 @@ import LoaderProvider from "./../Provider/LoaderProvider";
 
 import { connect } from "react-redux";
 import { toggleLoader } from "../Store/Actions/actionCreator";
+import ToggleUserStatus from "./ToggleUserStatus";
+
+let reasonForStatusChange = "";
 
 class UsersList extends Component {
   state = {
@@ -47,7 +50,9 @@ class UsersList extends Component {
   handlePopupButtonClick = (event, user) => {
     if (event.target.name === "Yes") {
       const body = {
-        UserStatus: !user.isActive,
+        userStatus: !user.isActive,
+        reason:
+          reasonForStatusChange.trim() === "" ? null : reasonForStatusChange,
       };
       ServiceProvider.put(apiUrl.updateUserStatus, user.userId, body).then(
         (response) => {
@@ -61,6 +66,10 @@ class UsersList extends Component {
       );
     }
     this.setState({ showBlockPopup: false, isDropdownOpen: false });
+  };
+
+  handleReason = (reason) => {
+    reasonForStatusChange = reason;
   };
 
   render() {
@@ -134,7 +143,7 @@ class UsersList extends Component {
                             onClick={this.handleBlockAction}
                             style={{ cursor: "pointer" }}
                           >
-                            Block
+                            {user.isActive ? "Block" : "Unblock"}
                           </a>
                           <a
                             className="dropdown-item"
@@ -168,12 +177,14 @@ class UsersList extends Component {
                 this.state.users[this.state.indexClicked]
               )
             }
-            modalTitle="Block User"
-            modalBody={`Are You Sure You Want To ${
+            modalTitle={`${
               this.state.users[this.state.indexClicked].isActive === true
-                ? "Block"
-                : "Unblock"
-            } This User?`}
+                ? "Block User"
+                : "Unblock User"
+            }`}
+            component={
+              <ToggleUserStatus reason={this.handleReason}></ToggleUserStatus>
+            }
             modalOKButtonText="Yes"
             modalCancelButtonText="No"
             showCancelButton={true}
