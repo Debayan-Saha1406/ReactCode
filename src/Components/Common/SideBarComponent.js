@@ -5,7 +5,7 @@ import "../../css/sideBar.css";
 import { connect } from "react-redux";
 import "../../css/style.css";
 import PopupComponent from "./PopupComponent";
-import EditDetailsComponent from "./EditDetailsComponent";
+import EditDetailsComponent from "../EditDetailsComponent";
 import {
   updateUserDetails,
   handleProfileImage,
