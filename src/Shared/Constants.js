@@ -9,6 +9,7 @@ export const apiUrl = {
   forgotPassword: "/forgotPassword",
   resetPassword: "/resetPassword",
   users: "/users",
+  updateUserStatus: "/userStatus/",
 };
 
 export const constants = {

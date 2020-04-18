@@ -44,7 +44,22 @@ class UsersList extends Component {
     this.setState({ showBlockPopup: true });
   };
 
-  handlePopupButtonClick = () => {
+  handlePopupButtonClick = (event, user) => {
+    if (event.target.name === "Yes") {
+      const body = {
+        UserStatus: !user.isActive,
+      };
+      ServiceProvider.put(apiUrl.updateUserStatus, user.userId, body).then(
+        (response) => {
+          if (response.status === 200) {
+            const users = [...this.state.users];
+            user.isActive = !user.isActive;
+            users[this.state.indexClicked] = user;
+            this.setState({ users });
+          }
+        }
+      );
+    }
     this.setState({ showBlockPopup: false, isDropdownOpen: false });
   };
 
@@ -108,16 +123,23 @@ class UsersList extends Component {
                           id="dropdown"
                           aria-labelledby="dropdownMenuButton"
                         >
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            style={{ cursor: "pointer" }}
+                          >
                             Manage Access
                           </a>
                           <a
                             className="dropdown-item"
                             onClick={this.handleBlockAction}
+                            style={{ cursor: "pointer" }}
                           >
                             Block
                           </a>
-                          <a className="dropdown-item" href="#">
+                          <a
+                            className="dropdown-item"
+                            style={{ cursor: "pointer" }}
+                          >
                             Something else here
                           </a>
                         </div>
@@ -140,9 +162,18 @@ class UsersList extends Component {
         {this.state.showBlockPopup && (
           <PopupComponent
             showPopup={this.state.showBlockPopup}
-            togglePopUp={this.handlePopupButtonClick}
+            togglePopUp={(event) =>
+              this.handlePopupButtonClick(
+                event,
+                this.state.users[this.state.indexClicked]
+              )
+            }
             modalTitle="Block User"
-            modalBody="Are You Sure You Want To Block This User?"
+            modalBody={`Are You Sure You Want To ${
+              this.state.users[this.state.indexClicked].isActive === true
+                ? "Block"
+                : "Unblock"
+            } This User?`}
             modalOKButtonText="Yes"
             modalCancelButtonText="No"
             showCancelButton={true}
