@@ -8,8 +8,8 @@ export const apiUrl = {
   register: "/register",
   forgotPassword: "/forgotPassword",
   resetPassword: "/resetPassword",
-  users: "/users",
   updateUserStatus: "/userStatus/",
+  users: "/users",
 };
 
 export const constants = {
