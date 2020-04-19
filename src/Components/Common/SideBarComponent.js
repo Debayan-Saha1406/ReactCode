@@ -85,7 +85,7 @@ class SideBar extends Component {
     const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo !== null) {
       userInfo.profileImageUrl = avatar;
-      setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+      setLocalStorageItem(constants.userDetails, userInfo);
     }
   }
 
@@ -94,7 +94,7 @@ class SideBar extends Component {
     if (userInfo !== null) {
       userInfo.firstName = this.props.updatedFirstName;
       userInfo.lastName = this.props.updatedLastName;
-      setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+      setLocalStorageItem(constants.userDetails, userInfo);
     }
   }
 
@@ -102,7 +102,7 @@ class SideBar extends Component {
     const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo !== null) {
       userInfo.profileImageUrl = image;
-      setLocalStorageItem(constants.userDetails, JSON.stringify(userInfo));
+      setLocalStorageItem(constants.userDetails, userInfo);
     }
   }
 

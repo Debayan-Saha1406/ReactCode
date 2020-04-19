@@ -132,6 +132,7 @@ class Register extends Component {
           this.state.lastNameData.name.trim() === ""
             ? null
             : this.state.lastNameData.name.trim(),
+        profileImageUrl: this.props.location.state.response.imageUrl,
       };
       this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.register, body).then((response) => {

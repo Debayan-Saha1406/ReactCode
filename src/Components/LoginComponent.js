@@ -212,15 +212,13 @@ class Login extends Component {
       if (response.status === 200) {
         if (response.data.data.isAdmin) {
           this.setState({ isAdmin: true }, () => {
-            if (googleResponse.imageUrl === null) {
+            debugger;
+            if (response.data.data.profileImageUrl === null) {
               response.data.data.profileImageUrl = avatar;
-            } else {
-              response.data.data.profileImageUrl = googleResponse.imageUrl;
             }
             setLocalStorageItem(constants.userDetails, response.data.data);
             setLocalStorageItem(constants.loginDetails, {
-              email: this.state.emailData.email,
-              password: this.state.passwordData.password,
+              email: response.data.data.email,
             });
             this.props.saveUserData(response.data.data);
             this.props.toggleLoader(false, 1);

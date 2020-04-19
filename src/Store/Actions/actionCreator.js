@@ -41,7 +41,7 @@ export const handleProfileImage = (image, userId) => {
   let updatedImage = handleFileData(image);
   return (dispatch) => {
     const body = {
-      image: updatedImage,
+      image: image,
     };
 
     dispatch(toggleLoader(true, "15%"));
