@@ -4,25 +4,31 @@ import React, { Component } from "react";
 class Pagination extends Component {
   state = {};
 
-  componentDidMount() {
-    debugger;
-  }
-
   render() {
     let pages = [];
-    let numberOfPages = this.props.totalUsers / this.props.usersPerPage;
+    const {
+      totalCount,
+      pageSize,
+      previousPageClicked,
+      pageNumberClicked,
+      nextPageClicked,
+      currentPage,
+    } = this.props;
+    let numberOfPages = totalCount / pageSize;
     numberOfPages = Math.ceil(numberOfPages);
 
     for (let i = 1; i <= numberOfPages; i++) {
       pages.push(i);
     }
+
     return (
       <nav aria-label="...">
-        <ul class="pagination">
+        <ul class="pagination" style={{ cursor: "pointer" }}>
           {this.props.currentPage === 1 ? (
             <li className="page-item disabled">
               <a className="page-link" tabIndex="-1">
-                Previous
+                <span aria-hidden="true">&laquo;</span>
+                <span className="sr-only">Previous</span>
               </a>
             </li>
           ) : (
@@ -30,9 +36,10 @@ class Pagination extends Component {
               <a
                 className="page-link"
                 tabIndex="-1"
-                onClick={this.props.previousPageClicked}
+                onClick={previousPageClicked}
               >
-                Previous
+                <span aria-hidden="true">&laquo;</span>
+                <span className="sr-only">Previous</span>
               </a>
             </li>
           )}
@@ -43,7 +50,7 @@ class Pagination extends Component {
                   <li key={index} className="page-item active">
                     <a
                       className="page-link"
-                      onClick={() => this.props.pageNumberClicked(index + 1)}
+                      onClick={() => pageNumberClicked(index + 1)}
                     >
                       {page}
                     </a>
@@ -52,7 +59,7 @@ class Pagination extends Component {
                   <li key={index} className="page-item">
                     <a
                       className="page-link"
-                      onClick={() => this.props.pageNumberClicked(index + 1)}
+                      onClick={() => pageNumberClicked(index + 1)}
                     >
                       {page}
                     </a>
@@ -61,20 +68,18 @@ class Pagination extends Component {
               </React.Fragment>
             );
           })}
-          {this.props.currentPage === numberOfPages ? (
+          {currentPage === numberOfPages ? (
             <li className="page-item disabled">
               <a className="page-link" tabIndex="-1">
-                Next
+                <span aria-hidden="true">&raquo;</span>
+                <span className="sr-only">Next</span>
               </a>
             </li>
           ) : (
             <li className="page-item">
-              <a
-                className="page-link"
-                tabIndex="-1"
-                onClick={this.props.nextPageClicked}
-              >
-                Next
+              <a className="page-link" tabIndex="-1" onClick={nextPageClicked}>
+                <span aria-hidden="true">&raquo;</span>
+                <span className="sr-only">Next</span>
               </a>
             </li>
           )}

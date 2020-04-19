@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { toggleLoader } from "../Store/Actions/actionCreator";
 import ToggleUserStatus from "./ToggleUserStatus";
 import Pagination from "./Common/Pagination";
+import SearchBar from "./Common/SearchBar";
 
 let reasonForStatusChange = "";
 
@@ -19,10 +20,10 @@ class UsersList extends Component {
     isDropdownOpen: false,
     indexClicked: -1,
     showBlockPopup: false,
-    searchData: "",
     currentPage: 1,
-    usersPerPage: 2,
+    usersPerPage: 5,
     totalUsersCount: 0,
+    isFilteredDataPresent: true,
   };
 
   componentDidMount() {
@@ -85,26 +86,29 @@ class UsersList extends Component {
     reasonForStatusChange = reason;
   };
 
-  handleSearchIcon = () => {
+  handleSearchIcon = (searchData) => {
     const body = {
       pageNumber: 1,
       pageSize: this.state.usersPerPage,
-      searchQuery:
-        this.state.searchData.trim() === "" ? null : this.state.searchData,
+      searchQuery: searchData.trim() === "" ? null : searchData,
     };
     ServiceProvider.post(apiUrl.users, body).then((response) => {
       if (response.status === 200) {
-        if (this.state.searchData.trim() === "") {
+        if (searchData.trim() === "") {
           this.setState({
             users: response.data.data.userDetails,
             totalUsersCount: response.data.data.totalCount,
             currentPage: 1,
+            isFilteredDataPresent: true,
+            isDropdownOpen: false,
           });
         } else {
           this.setState({
             users: response.data.data.userDetails,
             totalUsersCount: response.data.data.userDetails.length,
             currentPage: 1,
+            isFilteredDataPresent: false,
+            isDropdownOpen: false,
           });
         }
       }
@@ -130,7 +134,7 @@ class UsersList extends Component {
 
   handlePageNumberClick = (currentPage) => {
     this.fetchData(currentPage, this.state.usersPerPage, this.state.searchData);
-    this.setState({ currentPage: currentPage });
+    this.setState({ currentPage: currentPage, isDropdownOpen: false });
   };
 
   previousPageClick = () => {
@@ -139,7 +143,10 @@ class UsersList extends Component {
       this.state.usersPerPage,
       this.state.searchData
     );
-    this.setState({ currentPage: this.state.currentPage - 1 });
+    this.setState({
+      currentPage: this.state.currentPage - 1,
+      isDropdownOpen: false,
+    });
   };
 
   nextPageClick = () => {
@@ -148,7 +155,10 @@ class UsersList extends Component {
       this.state.usersPerPage,
       this.state.searchData
     );
-    this.setState({ currentPage: this.state.currentPage + 1 });
+    this.setState({
+      currentPage: this.state.currentPage + 1,
+      isDropdownOpen: false,
+    });
   };
 
   render() {
@@ -158,19 +168,19 @@ class UsersList extends Component {
           <div className="title-3 m-b-30">
             <i className="fa fa-user" aria-hidden="true"></i>
             {"  "}user data
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder="Search.."
-                name="searchData"
-                className="searchText"
-                onChange={this.handleChange}
-                value={this.state.searchData}
-              />
-              <button onClick={this.handleSearchIcon}>
-                <i className="fa fa-search"></i>
-              </button>
-            </div>
+            <SearchBar handleSearchIcon={this.handleSearchIcon}></SearchBar>
+            {this.state.totalUsersCount > 0 && (
+              <div className="pagination">
+                <Pagination
+                  totalCount={this.state.totalUsersCount}
+                  pageNumberClicked={this.handlePageNumberClick}
+                  currentPage={this.state.currentPage}
+                  pageSize={this.state.usersPerPage}
+                  previousPageClicked={this.previousPageClick}
+                  nextPageClicked={this.nextPageClick}
+                ></Pagination>
+              </div>
+            )}
           </div>
           <div className="table-responsive table-data">
             <table className="table">
@@ -186,9 +196,12 @@ class UsersList extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.users.length === 0 ? (
+                {this.state.users.length === 0 &&
+                !this.state.isFilteredDataPresent ? (
                   <tr>
-                    <td colSpan="6">{"No Record Found..."}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{"No Record Found..."}</td>
                   </tr>
                 ) : (
                   this.state.users.map((user, index) => (
@@ -299,16 +312,6 @@ class UsersList extends Component {
             </div>
           </div>
         </div>
-        {this.state.totalUsersCount > 0 && (
-          <Pagination
-            totalUsers={this.state.totalUsersCount}
-            pageNumberClicked={this.handlePageNumberClick}
-            currentPage={this.state.currentPage}
-            usersPerPage={this.state.usersPerPage}
-            previousPageClicked={this.previousPageClick}
-            nextPageClicked={this.nextPageClick}
-          ></Pagination>
-        )}
       </React.Fragment>
     );
   }

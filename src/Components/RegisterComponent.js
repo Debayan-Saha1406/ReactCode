@@ -23,14 +23,16 @@ import {
 } from "../Shared/Services/PasswordService";
 
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
-import { apiUrl } from "./../Shared/Constants";
+import { apiUrl, constants } from "./../Shared/Constants";
 import ServiceProvider from "./../Provider/ServiceProvider";
 import PopupComponent from "./Common/PopupComponent";
 import { ToastContainer } from "react-toastify";
 import { showErrorMessage } from "../Provider/ToastProvider";
-import { toggleLoader } from "../Store/Actions/actionCreator";
+import { toggleLoader, saveUserData } from "../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import LoaderProvider from "./../Provider/LoaderProvider";
+import { setLocalStorageItem } from "../Provider/LocalStorageProvider";
+import avatar from "../images/avatar.jpg";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -75,12 +77,12 @@ class Register extends Component {
     hasPasswordError: true,
     showRedirectPopup: false,
     redirectToLogin: false,
+    redirectToAdmin: false,
   };
 
   handleRegister = (e) => {
     e.preventDefault();
     const state = { ...this.state };
-
     state.firstNameData.errorClassName = handleErrorClassName(
       state.firstNameData.isErrorExist
     );
@@ -95,8 +97,26 @@ class Register extends Component {
       state.confirmPasswordData.isErrorExist
     );
 
-    this.setState({ state });
+    this.setState({ state }, () => {
+      this.sendRegisterRequest();
+    });
+  };
 
+  handleChange = (name, value) => {
+    if (name === "email") {
+      this.handleEmailChange(name, value);
+    } else if (name === "password") {
+      this.handlePasswordChange(name, value);
+    } else if (name === "firstName") {
+      this.handleFirstName(name, value);
+    } else if (name === "lastName") {
+      this.handleLastName(name, value);
+    } else {
+      this.handleConfirmPasswordChange(name, value);
+    }
+  };
+
+  sendRegisterRequest() {
     if (
       !this.state.emailData.isErrorExist &&
       !this.state.passwordData.isErrorExist &&
@@ -116,29 +136,44 @@ class Register extends Component {
       this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.register, body).then((response) => {
         if (response.status === 200) {
-          this.setState({ showRedirectPopup: true });
           this.props.toggleLoader(false, 1);
+          if (this.props.location.state) {
+            const body = {
+              email: this.state.emailData.email,
+              password: this.state.passwordData.password,
+            };
+            this.handleLogin(body);
+          } else {
+            this.setState({ showRedirectPopup: true });
+          }
         } else {
           showErrorMessage(response.data.errors);
           this.props.toggleLoader(false, 1);
         }
       });
     }
-  };
+  }
 
-  handleChange = (name, value) => {
-    if (name === "email") {
-      this.handleEmailChange(name, value);
-    } else if (name === "password") {
-      this.handlePasswordChange(name, value);
-    } else if (name === "firstName") {
-      this.handleFirstName(name, value);
-    } else if (name === "lastName") {
-      this.handleLastName(name, value);
-    } else {
-      this.handleConfirmPasswordChange(name, value);
-    }
-  };
+  handleLogin(body) {
+    ServiceProvider.post(apiUrl.login, body).then((response) => {
+      if (response.status === 200) {
+        if (response.data.data.isAdmin) {
+          this.setState({ redirectToAdmin: true }, () => {
+            if (response.data.data.profileImageUrl === null) {
+              response.data.data.profileImageUrl = this.props.location.state.response.imageUrl;
+            }
+            setLocalStorageItem(constants.userDetails, response.data.data);
+            setLocalStorageItem(constants.loginDetails, {
+              email: this.state.emailData.email,
+              password: this.state.passwordData.password,
+            });
+            this.props.saveUserData(response.data.data);
+            this.props.toggleLoader(false, 1);
+          });
+        }
+      }
+    });
+  }
 
   handleConfirmPasswordChange(name, value) {
     confirmPasswordData = { ...this.state.confirmPasswordData };
@@ -229,9 +264,37 @@ class Register extends Component {
     this.setState({ redirectToLogin: true });
   };
 
+  componentDidMount() {
+    if (this.props.location.state) {
+      const state = { ...this.state };
+      const { email, firstName, lastName } = this.props.location.state.response;
+      this.setGoogleSignInValues(state, email, firstName, lastName);
+      this.setState({ state });
+    }
+  }
+
+  setGoogleSignInValues(state, email, firstName, lastName) {
+    state.emailData.email = email;
+    state.emailData.className = "input100 has-val";
+    state.emailData.errorClassName = "wrap-input100 validate-input";
+    state.emailData.isErrorExist = false;
+
+    state.firstNameData.name = firstName;
+    state.firstNameData.className = "input100 has-val";
+    state.firstNameData.errorClassName = "wrap-input100 validate-input";
+    state.firstNameData.isErrorExist = false;
+
+    state.lastNameData.name = lastName;
+    state.lastNameData.className = "input100 has-val";
+  }
+
   render() {
     if (this.state.redirectToLogin) {
       return <Redirect to="/login"></Redirect>;
+    }
+
+    if (this.state.redirectToAdmin) {
+      return <Redirect to="/admin"></Redirect>;
     }
 
     return (
@@ -387,6 +450,7 @@ class Register extends Component {
             togglePopUp={this.handleRedirect}
           ></PopupComponent>
         )}
+
         {<ToastContainer autoClose={3000} />}
       </div>
     );
@@ -404,6 +468,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleLoader: (showLoader, screenOpacity) => {
       dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+    saveUserData: (userData) => {
+      dispatch(saveUserData(userData));
     },
   };
 };

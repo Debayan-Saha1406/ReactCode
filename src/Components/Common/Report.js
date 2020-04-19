@@ -4,23 +4,23 @@ import { Line } from "react-chartjs-2";
 const Report = (props) => {
   return (
     <div className="card">
-      <div class="au-card-inner">
-        <h3 class="title-2">recent reports</h3>
-        <div class="chart-info">
-          <div class="chart-info__right">
-            <div class="chart-statis">
-              <div class="chart-note">
-                <span class="dot dot--blue"></span>
+      <div className="au-card-inner">
+        <h3 className="title-2">recent reports</h3>
+        <div className="chart-info">
+          <div className="chart-info__right">
+            <div className="chart-statis">
+              <div className="chart-note">
+                <span className="dot dot--blue"></span>
                 <span>products</span>
               </div>
-              <div class="chart-note mr-0">
-                <span class="dot dot--green"></span>
+              <div className="chart-note mr-0">
+                <span className="dot dot--green"></span>
                 <span>services</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="recent-report__chart">
+        <div className="recent-report__chart">
           <div
             style={{
               width: "450px",

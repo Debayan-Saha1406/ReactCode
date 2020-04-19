@@ -23,10 +23,13 @@ import { saveUserData, toggleLoader } from "../Store/Actions/actionCreator";
 import avatar from "../images/avatar.jpg";
 
 import LoaderProvider from "./../Provider/LoaderProvider";
+import GoogleLoginProvider from "./../Provider/GoogleLoginProvider";
 
 const style = {
   backgroundImage: `url(${image})`,
 };
+
+let googleResponse = {};
 
 class Login extends Component {
   state = {
@@ -51,6 +54,7 @@ class Login extends Component {
     isFormDirty: false,
     isEmailTextboxTouched: false,
     isPasswordTextboxTouched: false,
+    redirectToRegister: false,
   };
 
   componentDidMount() {
@@ -188,7 +192,65 @@ class Login extends Component {
     });
   };
 
+  handleSuccess = (response) => {
+    console.log(response);
+    googleResponse.email = response.profileObj.email;
+    googleResponse.imageUrl = response.profileObj.imageUrl;
+    googleResponse.firstName = response.profileObj.name.substring(
+      0,
+      response.profileObj.name.indexOf(" ")
+    );
+    googleResponse.lastName = response.profileObj.name.substring(
+      response.profileObj.name.indexOf(" ") + 1
+    );
+
+    const body = {
+      email: googleResponse.email,
+    };
+    this.props.toggleLoader(true, "15%");
+    ServiceProvider.post(apiUrl.login, body).then((response) => {
+      if (response.status === 200) {
+        if (response.data.data.isAdmin) {
+          this.setState({ isAdmin: true }, () => {
+            if (googleResponse.imageUrl === null) {
+              response.data.data.profileImageUrl = avatar;
+            } else {
+              response.data.data.profileImageUrl = googleResponse.imageUrl;
+            }
+            setLocalStorageItem(constants.userDetails, response.data.data);
+            setLocalStorageItem(constants.loginDetails, {
+              email: this.state.emailData.email,
+              password: this.state.passwordData.password,
+            });
+            this.props.saveUserData(response.data.data);
+            this.props.toggleLoader(false, 1);
+          });
+        }
+      } else if (response.status === 404) {
+        this.setState({ redirectToRegister: true });
+        this.props.toggleLoader(false, 1);
+      }
+    });
+  };
+
+  handleFailure = (response) => {
+    console.log(response);
+  };
+
   render() {
+    if (this.state.redirectToRegister) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/register",
+            state: {
+              response: googleResponse,
+            },
+          }}
+        />
+      );
+    }
+
     if (this.state.isAdmin || this.state.redirectToAdmin) {
       return <Redirect to="/admin" />;
     }
@@ -298,6 +360,14 @@ class Login extends Component {
                 <Link to={"/register"} className="register">
                   <button className="register-form-btn">Register</button>
                 </Link>
+                {<ToastContainer autoClose={8000} />}
+              </div>
+              <br></br>
+              <GoogleLoginProvider
+                onSuccess={this.handleSuccess}
+                onFailure={this.handleFailure}
+              ></GoogleLoginProvider>
+              <div className="container-login100-form-btn">
                 {<ToastContainer autoClose={8000} />}
               </div>
             </form>

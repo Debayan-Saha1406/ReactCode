@@ -257,18 +257,18 @@ strong {
 .search-container button {
   float: right;
   padding: 6px 10px;
-  margin-top: 8px;
+  margin-top: 11px;
   margin-right: 16px;
   background: #ddd;
-  font-size: 18px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
 }
 
 .searchText {
   padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
+  margin-top: 11px;
+  font-size: 13px;
   border: 1px solid grey;
   border-radius: 5px;
 }
@@ -304,4 +304,14 @@ strong {
   font-weight: 600;
   color: gray;
   text-transform: uppercase;
+}
+
+.pagination {
+  float: right;
+  padding-right: 5px;
+  margin-top: 5px;
+}
+
+.noRecord {
+  padding-left: 2px;
 }

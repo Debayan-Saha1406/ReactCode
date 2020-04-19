@@ -408,11 +408,11 @@ class Main extends Component {
             options={options4}
           ></QuickInfo>
         </div>
-        <div class="row">
-          <div class="col-lg-6">
+        <div className="row">
+          <div className="col-lg-6">
             <Report data={reportData} options={reportOptions}></Report>
           </div>
-          <div class="col-lg-6">
+          <div className="col-lg-6">
             <DoughnutChart
               data={doughnutData}
               options={doughnutOptions}

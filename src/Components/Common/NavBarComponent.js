@@ -34,10 +34,12 @@ class Navbar extends Component {
       this.setState({ showPopup: false });
     } else {
       this.setState({ redirectToLogin: true });
-      if (getLocalStorageItem(constants.loginDetails).rememberMe)
-        removeLocalStorageItem(constants.userDetails);
-      else {
-        clearLocalStorage();
+      if (getLocalStorageItem(constants.loginDetails)) {
+        if (getLocalStorageItem(constants.loginDetails).rememberMe)
+          removeLocalStorageItem(constants.userDetails);
+        else {
+          clearLocalStorage();
+        }
       }
     }
   };
