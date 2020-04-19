@@ -132,7 +132,9 @@ class Register extends Component {
           this.state.lastNameData.name.trim() === ""
             ? null
             : this.state.lastNameData.name.trim(),
-        profileImageUrl: this.props.location.state.response.imageUrl,
+        profileImageUrl: this.props.location.state
+          ? this.props.location.state.response.imageUrl
+          : null,
       };
       this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.register, body).then((response) => {
@@ -443,8 +445,8 @@ class Register extends Component {
         </div>
         {this.state.showRedirectPopup && (
           <PopupComponent
-            modalTitle="Navigate To Login"
-            modalBody="You will now need to enter your credentials to login"
+            modalTitle="Registration Successful"
+            modalBody="You will now be navigated to login page"
             modalOKButtonText="OK"
             showCancelButton={false}
             showPopup={this.state.showRedirectPopup}
