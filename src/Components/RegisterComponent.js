@@ -141,13 +141,9 @@ class Register extends Component {
         if (response.status === 200) {
           this.props.toggleLoader(false, 1);
           if (this.props.location.state) {
-            const body = {
-              email: this.state.emailData.email,
-              password: this.state.passwordData.password,
-            };
-            this.handleLogin(body);
+            this.handleLogin(); //Directly Login Google Sign In User
           } else {
-            this.setState({ showRedirectPopup: true });
+            this.setState({ showRedirectPopup: true }); //Take to Login Page
           }
         } else {
           showErrorMessage(response.data.errors);
@@ -157,13 +153,17 @@ class Register extends Component {
     }
   }
 
-  handleLogin(body) {
+  handleLogin() {
+    const body = {
+      email: this.state.emailData.email,
+      password: this.state.passwordData.password,
+    };
     ServiceProvider.post(apiUrl.login, body).then((response) => {
       if (response.status === 200) {
         if (response.data.data.isAdmin) {
           this.setState({ redirectToAdmin: true }, () => {
             if (response.data.data.profileImageUrl === null) {
-              response.data.data.profileImageUrl = this.props.location.state.response.imageUrl;
+              response.data.data.profileImageUrl = this.props.location.state.response.imageUrl; //Set The Default Gmail Image
             }
             setLocalStorageItem(constants.userDetails, response.data.data);
             setLocalStorageItem(constants.loginDetails, {

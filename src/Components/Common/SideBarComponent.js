@@ -240,6 +240,9 @@ class SideBar extends Component {
             <li>
               <Link to={"/admin"}>Movies</Link>
             </li>
+            <li>
+              <Link to={"/admin"}>Celebrities</Link>
+            </li>
             {this.state.activeLink === "Users" ? (
               <li className="active">
                 <Link

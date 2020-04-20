@@ -5,7 +5,7 @@ import "../css/loginProvider.css";
 const GoogleLoginProvider = (props) => {
   return (
     <GoogleLogin
-      clientId="817675782441-ffee47tgatkrma467kfjvm1sgo1lovrk.apps.googleusercontent.com"
+      clientId="817675782441-gflgd9rdvuddbb03us5dm65cf38flkql.apps.googleusercontent.com"
       render={(renderProps) => (
         <button
           onClick={renderProps.onClick}

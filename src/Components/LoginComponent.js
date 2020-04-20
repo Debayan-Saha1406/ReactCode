@@ -24,6 +24,7 @@ import avatar from "../images/avatar.jpg";
 
 import LoaderProvider from "./../Provider/LoaderProvider";
 import GoogleLoginProvider from "./../Provider/GoogleLoginProvider";
+import PopupComponent from "./Common/PopupComponent";
 
 const style = {
   backgroundImage: `url(${image})`,
@@ -55,6 +56,7 @@ class Login extends Component {
     isEmailTextboxTouched: false,
     isPasswordTextboxTouched: false,
     redirectToRegister: false,
+    showRegisterOneTimePopup: false,
   };
 
   componentDidMount() {
@@ -212,7 +214,6 @@ class Login extends Component {
       if (response.status === 200) {
         if (response.data.data.isAdmin) {
           this.setState({ isAdmin: true }, () => {
-            debugger;
             if (response.data.data.profileImageUrl === null) {
               response.data.data.profileImageUrl = avatar;
             }
@@ -225,10 +226,14 @@ class Login extends Component {
           });
         }
       } else if (response.status === 404) {
-        this.setState({ redirectToRegister: true });
+        this.setState({ showRegisterOneTimePopup: true });
         this.props.toggleLoader(false, 1);
       }
     });
+  };
+
+  handleOk = () => {
+    this.setState({ redirectToRegister: true });
   };
 
   handleFailure = (response) => {
@@ -368,6 +373,17 @@ class Login extends Component {
               <div className="container-login100-form-btn">
                 {<ToastContainer autoClose={8000} />}
               </div>
+              {this.state.showRegisterOneTimePopup && (
+                <PopupComponent
+                  modalTitle="Hello New User"
+                  modalBody="You will now be navigated to Register where you can confirm your details and 
+                  enter your password once. It is a one time process and from next time you can sign-in directly."
+                  modalOKButtonText="OK"
+                  showCancelButton={false}
+                  showPopup={this.state.showRegisterOneTimePopup}
+                  togglePopUp={this.handleOk}
+                ></PopupComponent>
+              )}
             </form>
 
             <div className="login100-more" style={style}></div>
