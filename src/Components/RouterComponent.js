@@ -7,6 +7,7 @@ import User from "./UserComponent";
 import ForgotPassword from "./ForgotPassword";
 import Register from "./RegisterComponent";
 import ResetPassword from "./ResetPasswordComponent";
+import Home from "./MovieReview/Home";
 
 class Router extends Component {
   render() {
@@ -23,6 +24,7 @@ class Router extends Component {
           <Route path="/forgotPassword" component={ForgotPassword} />
           <Route path="/register" component={Register} />
           <Route path="/resetPassword" component={ResetPassword} />
+          <Route path="/movie" component={Home} />
           <Redirect from="*" to="/login" />
         </Switch>
       </BrowserRouter>
