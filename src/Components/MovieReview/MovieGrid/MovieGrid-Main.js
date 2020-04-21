@@ -1,5 +1,6 @@
 import React from "react";
 import MovieGridPagination from "./MovieGrid-Pagination";
+import MovieGridFilter from "./MovieGrid-Filter";
 
 const MovieGridMain = () => {
   return (
@@ -7,23 +8,9 @@ const MovieGridMain = () => {
       <div class="page">
         <div class="breadcrumbs">
           <a href="index.html">Home</a>
-          <span>Movie Review</span>
+          <span>Movies</span>
         </div>
-
-        <div class="filters">
-          <select name="#" id="#" placeholder="Choose Category">
-            <option value="#">Action</option>
-            <option value="#">Drama</option>
-            <option value="#">Fantasy</option>
-            <option value="#">Horror</option>
-            <option value="#">Adventure</option>
-          </select>
-          <select name="#" id="#">
-            <option value="#">2012</option>
-            <option value="#">2013</option>
-            <option value="#">2014</option>
-          </select>
-        </div>
+        <MovieGridFilter></MovieGridFilter>
         <div class="movie-list">
           <div class="movie">
             <figure class="movie-poster">
