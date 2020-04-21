@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import "../../css/home.css";
-import HomeHeader from "./HomeHeader";
+import "../../../css/home.css";
+import Header from "../Common/Header";
 import Main from "./Main";
 
-class Home extends Component {
+class MovieHomePage extends Component {
   state = {};
   render() {
     return (
       <div className="background">
         <div id="site-content">
-          <HomeHeader></HomeHeader>
+          <Header></Header>
           <main class="main-content">
             <Main></Main>
           </main>
@@ -19,4 +19,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default MovieHomePage;

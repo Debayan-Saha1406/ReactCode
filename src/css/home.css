@@ -2278,11 +2278,11 @@ ul.arrow li a:hover {
   color: #ffaa3c;
 }
 
-.pagination {
+.movieGridpagination {
   clear: both;
   text-align: center;
 }
-.pagination .page-number {
+.movieGridpagination .page-number {
   display: inline-block;
   width: 40px;
   height: 40px;
@@ -2296,8 +2296,8 @@ ul.arrow li a:hover {
   -webkit-transition: 0.3s ease;
   transition: 0.3s ease;
 }
-.pagination .page-number.current,
-.pagination .page-number:hover {
+.movieGridpagination .page-number.current,
+.movieGridpagination .page-number:hover {
   background: #ffaa3c;
   color: white;
 }

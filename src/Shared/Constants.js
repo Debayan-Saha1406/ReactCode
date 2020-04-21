@@ -44,3 +44,18 @@ export const statusCode = {
   404: "Resource Not Found",
   400: "Bad Request",
 };
+
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

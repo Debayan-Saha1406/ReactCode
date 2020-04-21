@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import image from "../../images/logo.png";
+import image from "../../../images/logo.png";
+import { Link } from "react-router-dom";
 
-class HomeHeader extends Component {
+class Header extends Component {
   state = {};
   render() {
     return (
@@ -21,19 +23,19 @@ class HomeHeader extends Component {
             </button>
             <ul class="menu">
               <li class="menu-item current-menu-item">
-                <a href="index.html">Home</a>
+                <Link to="/movie">Home</Link>
               </li>
               <li class="menu-item">
-                <a href="about.html">About</a>
+                <a>About</a>
               </li>
               <li class="menu-item">
-                <a href="review.html">Movie reviews</a>
+                <Link to="/movie-grid">Movies</Link>
               </li>
               <li class="menu-item">
-                <a href="joinus.html">Join us</a>
+                <a>Join us</a>
               </li>
               <li class="menu-item">
-                <a href="contact.html">Contact</a>
+                <a>Contact</a>
               </li>
             </ul>
 
@@ -52,4 +54,4 @@ class HomeHeader extends Component {
   }
 }
 
-export default HomeHeader;
+export default Header;

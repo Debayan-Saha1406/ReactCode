@@ -7,7 +7,8 @@ import User from "./UserComponent";
 import ForgotPassword from "./ForgotPassword";
 import Register from "./RegisterComponent";
 import ResetPassword from "./ResetPasswordComponent";
-import Home from "./MovieReview/Home";
+import MovieHomePage from "./MovieReview/MovieHome/MovieHomePage";
+import MovieGrid from "./MovieReview/MovieGrid/MovieGrid";
 
 class Router extends Component {
   render() {
@@ -24,7 +25,8 @@ class Router extends Component {
           <Route path="/forgotPassword" component={ForgotPassword} />
           <Route path="/register" component={Register} />
           <Route path="/resetPassword" component={ResetPassword} />
-          <Route path="/movie" component={Home} />
+          <Route path="/movie" component={MovieHomePage} />
+          <Route path="/movie-grid" component={MovieGrid} />
           <Redirect from="*" to="/login" />
         </Switch>
       </BrowserRouter>
