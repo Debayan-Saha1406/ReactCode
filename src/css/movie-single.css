@@ -637,3 +637,7 @@ img {
   font-size: 16px;
   font-weight: 400;
 }
+
+#castRow {
+  display: block !important;
+}
