@@ -2123,7 +2123,6 @@ ul.arrow li a:hover {
 }
 
 .main-content .container {
-  background: white;
   border-radius: 5px;
   padding: 30px;
 }
@@ -2352,4 +2351,166 @@ ul.arrow li a:hover {
 }
 .site-footer .colophon {
   padding-top: 30px;
+}
+
+.title-hd h2 {
+  font-family: "Dosis", sans-serif;
+  font-size: 24px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.tabs {
+  margin-bottom: 60px;
+  overflow: hidden;
+}
+
+.tabs ul.tab-links,
+.tabs ul.tab-links-2,
+.tabs ul.tab-links-3 {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 0;
+}
+
+.tabs ul.tab-links li,
+.tabs ul.tab-links-2 li,
+.tabs ul.tab-links-3 li {
+  margin-right: 20px;
+}
+
+.movie-items .tab-links {
+  position: relative;
+}
+
+ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+.tabs ul.tab-links li.active a,
+.tabs ul.tab-links-2 li.active a,
+.tabs ul.tab-links-3 li.active a {
+  color: #dcf836;
+}
+
+.tabs .tab-content {
+  padding-left: 15px;
+}
+
+.tabs .tab-content .active {
+  margin-left: -15px;
+}
+
+.tabs .tab.active {
+  display: block;
+}
+
+.movie-items .slick-slider {
+  margin-left: 15px;
+}
+
+.movie-items .slick-multiItem,
+.movie-items .slick-multiItem2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.slick-dotted.slick-slider {
+  margin-bottom: 30px;
+}
+
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -khtml-user-select: none;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.movie-items .slick-multiItem .slick-list,
+.movie-items .slick-multiItem2 .slick-list {
+  order: 2;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.slick-list {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.slick-track {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+.movie-items .slide-it {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.movie-items .movie-item {
+  position: relative;
+  margin-right: 30px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.movie-items .movie-item .mv-img {
+  position: relative;
+}
+
+.movie-items .movie-item img {
+  width: 100%;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+
+.movie-items .movie-item .title-in {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  bottom: 0;
+  left: 0;
+  position: absolute;
 }
