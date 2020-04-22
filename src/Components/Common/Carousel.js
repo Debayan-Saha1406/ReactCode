@@ -1,47 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import Slider from "react-animated-slider";
 import "react-animated-slider/build/horizontal.css";
-
-let data = [
-  {
-    des: "1",
-    imgSrc:
-      "https://demo.themezy.com/system/resources/demo_themes/000/000/010//dummy/slide-2@2x.jpg",
-  },
-  {
-    des: "2",
-    imgSrc:
-      "https://demo.themezy.com/system/resources/demo_themes/000/000/010//dummy/slide-2@2x.jpg",
-  },
-  {
-    des: "2",
-    imgSrc:
-      "https://demo.themezy.com/system/resources/demo_themes/000/000/010//dummy/slide-2@2x.jpg",
-  },
-  {
-    des: "2",
-    imgSrc:
-      "https://demo.themezy.com/system/resources/demo_themes/000/000/010//dummy/slide-2@2x.jpg",
-  },
-];
-
-let buttonSetting = {
-  placeOn: "middle-outside",
-  style: {
-    left: {
-      color: "white",
-      background: "black",
-      border: "1px solid #e1e4e8",
-      borderRadius: "50%",
-    },
-    right: {
-      color: "white",
-      background: "black",
-      border: "1px solid #e1e4e8",
-      borderRadius: "50%",
-    },
-  },
-};
+import "../../css/movie-single.css";
 
 const content = [
   {
@@ -83,19 +44,43 @@ const Carousel = () => {
           style={{ background: `url('${item.image}') no-repeat center center` }}
         >
           <div className="inner">
-            <h1>{item.title}</h1>
-            <p>{item.description}</p>
-            <button>{item.button}</button>
+            <div class="cate">
+              <span class="blue">
+                <a href="#" tabindex="0">
+                  Sci-fi
+                </a>
+              </span>
+              <span class="yell">
+                <a href="#" tabindex="0">
+                  Action
+                </a>
+              </span>
+              <span class="orange">
+                <a href="#" tabindex="0">
+                  advanture
+                </a>
+              </span>
+            </div>
           </div>
-          <section>
-            <img
-              src={item.userProfile}
-              alt={item.user}
-              style={{ width: "0%" }}
-            />
-            <span>
-              Posted by <strong>{item.user}</strong>
-            </span>
+
+          <section id="bottom">
+            <br />
+            <br />
+            <br />
+            <div class="movie-details">
+              <p class="rating-info">
+                <i
+                  class="fa fa-star"
+                  style={{ fontSize: "40px", color: "yellow" }}
+                ></i>
+                <span className="user-rating">7.4</span> /10
+              </p>
+              <ul class="movie-information">
+                <li class="list-item"> Run Time: 2h21’ </li>
+                <li class="list-item"> Rated: PG-13 </li>
+                <li class="list-item"> Release: 1 May 2015</li>
+              </ul>
+            </div>
           </section>
         </div>
       ))}
