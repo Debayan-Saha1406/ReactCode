@@ -14,7 +14,7 @@ const Cast = (props) => {
       }
     >
       <div className="row" id="castRow">
-        <h3>Cast & Crew of</h3>
+        <h3>Cast of</h3>
         <h2>Avengers: Age of Ultron</h2>
         <div className="title-hd-sm">
           <h4>Directors & Credit Writers</h4>

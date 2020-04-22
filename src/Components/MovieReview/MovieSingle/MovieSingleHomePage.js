@@ -66,7 +66,8 @@ class MovieSingleHomePage extends Component {
                     <div class="rate">
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        id="rating-icon"
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <p>
                         <span>8.1</span> /10
@@ -78,39 +79,39 @@ class MovieSingleHomePage extends Component {
                       <p>Rate This Movie: </p>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
+                        style={{ fontSize: "18px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star-o"
-                        style={{ fontSize: "40px", color: "white" }}
+                        style={{ fontSize: "18px", color: "white" }}
                       ></i>
                     </div>
                   </div>
@@ -175,7 +176,7 @@ class MovieSingleHomePage extends Component {
                               style={{ cursor: "pointer" }}
                             >
                               {" "}
-                              Cast & Crew{" "}
+                              Cast{" "}
                             </a>
                           </li>
                         ) : (
@@ -186,7 +187,7 @@ class MovieSingleHomePage extends Component {
                               }}
                             >
                               {" "}
-                              Cast & Crew{" "}
+                              Cast{" "}
                             </a>
                           </li>
                         )}

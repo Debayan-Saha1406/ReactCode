@@ -856,3 +856,149 @@ img {
   bottom: 0;
   margin-left: 10px;
 }
+
+@media (max-width: 767px) {
+  .movie-single .movie-single-ct .movie-rate .rate-star {
+    padding-left: 0;
+    border: none;
+  }
+}
+.movie-single .movie-single-ct .movie-rate .rate-star p {
+  font-size: 18px;
+  color: #abb7c4;
+  margin-right: 15px;
+  margin-bottom: 0;
+}
+@media (max-width: 767px) {
+  .movie-single .movie-single-ct .movie-rate .rate-star p {
+    font-size: 16px;
+    margin-right: 0;
+  }
+}
+.movie-single .movie-single-ct .movie-rate .rate-star i {
+  font-size: 36px;
+  color: #abb7c4;
+}
+@media (max-width: 767px) {
+  .movie-single .movie-single-ct .movie-rate .rate-star i {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 767px) {
+  #rating-icon {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar-filter {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar-filter .list {
+    border: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar-filter .pagination2 {
+    padding-left: 0;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .topbar-filter.fw p {
+    padding-right: 170px;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar-filter.fw p {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .ipad-width {
+    max-width: 550px;
+    margin: 0 auto;
+  }
+  .ipad-width2 {
+    max-width: 650px;
+    margin: 0 auto;
+  }
+  .ipad-width2 .topbar-filter p {
+    padding-right: 70px;
+  }
+  .sidebar {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .ipad-width2 .topbar-filter p {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar-filter select {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-2 .movie-item-style-1 {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 991px) {
+  .movie-item-style-1 .hvr-inner {
+    margin-left: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-1 {
+    margin-left: 15px;
+    max-width: 170px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie_list .movie-item-style-2 img,
+  .movie_single .movie-item-style-2 img,
+  .userfav_list .movie-item-style-2 img {
+    width: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-2 img {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 767px) {
+  .mv-grid-fw {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 767px) {
+  .flex-wrap-movielist {
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+  }
+}
