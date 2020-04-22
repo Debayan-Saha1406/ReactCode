@@ -9,9 +9,7 @@ class MovieGrid extends Component {
       <div className="background">
         <div id="site-content">
           <Header></Header>
-          <main class="main-content">
-            <MovieGridMain></MovieGridMain>
-          </main>
+          <MovieGridMain></MovieGridMain>
         </div>
       </div>
     );
