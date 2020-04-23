@@ -44,7 +44,7 @@ class MovieList extends Component {
                     <i class="fa fa-th" aria-hidden="true"></i>
                   </a>
                 </div>
-                <div class="movie-item-style-2">
+                <div class="movie-item-style-2-list">
                   <img src={image} alt="" />
                   <div class="mv-item-infor">
                     <h6>
@@ -53,7 +53,14 @@ class MovieList extends Component {
                       </a>
                     </h6>
                     <p class="rate">
-                      <i class="ion-android-star"></i>
+                      <i
+                        class="fa fa-star"
+                        style={{
+                          fontSize: "20px",
+                          color: "yellow",
+                          marginRight: "5px",
+                        }}
+                      ></i>
                       <span>8.1</span> /10
                     </p>
                     <p class="describe">

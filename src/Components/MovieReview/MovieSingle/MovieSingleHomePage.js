@@ -67,7 +67,7 @@ class MovieSingleHomePage extends Component {
                       <i
                         class="fa fa-star"
                         id="rating-icon"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <p>
                         <span>8.1</span> /10
@@ -79,39 +79,39 @@ class MovieSingleHomePage extends Component {
                       <p>Rate This Movie: </p>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star"
-                        style={{ fontSize: "18px", color: "yellow" }}
+                        style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
                         class="fa fa-star-o"
-                        style={{ fontSize: "18px", color: "white" }}
+                        style={{ fontSize: "17px", color: "white" }}
                       ></i>
                     </div>
                   </div>

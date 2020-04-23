@@ -1002,3 +1002,139 @@ img {
     display: block;
   }
 }
+
+@media (max-width: 767px) {
+  .movie-item-style-2 .mv-item-infor {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .topbar-filter select {
+    border: 1px solid #405266;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-single .movie-single-ct .tab .rv-hd {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .movie-single .sticky-sb {
+    max-width: 340px;
+    margin: 0 auto 60px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-2 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie_list .movie-item-style-2 img,
+  .movie_single .movie-item-style-2 img,
+  .userfav_list .movie-item-style-2 img {
+    width: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-2 .mv-item-infor {
+    max-width: 180px;
+    margin: 0 auto;
+  }
+}
+
+.movie-item-style-2-list {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-2-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.movie-item-style-2-list img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-right: 30px;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+
+.movie-item-style-2-list .mv-item-infor h6 {
+  margin-bottom: 10px;
+}
+
+.movie-item-style-2-list .mv-item-infor .rate {
+  font-size: 12px;
+}
+
+.movie-item-style-2-list .mv-item-infor p {
+  margin-bottom: 0;
+}
+
+.movie-item-style-2-list .mv-item-infor .describe {
+  padding-bottom: 25px;
+  border-bottom: 1px solid #405266;
+  margin-bottom: 25px;
+}
+
+.movie-item-style-2-list .mv-item-infor p {
+  margin-bottom: 0;
+}
+
+.movie-item-style-2-list .mv-item-infor h6 a {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  .movie_list .movie-item-style-2-list img,
+  .movie_single .movie-item-style-2 img,
+  .userfav_list .movie-item-style-2 img {
+    width: auto;
+    margin-left: 23px;
+  }
+}
+
+@media (max-width: 767px) {
+  .movie-item-style-2-list .mv-item-infor {
+    max-width: 180px;
+    margin-top: 15px;
+    margin-left: 36px;
+  }
+}
+
+@media (max-width: 991px) {
+  .sidebar {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .form-style-1 select {
+    margin-bottom: 30px;
+  }
+}
