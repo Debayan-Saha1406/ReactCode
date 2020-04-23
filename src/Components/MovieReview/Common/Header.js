@@ -10,6 +10,8 @@ class Header extends Component {
     display: "none",
     loginPopupClassName: "",
     registerPopupClassName: "",
+    active: "",
+    currentMenuItem: "home",
   };
 
   toggleNavigation = () => {
@@ -32,6 +34,14 @@ class Header extends Component {
 
   openRegisterPopup = () => {
     this.setState({ registerPopupClassName: "openform" });
+  };
+
+  openSearchBox = () => {
+    this.setState({ active: this.state.active === "" ? "active" : "" });
+  };
+
+  setCurrentMenuItem = (currentMenuItem) => {
+    this.setState({ currentMenuItem });
   };
 
   render() {
@@ -64,15 +74,47 @@ class Header extends Component {
                 <i class="fa fa-bars"></i>
               </button>
               <ul class="menu">
-                <li class="menu-item current-menu-item">
-                  <Link to="/movie">Home</Link>
-                </li>
+                {this.state.currentMenuItem === "home" ? (
+                  <li class="menu-item current-menu-item">
+                    <Link
+                      to="/movie"
+                      onClick={() => this.setCurrentMenuItem("home")}
+                    >
+                      Home
+                    </Link>
+                  </li>
+                ) : (
+                  <li class="menu-item">
+                    <Link
+                      to="/movie"
+                      onClick={() => this.setCurrentMenuItem("home")}
+                    >
+                      Home
+                    </Link>
+                  </li>
+                )}
                 <li class="menu-item">
                   <a>About</a>
                 </li>
-                <li class="menu-item">
-                  <Link to="/movie-grid">Movies</Link>
-                </li>
+                {this.state.currentMenuItem === "movie" ? (
+                  <li class="menu-item current-menu-item">
+                    <Link
+                      to="/movie-grid"
+                      onClick={() => this.setCurrentMenuItem("movie")}
+                    >
+                      Movies
+                    </Link>
+                  </li>
+                ) : (
+                  <li class="menu-item">
+                    <Link
+                      to="/movie-grid"
+                      onClick={() => this.setCurrentMenuItem("movie")}
+                    >
+                      Movies
+                    </Link>
+                  </li>
+                )}
                 <li class="menu-item">
                   <a
                     onClick={this.openLoginPopup}
@@ -92,8 +134,12 @@ class Header extends Component {
               </ul>
 
               <form action="#" class="search-form">
-                <input type="text" placeholder="Search..." />
-                <button>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className={`${this.state.active}`}
+                />
+                <button onClick={this.openSearchBox}>
                   <i class="fa fa-search"></i>
                 </button>
               </form>
