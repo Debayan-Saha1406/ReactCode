@@ -6,119 +6,136 @@ import "../../../css/movie-single.css";
 import MovieReview from "./MovieReview";
 import Overview from "./Overview";
 import Cast from "./Cast";
+import ServiceProvider from "./../../../Provider/ServiceProvider";
+import { apiUrl } from "../../../Shared/Constants";
 
 class MovieSingleHomePage extends Component {
   state = {
     selectedTab: "overview",
+    movie: {},
   };
+
+  componentDidMount() {
+    ServiceProvider.getWithParam(apiUrl.movie, 1).then((response) => {
+      this.setState({ movie: response.data.data }, () => {});
+    });
+  }
+
   render() {
     return (
       <div className="background">
         <Header></Header>
-        <div class="hero mv-single-hero">
-          <div class="container"></div>
+        <div className="hero mv-single-hero">
+          <div className="container"></div>
         </div>
-        <div class="page-single movie-single movie_single">
-          <div class="container">
-            <div class="row ipad-width2">
-              <div class="col-md-4 col-sm-12 col-xs-12">
-                <div class="movie-img sticky-sb">
-                  <img src={image} alt="" />
-                  <div class="movie-btn">
-                    <div class="btn-transform transform-vertical red">
+        <div className="page-single movie-single movie_single">
+          <div className="container">
+            <div className="row ipad-width2">
+              <div className="col-md-4 col-sm-12 col-xs-12">
+                <div className="movie-img sticky-sb">
+                  {this.state.movie.movie && (
+                    <img src={this.state.movie.movie.movieLogo} alt="" />
+                  )}
+                  <div className="movie-btn">
+                    <div className="btn-transform transform-vertical red">
                       <div>
-                        <a href="#" class="item item-1 redbtn">
+                        <a href="#" className="item item-1 redbtn">
                           {" "}
-                          <i class="ion-play"></i> Watch Trailer
+                          <i className="ion-play"></i> Watch Trailer
                         </a>
                       </div>
                       <div>
                         <a
                           href="https://www.youtube.com/embed/o-0hcF97wy0"
-                          class="item item-2 redbtn fancybox-media hvr-grow"
+                          className="item item-2 redbtn fancybox-media hvr-grow"
                         >
-                          <i class="ion-play"></i>
+                          <i className="ion-play"></i>
                         </a>
                       </div>
                     </div>
-                    <div class="btn-transform transform-vertical">
+                    <div className="btn-transform transform-vertical">
                       <div>
-                        <a href="#" class="item item-1 yellowbtn">
+                        <a href="#" className="item item-1 yellowbtn">
                           {" "}
-                          <i class="ion-card"></i> Buy ticket
+                          <i className="ion-card"></i> Buy ticket
                         </a>
                       </div>
                       <div>
-                        <a href="#" class="item item-2 yellowbtn">
-                          <i class="ion-card"></i>
+                        <a href="#" className="item item-2 yellowbtn">
+                          <i className="ion-card"></i>
                         </a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-8 col-sm-12 col-xs-12">
-                <div class="movie-single-ct main-content">
-                  <h1 class="bd-hd">
-                    Skyfall: Quantum of Spectre <span>2015</span>
+              <div className="col-md-8 col-sm-12 col-xs-12">
+                <div className="movie-single-ct main-content">
+                  <h1 className="bd-hd">
+                    {this.state.movie.movie && this.state.movie.movie.movieName}{" "}
+                    <span>2015</span>
                   </h1>
-                  <div class="movie-rate">
-                    <div class="rate">
+                  <div className="movie-rate">
+                    <div className="rate">
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         id="rating-icon"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <p>
-                        <span>8.1</span> /10
+                        <span>
+                          {this.state.movie.movie &&
+                            this.state.movie.movie.avgRating}
+                        </span>{" "}
+                        /10
                         <br />
-                        <span class="rv">56 Reviews</span>
+                        <span className="rv">56 Ratings</span>
                       </p>
                     </div>
-                    <div class="rate-star">
+                    <div className="rate-star">
                       <p>Rate This Movie: </p>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star"
+                        className="fa fa-star"
                         style={{ fontSize: "17px", color: "yellow" }}
                       ></i>
                       <i
-                        class="fa fa-star-o"
+                        className="fa fa-star-o"
                         style={{ fontSize: "17px", color: "white" }}
                       ></i>
                     </div>
                   </div>
 
-                  <div class="movie-tabs">
-                    <div class="tabs">
-                      <ul class="tab-links tabs-mv">
+                  <div className="movie-tabs">
+                    <div className="tabs">
+                      <ul className="tab-links tabs-mv">
                         {this.state.selectedTab === "overview" ? (
                           <li className="active">
                             <a
@@ -143,7 +160,7 @@ class MovieSingleHomePage extends Component {
                           </li>
                         )}
                         {this.state.selectedTab === "review" ? (
-                          <li class="active">
+                          <li className="active">
                             <a
                               onClick={() => {
                                 this.setState({ selectedTab: "review" });
@@ -192,12 +209,20 @@ class MovieSingleHomePage extends Component {
                           </li>
                         )}
                       </ul>
-                      <div class="tab-content">
-                        {this.state.selectedTab === "overview" && (
-                          <Overview
-                            selectedTab={this.state.selectedTab}
-                          ></Overview>
-                        )}
+                      <div className="tab-content">
+                        {this.state.selectedTab === "overview" &&
+                          this.state.movie.directors &&
+                          this.state.movie.celebrities &&
+                          this.state.movie.movie && (
+                            <Overview
+                              directors={this.state.movie.directors}
+                              celebrities={this.state.movie.celebrities}
+                              selectedTab={this.state.selectedTab}
+                              genres={this.state.movie.genres}
+                              movieOverview={this.state.movie.movie}
+                              reviews={this.state.movie.reviews}
+                            ></Overview>
+                          )}
                         {this.state.selectedTab === "review" && (
                           <MovieReview
                             selectedTab={this.state.selectedTab}

@@ -8,6 +8,13 @@ function get(url) {
   });
 }
 
+function getWithParam(url, id) {
+  return request({
+    url: url + id,
+    method: httpVerbs.Get,
+  });
+}
+
 function post(url, data) {
   return request({
     url: url,
@@ -36,6 +43,7 @@ const ServiceProvider = {
   post,
   put,
   deleteItem,
+  getWithParam,
 };
 
 export default ServiceProvider;
