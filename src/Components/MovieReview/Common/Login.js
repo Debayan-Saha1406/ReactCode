@@ -6,11 +6,11 @@ class Login extends Component {
 
   render() {
     return (
-      <div class={`overlay ${this.props.loginPopupClassName}`}>
-        <div class="login-wrapper" id="login-content">
-          <div class="login-content">
+      <div className={`overlay ${this.props.loginPopupClassName}`}>
+        <div className="login-wrapper" id="login-content">
+          <div className="login-content">
             <a
-              class="close"
+              className="close"
               data-ol-has-click-handler=""
               onClick={this.props.closeLoginPopup}
               style={{ cursor: "pointer" }}
@@ -19,8 +19,8 @@ class Login extends Component {
             </a>
             <h3>Login</h3>
             <form method="post" action="login.php">
-              <div class="row">
-                <label for="username">
+              <div className="row">
+                <label htmlFor="username">
                   Username:
                   <input
                     type="text"
@@ -33,8 +33,8 @@ class Login extends Component {
                 </label>
               </div>
 
-              <div class="row">
-                <label for="password">
+              <div className="row">
+                <label htmlFor="password">
                   Password:
                   <input
                     type="password"
@@ -46,8 +46,8 @@ class Login extends Component {
                   />
                 </label>
               </div>
-              <div class="row">
-                <div class="remember">
+              <div className="row">
+                <div className="remember">
                   <div>
                     <input
                       type="checkbox"
@@ -62,7 +62,7 @@ class Login extends Component {
                   </a>
                 </div>
               </div>
-              <div class="row">
+              <div className="row">
                 <button type="submit">Login</button>
               </div>
             </form>

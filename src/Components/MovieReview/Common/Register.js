@@ -5,11 +5,11 @@ class Register extends Component {
   state = {};
   render() {
     return (
-      <div class={`overlay ${this.props.registerPopupClassName}`}>
-        <div class="login-wrapper" id="signup-content">
-          <div class="login-content">
+      <div className={`overlay ${this.props.registerPopupClassName}`}>
+        <div className="login-wrapper" id="signup-content">
+          <div className="login-content">
             <a
-              class="close"
+              className="close"
               onClick={this.props.closeRegisterPopup}
               style={{ cursor: "pointer" }}
             >
@@ -17,7 +17,7 @@ class Register extends Component {
             </a>
             <h3>sign up</h3>
             <form method="post" action="signup.php">
-              <div class="row">
+              <div className="row">
                 <label for="username-2">
                   Username:
                   <br></br>
@@ -32,7 +32,7 @@ class Register extends Component {
                 </label>
               </div>
 
-              <div class="row">
+              <div className="row">
                 <label for="email-2">
                   your email:
                   <br></br>
@@ -46,7 +46,7 @@ class Register extends Component {
                   />
                 </label>
               </div>
-              <div class="row">
+              <div className="row">
                 <label for="password-2">
                   Password:
                   <br></br>
@@ -60,7 +60,7 @@ class Register extends Component {
                   />
                 </label>
               </div>
-              <div class="row">
+              <div className="row">
                 <label for="repassword-2">
                   re-type Password:
                   <input
@@ -73,7 +73,7 @@ class Register extends Component {
                   />
                 </label>
               </div>
-              <div class="row">
+              <div className="row">
                 <button type="submit">sign up</button>
               </div>
             </form>

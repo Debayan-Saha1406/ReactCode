@@ -1359,3 +1359,23 @@ img {
 .overlay .login-content label input:focus {
   border: 1px solid #e1e1e1 !important;
 }
+
+.menu {
+  display: inline-flex;
+}
+
+.space-margin {
+  margin-right: 2px;
+}
+
+.side-heading {
+  margin-bottom: 10px !important;
+}
+
+.release-date {
+  margin-bottom: 0px !important;
+}
+
+a#black-hover:hover {
+  color: black !important;
+}

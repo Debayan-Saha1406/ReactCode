@@ -55,27 +55,27 @@ class Header extends Component {
           registerPopupClassName={this.state.registerPopupClassName}
           closeRegisterPopup={this.closeRegisterPopup}
         ></Register>
-        <header class="site-header">
-          <div class="container">
+        <header className="site-header">
+          <div className="container">
             <a href="index.html" id="branding">
-              <img src={image} alt="" class="logo" />
-              <div class="logo-copy">
-                <h1 class="site-title">Company Name</h1>
-                <small class="site-description">Tagline goes here</small>
+              <img src={image} alt="" className="logo" />
+              <div className="logo-copy">
+                <h1 className="site-title">Company Name</h1>
+                <small className="site-description">Tagline goes here</small>
               </div>
             </a>
 
-            <div class="main-navigation">
+            <div className="main-navigation">
               <button
                 type="button"
-                class="menu-toggle"
+                className="menu-toggle"
                 onClick={this.toggleNavigation}
               >
-                <i class="fa fa-bars"></i>
+                <i className="fa fa-bars"></i>
               </button>
-              <ul class="menu">
+              <ul className="menu">
                 {this.state.currentMenuItem === "home" ? (
-                  <li class="menu-item current-menu-item">
+                  <li className="menu-item current-menu-item">
                     <Link
                       to="/movie"
                       onClick={() => this.setCurrentMenuItem("home")}
@@ -84,7 +84,7 @@ class Header extends Component {
                     </Link>
                   </li>
                 ) : (
-                  <li class="menu-item">
+                  <li className="menu-item">
                     <Link
                       to="/movie"
                       onClick={() => this.setCurrentMenuItem("home")}
@@ -93,11 +93,11 @@ class Header extends Component {
                     </Link>
                   </li>
                 )}
-                <li class="menu-item">
+                <li className="menu-item">
                   <a>About</a>
                 </li>
                 {this.state.currentMenuItem === "movie" ? (
-                  <li class="menu-item current-menu-item">
+                  <li className="menu-item current-menu-item">
                     <Link
                       to="/movie-grid"
                       onClick={() => this.setCurrentMenuItem("movie")}
@@ -106,7 +106,7 @@ class Header extends Component {
                     </Link>
                   </li>
                 ) : (
-                  <li class="menu-item">
+                  <li className="menu-item">
                     <Link
                       to="/movie-grid"
                       onClick={() => this.setCurrentMenuItem("movie")}
@@ -115,7 +115,7 @@ class Header extends Component {
                     </Link>
                   </li>
                 )}
-                <li class="menu-item">
+                <li className="menu-item">
                   <a
                     onClick={this.openLoginPopup}
                     style={{ cursor: "pointer" }}
@@ -123,7 +123,7 @@ class Header extends Component {
                     Login
                   </a>
                 </li>
-                <li class="menu-item">
+                <li className="menu-item">
                   <a
                     onClick={this.openRegisterPopup}
                     style={{ cursor: "pointer" }}
@@ -133,33 +133,33 @@ class Header extends Component {
                 </li>
               </ul>
 
-              <form action="#" class="search-form">
+              <form action="#" className="search-form">
                 <input
                   type="text"
                   placeholder="Search..."
                   className={`${this.state.active}`}
                 />
                 <button onClick={this.openSearchBox}>
-                  <i class="fa fa-search"></i>
+                  <i className="fa fa-search"></i>
                 </button>
               </form>
             </div>
 
             <div
-              class="mobile-navigation"
+              className="mobile-navigation"
               style={{ display: this.state.display }}
             >
-              <ul class="menu">
-                <li class="menu-item current-menu-item">
+              <ul className="menu">
+                <li className="menu-item current-menu-item">
                   <Link to="/movie">Home</Link>
                 </li>
-                <li class="menu-item">
+                <li className="menu-item">
                   <a href="about.html">About</a>
                 </li>
-                <li class="menu-item">
+                <li className="menu-item">
                   <Link to="/movie-grid">Movies</Link>
                 </li>
-                <li class="menu-item">
+                <li className="menu-item">
                   <a
                     onClick={this.openLoginPopup}
                     style={{ cursor: "pointer" }}
@@ -167,7 +167,7 @@ class Header extends Component {
                     Login
                   </a>
                 </li>
-                <li class="menu-item">
+                <li className="menu-item">
                   <a href="contact.html">Register</a>
                 </li>
               </ul>
