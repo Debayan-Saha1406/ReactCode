@@ -11,6 +11,7 @@ export const apiUrl = {
   updateUserStatus: "/userStatus/",
   users: "/users",
   movie: "/movie/",
+  reviews:"/reviews"
 };
 
 export const constants = {

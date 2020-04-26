@@ -1379,3 +1379,11 @@ img {
 a#black-hover:hover {
   color: black !important;
 }
+
+.mv-user-review-item {
+  width: 80%;
+}
+
+#review-date {
+  float: right;
+}
