@@ -16,7 +16,6 @@ class MovieReview extends Component {
       pageSize: this.state.pageSize,
       searchQuery: 1,
     };
-    debugger;
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
       this.setState({
         reviews: response.data.data.reviews,
@@ -26,6 +25,7 @@ class MovieReview extends Component {
   }
 
   changeReviewCount = (e) => {
+    this.setState({ pageSize: e.target.value });
     const body = {
       pageNumber: this.state.pageNumber,
       pageSize: e.target.value,
@@ -35,6 +35,21 @@ class MovieReview extends Component {
       this.setState({
         reviews: response.data.data.reviews,
         totalReviews: response.data.data.totalCount,
+      });
+    });
+  };
+
+  pageNumberClicked = (page) => {
+    const body = {
+      pageNumber: page,
+      pageSize: this.state.pageSize,
+      searchQuery: 1,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        reviews: response.data.data.reviews,
+        totalReviews: response.data.data.totalCount,
+        pageNumber: page,
       });
     });
   };
@@ -79,8 +94,8 @@ class MovieReview extends Component {
           <div className="mv-user-review-item">
             <ul>
               {this.state.reviews &&
-                this.state.reviews.map((review) => (
-                  <li>
+                this.state.reviews.map((review, index) => (
+                  <li key={index}>
                     <h3>{review.reviewTitle}</h3>
                     <p className="time">
                       {review.reviewDate} by <a> {review.userEmail}</a>
@@ -96,6 +111,7 @@ class MovieReview extends Component {
               totalCount={this.state.totalReviews}
               currentPage={this.state.pageNumber}
               changeReviewCount={this.changeReviewCount}
+              pageNumberClicked={this.pageNumberClicked}
             ></Pagination>
           )}
         </div>

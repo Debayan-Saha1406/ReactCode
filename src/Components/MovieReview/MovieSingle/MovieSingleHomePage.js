@@ -235,6 +235,7 @@ class MovieSingleHomePage extends Component {
                                   onClick={() => {
                                     this.setState({ selectedTab: "cast" });
                                   }}
+                                  style={{ cursor: "pointer" }}
                                 >
                                   {" "}
                                   Cast{" "}

@@ -1397,3 +1397,7 @@ a#black-hover:hover {
     width: 90%;
   }
 }
+
+#yellow :hover {
+  color: #dcf836;
+}

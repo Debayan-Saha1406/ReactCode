@@ -23,6 +23,7 @@ const Overview = (props) => {
                 <a
                   className="time"
                   style={{ cursor: "pointer", color: "#4280bf" }}
+                  id="yellow"
                 >
                   <span onClick={() => props.toggleTab("review")}>
                     See All {props.reviews.length} Reviews{" "}
