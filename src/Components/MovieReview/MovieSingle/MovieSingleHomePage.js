@@ -20,17 +20,23 @@ class MovieSingleHomePage extends Component {
     indexClicked: -1,
   };
 
+  toggleTab = (destTab) => {
+    this.setState({ selectedTab: destTab });
+  };
+
   componentDidMount() {
     this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, 1).then((response) => {
-      var index = response.data.data.movie.releaseDate.indexOf(",");
-      releaseYear = response.data.data.movie.releaseDate.substring(
-        index + 1,
-        response.data.data.movie.releaseDate.length
-      );
-      this.setState({ movie: response.data.data }, () => {
-        this.props.toggleLoader(false, 1);
-      });
+      if (response.status === 200) {
+        let index = response.data.data.movie.releaseDate.indexOf(",");
+        releaseYear = response.data.data.movie.releaseDate.substring(
+          index + 1,
+          response.data.data.movie.releaseDate.length
+        );
+        this.setState({ movie: response.data.data }, () => {
+          this.props.toggleLoader(false, 1);
+        });
+      }
     });
   }
 
@@ -245,6 +251,7 @@ class MovieSingleHomePage extends Component {
                                 genres={this.state.movie.genres}
                                 movieOverview={this.state.movie.movie}
                                 reviews={this.state.movie.reviews}
+                                toggleTab={this.toggleTab}
                               ></Overview>
                             )}
                             {this.state.selectedTab === "review" && (
@@ -254,7 +261,12 @@ class MovieSingleHomePage extends Component {
                               ></MovieReview>
                             )}
                             {this.state.selectedTab === "cast" && (
-                              <Cast selectedTab={this.state.selectedTab} />
+                              <Cast
+                                selectedTab={this.state.selectedTab}
+                                stars={this.state.movie.celebrities}
+                                directors={this.state.movie.directors}
+                                movieName={this.state.movie.movie.movieName}
+                              />
                             )}
                           </div>
                         </div>

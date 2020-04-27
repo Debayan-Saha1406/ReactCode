@@ -18,7 +18,7 @@ class Register extends Component {
             <h3>sign up</h3>
             <form method="post" action="signup.php">
               <div className="row">
-                <label for="username-2">
+                <label htmlFor="username-2">
                   Username:
                   <br></br>
                   <input
@@ -33,7 +33,7 @@ class Register extends Component {
               </div>
 
               <div className="row">
-                <label for="email-2">
+                <label htmlFor="email-2">
                   your email:
                   <br></br>
                   <input
@@ -47,7 +47,7 @@ class Register extends Component {
                 </label>
               </div>
               <div className="row">
-                <label for="password-2">
+                <label htmlFor="password-2">
                   Password:
                   <br></br>
                   <input
@@ -61,7 +61,7 @@ class Register extends Component {
                 </label>
               </div>
               <div className="row">
-                <label for="repassword-2">
+                <label htmlFor="repassword-2">
                   re-type Password:
                   <input
                     id="input"

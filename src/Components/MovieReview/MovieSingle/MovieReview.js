@@ -24,29 +24,45 @@ class MovieReview extends Component {
       });
     });
   }
+
+  changeReviewCount = (e) => {
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: e.target.value,
+      searchQuery: 1,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        reviews: response.data.data.reviews,
+        totalReviews: response.data.data.totalCount,
+      });
+    });
+  };
+
   render() {
     return (
       <div
         id="reviews"
-        class="tab review "
+        className="tab review "
         style={
           this.props.selectedTab === "review"
             ? { display: "block" }
             : { display: "none" }
         }
       >
-        <div class="row">
-          <div class="rv-hd">
-            <div class="div">
+        <div className="row">
+          <div className="rv-hd">
+            <div className="div">
+              <br></br>
               <br></br>
               <h3>Related Movies To</h3>
               <h2>{this.props.movieName}</h2>
             </div>
-            <a href="#" class="redbtn" id="writeReview">
+            <a href="#" className="redbtn" id="black-hover">
               Write Review
             </a>
           </div>
-          <div class="topbar-filter">
+          <div className="topbar-filter">
             <p>
               Found <span>{this.state.totalReviews}</span> in total
             </p>
@@ -60,14 +76,14 @@ class MovieReview extends Component {
               <option value="date">Release date Ascending</option>
             </select>
           </div>
-          <div class="mv-user-review-item">
+          <div className="mv-user-review-item">
             <ul>
               {this.state.reviews &&
                 this.state.reviews.map((review) => (
                   <li>
                     <h3>{review.reviewTitle}</h3>
-                    <p class="time">
-                      {review.reviewDate} by <a> hawaiipierson</a>
+                    <p className="time">
+                      {review.reviewDate} by <a> {review.userEmail}</a>
                     </p>
                     <p>{review.reviewDescription}</p>
                   </li>
@@ -79,6 +95,7 @@ class MovieReview extends Component {
               pageSize={this.state.pageSize}
               totalCount={this.state.totalReviews}
               currentPage={this.state.pageNumber}
+              changeReviewCount={this.changeReviewCount}
             ></Pagination>
           )}
         </div>

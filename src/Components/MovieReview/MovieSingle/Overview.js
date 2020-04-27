@@ -20,43 +20,24 @@ const Overview = (props) => {
             {props.reviews.length > 0 && (
               <div className="title-hd-sm">
                 <h4>User reviews</h4>
-                <a href="#" className="time">
-                  See All 56 Reviews <i className="ion-ios-arrow-right"></i>
+                <a
+                  className="time"
+                  style={{ cursor: "pointer", color: "#4280bf" }}
+                >
+                  <span onClick={() => props.toggleTab("review")}>
+                    See All {props.reviews.length} Reviews{" "}
+                  </span>
                 </a>
               </div>
             )}
             {props.reviews.length > 0 && (
               <div className="mv-user-review-item">
-                <h3>Best Marvel movie in my opinion</h3>
-                <div className="no-star">
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star"></i>
-                  <i className="ion-android-star last"></i>
-                </div>
+                <h3>{props.reviews[0].reviewTitle}</h3>
                 <p className="time">
-                  17 December 2016 by <a href="#"> hawaiipierson</a>
+                  {props.reviews[0].reviewDate} by{" "}
+                  <a href="#"> {props.reviews[0].userEmail}</a>
                 </p>
-                <p>
-                  This is by far one of my favorite movies from the MCU. The
-                  introduction of new Characters both good and bad also makes
-                  the movie more exciting. giving the characters more of a back
-                  story can also help audiences relate more to different
-                  characters better, and it connects a bond between the audience
-                  and actors or characters. Having seen the movie three times
-                  does not bother me here as it is as thrilling and exciting
-                  every time I am watching it. In other words, the movie is by
-                  far better than previous movies (and I do love everything
-                  Marvel), the plotting is splendid (they really do out do
-                  themselves in each film, there are no problems watching it
-                  more than once.
-                </p>
+                <p>{props.reviews[0].reviewDescription}</p>
               </div>
             )}
           </div>
