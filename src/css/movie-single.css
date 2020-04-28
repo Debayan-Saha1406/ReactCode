@@ -1381,6 +1381,10 @@ a#black-hover:hover {
   color: black !important;
 }
 
+a#black-hover {
+  color: white !important;
+}
+
 .mv-user-review-item {
   width: 80%;
 }
@@ -1400,4 +1404,12 @@ a#black-hover:hover {
 
 #yellow :hover {
   color: #dcf836;
+}
+
+.close-cross {
+  float: right;
+  color: white;
+  margin-top: -9px;
+  margin-right: 0px;
+  font-size: 42px;
 }

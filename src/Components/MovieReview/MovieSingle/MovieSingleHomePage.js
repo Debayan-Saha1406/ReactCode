@@ -11,6 +11,8 @@ import { apiUrl, ratingStars } from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
+import ReactPlayer from "react-player";
+import "../../../css/movie-single.css";
 
 let releaseYear = "";
 class MovieSingleHomePage extends Component {
@@ -18,6 +20,7 @@ class MovieSingleHomePage extends Component {
     selectedTab: "overview",
     movie: {},
     indexClicked: -1,
+    showVideo: false,
   };
 
   toggleTab = (destTab) => {
@@ -48,6 +51,10 @@ class MovieSingleHomePage extends Component {
     this.setState({ indexClicked: -1 });
   };
 
+  showTrailer = (showVideo) => {
+    this.setState({ showVideo });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -70,7 +77,24 @@ class MovieSingleHomePage extends Component {
           >
             <Header></Header>
             <div className="hero mv-single-hero">
-              <div className="container"></div>
+              {this.state.showVideo && (
+                <div className="overlay openform">
+                  <div className="login-wrapper" id="login-content">
+                    <div
+                      className="close-cross"
+                      onClick={() => this.showTrailer(false)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                    <ReactPlayer
+                      url={this.state.movie.movie.youtubeUrl}
+                      controls={true}
+                      style={{ backgroundColor: "black" }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
             <div className="page-single movie-single movie_single">
               <div className="container">
@@ -81,20 +105,14 @@ class MovieSingleHomePage extends Component {
                       <div className="movie-btn">
                         <div className="btn-transform transform-vertical red">
                           <div>
-                            {
-                              <a
-                                href={this.state.movie.movie.youtubeUrl}
-                                className="item item-1 redbtn"
-                                id="black-hover"
-                              >
-                                {" "}
-                                <i
-                                  className="fa fa-play"
-                                  aria-hidden="true"
-                                ></i>{" "}
-                                Watch Trailer
-                              </a>
-                            }
+                            <a
+                              onClick={() => this.showTrailer(true)}
+                              className="item item-1 redbtn"
+                              id="black-hover"
+                            >
+                              <i className="fa fa-play" aria-hidden="true"></i>{" "}
+                              Watch Trailer
+                            </a>
                           </div>
                         </div>
                         <div className="btn-transform transform-vertical">
