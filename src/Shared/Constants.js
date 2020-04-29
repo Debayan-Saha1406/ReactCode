@@ -12,6 +12,8 @@ export const apiUrl = {
   users: "/users",
   movie: "/movie/",
   reviews: "/reviews",
+  rating: "/rating/",
+  movies: "/movies",
 };
 
 export const constants = {

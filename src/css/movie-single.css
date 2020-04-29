@@ -1413,3 +1413,41 @@ a#black-hover {
   margin-right: 0px;
   font-size: 42px;
 }
+
+.heading {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.heading:hover {
+  color: #ffaa3c;
+  cursor: pointer;
+}
+
+.active-page {
+  color: #ffaa3c;
+}
+
+.active-page:hover {
+  color: #4280bf;
+}
+
+.grid:hover {
+  color: #4280bf !important;
+  cursor: pointer;
+}
+
+.list {
+  color: #ffaa3c !important;
+}
+
+.movie-grid {
+  color: #ffaa3c !important;
+}
+
+.movie-list :hover {
+  color: #4280bf !important;
+}

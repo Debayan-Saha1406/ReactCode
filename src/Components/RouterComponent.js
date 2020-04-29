@@ -29,7 +29,7 @@ class Router extends Component {
           <Route path="/resetPassword" component={ResetPassword} />
           <Route path="/movie" component={MovieHomePage} />
           <Route path="/movie-grid" component={MovieGrid} />
-          <Route path="/movie-single" component={MovieSingleHomePage} />
+          <Route path="/movie-single/:name" component={MovieSingleHomePage} />
           <Route path="/movie-list" component={MovieList} />
           <Redirect from="*" to="/login" />
         </Switch>

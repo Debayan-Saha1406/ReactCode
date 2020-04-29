@@ -7,7 +7,8 @@ const Pagination = (props) => {
     pageSize,
     pageNumberClicked,
     currentPage,
-    changeReviewCount,
+    changeCount,
+    description,
   } = props;
   let numberOfPages = totalCount / pageSize;
   numberOfPages = Math.ceil(numberOfPages);
@@ -17,17 +18,19 @@ const Pagination = (props) => {
   }
   return (
     <div className="topbar-filter">
-      <label className="filterBy">Reviews per page:</label>
-      <select onChange={(e) => changeReviewCount(e)}>
-        <option value={pageSize}>{pageSize} Reviews</option>
-        <option value={10}>10 Reviews</option>
+      <label className="filterBy">{description} per page:</label>
+      <select onChange={(e) => changeCount(e)}>
+        <option value={pageSize}>
+          {pageSize} {description}
+        </option>
+        <option value={10}>10 {description}</option>
       </select>
       <div className="pagination2">
         <span>
           Page {currentPage} of {pages}:
         </span>
         <ul className="menu">
-          {pages.map((page, index) => (
+          {/* {pages.map((page, index) => 
             <li
               key={index}
               onClick={() => pageNumberClicked(page)}
@@ -35,17 +38,32 @@ const Pagination = (props) => {
             >
               {page}
             </li>
-          ))}
+          ))} */}
+          {pages.map((page, index) => {
+            return (
+              <React.Fragment key={index}>
+                {currentPage === index + 1 ? (
+                  <li
+                    className="active-page"
+                    key={index}
+                    onClick={() => pageNumberClicked(page)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {page}
+                  </li>
+                ) : (
+                  <li
+                    key={index}
+                    onClick={() => pageNumberClicked(page)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {page}
+                  </li>
+                )}
+              </React.Fragment>
+            );
+          })}
         </ul>
-
-        {/* <a className="active" href="#">
-  1
-</a>
-<a href="#">2</a>
-<a href="#">3</a>
-<a href="#">4</a>
-<a href="#">5</a>
-<a href="#">6</a> */}
       </div>
     </div>
   );

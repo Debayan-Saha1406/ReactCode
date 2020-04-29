@@ -21,6 +21,7 @@ class MovieSingleHomePage extends Component {
     movie: {},
     indexClicked: -1,
     showVideo: false,
+    isRatingGiven: false,
   };
 
   toggleTab = (destTab) => {
@@ -28,8 +29,9 @@ class MovieSingleHomePage extends Component {
   };
 
   componentDidMount() {
+    const {movieId} = this.props.location.state;
     this.props.toggleLoader(true, 0);
-    ServiceProvider.getWithParam(apiUrl.movie, 1).then((response) => {
+    ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
         let index = response.data.data.movie.releaseDate.indexOf(",");
         releaseYear = response.data.data.movie.releaseDate.substring(
@@ -48,11 +50,33 @@ class MovieSingleHomePage extends Component {
   };
 
   toggleAllStars = () => {
-    this.setState({ indexClicked: -1 });
+    if (!this.state.isRatingGiven) {
+      this.setState({ indexClicked: -1 });
+    }
   };
 
   showTrailer = (showVideo) => {
     this.setState({ showVideo });
+  };
+
+  handleStarClick = (index) => {
+    const movieDetail = { ...this.state.movie };
+    movieDetail.movie.avgRating = +(
+      (movieDetail.movie.avgRating * movieDetail.movie.totalRatings +
+        (index + 1)) /
+      (movieDetail.movie.totalRatings + 1)
+    ).toFixed(1);
+    movieDetail.movie.totalRatings += 1;
+
+    const body = {
+      avgRating: movieDetail.movie.avgRating,
+    };
+
+    ServiceProvider.put(apiUrl.rating, 1, body).then((response) => {
+      if (response.status === 200) {
+        this.setState({ isRatingGiven: true, movie: movieDetail });
+      }
+    });
   };
 
   render() {
@@ -163,6 +187,7 @@ class MovieSingleHomePage extends Component {
                                     }}
                                     onMouseOver={() => this.toggleStar(index)}
                                     onMouseOut={() => this.toggleStar(index)}
+                                    onClick={() => this.handleStarClick(index)}
                                   ></i>
                                 ) : (
                                   <i

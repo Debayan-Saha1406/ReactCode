@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl } from "../../../Shared/Constants";
@@ -70,10 +71,14 @@ class MovieReview extends Component {
             <div className="div">
               <br></br>
               <br></br>
-              <h3>Related Movies To</h3>
+              <h3>Reviews Related To</h3>
               <h2>{this.props.movieName}</h2>
             </div>
-            <a href="#" className="redbtn" id="black-hover">
+            <a
+              className="redbtn"
+              id="black-hover"
+              style={{ cursor: "pointer" }}
+            >
               Write Review
             </a>
           </div>
@@ -96,7 +101,7 @@ class MovieReview extends Component {
               {this.state.reviews &&
                 this.state.reviews.map((review, index) => (
                   <li key={index}>
-                    <h3>{review.reviewTitle}</h3>
+                    <h3 style={{ color: "yellow" }}>{review.reviewTitle}</h3>
                     <p className="time">
                       {review.reviewDate} by <a> {review.userEmail}</a>
                     </p>
@@ -110,8 +115,9 @@ class MovieReview extends Component {
               pageSize={this.state.pageSize}
               totalCount={this.state.totalReviews}
               currentPage={this.state.pageNumber}
-              changeReviewCount={this.changeReviewCount}
+              changeCount={this.changeReviewCount}
               pageNumberClicked={this.pageNumberClicked}
+              description="Reviews"
             ></Pagination>
           )}
         </div>

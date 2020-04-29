@@ -6,15 +6,28 @@ import { Component } from "react";
 import { Redirect } from "react-router-dom";
 
 class MovieGridMain extends Component {
-  state = { readMoreOpacity: 0, redirectToDescPage: false };
+  state = {
+    readMoreOpacity: 0,
+    redirectToDescPage: false,
+    redirectToList: false,
+  };
 
   toggleReadMoreOpacity = (opacity) => {
     this.setState({ readMoreOpacity: opacity });
+  };
+
+  selectList = () => {
+    this.setState({ redirectToList: true });
   };
   render() {
     if (this.state.redirectToDescPage) {
       return <Redirect to="/movie-single"></Redirect>;
     }
+
+    if (this.state.redirectToList) {
+      return <Redirect to="/movie-list"></Redirect>;
+    }
+
     return (
       <div class="page-single">
         <div class="container">
@@ -33,11 +46,15 @@ class MovieGridMain extends Component {
                   <option value="date">Release date Descending</option>
                   <option value="date">Release date Ascending</option>
                 </select>
-                <a href="movielist.html" class="list">
-                  <i class="ion-ios-list-outline "></i>
+                <a
+                  onClick={this.selectList}
+                  className="movie-list"
+                  style={{ cursor: "pointer" }}
+                >
+                  <i className="fa fa-list" aria-hidden="true"></i>
                 </a>
-                <a href="moviegridfw.html" class="grid">
-                  <i class="ion-grid active"></i>
+                <a className="movie-grid">
+                  <i className="fa fa-th" aria-hidden="true"></i>
                 </a>
               </div>
               <div class="flex-wrap-movielist mv-grid-fw">
