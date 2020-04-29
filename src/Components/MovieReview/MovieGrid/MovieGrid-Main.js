@@ -4,13 +4,50 @@ import "../../../css/movie-single.css";
 import image from "../../../images/mv1.jpg";
 import { Component } from "react";
 import { Redirect } from "react-router-dom";
+import ServiceProvider from "../../../Provider/ServiceProvider";
+import { apiUrl, pageType } from "../../../Shared/Constants";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { connect } from "react-redux";
+import LoaderProvider from "./../../../Provider/LoaderProvider";
+import Header from "./../Common/Header";
+import Pagination from "./../Common/Pagination";
+import Topbar from "../Common/Topbar";
 
 class MovieGridMain extends Component {
   state = {
     readMoreOpacity: 0,
-    redirectToDescPage: false,
+    redirectToDetail: false,
     redirectToList: false,
+    pageNumber: 1,
+    pageSize: 10,
+    searchQuery: "",
+    moviesList: [],
+    totalMovies: 0,
+    movieIdClicked: 0,
+    movieName: "",
   };
+
+  componentDidMount() {
+    this.props.toggleLoader(true, 0);
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchQuery: this.state.searchQuery,
+    };
+    ServiceProvider.post(apiUrl.movies, body).then((response) => {
+      if (response.status === 200) {
+        this.setState(
+          {
+            moviesList: response.data.data.details,
+            totalMovies: response.data.data.totalCount,
+          },
+          () => {
+            this.props.toggleLoader(false, 1);
+          }
+        );
+      }
+    });
+  }
 
   toggleReadMoreOpacity = (opacity) => {
     this.setState({ readMoreOpacity: opacity });
@@ -19,9 +56,51 @@ class MovieGridMain extends Component {
   selectList = () => {
     this.setState({ redirectToList: true });
   };
+
+  redirectToDetail = (movieIdClicked, movieName) => {
+    this.setState({ redirectToDetail: true, movieIdClicked, movieName });
+  };
+
+  changeMovieCount = (e) => {
+    this.setState({ pageSize: e.target.value });
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: e.target.value,
+      searchQuery: "",
+    };
+    ServiceProvider.post(apiUrl.movies, body).then((response) => {
+      this.setState({
+        moviesList: response.data.data.reviews,
+        totalMovies: response.data.data.totalCount,
+      });
+    });
+  };
+
+  pageNumberClicked = (page) => {
+    const body = {
+      pageNumber: page,
+      pageSize: this.state.pageSize,
+      searchQuery: "",
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        moviesList: response.data.data.reviews,
+        totalMovies: response.data.data.totalCount,
+        pageNumber: page,
+      });
+    });
+  };
+
   render() {
-    if (this.state.redirectToDescPage) {
-      return <Redirect to="/movie-single"></Redirect>;
+    if (this.state.redirectToDetail) {
+      return (
+        <Redirect
+          to={{
+            pathname: `/movie-single/${this.state.movieName}`,
+            state: { movieId: this.state.movieIdClicked },
+          }}
+        />
+      );
     }
 
     if (this.state.redirectToList) {
@@ -29,489 +108,112 @@ class MovieGridMain extends Component {
     }
 
     return (
-      <div class="page-single">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="topbar-filter fw">
-                <p>
-                  Found <span>1,608 movies</span> in total
-                </p>
-                <label className="filterBy">Sort by:</label>
-                <select>
-                  <option value="popularity">Popularity Descending</option>
-                  <option value="popularity">Popularity Ascending</option>
-                  <option value="rating">Rating Descending</option>
-                  <option value="rating">Rating Ascending</option>
-                  <option value="date">Release date Descending</option>
-                  <option value="date">Release date Ascending</option>
-                </select>
-                <a
-                  onClick={this.selectList}
-                  className="movie-list"
-                  style={{ cursor: "pointer" }}
-                >
-                  <i className="fa fa-list" aria-hidden="true"></i>
-                </a>
-                <a className="movie-grid">
-                  <i className="fa fa-th" aria-hidden="true"></i>
-                </a>
-              </div>
-              <div class="flex-wrap-movielist mv-grid-fw">
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src={image} alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">oblivion</a>
-                    </h6>
-                    <p class="rate">
-                      <i
-                        class="fa fa-star"
-                        style={{
-                          fontSize: "20px",
-                          color: "yellow",
-                          marginRight: "5px",
-                        }}
-                      ></i>
-                      <span>8.1</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img
-                    src={image}
-                    alt=""
-                    onMouseOver={() => this.toggleReadMoreOpacity(1)}
-                    onMouseOut={() => this.toggleReadMoreOpacity(0)}
-                  />
-                  <div
-                    class="hvr-inner"
-                    style={{ opacity: this.state.readMoreOpacity }}
-                  >
-                    <a
-                      onClick={() => {
-                        this.setState({ redirectToDescPage: true });
-                      }}
-                      onMouseOver={() => this.toggleReadMoreOpacity(1)}
-                    >
-                      {" "}
-                      Read more
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">into the wild</a>
-                    </h6>
-                    <p class="rate">
-                      <i
-                        class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
-                      ></i>
-                      <span>7.8</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src={image} alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">Die hard</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src={image} alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">The walk</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src={image} alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">blade runner </a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.3</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src={image} alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">Mulholland pride</a>
-                    </h6>
-                    <p class="rate">
-                      <i
-                        class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
-                      ></i>
-                      <span>7.2</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv5.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">skyfall: evil of boss</a>
-                    </h6>
-                    <p class="rate">
-                      <i
-                        class="fa fa-star"
-                        style={{ fontSize: "40px", color: "yellow" }}
-                      ></i>
-                      <span>7.0</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item1.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">Interstellar</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item2.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">The revenant</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-it10.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">harry potter</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-it11.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">guardians galaxy</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-it12.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">the godfather</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item6.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">blue velvet</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item7.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">gravity</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item8.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">southpaw</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-it9.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">jurassic park</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item9.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">the forest</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item10.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">spectre</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item11.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">strager things</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv-item12.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">la la land</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.4</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv1.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">oblivion</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>8.1</span> /10
-                    </p>
-                  </div>
-                </div>
-                <div class="movie-item-style-2 movie-item-style-1">
-                  <img src="images/uploads/mv2.jpg" alt="" />
-                  <div class="hvr-inner">
-                    <a href="moviesingle.html">
-                      {" "}
-                      Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                    </a>
-                  </div>
-                  <div class="mv-item-infor">
-                    <h6>
-                      <a href="#">into the wild</a>
-                    </h6>
-                    <p class="rate">
-                      <i class="ion-android-star"></i>
-                      <span>7.8</span> /10
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="topbar-filter">
-                <label>Movies per page:</label>
-                <select>
-                  <option value="range">20 Movies</option>
-                  <option value="saab">10 Movies</option>
-                </select>
+      <React.Fragment>
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
+          </div>
+        </div>
+        <div
+          className="background"
+          style={{
+            opacity: this.props.screenOpacity,
+          }}
+        >
+          <div id="site-content">
+            <Header></Header>
+            <div className="page-single">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12 col-sm-12 col-xs-12">
+                    <Topbar
+                      totalMovies={this.state.totalMovies}
+                      selectList={this.selectList}
+                      pageType={pageType.grid}
+                    ></Topbar>
+                    <div className="flex-wrap-movielist mv-grid-fw">
+                      {this.state.moviesList.map((movie, index) => (
+                        <div
+                          key={index}
+                          className="movie-item-style-2 movie-item-style-1"
+                        >
+                          <img
+                            src={image}
+                            alt=""
+                            onMouseOver={() => this.toggleReadMoreOpacity(1)}
+                            onMouseOut={() => this.toggleReadMoreOpacity(0)}
+                          />
+                          <div
+                            className="hvr-inner"
+                            style={{ opacity: this.state.readMoreOpacity }}
+                            onMouseOver={() => this.toggleReadMoreOpacity(1)}
+                          >
+                            <a
+                              onClick={() => {
+                                this.redirectToDetail(
+                                  movie.movieId,
+                                  movie.movieName
+                                );
+                              }}
+                            >
+                              {" "}
+                              Read more{" "}
+                            </a>
+                          </div>
 
-                <div class="pagination2">
-                  <span>Page 1 of 2:</span>
-                  <a class="active" href="#">
-                    1
-                  </a>
-                  <a href="#">2</a>
-                  <a href="#">3</a>
-                  <a href="#">...</a>
-                  <a href="#">78</a>
-                  <a href="#">79</a>
-                  <a href="#">
-                    <i class="ion-arrow-right-b"></i>
-                  </a>
+                          <div className="mv-item-infor">
+                            <h6>
+                              <a href="#">{movie.movieName}</a>
+                            </h6>
+                            <p className="rate">
+                              <i
+                                className="fa fa-star"
+                                style={{
+                                  fontSize: "20px",
+                                  color: "yellow",
+                                  marginRight: "5px",
+                                }}
+                              ></i>
+                              <span>{movie.avgRating}</span> /10
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Pagination
+                      pageSize={this.state.pageSize}
+                      totalCount={this.state.totalMovies}
+                      currentPage={this.state.pageNumber}
+                      changeCount={this.changeMovieCount}
+                      pageNumberClicked={this.pageNumberClicked}
+                      description="Movies"
+                    ></Pagination>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default MovieGridMain;
+const mapStateToProps = (state) => {
+  return {
+    showLoader: state.uiDetails.showLoader,
+    screenOpacity: state.uiDetails.screenOpacity,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieGridMain);

@@ -1451,3 +1451,7 @@ a#black-hover {
 .movie-list :hover {
   color: #4280bf !important;
 }
+
+.movie-item-style-1 .hvr-inner a:hover {
+  color: black;
+}

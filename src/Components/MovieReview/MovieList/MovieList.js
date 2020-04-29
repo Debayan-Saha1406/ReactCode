@@ -5,11 +5,12 @@ import image from "../../../images/mv1.jpg";
 import Header from "../Common/Header";
 import { Redirect } from "react-router-dom";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl } from "../../../Shared/Constants";
+import { apiUrl, pageType } from "../../../Shared/Constants";
 import Pagination from "./../Common/Pagination";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
+import Topbar from "../Common/Topbar";
 
 class MovieList extends Component {
   state = {
@@ -124,26 +125,11 @@ class MovieList extends Component {
             <div className="container">
               <div className="row ipad-width2">
                 <div className="col-md-8 col-sm-12 col-xs-12">
-                  <div className="topbar-filter">
-                    <p>
-                      Found <span>{this.state.totalMovies}</span> in total
-                    </p>
-                    <label className="filterBy"> Sort by:</label>
-                    <select>
-                      <option value="popularity">Popularity Descending</option>
-                      <option value="popularity">Popularity Ascending</option>
-                      <option value="rating">Rating Descending</option>
-                      <option value="rating">Rating Ascending</option>
-                      <option value="date">Release date Descending</option>
-                      <option value="date">Release date Ascending</option>
-                    </select>
-                    <a className="list">
-                      <i className="fa fa-list" aria-hidden="true"></i>
-                    </a>
-                    <a onClick={this.selectGrid} className="grid">
-                      <i className="fa fa-th" aria-hidden="true"></i>
-                    </a>
-                  </div>
+                  <Topbar
+                    totalMovies={this.state.totalMovies}
+                    selectGrid={this.selectGrid}
+                    pageType={pageType.list}
+                  ></Topbar>
                   {this.state.moviesList.map((movie, index) => (
                     <div key={index} className="movie-item-style-2-list">
                       <img src={image} alt="" />
