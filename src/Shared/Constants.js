@@ -70,3 +70,17 @@ export const pageType = {
   grid: "grid",
   list: "list",
 };
+
+export const rating = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+export const years = [1960, 1970, 1980, 1990, 2000, 2010, 2020];
+
+export const movieSearchType = {
+  all: "All",
+  movie: "Movie",
+  rating: "Rating",
+  releaseYear: "ReleaseYear",
+  movieReleaseYear: "MovieReleaseYear",
+  ratingReleaseYear: "RatingReleaseYear",
+  both: "Both",
+};

@@ -12,6 +12,7 @@ import LoaderProvider from "./../../../Provider/LoaderProvider";
 import Header from "./../Common/Header";
 import Pagination from "./../Common/Pagination";
 import Topbar from "../Common/Topbar";
+import Searchbox from "../Common/Searchbox";
 
 class MovieGridMain extends Component {
   state = {
@@ -122,76 +123,80 @@ class MovieGridMain extends Component {
             opacity: this.props.screenOpacity,
           }}
         >
-          <div id="site-content">
-            <Header></Header>
-            <div className="page-single">
-              <div className="container">
-                <div className="row">
-                  <div className="col-md-12 col-sm-12 col-xs-12">
-                    <Topbar
-                      totalMovies={this.state.totalMovies}
-                      selectList={this.selectList}
-                      pageType={pageType.grid}
-                    ></Topbar>
-                    <div className="flex-wrap-movielist mv-grid-fw">
-                      {this.state.moviesList.map((movie, index) => (
+          <Header></Header>
+          <div className="page-single">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-8 col-sm-12 col-xs-12">
+                  <Topbar
+                    totalMovies={this.state.totalMovies}
+                    selectList={this.selectList}
+                    pageType={pageType.grid}
+                  ></Topbar>
+                  <div className="flex-wrap-movielist mv-grid-fw">
+                    {this.state.moviesList.map((movie, index) => (
+                      <div
+                        key={index}
+                        className="movie-item-style-2 movie-item-style-1"
+                      >
+                        <img
+                          src={image}
+                          alt=""
+                          onMouseOver={() => this.toggleReadMoreOpacity(1)}
+                          onMouseOut={() => this.toggleReadMoreOpacity(0)}
+                        />
                         <div
-                          key={index}
-                          className="movie-item-style-2 movie-item-style-1"
+                          className="hvr-inner"
+                          style={{ opacity: this.state.readMoreOpacity }}
+                          onMouseOver={() => this.toggleReadMoreOpacity(1)}
                         >
-                          <img
-                            src={image}
-                            alt=""
-                            onMouseOver={() => this.toggleReadMoreOpacity(1)}
-                            onMouseOut={() => this.toggleReadMoreOpacity(0)}
-                          />
-                          <div
-                            className="hvr-inner"
-                            style={{ opacity: this.state.readMoreOpacity }}
-                            onMouseOver={() => this.toggleReadMoreOpacity(1)}
+                          <a
+                            onClick={() => {
+                              this.redirectToDetail(
+                                movie.movieId,
+                                movie.movieName
+                              );
+                            }}
                           >
-                            <a
-                              onClick={() => {
-                                this.redirectToDetail(
-                                  movie.movieId,
-                                  movie.movieName
-                                );
-                              }}
-                            >
-                              {" "}
-                              Read more{" "}
-                            </a>
-                          </div>
-
-                          <div className="mv-item-infor">
-                            <h6>
-                              <a href="#">{movie.movieName}</a>
-                            </h6>
-                            <p className="rate">
-                              <i
-                                className="fa fa-star"
-                                style={{
-                                  fontSize: "20px",
-                                  color: "yellow",
-                                  marginRight: "5px",
-                                }}
-                              ></i>
-                              <span>{movie.avgRating}</span> /10
-                            </p>
-                          </div>
+                            {" "}
+                            Read more{" "}
+                          </a>
                         </div>
-                      ))}
-                    </div>
-                    <Pagination
-                      pageSize={this.state.pageSize}
-                      totalCount={this.state.totalMovies}
-                      currentPage={this.state.pageNumber}
-                      changeCount={this.changeMovieCount}
-                      pageNumberClicked={this.pageNumberClicked}
-                      description="Movies"
-                    ></Pagination>
+
+                        <div className="mv-item-infor">
+                          <h6>
+                            <a href="#">{movie.movieName}</a>
+                          </h6>
+                          <p className="rate">
+                            <i
+                              className="fa fa-star"
+                              style={{
+                                fontSize: "20px",
+                                color: "yellow",
+                                marginRight: "5px",
+                              }}
+                            ></i>
+                            <span>{movie.avgRating}</span> /10
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                  <Pagination
+                    pageSize={this.state.pageSize}
+                    totalCount={this.state.totalMovies}
+                    currentPage={this.state.pageNumber}
+                    changeCount={this.changeMovieCount}
+                    pageNumberClicked={this.pageNumberClicked}
+                    description="Movies"
+                  ></Pagination>
                 </div>
+                <Searchbox
+                  title="Search For Movie"
+                  movieNameLabel="Movie Name"
+                  ratingLabel="Rating Range"
+                  releaseYearLabel="Release Year"
+                ></Searchbox>
               </div>
             </div>
           </div>

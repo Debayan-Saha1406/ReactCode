@@ -1455,3 +1455,7 @@ a#black-hover {
 .movie-item-style-1 .hvr-inner a:hover {
   color: black;
 }
+
+#not-allowed {
+  cursor: not-allowed;
+}

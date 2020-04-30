@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import "../../../css/movie-single.css";
@@ -11,6 +12,8 @@ import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import Topbar from "../Common/Topbar";
+import Searchbox from "../Common/Searchbox";
+import { movieSearchType } from "./../../../Shared/Constants";
 
 class MovieList extends Component {
   state = {
@@ -59,7 +62,7 @@ class MovieList extends Component {
     };
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
       this.setState({
-        moviesList: response.data.data.reviews,
+        moviesList: response.data.data.details,
         totalMovies: response.data.data.totalCount,
       });
     });
@@ -73,7 +76,7 @@ class MovieList extends Component {
     };
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
       this.setState({
-        moviesList: response.data.data.reviews,
+        moviesList: response.data.data.details,
         totalMovies: response.data.data.totalCount,
         pageNumber: page,
       });
@@ -87,6 +90,39 @@ class MovieList extends Component {
       movieIdClicked: movieId,
       movieName,
     });
+  };
+
+  getFilteredMovies = (e, movieName, selectedRating, fromYear, toYear) => {
+    e.preventDefault();
+    let searchType;
+    debugger;
+    if (movieName && selectedRating != 0 && fromYear != 0 && toYear != 0) {
+      searchType = movieSearchType.all;
+    } else if (movieName && selectedRating != 0) {
+      searchType = movieSearchType.both;
+    } else if (movieName && fromYear != 0 && toYear != 0) {
+      searchType = movieSearchType.movieReleaseYear;
+    } else if (selectedRating != 0 && fromYear != 0 && toYear != 0) {
+      searchType = movieSearchType.ratingReleaseYear;
+    } else if (movieName) {
+      searchType = movieSearchType.movie;
+    } else if (selectedRating != 0) {
+      searchType = movieSearchType.rating;
+    } else if (fromYear != 0 && toYear != 0) {
+      searchType = movieSearchType.releaseYear;
+    }
+    console.log(searchType);
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchType: searchType,
+    };
+    // ServiceProvider.post(apiUrl.movies, body).then((response) => {
+    //   this.setState({
+    //     moviesList: response.data.data.details,
+    //     totalMovies: response.data.data.totalCount,
+    //   });
+    // });
   };
 
   render() {
@@ -182,84 +218,13 @@ class MovieList extends Component {
                     description="Movies"
                   ></Pagination>
                 </div>
-                <div className="col-md-4 col-sm-12 col-xs-12">
-                  <div className="sidebar">
-                    <div className="searh-form">
-                      <h4 className="sb-title">Search for movie</h4>
-                      <form className="form-style-1" action="#">
-                        <div className="row">
-                          <div className="col-md-12 form-it">
-                            <label>Movie name</label>
-                            <input type="text" placeholder="Enter keywords" />
-                          </div>
-                          <div className="col-md-12 form-it">
-                            <label>Genres & Subgenres</label>
-                            <div className="group-ip">
-                              <select
-                                name="skills"
-                                multiple=""
-                                className="ui fluid dropdown"
-                              >
-                                <option value="">Enter to filter genres</option>
-                                <option value="Action1">Action 1</option>
-                                <option value="Action2">Action 2</option>
-                                <option value="Action3">Action 3</option>
-                                <option value="Action4">Action 4</option>
-                                <option value="Action5">Action 5</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-md-12 form-it">
-                            <label>Rating Range</label>
-
-                            <select>
-                              <option value="range">
-                                -- Select the rating range below --
-                              </option>
-                              <option value="saab">
-                                -- Select the rating range below --
-                              </option>
-                              <option value="saab">
-                                -- Select the rating range below --
-                              </option>
-                              <option value="saab">
-                                -- Select the rating range below --
-                              </option>
-                            </select>
-                          </div>
-                          <div className="col-md-12 form-it">
-                            <label>Release Year</label>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <select>
-                                  <option value="range">From</option>
-                                  <option value="number">10</option>
-                                  <option value="number">20</option>
-                                  <option value="number">30</option>
-                                </select>
-                              </div>
-                              <div className="col-md-6">
-                                <select>
-                                  <option value="range">To</option>
-                                  <option value="number">20</option>
-                                  <option value="number">30</option>
-                                  <option value="number">40</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-md-12 ">
-                            <input
-                              className="submit"
-                              type="submit"
-                              value="submit"
-                            />
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
+                <Searchbox
+                  title="Search For Movie"
+                  movieNameLabel="Movie Name"
+                  ratingLabel="Rating Range"
+                  releaseYearLabel="Release Year"
+                  getFilteredMovies={this.getFilteredMovies}
+                ></Searchbox>
               </div>
             </div>
           </div>
