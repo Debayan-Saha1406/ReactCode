@@ -94,8 +94,32 @@ class MovieList extends Component {
 
   getFilteredMovies = (e, movieName, selectedRating, fromYear, toYear) => {
     e.preventDefault();
+    let searchType = this.setSearchType(
+      movieName,
+      selectedRating,
+      fromYear,
+      toYear
+    );
+
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchType: searchType,
+      movieName: movieName ? movieName : null,
+      selectedRating: selectedRating != 0 ? selectedRating : 0,
+      fromYear: fromYear != 0 ? fromYear : null,
+      toYear: toYear != 0 ? toYear : null,
+    };
+    ServiceProvider.post(apiUrl.movies, body).then((response) => {
+      this.setState({
+        moviesList: response.data.data.details,
+        totalMovies: response.data.data.totalCount,
+      });
+    });
+  };
+
+  setSearchType(movieName, selectedRating, fromYear, toYear) {
     let searchType;
-    debugger;
     if (movieName && selectedRating != 0 && fromYear != 0 && toYear != 0) {
       searchType = movieSearchType.all;
     } else if (movieName && selectedRating != 0) {
@@ -111,19 +135,8 @@ class MovieList extends Component {
     } else if (fromYear != 0 && toYear != 0) {
       searchType = movieSearchType.releaseYear;
     }
-    console.log(searchType);
-    const body = {
-      pageNumber: this.state.pageNumber,
-      pageSize: this.state.pageSize,
-      searchType: searchType,
-    };
-    // ServiceProvider.post(apiUrl.movies, body).then((response) => {
-    //   this.setState({
-    //     moviesList: response.data.data.details,
-    //     totalMovies: response.data.data.totalCount,
-    //   });
-    // });
-  };
+    return searchType;
+  }
 
   render() {
     if (this.state.redirectToDetail) {
@@ -209,14 +222,16 @@ class MovieList extends Component {
                     </div>
                   ))}
 
-                  <Pagination
-                    pageSize={this.state.pageSize}
-                    totalCount={this.state.totalMovies}
-                    currentPage={this.state.pageNumber}
-                    changeCount={this.changeMovieCount}
-                    pageNumberClicked={this.pageNumberClicked}
-                    description="Movies"
-                  ></Pagination>
+                  {this.state.moviesList.length > 0 && (
+                    <Pagination
+                      pageSize={this.state.pageSize}
+                      totalCount={this.state.totalMovies}
+                      currentPage={this.state.pageNumber}
+                      changeCount={this.changeMovieCount}
+                      pageNumberClicked={this.pageNumberClicked}
+                      description="Movies"
+                    ></Pagination>
+                  )}
                 </div>
                 <Searchbox
                   title="Search For Movie"

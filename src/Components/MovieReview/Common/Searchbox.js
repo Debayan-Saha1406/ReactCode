@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { rating, years } from "../../../Shared/Constants";
@@ -7,7 +8,9 @@ const Searchbox = (props) => {
   const [selectedRating, setRating] = useState(0);
   const [fromYear, setFromYear] = useState(0);
   const [toYear, setToYear] = useState(0);
+  const [isErrorExist, setError] = useState(false);
 
+  debugger;
   return (
     <div className="col-md-4 col-sm-12 col-xs-12">
       <div className="sidebar">
@@ -47,7 +50,11 @@ const Searchbox = (props) => {
                     </select>
                   </div>
                   <div className="col-md-6">
-                    <select onChange={(e) => setToYear(e.target.value)}>
+                    <select
+                      onChange={(e) => {
+                        setToYear(e.target.value);
+                      }}
+                    >
                       <option value={0}>To</option>
                       {years.map((year) => (
                         <option value={year}>{year}</option>
@@ -56,11 +63,19 @@ const Searchbox = (props) => {
                   </div>
                 </div>
               </div>
+              {toYear < fromYear && toYear != 0 && fromYear != 0 && (
+                <div className="col-md-12">
+                  <label className="error">
+                    "To Year" Must Be More Than "From Year"
+                  </label>
+                </div>
+              )}
               <div className="col-md-12 ">
-                {movieName ||
-                selectedRating != 0 ||
-                fromYear != 0 ||
-                toYear != 0 ? (
+                {(movieName ||
+                  selectedRating != 0 ||
+                  fromYear != 0 ||
+                  toYear != 0) &&
+                toYear >= fromYear ? (
                   <input
                     className="submit"
                     type="submit"

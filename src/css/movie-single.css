@@ -1459,3 +1459,11 @@ a#black-hover {
 #not-allowed {
   cursor: not-allowed;
 }
+
+#not-allowed:hover {
+  background-color: grey;
+}
+
+.error {
+  color: #ffaa3c !important;
+}
