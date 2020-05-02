@@ -1467,3 +1467,13 @@ a#black-hover {
 .error {
   color: #ffaa3c !important;
 }
+
+.reset {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: black;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #dcf836;
+  width: 100%;
+}

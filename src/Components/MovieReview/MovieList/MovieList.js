@@ -14,6 +14,7 @@ import LoaderProvider from "./../../../Provider/LoaderProvider";
 import Topbar from "../Common/Topbar";
 import Searchbox from "../Common/Searchbox";
 import { movieSearchType } from "./../../../Shared/Constants";
+import { setSearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
 
 class MovieList extends Component {
   state = {
@@ -28,7 +29,11 @@ class MovieList extends Component {
   };
 
   componentDidMount() {
-    this.props.toggleLoader(true, 0);
+    this.fetchInitialData(0);
+  }
+
+  fetchInitialData = (screenOpacity) => {
+    this.props.toggleLoader(true, screenOpacity);
     const body = {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize,
@@ -47,7 +52,7 @@ class MovieList extends Component {
         );
       }
     });
-  }
+  };
 
   selectGrid = () => {
     this.setState({ showGrid: true });
@@ -92,13 +97,21 @@ class MovieList extends Component {
     });
   };
 
-  getFilteredMovies = (e, movieName, selectedRating, fromYear, toYear) => {
+  getFilteredMovies = (
+    e,
+    movieName,
+    selectedRating,
+    fromYear,
+    toYear,
+    languageId
+  ) => {
     e.preventDefault();
-    let searchType = this.setSearchType(
+    let searchType = setSearchType(
       movieName,
       selectedRating,
       fromYear,
-      toYear
+      toYear,
+      languageId
     );
 
     const body = {
@@ -106,10 +119,12 @@ class MovieList extends Component {
       pageSize: this.state.pageSize,
       searchType: searchType,
       movieName: movieName ? movieName : null,
-      selectedRating: selectedRating != 0 ? selectedRating : 0,
+      selectedRating: selectedRating,
       fromYear: fromYear != 0 ? fromYear : null,
       toYear: toYear != 0 ? toYear : null,
+      languageId: languageId,
     };
+    debugger;
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
       this.setState({
         moviesList: response.data.data.details,
@@ -117,26 +132,6 @@ class MovieList extends Component {
       });
     });
   };
-
-  setSearchType(movieName, selectedRating, fromYear, toYear) {
-    let searchType;
-    if (movieName && selectedRating != 0 && fromYear != 0 && toYear != 0) {
-      searchType = movieSearchType.all;
-    } else if (movieName && selectedRating != 0) {
-      searchType = movieSearchType.both;
-    } else if (movieName && fromYear != 0 && toYear != 0) {
-      searchType = movieSearchType.movieReleaseYear;
-    } else if (selectedRating != 0 && fromYear != 0 && toYear != 0) {
-      searchType = movieSearchType.ratingReleaseYear;
-    } else if (movieName) {
-      searchType = movieSearchType.movie;
-    } else if (selectedRating != 0) {
-      searchType = movieSearchType.rating;
-    } else if (fromYear != 0 && toYear != 0) {
-      searchType = movieSearchType.releaseYear;
-    }
-    return searchType;
-  }
 
   render() {
     if (this.state.redirectToDetail) {
@@ -239,6 +234,9 @@ class MovieList extends Component {
                   ratingLabel="Rating Range"
                   releaseYearLabel="Release Year"
                   getFilteredMovies={this.getFilteredMovies}
+                  languageLabel="Language"
+                  reviewLabel="Review Count"
+                  fetchInitialData={this.fetchInitialData}
                 ></Searchbox>
               </div>
             </div>

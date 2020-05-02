@@ -11,7 +11,6 @@ import MovieHomePage from "./MovieReview/MovieHome/MovieHomePage";
 import MovieGrid from "./MovieReview/MovieGrid/MovieGrid";
 import MovieSingleHomePage from "./MovieReview/MovieSingle/MovieSingleHomePage";
 import MovieList from "./MovieReview/MovieList/MovieList";
-import MovieGridMain from "./MovieReview/MovieGrid/MovieGrid-Main";
 
 class Router extends Component {
   render() {
@@ -29,7 +28,7 @@ class Router extends Component {
           <Route path="/register" component={Register} />
           <Route path="/resetPassword" component={ResetPassword} />
           <Route path="/movie" component={MovieHomePage} />
-          <Route path="/movie-grid" component={MovieGridMain} />
+          <Route path="/movie-grid" component={MovieGrid} />
           <Route path="/movie-single/:name" component={MovieSingleHomePage} />
           <Route path="/movie-list" component={MovieList} />
           <Redirect from="*" to="/login" />

@@ -1,6 +1,6 @@
 export const apiUrl = {
   baseUrl:
-    // "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    //"http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
     "https://localhost:44357/api",
   login: "/login",
   update: `/userInfo/`,
@@ -14,6 +14,7 @@ export const apiUrl = {
   reviews: "/reviews",
   rating: "/rating/",
   movies: "/movies",
+  movieLanguages: "/movieLanguages",
 };
 
 export const constants = {
@@ -82,5 +83,16 @@ export const movieSearchType = {
   releaseYear: "ReleaseYear",
   movieReleaseYear: "MovieReleaseYear",
   ratingReleaseYear: "RatingReleaseYear",
-  both: "Both",
+  movieRatingReleaseYear: "MovieRatingReleaseYear",
+  movieRating: "MovieRating",
+  movieLanguageReleaseYear: "MovieLanguageReleaseYear",
+  movieLanguage: "MovieLanguage",
+  ratingLanguage: "RatingLanguage",
+  ratingLanguageReleaseYear: "RatingLanguageReleaseYear",
+  movieRatingLanguageReleaseYear: "MovieRatingLanguageReleaseYear",
+  movieRatingLanguage: "MovieRatingLanguage",
+  language: "Language",
+  languageReleaseYear: "LanguageReleaseYear",
 };
+
+export const reviewCounts = [0, 100, 500, 1000];
