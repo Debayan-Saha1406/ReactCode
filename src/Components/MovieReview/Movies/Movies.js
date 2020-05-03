@@ -217,7 +217,7 @@ class Movies extends Component {
       return (
         <Redirect
           to={{
-            pathname: `/movie-details/${this.state.movieName}`,
+            pathname: `/movie-details/${this.state.movieIdClicked}`,
             state: { movieId: this.state.movieIdClicked },
           }}
         />

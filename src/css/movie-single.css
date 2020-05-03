@@ -1480,3 +1480,62 @@ a#black-hover {
   background-color: #dcf836;
   width: 100%;
 }
+
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+}
+.page-single-2 {
+  background: url(../images/background.jpg) no-repeat;
+  background-position: center;
+  text-align: center;
+  background-size: cover;
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.middle-content {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 45px 0 145px 0;
+}
+
+.middle-content h1 {
+  font-family: "Dosis", sans-serif;
+  font-size: 60px;
+  color: #ffffff;
+  font-weight: 400;
+  text-transform: none;
+  margin-top: 30px;
+  margin-bottom: 60px;
+}
+
+.middle-content .redbtn {
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  border-radius: 40px;
+}

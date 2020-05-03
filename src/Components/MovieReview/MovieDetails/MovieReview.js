@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl } from "../../../Shared/Constants";
+import { apiUrl, movieDetailTabs } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+
+import { connect } from "react-redux";
 
 class MovieReview extends Component {
   state = {
@@ -12,16 +15,25 @@ class MovieReview extends Component {
     pageSize: 5,
   };
   componentDidMount() {
+    debugger;
+    this.props.toggleLoader(true, 0);
+    this.props.setReviewFetched(true);
     let body = {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize,
       searchQuery: 1,
     };
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-      });
+      this.setState(
+        {
+          reviews: response.data.data.reviews,
+          totalReviews: response.data.data.totalCount,
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+          this.props.setReviewFetched(false);
+        }
+      );
     });
   }
 
@@ -61,7 +73,7 @@ class MovieReview extends Component {
         id="reviews"
         className="tab review "
         style={
-          this.props.selectedTab === "review"
+          this.props.selectedTab === movieDetailTabs.review
             ? { display: "block" }
             : { display: "none" }
         }
@@ -126,4 +138,12 @@ class MovieReview extends Component {
   }
 }
 
-export default MovieReview;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(MovieReview);

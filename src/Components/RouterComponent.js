@@ -10,6 +10,7 @@ import ResetPassword from "./ResetPasswordComponent";
 import MovieHomePage from "./MovieReview/MovieHome/MovieHomePage";
 import Movies from "./MovieReview/Movies/Movies";
 import MovieDetails from "./MovieReview/MovieDetails/MovieDetails";
+import NotFound from "./MovieReview/Common/NotFound";
 
 class Router extends Component {
   render() {
@@ -29,6 +30,7 @@ class Router extends Component {
           <Route path="/movie" component={MovieHomePage} />
           <Route path="/movie-details/:name" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
+          <Route path="/not-found" component={NotFound} />
           <Redirect from="*" to="/login" />
         </Switch>
       </BrowserRouter>

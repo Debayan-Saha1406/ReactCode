@@ -17,6 +17,7 @@ import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import LoaderProvider from "../../../Provider/LoaderProvider";
 import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
+import { Redirect } from "react-router-dom";
 
 let releaseYear = "";
 class MovieDetails extends Component {
@@ -26,6 +27,8 @@ class MovieDetails extends Component {
     indexClicked: -1,
     showVideo: false,
     isRatingGiven: false,
+    isReviewDataFetched: false,
+    redirectToNotFound: false,
   };
 
   toggleTab = (destTab) => {
@@ -33,7 +36,8 @@ class MovieDetails extends Component {
   };
 
   componentDidMount() {
-    const { movieId } = this.props.location.state;
+    const movieId = this.props.match.params.name;
+    console.log(movieId);
     this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
@@ -45,6 +49,8 @@ class MovieDetails extends Component {
         this.setState({ movie: response.data.data }, () => {
           this.props.toggleLoader(false, 1);
         });
+      } else if (response.status === 404) {
+        this.setState({ redirectToNotFound: true });
       }
     });
   }
@@ -84,9 +90,12 @@ class MovieDetails extends Component {
   };
 
   render() {
+    if (this.state.redirectToNotFound) {
+      return <Redirect to="/not-found"></Redirect>;
+    }
     return (
       <React.Fragment>
-        {!this.state.movie.movie ? (
+        {!this.state.movie.movie || this.state.isReviewDataFetched ? (
           <div id="loaderContainer">
             <div id="loader">
               {this.props.showLoader && (
@@ -322,6 +331,11 @@ class MovieDetails extends Component {
                               <MovieReview
                                 movieName={this.state.movie.movie.movieName}
                                 selectedTab={this.state.selectedTab}
+                                setReviewFetched={(isReviewFetched) => {
+                                  this.setState({
+                                    isReviewDataFetched: isReviewFetched,
+                                  });
+                                }}
                               ></MovieReview>
                             )}
                             {this.state.selectedTab ===
