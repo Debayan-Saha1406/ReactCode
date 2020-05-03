@@ -27,7 +27,7 @@ class Router extends Component {
           <Route path="/forgotPassword" component={ForgotPassword} />
           <Route path="/register" component={Register} />
           <Route path="/resetPassword" component={ResetPassword} />
-          <Route path="/movie" component={MovieHomePage} />
+          <Route path="/home" component={MovieHomePage} />
           <Route path="/movie-details/:name" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
           <Route path="/not-found" component={NotFound} />

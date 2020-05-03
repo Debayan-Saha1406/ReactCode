@@ -1495,18 +1495,18 @@ a#black-hover {
 }
 
 @media (min-width: 992px) {
-  .container {
+  .error-container {
     width: 970px;
   }
 }
 
 @media (min-width: 768px) {
-  .container {
+  .error-container {
     width: 750px;
   }
 }
 
-.container {
+.error-container {
   margin-right: auto;
   margin-left: auto;
   padding-left: 15px;

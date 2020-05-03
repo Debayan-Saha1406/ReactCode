@@ -13,9 +13,9 @@ const NotFound = () => {
 
   return (
     <>
-      {toMovies ? <Redirect to="/movies" /> : null}
+      {toMovies ? <Redirect to="/home" /> : null}
       <div class="page-single-2">
-        <div class="container">
+        <div class="error-container">
           <br></br>
           <img src={logo} alt="" className="logo" />
           <div className="logo-copy">
