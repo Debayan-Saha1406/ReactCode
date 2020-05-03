@@ -536,7 +536,6 @@ a#writeReview :hover {
   justify-content: flex-start;
   flex-wrap: wrap;
   align-items: inherit;
-  margin-right: -30px;
 }
 
 .movie-item-style-1 {
@@ -1435,14 +1434,9 @@ a#black-hover {
   color: #4280bf;
 }
 
-.grid:hover {
-  color: #4280bf !important;
-  cursor: pointer;
-}
-
-.list {
+/* .list {
   color: #ffaa3c !important;
-}
+} */
 
 .movie-grid {
   color: #ffaa3c !important;
@@ -1450,6 +1444,15 @@ a#black-hover {
 
 .movie-list :hover {
   color: #4280bf !important;
+}
+
+.topbar-filter .movie-list i,
+.topbar-filter .movie-grid i {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 35px;
 }
 
 .movie-item-style-1 .hvr-inner a:hover {

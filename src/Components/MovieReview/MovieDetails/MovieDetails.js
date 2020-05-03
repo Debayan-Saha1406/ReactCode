@@ -6,16 +6,16 @@ import "../../../css/movie-single.css";
 import MovieReview from "./MovieReview";
 import Overview from "./Overview";
 import Cast from "./Cast";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
+import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl, ratingStars } from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
-import LoaderProvider from "./../../../Provider/LoaderProvider";
+import LoaderProvider from "../../../Provider/LoaderProvider";
 import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
 
 let releaseYear = "";
-class MovieSingleHomePage extends Component {
+class MovieDetails extends Component {
   state = {
     selectedTab: "overview",
     movie: {},
@@ -29,7 +29,7 @@ class MovieSingleHomePage extends Component {
   };
 
   componentDidMount() {
-    const {movieId} = this.props.location.state;
+    const { movieId } = this.props.location.state;
     this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
@@ -342,7 +342,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MovieSingleHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieDetails);

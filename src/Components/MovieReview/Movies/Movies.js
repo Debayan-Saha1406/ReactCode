@@ -1,26 +1,31 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { Component } from "react";
 import "../../../css/movie-single.css";
-import image from "../../../images/mv1.jpg";
-import { Component } from "react";
+import Header from "../Common/Header";
 import { Redirect } from "react-router-dom";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl, pageType } from "../../../Shared/Constants";
+import {
+  apiUrl,
+  pageType,
+  sortColumns,
+  sortDirection,
+} from "../../../Shared/Constants";
+import Pagination from "../Common/Pagination";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import LoaderProvider from "../../../Provider/LoaderProvider";
-import Header from "../Common/Header";
-import Pagination from "../Common/Pagination";
 import Topbar from "../Common/Topbar";
 import Searchbox from "../Common/Searchbox";
 import { setSearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
+import List from "./List";
+import Grid from "./Grid";
 
-class MovieGrid extends Component {
+class Movies extends Component {
   state = {
     readMoreOpacity: 0,
-    redirectToDetail: false,
-    redirectToList: false,
+    showList: true,
+    showGrid: false,
     pageNumber: 1,
     pageSize: 10,
     searchQuery: "",
@@ -28,6 +33,17 @@ class MovieGrid extends Component {
     totalMovies: 0,
     movieIdClicked: 0,
     movieName: "",
+    sortColumn: "Id",
+    sortDirection: "asc",
+    searchData: {
+      movieName: "",
+      rating: 0,
+      fromYear: 0,
+      toYear: 0,
+      languageId: 0,
+      searchType: null,
+    },
+    pageType: pageType.list,
   };
 
   componentDidMount() {
@@ -39,7 +55,8 @@ class MovieGrid extends Component {
     const body = {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize,
-      searchQuery: this.state.searchQuery,
+      sortColumn: this.state.sortColumn,
+      sortDirection: this.state.sortDirection,
     };
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
       if (response.status === 200) {
@@ -56,16 +73,12 @@ class MovieGrid extends Component {
     });
   };
 
-  toggleReadMoreOpacity = (opacity) => {
-    this.setState({ readMoreOpacity: opacity });
+  selectGrid = () => {
+    this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
   };
 
   selectList = () => {
-    this.setState({ redirectToList: true });
-  };
-
-  redirectToDetail = (movieIdClicked, movieName) => {
-    this.setState({ redirectToDetail: true, movieIdClicked, movieName });
+    this.setState({ showList: true, showGrid: false, pageType: pageType.list });
   };
 
   changeMovieCount = (e) => {
@@ -73,11 +86,11 @@ class MovieGrid extends Component {
     const body = {
       pageNumber: this.state.pageNumber,
       pageSize: e.target.value,
-      searchQuery: "",
+      searchQuery: "", //Needs to be changed once more movies are added
     };
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
       this.setState({
-        moviesList: response.data.data.reviews,
+        moviesList: response.data.data.details,
         totalMovies: response.data.data.totalCount,
       });
     });
@@ -87,14 +100,22 @@ class MovieGrid extends Component {
     const body = {
       pageNumber: page,
       pageSize: this.state.pageSize,
-      searchQuery: "",
+      searchQuery: "", //Needs to be changed once more movies are added
     };
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
       this.setState({
-        moviesList: response.data.data.reviews,
+        moviesList: response.data.data.details,
         totalMovies: response.data.data.totalCount,
         pageNumber: page,
       });
+    });
+  };
+
+  redirectToDetail = (movieId, movieName) => {
+    this.setState({
+      redirectToDetail: true,
+      movieIdClicked: movieId,
+      movieName,
     });
   };
 
@@ -115,15 +136,69 @@ class MovieGrid extends Component {
       languageId
     );
 
+    this.setSearchDataInState(
+      movieName,
+      selectedRating,
+      languageId,
+      fromYear,
+      toYear,
+      searchType
+    );
+  };
+
+  fetchSortedData = (e) => {
+    const state = { ...this.state };
+    if (e.target.value == 1) {
+      state.sortColumn = sortColumns.movieName;
+      state.sortDirection = sortDirection.asc;
+    } else if (e.target.value == 2) {
+      state.sortColumn = sortColumns.movieName;
+      state.sortDirection = sortDirection.desc;
+    } else if (e.target.value == 3) {
+      state.sortColumn = sortColumns.rating;
+      state.sortDirection = sortDirection.asc;
+    } else {
+      state.sortColumn = sortColumns.rating;
+      state.sortDirection = sortDirection.desc;
+    }
+
+    this.setState(state, () => {
+      this.fetchApiData();
+    });
+  };
+
+  setSearchDataInState(
+    movieName,
+    selectedRating,
+    languageId,
+    fromYear,
+    toYear,
+    searchType
+  ) {
+    const searchData = { ...this.state.searchData };
+    searchData.movieName = movieName ? movieName : null;
+    searchData.rating = selectedRating;
+    searchData.languageId = languageId;
+    searchData.fromYear = fromYear != 0 ? fromYear : null;
+    searchData.toYear = toYear != 0 ? toYear : null;
+    searchData.searchType = searchType;
+    this.setState({ searchData }, () => {
+      this.fetchApiData();
+    });
+  }
+
+  fetchApiData() {
     const body = {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize,
-      searchType: searchType,
-      movieName: movieName ? movieName : null,
-      selectedRating: selectedRating != 0 ? selectedRating : 0,
-      fromYear: fromYear != 0 ? fromYear : null,
-      toYear: toYear != 0 ? toYear : null,
-      languageId: languageId,
+      searchType: this.state.searchData.searchType,
+      movieName: this.state.searchData.movieName,
+      selectedRating: this.state.searchData.rating,
+      fromYear: this.state.searchData.fromYear,
+      toYear: this.state.searchData.toYear,
+      languageId: this.state.searchData.languageId,
+      sortColumn: this.state.sortColumn,
+      sortDirection: this.state.sortDirection,
     };
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
       this.setState({
@@ -131,6 +206,10 @@ class MovieGrid extends Component {
         totalMovies: response.data.data.totalCount,
       });
     });
+  }
+
+  toggleReadMoreOpacity = (opacity) => {
+    this.setState({ readMoreOpacity: opacity });
   };
 
   render() {
@@ -138,15 +217,11 @@ class MovieGrid extends Component {
       return (
         <Redirect
           to={{
-            pathname: `/movie-single/${this.state.movieName}`,
+            pathname: `/movie-details/${this.state.movieName}`,
             state: { movieId: this.state.movieIdClicked },
           }}
         />
       );
-    }
-
-    if (this.state.redirectToList) {
-      return <Redirect to="/movie-list"></Redirect>;
     }
 
     return (
@@ -158,6 +233,7 @@ class MovieGrid extends Component {
             )}
           </div>
         </div>
+
         <div
           className="background"
           style={{
@@ -165,64 +241,32 @@ class MovieGrid extends Component {
           }}
         >
           <Header></Header>
-          <div className="page-single">
+          <div className="page-single movie_list">
             <div className="container">
-              <div className="row">
+              <div className="row ipad-width2">
                 <div className="col-md-8 col-sm-12 col-xs-12">
                   <Topbar
                     totalMovies={this.state.totalMovies}
+                    selectGrid={this.selectGrid}
+                    pageType={this.state.pageType}
+                    fetchSortedData={this.fetchSortedData}
                     selectList={this.selectList}
-                    pageType={pageType.grid}
                   ></Topbar>
-                  <div className="flex-wrap-movielist mv-grid-fw">
-                    {this.state.moviesList.map((movie, index) => (
-                      <div
-                        key={index}
-                        className="movie-item-style-2 movie-item-style-1"
-                      >
-                        <img
-                          src={image}
-                          alt=""
-                          onMouseOver={() => this.toggleReadMoreOpacity(1)}
-                          onMouseOut={() => this.toggleReadMoreOpacity(0)}
-                        />
-                        <div
-                          className="hvr-inner"
-                          style={{ opacity: this.state.readMoreOpacity }}
-                          onMouseOver={() => this.toggleReadMoreOpacity(1)}
-                        >
-                          <a
-                            onClick={() => {
-                              this.redirectToDetail(
-                                movie.movieId,
-                                movie.movieName
-                              );
-                            }}
-                          >
-                            {" "}
-                            Read more{" "}
-                          </a>
-                        </div>
+                  {this.state.showList && (
+                    <List
+                      moviesList={this.state.moviesList}
+                      redirectToDetail={this.redirectToDetail}
+                    ></List>
+                  )}
+                  {this.state.showGrid && (
+                    <Grid
+                      moviesList={this.state.moviesList}
+                      redirectToDetail={this.redirectToDetail}
+                      toggleReadMoreOpacity={this.toggleReadMoreOpacity}
+                      readMoreOpacity={this.state.readMoreOpacity}
+                    ></Grid>
+                  )}
 
-                        <div className="mv-item-infor">
-                          <h6>
-                            <a href="#">{movie.movieName}</a>
-                          </h6>
-                          <p className="rate">
-                            <i
-                              className="fa fa-star"
-                              style={{
-                                fontSize: "20px",
-                                color: "yellow",
-                                marginRight: "5px",
-                              }}
-                            ></i>
-                            <span>{movie.avgRating}</span> /10
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
                   {this.state.moviesList.length > 0 && (
                     <Pagination
                       pageSize={this.state.pageSize}
@@ -268,4 +312,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieGrid);
+export default connect(mapStateToProps, mapDispatchToProps)(Movies);

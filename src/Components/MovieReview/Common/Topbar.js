@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState } from "react";
 import { pageType } from "../../../Shared/Constants";
 
 const Topbar = (props) => {
@@ -9,31 +9,35 @@ const Topbar = (props) => {
         Found <span>{props.totalMovies}</span> in total
       </p>
       <label className="filterBy">Sort by:</label>
-      <select>
-        <option value="name">Name Descending</option>
-        <option value="name">Name Ascending</option>
-        <option value="rating">Rating Descending</option>
-        <option value="rating">Rating Ascending</option>
+      <select onChange={(e) => props.fetchSortedData(e)}>
+        <option value={1}>Movie Name Ascending</option>
+        <option value={2}> Movie Name Descending</option>
+        <option value={3}>Rating Ascending</option>
+        <option value={4}>Rating Descending</option>
       </select>
       {props.pageType === pageType.grid ? (
         <a
           onClick={props.selectList}
-          className="movie-list"
+          className="list"
           style={{ cursor: "pointer" }}
         >
           <i className="fa fa-list" aria-hidden="true"></i>
         </a>
       ) : (
-        <a className="list" style={{ cursor: "pointer" }}>
+        <a className="list" style={{ color: "#ffaa3c" }}>
           <i className="fa fa-list" aria-hidden="true"></i>
         </a>
       )}
       {props.pageType === pageType.list ? (
-        <a className="grid" onClick={props.selectGrid}>
+        <a
+          className="grid"
+          onClick={props.selectGrid}
+          style={{ cursor: "pointer" }}
+        >
           <i className="fa fa-th" aria-hidden="true"></i>
         </a>
       ) : (
-        <a className="movie-grid">
+        <a className="grid" style={{ color: "#ffaa3c" }}>
           <i className="fa fa-th" aria-hidden="true"></i>
         </a>
       )}

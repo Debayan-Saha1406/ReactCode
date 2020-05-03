@@ -99,7 +99,7 @@ class Header extends Component {
                 {this.state.currentMenuItem === "movie" ? (
                   <li className="menu-item current-menu-item">
                     <Link
-                      to="/movie-grid"
+                      to="/movies"
                       onClick={() => this.setCurrentMenuItem("movie")}
                     >
                       Movies
@@ -108,7 +108,7 @@ class Header extends Component {
                 ) : (
                   <li className="menu-item">
                     <Link
-                      to="/movie-grid"
+                      to="/movies"
                       onClick={() => this.setCurrentMenuItem("movie")}
                     >
                       Movies
@@ -157,7 +157,7 @@ class Header extends Component {
                   <a href="about.html">About</a>
                 </li>
                 <li className="menu-item">
-                  <Link to="/movie-grid">Movies</Link>
+                  <Link to="/movies">Movies</Link>
                 </li>
                 <li className="menu-item">
                   <a

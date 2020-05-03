@@ -95,4 +95,12 @@ export const movieSearchType = {
   languageReleaseYear: "LanguageReleaseYear",
 };
 
-export const reviewCounts = [0, 100, 500, 1000];
+export const sortColumns = {
+  movieName: "MovieName",
+  rating: "Rating",
+};
+
+export const sortDirection = {
+  asc: "asc",
+  desc: "desc",
+};
