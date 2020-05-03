@@ -7,7 +7,11 @@ import MovieReview from "./MovieReview";
 import Overview from "./Overview";
 import Cast from "./Cast";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl, ratingStars } from "../../../Shared/Constants";
+import {
+  apiUrl,
+  ratingStars,
+  movieDetailTabs,
+} from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import LoaderProvider from "../../../Provider/LoaderProvider";
@@ -17,7 +21,7 @@ import "../../../css/movie-single.css";
 let releaseYear = "";
 class MovieDetails extends Component {
   state = {
-    selectedTab: "overview",
+    selectedTab: movieDetailTabs.overview,
     movie: {},
     indexClicked: -1,
     showVideo: false,
@@ -212,11 +216,14 @@ class MovieDetails extends Component {
                       >
                         <div className="tabs">
                           <ul className="tab-links tabs-mv">
-                            {this.state.selectedTab === "overview" ? (
+                            {this.state.selectedTab ===
+                            movieDetailTabs.overview ? (
                               <li className="active">
                                 <a
                                   onClick={() => {
-                                    this.setState({ selectedTab: "overview" });
+                                    this.setState({
+                                      selectedTab: movieDetailTabs.overview,
+                                    });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -227,7 +234,9 @@ class MovieDetails extends Component {
                               <li>
                                 <a
                                   onClick={() => {
-                                    this.setState({ selectedTab: "overview" });
+                                    this.setState({
+                                      selectedTab: movieDetailTabs.overview,
+                                    });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -235,11 +244,14 @@ class MovieDetails extends Component {
                                 </a>
                               </li>
                             )}
-                            {this.state.selectedTab === "review" ? (
+                            {this.state.selectedTab ===
+                            movieDetailTabs.review ? (
                               <li className="active">
                                 <a
                                   onClick={() => {
-                                    this.setState({ selectedTab: "review" });
+                                    this.setState({
+                                      selectedTab: movieDetailTabs.review,
+                                    });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -251,7 +263,9 @@ class MovieDetails extends Component {
                               <li>
                                 <a
                                   onClick={() => {
-                                    this.setState({ selectedTab: "review" });
+                                    this.setState({
+                                      selectedTab: movieDetailTabs.review,
+                                    });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -260,11 +274,13 @@ class MovieDetails extends Component {
                                 </a>
                               </li>
                             )}
-                            {this.state.selectedTab === "cast" ? (
+                            {this.state.selectedTab === movieDetailTabs.cast ? (
                               <li className="active">
                                 <a
                                   onClick={() => {
-                                    this.setState({ selectedTab: "cast" });
+                                    this.setState({
+                                      selectedTab: movieDetailTabs.cast,
+                                    });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -276,7 +292,9 @@ class MovieDetails extends Component {
                               <li>
                                 <a
                                   onClick={() => {
-                                    this.setState({ selectedTab: "cast" });
+                                    this.setState({
+                                      selectedTab: movieDetailTabs.cast,
+                                    });
                                   }}
                                   style={{ cursor: "pointer" }}
                                 >
@@ -287,7 +305,8 @@ class MovieDetails extends Component {
                             )}
                           </ul>
                           <div className="tab-content">
-                            {this.state.selectedTab === "overview" && (
+                            {this.state.selectedTab ===
+                              movieDetailTabs.overview && (
                               <Overview
                                 directors={this.state.movie.directors}
                                 celebrities={this.state.movie.celebrities}
@@ -298,13 +317,15 @@ class MovieDetails extends Component {
                                 toggleTab={this.toggleTab}
                               ></Overview>
                             )}
-                            {this.state.selectedTab === "review" && (
+                            {this.state.selectedTab ===
+                              movieDetailTabs.review && (
                               <MovieReview
                                 movieName={this.state.movie.movie.movieName}
                                 selectedTab={this.state.selectedTab}
                               ></MovieReview>
                             )}
-                            {this.state.selectedTab === "cast" && (
+                            {this.state.selectedTab ===
+                              movieDetailTabs.cast && (
                               <Cast
                                 selectedTab={this.state.selectedTab}
                                 stars={this.state.movie.celebrities}

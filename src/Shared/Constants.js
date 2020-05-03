@@ -104,3 +104,9 @@ export const sortDirection = {
   asc: "asc",
   desc: "desc",
 };
+
+export const movieDetailTabs = {
+  overview: "overview",
+  review: "review",
+  cast: "cast",
+};
