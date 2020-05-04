@@ -18,7 +18,7 @@ const ReviewPopup = (props) => {
           >
             x
           </a>
-          <h3>Add Review</h3>
+          <h3 className="add-review">Add Review</h3>
           <form method="post">
             <div className="row">
               <label htmlFor="username">Review Title:</label>
@@ -30,6 +30,7 @@ const ReviewPopup = (props) => {
                 id="username"
                 placeholder="Review Title"
                 required="required"
+                className="review-title"
                 onChange={(e) => {
                   setReviewTitle(e.target.value);
                 }}
@@ -54,14 +55,20 @@ const ReviewPopup = (props) => {
             </div>
             <br></br>
             <div className="row">
-              <button
-                type="submit"
-                onClick={(e) =>
-                  props.postReview(e, reviewTitle, reviewDescription)
-                }
-              >
-                Post Review
-              </button>
+              {reviewTitle !== "" && reviewDescription !== "" ? (
+                <button
+                  type="submit"
+                  onClick={(e) =>
+                    props.postReview(e, reviewTitle, reviewDescription)
+                  }
+                >
+                  Post Review
+                </button>
+              ) : (
+                <button type="submit" disabled={true} id="not-allowed">
+                  Post Review
+                </button>
+              )}
             </div>
           </form>
         </div>

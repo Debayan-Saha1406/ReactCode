@@ -1430,10 +1430,6 @@ a#black-hover {
   color: #ffaa3c;
 }
 
-.active-page:hover {
-  color: #4280bf;
-}
-
 /* .list {
   color: #ffaa3c !important;
 } */
@@ -1538,4 +1534,26 @@ a#black-hover {
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
   border-radius: 40px;
+}
+
+li.non-active-page:hover {
+  color: #4280bf;
+}
+
+.review-title {
+  width: 100%;
+}
+
+.add-review {
+  font-family: "Dosis", sans-serif !important;
+  font-size: 30px !important;
+  color: #222222 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  margin-bottom: 45px !important;
+  text-align: center !important;
+}
+
+.disabled-post-review {
+  cursor: not-allowed;
 }

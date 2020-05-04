@@ -39,12 +39,14 @@ class MovieDetails extends Component {
   };
 
   toggleTab = (destTab) => {
+    this.setState({ fetchingReviewData: true });
+    this.props.toggleLoader(true, "15%");
+    this.fetchReviews();
     this.setState({ selectedTab: destTab });
   };
 
   componentDidMount() {
     const movieId = this.props.match.params.name;
-    console.log(movieId);
     this.props.toggleLoader(true, "15%");
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
@@ -129,7 +131,6 @@ class MovieDetails extends Component {
   }
 
   postReview = (e, reviewTitle, reviewDescription) => {
-    debugger;
     e.preventDefault();
     const todayDate = new Date();
     let reviewDate =
@@ -142,8 +143,8 @@ class MovieDetails extends Component {
     this.props.toggleLoader(true, "15%");
     const body = {
       movieId: this.state.movie.movie.movieId,
-      reviewTitle: reviewTitle,
-      reviewDescription: reviewDescription,
+      reviewTitle: reviewTitle.trim(),
+      reviewDescription: reviewDescription.trim(),
       userEmail: "", //need to get the login user's email
       reviewDate: reviewDate,
     };
@@ -160,6 +161,37 @@ class MovieDetails extends Component {
 
   openReviewPopup = () => {
     this.setState({ openPopupClassName: "openform" });
+  };
+
+  pageNumberClicked = (page) => {
+    const body = {
+      pageNumber: page,
+      pageSize: this.state.pageSize,
+      searchQuery: this.state.movie.movie.movieId,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        reviews: response.data.data.reviews,
+        totalReviews: response.data.data.totalCount,
+        pageNumber: page,
+      });
+    });
+  };
+
+  changeReviewCount = (e) => {
+    this.setState({ pageSize: e.target.value });
+    const body = {
+      pageNumber: 1,
+      pageSize: e.target.value,
+      searchQuery: this.state.movie.movie.movieId,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        reviews: response.data.data.reviews,
+        totalReviews: response.data.data.totalCount,
+        pageNumber: 1,
+      });
+    });
   };
 
   render() {
@@ -419,6 +451,8 @@ class MovieDetails extends Component {
                             openPopupClassName={this.state.openPopupClassName}
                             closeReviewPopup={this.closeReviewPopup}
                             openReviewPopup={this.openReviewPopup}
+                            pageNumberClicked={this.pageNumberClicked}
+                            changeReviewCount={this.changeReviewCount}
                           ></MovieReview>
                         )}
                         {this.state.selectedTab === movieDetailTabs.cast && (

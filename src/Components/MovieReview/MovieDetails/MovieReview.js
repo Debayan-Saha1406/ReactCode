@@ -7,42 +7,9 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 import { connect } from "react-redux";
 import ReviewPopup from "./../Common/ReviewPopup";
-import { monthNames } from "../../../Shared/Constants";
 
 class MovieReview extends Component {
   state = {};
-  componentDidMount() {}
-
-  changeReviewCount = (e) => {
-    this.setState({ pageSize: e.target.value });
-    const body = {
-      pageNumber: this.state.pageNumber,
-      pageSize: e.target.value,
-      searchQuery: 1,
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-      });
-    });
-  };
-
-  pageNumberClicked = (page) => {
-    const body = {
-      pageNumber: page,
-      pageSize: this.state.pageSize,
-      searchQuery: 1,
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-        pageNumber: page,
-      });
-    });
-  };
-
   render() {
     return (
       <div
@@ -111,8 +78,8 @@ class MovieReview extends Component {
               pageSize={this.props.pageSize}
               totalCount={this.props.totalReviews}
               currentPage={this.props.pageNumber}
-              changeCount={this.changeReviewCount}
-              pageNumberClicked={this.pageNumberClicked}
+              changeCount={this.props.changeReviewCount}
+              pageNumberClicked={this.props.pageNumberClicked}
               description="Reviews"
             ></Pagination>
           )}

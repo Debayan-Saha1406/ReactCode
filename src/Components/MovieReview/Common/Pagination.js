@@ -1,7 +1,6 @@
 import React from "react";
 
 const Pagination = (props) => {
-  debugger;
   let pages = [];
   const {
     totalCount,
@@ -21,9 +20,7 @@ const Pagination = (props) => {
     <div className="topbar-filter">
       <label className="filterBy">{description} per page:</label>
       <select onChange={(e) => changeCount(e)}>
-        <option value={pageSize}>
-          {pageSize} {description}
-        </option>
+        <option value={5}>5 {description}</option>
         <option value={10}>10 {description}</option>
       </select>
       <div className="pagination2">
@@ -31,15 +28,6 @@ const Pagination = (props) => {
           Page {currentPage} of {numberOfPages}:
         </span>
         <ul className="menu">
-          {/* {pages.map((page, index) => 
-            <li
-              key={index}
-              onClick={() => pageNumberClicked(page)}
-              style={{ cursor: "pointer" }}
-            >
-              {page}
-            </li>
-          ))} */}
           {pages.map((page, index) => {
             return (
               <React.Fragment key={index}>
@@ -48,15 +36,16 @@ const Pagination = (props) => {
                     className="active-page"
                     key={index}
                     onClick={() => pageNumberClicked(page)}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", paddingRight: "5px" }}
                   >
                     {page}
                   </li>
                 ) : (
                   <li
                     key={index}
+                    className="non-active-page"
                     onClick={() => pageNumberClicked(page)}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", paddingRight: "5px" }}
                   >
                     {page}
                   </li>
