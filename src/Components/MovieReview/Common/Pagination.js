@@ -1,6 +1,7 @@
 import React from "react";
 
 const Pagination = (props) => {
+  debugger;
   let pages = [];
   const {
     totalCount,
@@ -27,7 +28,7 @@ const Pagination = (props) => {
       </select>
       <div className="pagination2">
         <span>
-          Page {currentPage} of {pages}:
+          Page {currentPage} of {numberOfPages}:
         </span>
         <ul className="menu">
           {/* {pages.map((page, index) => 

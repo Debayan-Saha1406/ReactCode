@@ -15,6 +15,7 @@ export const apiUrl = {
   rating: "/rating/",
   movies: "/movies",
   movieLanguages: "/movieLanguages",
+  review: "/review",
 };
 
 export const constants = {

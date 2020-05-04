@@ -6,36 +6,12 @@ import Pagination from "../Common/Pagination";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 import { connect } from "react-redux";
+import ReviewPopup from "./../Common/ReviewPopup";
+import { monthNames } from "../../../Shared/Constants";
 
 class MovieReview extends Component {
-  state = {
-    reviews: [],
-    totalReviews: 0,
-    pageNumber: 1,
-    pageSize: 5,
-  };
-  componentDidMount() {
-    debugger;
-    this.props.toggleLoader(true, 0);
-    this.props.setReviewFetched(true);
-    let body = {
-      pageNumber: this.state.pageNumber,
-      pageSize: this.state.pageSize,
-      searchQuery: 1,
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState(
-        {
-          reviews: response.data.data.reviews,
-          totalReviews: response.data.data.totalCount,
-        },
-        () => {
-          this.props.toggleLoader(false, 1);
-          this.props.setReviewFetched(false);
-        }
-      );
-    });
-  }
+  state = {};
+  componentDidMount() {}
 
   changeReviewCount = (e) => {
     this.setState({ pageSize: e.target.value });
@@ -78,6 +54,13 @@ class MovieReview extends Component {
             : { display: "none" }
         }
       >
+        {
+          <ReviewPopup
+            openPopupClassName={this.props.openPopupClassName}
+            closeReviewPopup={this.props.closeReviewPopup}
+            postReview={this.props.postReview}
+          ></ReviewPopup>
+        }
         <div className="row">
           <div className="rv-hd">
             <div className="div">
@@ -90,13 +73,14 @@ class MovieReview extends Component {
               className="redbtn"
               id="black-hover"
               style={{ cursor: "pointer" }}
+              onClick={this.props.openReviewPopup}
             >
               Write Review
             </a>
           </div>
           <div className="topbar-filter">
             <p>
-              Found <span>{this.state.totalReviews}</span> in total
+              Found <span>{this.props.totalReviews}</span> in total
             </p>
             <label className="filterBy">Filter by:</label>
             <select className="popularity">
@@ -110,8 +94,8 @@ class MovieReview extends Component {
           </div>
           <div className="mv-user-review-item">
             <ul>
-              {this.state.reviews &&
-                this.state.reviews.map((review, index) => (
+              {this.props.reviews &&
+                this.props.reviews.map((review, index) => (
                   <li key={index}>
                     <h3 style={{ color: "yellow" }}>{review.reviewTitle}</h3>
                     <p className="time">
@@ -122,11 +106,11 @@ class MovieReview extends Component {
                 ))}
             </ul>
           </div>
-          {this.state.totalReviews > 0 && (
+          {this.props.totalReviews > 0 && (
             <Pagination
-              pageSize={this.state.pageSize}
-              totalCount={this.state.totalReviews}
-              currentPage={this.state.pageNumber}
+              pageSize={this.props.pageSize}
+              totalCount={this.props.totalReviews}
+              currentPage={this.props.pageNumber}
               changeCount={this.changeReviewCount}
               pageNumberClicked={this.pageNumberClicked}
               description="Reviews"

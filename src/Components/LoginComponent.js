@@ -7,7 +7,7 @@ import {
   validateEmail,
   validatePassword,
 } from "../Shared/Services/ValidationService";
-import { constants, InputTypes } from "../Shared/Constants";
+import { constants } from "../Shared/Constants";
 import "../css/login.css";
 import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
 import ServiceProvider from "../Provider/ServiceProvider";

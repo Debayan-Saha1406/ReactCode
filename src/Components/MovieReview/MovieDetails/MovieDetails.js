@@ -11,6 +11,7 @@ import {
   apiUrl,
   ratingStars,
   movieDetailTabs,
+  monthNames,
 } from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
@@ -29,6 +30,12 @@ class MovieDetails extends Component {
     isRatingGiven: false,
     isReviewDataFetched: false,
     redirectToNotFound: false,
+    reviews: [],
+    fetchingReviewData: false,
+    totalReviews: 0,
+    pageNumber: 1,
+    pageSize: 5,
+    openPopupClassName: "",
   };
 
   toggleTab = (destTab) => {
@@ -38,7 +45,7 @@ class MovieDetails extends Component {
   componentDidMount() {
     const movieId = this.props.match.params.name;
     console.log(movieId);
-    this.props.toggleLoader(true, 0);
+    this.props.toggleLoader(true, "15%");
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
         let index = response.data.data.movie.releaseDate.indexOf(",");
@@ -89,13 +96,79 @@ class MovieDetails extends Component {
     });
   };
 
+  handleReviewTabSelection = () => {
+    if (this.state.reviews.length === 0) {
+      this.props.toggleLoader(true, "15%");
+      this.setState({ fetchingReviewData: true });
+      this.fetchReviews();
+    } else {
+      this.setState({ selectedTab: movieDetailTabs.review });
+    }
+  };
+
+  fetchReviews() {
+    let body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchQuery: this.state.movie.movie.movieId,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState(
+        {
+          reviews: response.data.data.reviews,
+          totalReviews: response.data.data.totalCount,
+          openPopupClassName: "",
+          selectedTab: movieDetailTabs.review,
+          fetchingReviewData: false,
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+        }
+      );
+    });
+  }
+
+  postReview = (e, reviewTitle, reviewDescription) => {
+    debugger;
+    e.preventDefault();
+    const todayDate = new Date();
+    let reviewDate =
+      monthNames[todayDate.getMonth()] +
+      " " +
+      todayDate.getDate() +
+      ", " +
+      todayDate.getFullYear();
+    this.setState({ fetchingReviewData: true });
+    this.props.toggleLoader(true, "15%");
+    const body = {
+      movieId: this.state.movie.movie.movieId,
+      reviewTitle: reviewTitle,
+      reviewDescription: reviewDescription,
+      userEmail: "", //need to get the login user's email
+      reviewDate: reviewDate,
+    };
+    ServiceProvider.post(apiUrl.review, body).then((response) => {
+      if (response.status === 200) {
+        this.fetchReviews();
+      }
+    });
+  };
+
+  closeReviewPopup = () => {
+    this.setState({ openPopupClassName: "" });
+  };
+
+  openReviewPopup = () => {
+    this.setState({ openPopupClassName: "openform" });
+  };
+
   render() {
     if (this.state.redirectToNotFound) {
       return <Redirect to="/not-found"></Redirect>;
     }
     return (
       <React.Fragment>
-        {!this.state.movie.movie || this.state.isReviewDataFetched ? (
+        {!this.state.movie.movie ? (
           <div id="loaderContainer">
             <div id="loader">
               {this.props.showLoader && (
@@ -105,250 +178,257 @@ class MovieDetails extends Component {
               )}
             </div>
           </div>
+        ) : this.state.fetchingReviewData ? (
+          <React.Fragment>
+            <div id="loaderContainer">
+              <div id="loader">
+                {this.props.showLoader && (
+                  <LoaderProvider
+                    visible={this.props.showLoader}
+                  ></LoaderProvider>
+                )}
+              </div>
+            </div>
+            {this.renderMovieDetails()}
+          </React.Fragment>
         ) : (
-          <div
-            className="background"
-            style={{
-              opacity: this.props.screenOpacity,
-            }}
-          >
-            <Header></Header>
-            <div className="hero mv-single-hero">
-              {this.state.showVideo && (
-                <div className="overlay openform">
-                  <div className="login-wrapper" id="login-content">
-                    <div
-                      className="close-cross"
-                      onClick={() => this.showTrailer(false)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <i class="fa fa-times-circle"></i>
+          this.renderMovieDetails()
+        )}
+      </React.Fragment>
+    );
+  }
+
+  renderMovieDetails() {
+    return (
+      <div
+        className="background"
+        style={{
+          opacity: this.props.screenOpacity,
+        }}
+      >
+        <Header></Header>
+        <div className="hero mv-single-hero">
+          {this.state.showVideo && (
+            <div className="overlay openform">
+              <div className="login-wrapper" id="login-content">
+                <div
+                  className="close-cross"
+                  onClick={() => this.showTrailer(false)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <i class="fa fa-times-circle"></i>
+                </div>
+                <ReactPlayer
+                  url={this.state.movie.movie.youtubeUrl}
+                  controls={true}
+                  style={{ backgroundColor: "black" }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="page-single movie-single movie_single">
+          <div className="container">
+            <div className="row ipad-width2">
+              <div className="col-md-4 col-sm-12 col-xs-12">
+                <div className="movie-img sticky-sb">
+                  {<img src={image} alt="" />}
+                  <div className="movie-btn">
+                    <div className="btn-transform transform-vertical red">
+                      <div>
+                        <a
+                          onClick={() => this.showTrailer(true)}
+                          className="item item-1 redbtn"
+                          id="black-hover"
+                        >
+                          <i className="fa fa-play" aria-hidden="true"></i>{" "}
+                          Watch Trailer
+                        </a>
+                      </div>
                     </div>
-                    <ReactPlayer
-                      url={this.state.movie.movie.youtubeUrl}
-                      controls={true}
-                      style={{ backgroundColor: "black" }}
-                    />
+                    <div className="btn-transform transform-vertical">
+                      <div>
+                        <a href="#" className="item item-1 yellowbtn">
+                          {" "}
+                          <i className="ion-card"></i> View Imdb
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
-            <div className="page-single movie-single movie_single">
-              <div className="container">
-                <div className="row ipad-width2">
-                  <div className="col-md-4 col-sm-12 col-xs-12">
-                    <div className="movie-img sticky-sb">
-                      {<img src={image} alt="" />}
-                      <div className="movie-btn">
-                        <div className="btn-transform transform-vertical red">
-                          <div>
-                            <a
-                              onClick={() => this.showTrailer(true)}
-                              className="item item-1 redbtn"
-                              id="black-hover"
-                            >
-                              <i className="fa fa-play" aria-hidden="true"></i>{" "}
-                              Watch Trailer
-                            </a>
-                          </div>
-                        </div>
-                        <div className="btn-transform transform-vertical">
-                          <div>
-                            <a href="#" className="item item-1 yellowbtn">
-                              {" "}
-                              <i className="ion-card"></i> View Imdb
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+              </div>
+              <div className="col-md-8 col-sm-12 col-xs-12">
+                <div className="movie-single-ct main-content">
+                  <h1 className="bd-hd">
+                    {this.state.movie.movie.movieName}
+                    <span>{releaseYear}</span>
+                  </h1>
+                  <div className="movie-rate">
+                    <div className="rate">
+                      <i
+                        className="fa fa-star"
+                        id="rating-icon"
+                        style={{ fontSize: "17px", color: "yellow" }}
+                      ></i>
+                      <p>
+                        <span>{this.state.movie.movie.avgRating}</span>
+                        <br />
+                        {
+                          <span className="rv">
+                            {this.state.movie.movie.totalRatings} Ratings
+                          </span>
+                        }
+                      </p>
+                    </div>
+                    <div className="rate-star">
+                      <p>Rate This Movie: </p>
+                      <ul className="menu">
+                        {ratingStars.map((rating, index) => (
+                          <li key={rating}>
+                            {this.state.indexClicked >= index ? (
+                              <i
+                                className="fa fa-star"
+                                style={{
+                                  fontSize: "17px",
+                                  color: "yellow",
+                                }}
+                                onMouseOver={() => this.toggleStar(index)}
+                                onMouseOut={() => this.toggleStar(index)}
+                                onClick={() => this.handleStarClick(index)}
+                              ></i>
+                            ) : (
+                              <i
+                                className="fa fa-star-o"
+                                style={{
+                                  fontSize: "17px",
+                                  color: "white",
+                                }}
+                                onMouseOver={() => this.toggleStar(index)}
+                                onMouseOut={() => this.toggleStar(index)}
+                              ></i>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                  <div className="col-md-8 col-sm-12 col-xs-12">
-                    <div className="movie-single-ct main-content">
-                      <h1 className="bd-hd">
-                        {this.state.movie.movie.movieName}
-                        <span>{releaseYear}</span>
-                      </h1>
-                      <div className="movie-rate">
-                        <div className="rate">
-                          <i
-                            className="fa fa-star"
-                            id="rating-icon"
-                            style={{ fontSize: "17px", color: "yellow" }}
-                          ></i>
-                          <p>
-                            <span>{this.state.movie.movie.avgRating}</span>
-                            <br />
-                            {
-                              <span className="rv">
-                                {this.state.movie.movie.totalRatings} Ratings
-                              </span>
-                            }
-                          </p>
-                        </div>
-                        <div className="rate-star">
-                          <p>Rate This Movie: </p>
-                          <ul className="menu">
-                            {ratingStars.map((rating, index) => (
-                              <li key={rating}>
-                                {this.state.indexClicked >= index ? (
-                                  <i
-                                    className="fa fa-star"
-                                    style={{
-                                      fontSize: "17px",
-                                      color: "yellow",
-                                    }}
-                                    onMouseOver={() => this.toggleStar(index)}
-                                    onMouseOut={() => this.toggleStar(index)}
-                                    onClick={() => this.handleStarClick(index)}
-                                  ></i>
-                                ) : (
-                                  <i
-                                    className="fa fa-star-o"
-                                    style={{
-                                      fontSize: "17px",
-                                      color: "white",
-                                    }}
-                                    onMouseOver={() => this.toggleStar(index)}
-                                    onMouseOut={() => this.toggleStar(index)}
-                                  ></i>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
 
-                      <div
-                        className="movie-tabs"
-                        onMouseOver={this.toggleAllStars}
-                      >
-                        <div className="tabs">
-                          <ul className="tab-links tabs-mv">
-                            {this.state.selectedTab ===
-                            movieDetailTabs.overview ? (
-                              <li className="active">
-                                <a
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedTab: movieDetailTabs.overview,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  Overview
-                                </a>
-                              </li>
-                            ) : (
-                              <li>
-                                <a
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedTab: movieDetailTabs.overview,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  Overview
-                                </a>
-                              </li>
-                            )}
-                            {this.state.selectedTab ===
-                            movieDetailTabs.review ? (
-                              <li className="active">
-                                <a
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedTab: movieDetailTabs.review,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {" "}
-                                  Reviews
-                                </a>
-                              </li>
-                            ) : (
-                              <li>
-                                <a
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedTab: movieDetailTabs.review,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {" "}
-                                  Reviews
-                                </a>
-                              </li>
-                            )}
-                            {this.state.selectedTab === movieDetailTabs.cast ? (
-                              <li className="active">
-                                <a
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedTab: movieDetailTabs.cast,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {" "}
-                                  Cast{" "}
-                                </a>
-                              </li>
-                            ) : (
-                              <li>
-                                <a
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedTab: movieDetailTabs.cast,
-                                    });
-                                  }}
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  {" "}
-                                  Cast{" "}
-                                </a>
-                              </li>
-                            )}
-                          </ul>
-                          <div className="tab-content">
-                            {this.state.selectedTab ===
-                              movieDetailTabs.overview && (
-                              <Overview
-                                directors={this.state.movie.directors}
-                                celebrities={this.state.movie.celebrities}
-                                selectedTab={this.state.selectedTab}
-                                genres={this.state.movie.genres}
-                                movieOverview={this.state.movie.movie}
-                                reviews={this.state.movie.reviews}
-                                toggleTab={this.toggleTab}
-                              ></Overview>
-                            )}
-                            {this.state.selectedTab ===
-                              movieDetailTabs.review && (
-                              <MovieReview
-                                movieName={this.state.movie.movie.movieName}
-                                selectedTab={this.state.selectedTab}
-                                setReviewFetched={(isReviewFetched) => {
-                                  this.setState({
-                                    isReviewDataFetched: isReviewFetched,
-                                  });
-                                }}
-                              ></MovieReview>
-                            )}
-                            {this.state.selectedTab ===
-                              movieDetailTabs.cast && (
-                              <Cast
-                                selectedTab={this.state.selectedTab}
-                                stars={this.state.movie.celebrities}
-                                directors={this.state.movie.directors}
-                                movieName={this.state.movie.movie.movieName}
-                              />
-                            )}
-                          </div>
-                        </div>
+                  <div className="movie-tabs" onMouseOver={this.toggleAllStars}>
+                    <div className="tabs">
+                      <ul className="tab-links tabs-mv">
+                        {this.state.selectedTab === movieDetailTabs.overview ? (
+                          <li className="active">
+                            <a
+                              onClick={() => {
+                                this.setState({
+                                  selectedTab: movieDetailTabs.overview,
+                                });
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >
+                              Overview
+                            </a>
+                          </li>
+                        ) : (
+                          <li>
+                            <a
+                              onClick={() => {
+                                this.setState({
+                                  selectedTab: movieDetailTabs.overview,
+                                });
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >
+                              Overview
+                            </a>
+                          </li>
+                        )}
+                        {this.state.selectedTab === movieDetailTabs.review ? (
+                          <li className="active">
+                            <a
+                              onClick={this.handleReviewTabSelection}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {" "}
+                              Reviews
+                            </a>
+                          </li>
+                        ) : (
+                          <li>
+                            <a
+                              onClick={this.handleReviewTabSelection}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {" "}
+                              Reviews
+                            </a>
+                          </li>
+                        )}
+                        {this.state.selectedTab === movieDetailTabs.cast ? (
+                          <li className="active">
+                            <a
+                              onClick={() => {
+                                this.setState({
+                                  selectedTab: movieDetailTabs.cast,
+                                });
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {" "}
+                              Cast{" "}
+                            </a>
+                          </li>
+                        ) : (
+                          <li>
+                            <a
+                              onClick={() => {
+                                this.setState({
+                                  selectedTab: movieDetailTabs.cast,
+                                });
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {" "}
+                              Cast{" "}
+                            </a>
+                          </li>
+                        )}
+                      </ul>
+                      <div className="tab-content">
+                        {this.state.selectedTab ===
+                          movieDetailTabs.overview && (
+                          <Overview
+                            directors={this.state.movie.directors}
+                            celebrities={this.state.movie.celebrities}
+                            selectedTab={this.state.selectedTab}
+                            genres={this.state.movie.genres}
+                            movieOverview={this.state.movie.movie}
+                            reviews={this.state.movie.reviews}
+                            toggleTab={this.toggleTab}
+                          ></Overview>
+                        )}
+                        {this.state.selectedTab === movieDetailTabs.review && (
+                          <MovieReview
+                            movieName={this.state.movie.movie.movieName}
+                            selectedTab={this.state.selectedTab}
+                            reviews={this.state.reviews}
+                            totalReviews={this.state.totalReviews}
+                            postReview={this.postReview}
+                            pageSize={this.state.pageSize}
+                            pageNumber={this.state.pageNumber}
+                            openPopupClassName={this.state.openPopupClassName}
+                            closeReviewPopup={this.closeReviewPopup}
+                            openReviewPopup={this.openReviewPopup}
+                          ></MovieReview>
+                        )}
+                        {this.state.selectedTab === movieDetailTabs.cast && (
+                          <Cast
+                            selectedTab={this.state.selectedTab}
+                            stars={this.state.movie.celebrities}
+                            directors={this.state.movie.directors}
+                            movieName={this.state.movie.movie.movieName}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -356,8 +436,8 @@ class MovieDetails extends Component {
               </div>
             </div>
           </div>
-        )}
-      </React.Fragment>
+        </div>
+      </div>
     );
   }
 }
