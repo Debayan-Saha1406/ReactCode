@@ -4,12 +4,13 @@ import image from "../../../images/logo.png";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
+import { connect } from "react-redux";
+import { togglePopup } from "./../../../Store/Actions/actionCreator";
+import { popupType } from "./../../../Shared/Constants";
 
 class Header extends Component {
   state = {
     display: "none",
-    loginPopupClassName: "",
-    registerPopupClassName: "",
     active: "",
     currentMenuItem: "home",
   };
@@ -18,22 +19,6 @@ class Header extends Component {
     this.setState({
       display: this.state.display === "none" ? "block" : "none",
     });
-  };
-
-  openLoginPopup = () => {
-    this.setState({ loginPopupClassName: "openform" });
-  };
-
-  closeLoginPopup = () => {
-    this.setState({ loginPopupClassName: "" });
-  };
-
-  closeRegisterPopup = () => {
-    this.setState({ registerPopupClassName: "" });
-  };
-
-  openRegisterPopup = () => {
-    this.setState({ registerPopupClassName: "openform" });
   };
 
   openSearchBox = () => {
@@ -48,12 +33,14 @@ class Header extends Component {
     return (
       <React.Fragment>
         <Login
-          loginPopupClassName={this.state.loginPopupClassName}
-          closeLoginPopup={this.closeLoginPopup}
+          loginPopupClassName={this.props.loginPopupClassName}
+          closeLoginPopup={() => this.props.togglePopup("", popupType.login)}
         ></Login>
         <Register
-          registerPopupClassName={this.state.registerPopupClassName}
-          closeRegisterPopup={this.closeRegisterPopup}
+          registerPopupClassName={this.props.registerPopupClassName}
+          closeRegisterPopup={() =>
+            this.props.togglePopup("", popupType.register)
+          }
         ></Register>
         <header className="site-header">
           <div className="container">
@@ -77,7 +64,7 @@ class Header extends Component {
                 {this.state.currentMenuItem === "home" ? (
                   <li className="menu-item current-menu-item">
                     <Link
-                      to="/movie"
+                      to="/home"
                       onClick={() => this.setCurrentMenuItem("home")}
                     >
                       Home
@@ -86,7 +73,7 @@ class Header extends Component {
                 ) : (
                   <li className="menu-item">
                     <Link
-                      to="/movie"
+                      to="/home"
                       onClick={() => this.setCurrentMenuItem("home")}
                     >
                       Home
@@ -117,7 +104,9 @@ class Header extends Component {
                 )}
                 <li className="menu-item">
                   <a
-                    onClick={this.openLoginPopup}
+                    onClick={() => {
+                      this.props.togglePopup("openform", popupType.login);
+                    }}
                     style={{ cursor: "pointer" }}
                   >
                     Login
@@ -125,7 +114,9 @@ class Header extends Component {
                 </li>
                 <li className="menu-item">
                   <a
-                    onClick={this.openRegisterPopup}
+                    onClick={() => {
+                      this.props.togglePopup("openform", popupType.register);
+                    }}
                     style={{ cursor: "pointer" }}
                   >
                     Register
@@ -151,7 +142,7 @@ class Header extends Component {
             >
               <ul className="menu">
                 <li className="menu-item current-menu-item">
-                  <Link to="/movie">Home</Link>
+                  <Link to="/home">Home</Link>
                 </li>
                 <li className="menu-item">
                   <a href="about.html">About</a>
@@ -179,4 +170,19 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    loginPopupClassName: state.uiDetails.loginPopupClassName,
+    registerPopupClassName: state.uiDetails.registerPopupClassName,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    togglePopup: (popupClassName, popupType) => {
+      dispatch(togglePopup(popupClassName, popupType));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

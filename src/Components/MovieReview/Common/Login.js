@@ -21,7 +21,7 @@ class Login extends Component {
             <form method="post" action="login.php">
               <div className="row">
                 <label htmlFor="username">
-                  Username:
+                  Email:
                   <input
                     type="text"
                     name="username"

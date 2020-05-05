@@ -1557,3 +1557,13 @@ li.non-active-page:hover {
 .disabled-post-review {
   cursor: not-allowed;
 }
+
+.input-error {
+  border-color: red !important;
+}
+
+.error-message {
+  margin-bottom: 0px !important;
+  color: red !important;
+  margin-top: 5px !important;
+}

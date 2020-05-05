@@ -1,6 +1,6 @@
 import * as actionTypes from "../Actions/actions";
 import ServiceProvider from "../../Provider/ServiceProvider";
-import { apiUrl } from "./../../Shared/Constants";
+import { apiUrl, popupType } from "./../../Shared/Constants";
 import { showErrorMessage } from "../../Provider/ToastProvider";
 
 export const toggleSideBar = () => {
@@ -98,6 +98,19 @@ export const toggleLoader = (showLoader, screenOpacity) => {
     type: actionTypes.SHOW_LOADER,
     showLoader: showLoader,
     screenOpacity: screenOpacity,
+  };
+};
+
+export const togglePopup = (popupClassName, popupTypePassed) => {
+  if (popupTypePassed === popupType.login) {
+    return {
+      type: actionTypes.TOGGLE_LOGIN_POPUP,
+      loginPopupClassName: popupClassName,
+    };
+  }
+  return {
+    type: actionTypes.TOGGLE_REGISTER_POPUP,
+    registerPopupClassName: popupClassName,
   };
 };
 
