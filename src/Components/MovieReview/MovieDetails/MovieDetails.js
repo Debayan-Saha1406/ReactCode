@@ -12,9 +12,13 @@ import {
   ratingStars,
   movieDetailTabs,
   monthNames,
+  popupType,
 } from "../../../Shared/Constants";
 import { connect } from "react-redux";
-import { toggleLoader } from "../../../Store/Actions/actionCreator";
+import {
+  toggleLoader,
+  togglePopup,
+} from "../../../Store/Actions/actionCreator";
 import LoaderProvider from "../../../Provider/LoaderProvider";
 import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
@@ -79,23 +83,27 @@ class MovieDetails extends Component {
   };
 
   handleStarClick = (index) => {
-    const movieDetail = { ...this.state.movie };
-    movieDetail.movie.avgRating = +(
-      (movieDetail.movie.avgRating * movieDetail.movie.totalRatings +
-        (index + 1)) /
-      (movieDetail.movie.totalRatings + 1)
-    ).toFixed(1);
-    movieDetail.movie.totalRatings += 1;
+    if (this.props.isUserLoggedIn) {
+      const movieDetail = { ...this.state.movie };
+      movieDetail.movie.avgRating = +(
+        (movieDetail.movie.avgRating * movieDetail.movie.totalRatings +
+          (index + 1)) /
+        (movieDetail.movie.totalRatings + 1)
+      ).toFixed(1);
+      movieDetail.movie.totalRatings += 1;
 
-    const body = {
-      avgRating: movieDetail.movie.avgRating,
-    };
+      const body = {
+        avgRating: movieDetail.movie.avgRating,
+      };
 
-    ServiceProvider.put(apiUrl.rating, 1, body).then((response) => {
-      if (response.status === 200) {
-        this.setState({ isRatingGiven: true, movie: movieDetail });
-      }
-    });
+      ServiceProvider.put(apiUrl.rating, 1, body).then((response) => {
+        if (response.status === 200) {
+          this.setState({ isRatingGiven: true, movie: movieDetail });
+        }
+      });
+    } else {
+      this.props.togglePopup("openform", popupType.login);
+    }
   };
 
   handleReviewTabSelection = () => {
@@ -160,7 +168,11 @@ class MovieDetails extends Component {
   };
 
   openReviewPopup = () => {
-    this.setState({ openPopupClassName: "openform" });
+    if (this.props.isUserLoggedIn) {
+      this.setState({ openPopupClassName: "openform" });
+    } else {
+      this.props.togglePopup("openform", popupType.login);
+    }
   };
 
   pageNumberClicked = (page) => {
@@ -295,12 +307,16 @@ class MovieDetails extends Component {
                     {this.state.movie.movie.movieName}
                     <span>{releaseYear}</span>
                   </h1>
-                  <div className="movie-rate">
+                  <div className="movie-rate" onMouseOut={this.toggleAllStars}>
                     <div className="rate">
                       <i
                         className="fa fa-star"
                         id="rating-icon"
-                        style={{ fontSize: "17px", color: "yellow" }}
+                        style={{
+                          fontSize: "17px",
+                          color: "yellow",
+                          cursor: "pointer",
+                        }}
                       ></i>
                       <p>
                         <span>{this.state.movie.movie.avgRating}</span>
@@ -323,6 +339,7 @@ class MovieDetails extends Component {
                                 style={{
                                   fontSize: "17px",
                                   color: "yellow",
+                                  cursor: "pointer",
                                 }}
                                 onMouseOver={() => this.toggleStar(index)}
                                 onMouseOut={() => this.toggleStar(index)}
@@ -334,6 +351,7 @@ class MovieDetails extends Component {
                                 style={{
                                   fontSize: "17px",
                                   color: "white",
+                                  cursor: "pointer",
                                 }}
                                 onMouseOver={() => this.toggleStar(index)}
                                 onMouseOut={() => this.toggleStar(index)}
@@ -345,7 +363,7 @@ class MovieDetails extends Component {
                     </div>
                   </div>
 
-                  <div className="movie-tabs" onMouseOver={this.toggleAllStars}>
+                  <div className="movie-tabs">
                     <div className="tabs">
                       <ul className="tab-links tabs-mv">
                         {this.state.selectedTab === movieDetailTabs.overview ? (
@@ -480,6 +498,7 @@ const mapStateToProps = (state) => {
   return {
     showLoader: state.uiDetails.showLoader,
     screenOpacity: state.uiDetails.screenOpacity,
+    isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
   };
 };
 
@@ -487,6 +506,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleLoader: (showLoader, screenOpacity) => {
       dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+    togglePopup: (popupClassName, popupType) => {
+      dispatch(togglePopup(popupClassName, popupType));
     },
   };
 };

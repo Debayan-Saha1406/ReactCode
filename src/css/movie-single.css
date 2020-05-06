@@ -165,7 +165,7 @@ ul {
 }
 
 .tabs ul.tabs-mv li {
-  margin-right: 50px;
+  margin-right: 50px !important;
 }
 
 .tabs ul.tabs-mv li.active a,
