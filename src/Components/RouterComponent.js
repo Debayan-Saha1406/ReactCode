@@ -7,10 +7,10 @@ import User from "./UserComponent";
 import ForgotPassword from "./ForgotPassword";
 import Register from "./RegisterComponent";
 import ResetPassword from "./ResetPasswordComponent";
-import MovieHomePage from "./MovieReview/MovieHome/MovieHomePage";
 import Movies from "./MovieReview/Movies/Movies";
 import MovieDetails from "./MovieReview/MovieDetails/MovieDetails";
 import NotFound from "./MovieReview/Common/NotFound";
+import Home from "./MovieReview/MovieHome/Home";
 
 class Router extends Component {
   render() {
@@ -27,7 +27,7 @@ class Router extends Component {
           <Route path="/forgotPassword" component={ForgotPassword} />
           <Route path="/register" component={Register} />
           <Route path="/resetPassword" component={ResetPassword} />
-          <Route path="/home" component={MovieHomePage} />
+          <Route path="/home" component={Home} />
           <Route path="/movie-details/:name" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
           <Route path="/not-found" component={NotFound} />

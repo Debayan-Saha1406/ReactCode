@@ -5,6 +5,9 @@ import { useState } from "react";
 import "../../../css/movie-single.css";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl } from "../../../Shared/Constants";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { showErrorMessage } from "../../../Provider/ToastProvider";
 
 const initialState = {
   value: "",
@@ -18,6 +21,7 @@ const Register = (props) => {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState(initialState);
   const [confirmPassword, setConfirmPassword] = useState(initialState);
+  const dispatch = useDispatch();
 
   const signUp = (e) => {
     e.preventDefault();
@@ -41,10 +45,11 @@ const Register = (props) => {
         email: email.value,
         password: password.value,
       };
-
+      dispatch(toggleLoader(true, "15%"));
       ServiceProvider.post(apiUrl.register, body).then((response) => {
         if (response.status === 400) {
-          alert("Email Already Exists");
+          dispatch(toggleLoader(false, 1));
+          showErrorMessage("Email Already Exists");
         }
       });
     }

@@ -1,16 +1,31 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { Component } from "react";
+import React from "react";
 import "../../../css/home.css";
 import Header from "../Common/Header";
 import Main from "./Main";
 import PopularMovies from "./PopularMovies";
 import "../../../css/movie-single.css";
+import LoaderProvider from "./../../../Provider/LoaderProvider";
+import { useSelector } from "react-redux";
+import "../../../css/login.css";
+import { ToastContainer } from "react-toastify";
 
-class MovieHomePage extends Component {
-  state = {};
-  render() {
-    return (
-      <div className="background">
+const Home = () => {
+  const showLoader = useSelector((state) => state.uiDetails.showLoader);
+  const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
+  return (
+    <React.Fragment>
+      <div id="loaderContainer">
+        <div id="loader">
+          {showLoader && <LoaderProvider visible={showLoader}></LoaderProvider>}
+        </div>
+      </div>
+      <div
+        className="background"
+        style={{
+          opacity: screenOpacity,
+        }}
+      >
         <div id="site-content">
           <Header></Header>
           <main class="main-content">
@@ -43,6 +58,7 @@ class MovieHomePage extends Component {
                       </ul>
                       <PopularMovies></PopularMovies>
                     </div>
+                    <ToastContainer autoClose={3000}></ToastContainer>
                   </div>
                 </div>
               </div>
@@ -50,8 +66,8 @@ class MovieHomePage extends Component {
           </main>
         </div>
       </div>
-    );
-  }
-}
+    </React.Fragment>
+  );
+};
 
-export default MovieHomePage;
+export default Home;
