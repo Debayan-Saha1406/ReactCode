@@ -40,6 +40,7 @@ class MovieDetails extends Component {
     pageNumber: 1,
     pageSize: 5,
     openPopupClassName: "",
+    isMovieDetailPresent: false,
   };
 
   toggleTab = (destTab) => {
@@ -51,7 +52,7 @@ class MovieDetails extends Component {
 
   componentDidMount() {
     const movieId = this.props.match.params.name;
-    this.props.toggleLoader(true, "15%");
+    this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
         let index = response.data.data.movie.releaseDate.indexOf(",");
@@ -59,9 +60,12 @@ class MovieDetails extends Component {
           index + 1,
           response.data.data.movie.releaseDate.length
         );
-        this.setState({ movie: response.data.data }, () => {
-          this.props.toggleLoader(false, 1);
-        });
+        this.setState(
+          { movie: response.data.data, isMovieDetailPresent: true },
+          () => {
+            this.props.toggleLoader(false, 1);
+          }
+        );
       } else if (response.status === 404) {
         this.setState({ redirectToNotFound: true });
       }
@@ -96,7 +100,11 @@ class MovieDetails extends Component {
         avgRating: movieDetail.movie.avgRating,
       };
 
-      ServiceProvider.put(apiUrl.rating, 1, body).then((response) => {
+      ServiceProvider.put(
+        apiUrl.rating,
+        this.state.movie.movie.movieId,
+        body
+      ).then((response) => {
         if (response.status === 200) {
           this.setState({ isRatingGiven: true, movie: movieDetail });
         }
@@ -207,42 +215,25 @@ class MovieDetails extends Component {
   };
 
   render() {
+    const { isMovieDetailPresent } = this.state;
     if (this.state.redirectToNotFound) {
       return <Redirect to="/not-found"></Redirect>;
     }
     return (
       <React.Fragment>
-        {!this.state.movie.movie ? (
-          <div id="loaderContainer">
-            <div id="loader">
-              {this.props.showLoader && (
-                <LoaderProvider
-                  visible={this.props.showLoader}
-                ></LoaderProvider>
-              )}
-            </div>
+        <div id="loaderContainer">
+          <div id="loader">
+            {this.props.showLoader && (
+              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
+            )}
           </div>
-        ) : this.state.fetchingReviewData ? (
-          <React.Fragment>
-            <div id="loaderContainer">
-              <div id="loader">
-                {this.props.showLoader && (
-                  <LoaderProvider
-                    visible={this.props.showLoader}
-                  ></LoaderProvider>
-                )}
-              </div>
-            </div>
-            {this.renderMovieDetails()}
-          </React.Fragment>
-        ) : (
-          this.renderMovieDetails()
-        )}
+        </div>
+        {this.renderMovieDetails(isMovieDetailPresent)}
       </React.Fragment>
     );
   }
 
-  renderMovieDetails() {
+  renderMovieDetails(isMovieDetailPresent) {
     return (
       <div
         className="background"
@@ -263,7 +254,9 @@ class MovieDetails extends Component {
                   <i class="fa fa-times-circle"></i>
                 </div>
                 <ReactPlayer
-                  url={this.state.movie.movie.youtubeUrl}
+                  url={
+                    isMovieDetailPresent && this.state.movie.movie.youtubeUrl
+                  }
                   controls={true}
                   style={{ backgroundColor: "black" }}
                 />
@@ -304,7 +297,7 @@ class MovieDetails extends Component {
               <div className="col-md-8 col-sm-12 col-xs-12">
                 <div className="movie-single-ct main-content">
                   <h1 className="bd-hd">
-                    {this.state.movie.movie.movieName}
+                    {isMovieDetailPresent && this.state.movie.movie.movieName}
                     <span>{releaseYear}</span>
                   </h1>
                   <div className="movie-rate" onMouseOut={this.toggleAllStars}>
@@ -319,11 +312,16 @@ class MovieDetails extends Component {
                         }}
                       ></i>
                       <p>
-                        <span>{this.state.movie.movie.avgRating}</span>
+                        <span>
+                          {isMovieDetailPresent &&
+                            this.state.movie.movie.avgRating}
+                        </span>
                         <br />
                         {
                           <span className="rv">
-                            {this.state.movie.movie.totalRatings} Ratings
+                            {isMovieDetailPresent &&
+                              this.state.movie.movie.totalRatings}{" "}
+                            Ratings
                           </span>
                         }
                       </p>
@@ -445,42 +443,44 @@ class MovieDetails extends Component {
                         )}
                       </ul>
                       <div className="tab-content">
-                        {this.state.selectedTab ===
-                          movieDetailTabs.overview && (
-                          <Overview
-                            directors={this.state.movie.directors}
-                            celebrities={this.state.movie.celebrities}
-                            selectedTab={this.state.selectedTab}
-                            genres={this.state.movie.genres}
-                            movieOverview={this.state.movie.movie}
-                            reviews={this.state.movie.reviews}
-                            toggleTab={this.toggleTab}
-                          ></Overview>
-                        )}
-                        {this.state.selectedTab === movieDetailTabs.review && (
-                          <MovieReview
-                            movieName={this.state.movie.movie.movieName}
-                            selectedTab={this.state.selectedTab}
-                            reviews={this.state.reviews}
-                            totalReviews={this.state.totalReviews}
-                            postReview={this.postReview}
-                            pageSize={this.state.pageSize}
-                            pageNumber={this.state.pageNumber}
-                            openPopupClassName={this.state.openPopupClassName}
-                            closeReviewPopup={this.closeReviewPopup}
-                            openReviewPopup={this.openReviewPopup}
-                            pageNumberClicked={this.pageNumberClicked}
-                            changeReviewCount={this.changeReviewCount}
-                          ></MovieReview>
-                        )}
-                        {this.state.selectedTab === movieDetailTabs.cast && (
-                          <Cast
-                            selectedTab={this.state.selectedTab}
-                            stars={this.state.movie.celebrities}
-                            directors={this.state.movie.directors}
-                            movieName={this.state.movie.movie.movieName}
-                          />
-                        )}
+                        {this.state.selectedTab === movieDetailTabs.overview &&
+                          isMovieDetailPresent && (
+                            <Overview
+                              directors={this.state.movie.directors}
+                              celebrities={this.state.movie.celebrities}
+                              selectedTab={this.state.selectedTab}
+                              genres={this.state.movie.genres}
+                              movieOverview={this.state.movie.movie}
+                              reviews={this.state.movie.reviews}
+                              toggleTab={this.toggleTab}
+                            ></Overview>
+                          )}
+                        {this.state.selectedTab === movieDetailTabs.review &&
+                          isMovieDetailPresent && (
+                            <MovieReview
+                              movieName={this.state.movie.movie.movieName}
+                              selectedTab={this.state.selectedTab}
+                              reviews={this.state.reviews}
+                              totalReviews={this.state.totalReviews}
+                              postReview={this.postReview}
+                              pageSize={this.state.pageSize}
+                              pageNumber={this.state.pageNumber}
+                              openPopupClassName={this.state.openPopupClassName}
+                              closeReviewPopup={this.closeReviewPopup}
+                              openReviewPopup={this.openReviewPopup}
+                              pageNumberClicked={this.pageNumberClicked}
+                              changeReviewCount={this.changeReviewCount}
+                            ></MovieReview>
+                          )}
+                        {this.state.selectedTab === movieDetailTabs.cast &&
+                          isMovieDetailPresent && (
+                            <Cast
+                              selectedTab={this.state.selectedTab}
+                              stars={this.state.movie.celebrities}
+                              directors={this.state.movie.directors}
+                              movieName={this.state.movie.movie.movieName}
+                            />
+                          )}
                       </div>
                     </div>
                   </div>

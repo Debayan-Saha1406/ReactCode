@@ -5,7 +5,6 @@ const initialState = {
 };
 
 export const UserReducer = (state = initialState, action) => {
-  debugger;
   switch (action.type) {
     case SAVE_USERINFO:
       return {
