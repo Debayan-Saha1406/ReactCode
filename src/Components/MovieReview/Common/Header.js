@@ -6,14 +6,27 @@ import Login from "./Login";
 import Register from "./Register";
 import { connect } from "react-redux";
 import { togglePopup } from "./../../../Store/Actions/actionCreator";
-import { popupType } from "./../../../Shared/Constants";
+import { popupType, constants } from "./../../../Shared/Constants";
+import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 
 class Header extends Component {
   state = {
     display: "none",
     active: "",
     currentMenuItem: "home",
+    isUserLoggedIn: false,
+    loggedInEmail: "",
   };
+
+  componentDidMount() {
+    const loginDetails = getLocalStorageItem(constants.loginDetails);
+    if (!loginDetails) {
+      this.props.saveUserInfo("", false);
+    } else {
+      this.props.saveUserInfo(loginDetails.email, true);
+    }
+  }
 
   toggleNavigation = () => {
     this.setState({
@@ -102,26 +115,36 @@ class Header extends Component {
                     </Link>
                   </li>
                 )}
-                <li className="menu-item">
-                  <a
-                    onClick={() => {
-                      this.props.togglePopup("openform", popupType.login);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Login
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a
-                    onClick={() => {
-                      this.props.togglePopup("openform", popupType.register);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Register
-                  </a>
-                </li>
+                {this.props.isUserLoggedIn ? null : (
+                  <li className="menu-item">
+                    <a
+                      onClick={() => {
+                        this.props.togglePopup("openform", popupType.login);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Login
+                    </a>
+                  </li>
+                )}
+                {this.props.isUserLoggedIn ? (
+                  <li className="menu-item">
+                    <a onClick={() => {}} style={{ cursor: "pointer" }}>
+                      {this.props.loggedInEmail}
+                    </a>
+                  </li>
+                ) : (
+                  <li className="menu-item">
+                    <a
+                      onClick={() => {
+                        this.props.togglePopup("openform", popupType.register);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Register
+                    </a>
+                  </li>
+                )}
               </ul>
 
               <form action="#" className="search-form">
@@ -174,6 +197,8 @@ const mapStateToProps = (state) => {
   return {
     loginPopupClassName: state.uiDetails.loginPopupClassName,
     registerPopupClassName: state.uiDetails.registerPopupClassName,
+    isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
+    loggedInEmail: state.loggedInUserInfo.loggedInEmail,
   };
 };
 
@@ -181,6 +206,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     togglePopup: (popupClassName, popupType) => {
       dispatch(togglePopup(popupClassName, popupType));
+    },
+    saveUserInfo: (loggedInEmail, isUserLoggedIn) => {
+      dispatch(saveUserInfo(loggedInEmail, isUserLoggedIn));
     },
   };
 };

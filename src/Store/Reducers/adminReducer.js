@@ -5,8 +5,8 @@ import {
   DELETE_PROFILE_IMAGE,
 } from "../Actions/actions";
 import image from "../../images/avatar.jpg";
-import { SAVE_USER_DATA } from "./../Actions/actions";
-import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
+import { SAVE_USER_DATA } from "../Actions/actions";
+import { getLocalStorageItem } from "../../Provider/LocalStorageProvider";
 import { constants } from "../../Shared/Constants";
 
 const getUserDetails = () => {
@@ -27,7 +27,7 @@ const initialState = {
     : image,
 };
 
-export const userDetailsReducer = (state = initialState, action) => {
+export const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     case HANDLE_INPUTCHANGE:
       return {

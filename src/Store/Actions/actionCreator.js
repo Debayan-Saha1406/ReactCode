@@ -114,6 +114,14 @@ export const togglePopup = (popupClassName, popupTypePassed) => {
   };
 };
 
+export const saveUserInfo = (loggedInEmail, isUserLoggedIn) => {
+  return {
+    type: actionTypes.SAVE_USERINFO,
+    loggedInEmail: loggedInEmail,
+    isUserLoggedIn: isUserLoggedIn,
+  };
+};
+
 function handleFileData(image) {
   let updatedImage;
   if (image[image.indexOf("/") + 1] === "j")

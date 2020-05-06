@@ -8,10 +8,14 @@ import { apiUrl } from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
+import {
+  validateInputField,
+  validateUserEmail,
+} from "../../../Shared/Services/ValidationService";
 
 const initialState = {
   value: "",
-  isErrorExist: false,
+  isErrorExist: true,
   errorClassName: "",
   errorMessage: "",
 };
@@ -29,14 +33,13 @@ const Register = (props) => {
     validateInputField(firstName, setFirstName);
     validateInputField(password, setPassword);
     validateInputField(confirmPassword, setConfirmPassword);
-    validateEmail(email, setEmail);
+    validateUserEmail(email, setEmail);
     validatePasswordMatch(password, confirmPassword);
 
     if (
       !email.isErrorExist &&
       !password.isErrorExist &&
       !firstName.isErrorExist &&
-      !password.isErrorExist &&
       !confirmPassword.isErrorExist
     ) {
       const body = {
@@ -49,7 +52,12 @@ const Register = (props) => {
       ServiceProvider.post(apiUrl.register, body).then((response) => {
         if (response.status === 400) {
           dispatch(toggleLoader(false, 1));
-          showErrorMessage("Email Already Exists");
+          showErrorMessage(response.data.errors);
+        }
+        if (response.status === 200) {
+          dispatch(toggleLoader(false, 1));
+          clearValues();
+          props.closeRegisterPopup();
         }
       });
     }
@@ -63,49 +71,6 @@ const Register = (props) => {
     setConfirmPassword(initialState);
     props.closeRegisterPopup();
   };
-
-  function validateEmail(email, setEmail) {
-    if (
-      email.value.trim() !== "" &&
-      email.value
-        .trim()
-        .match(
-          /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/
-        ) == null
-    ) {
-      setEmail({
-        ...email,
-        isErrorExist: true,
-        errorClassName: "input-error",
-        errorMessage: "Entered Email is Not Correct",
-      });
-    } else if (email.value.trim() !== "") {
-      setEmail({
-        ...email,
-        isErrorExist: false,
-        errorClassName: "",
-        errorMessage: "",
-      });
-    }
-  }
-
-  function validateInputField(state, setState) {
-    if (state.value === undefined || state.value.trim() === "") {
-      setState({
-        ...state,
-        isErrorExist: true,
-        errorClassName: "input-error",
-        errorMessage: "Required",
-      });
-    } else {
-      setState({
-        ...state,
-        isErrorExist: false,
-        errorClassName: "",
-        errorMessage: "",
-      });
-    }
-  }
 
   const validatePasswordMatch = (password, confirmPassword) => {
     if (password.value !== confirmPassword.value) {
@@ -198,7 +163,7 @@ const Register = (props) => {
                   type="text"
                   name="lastName"
                   onChange={(e) => setLastName(e.target.value)}
-                  value={lastName.value}
+                  value={lastName}
                 />
               </label>
             </div>

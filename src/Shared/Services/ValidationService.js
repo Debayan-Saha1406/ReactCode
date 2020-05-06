@@ -67,3 +67,46 @@ export const handleLastName = (value, data) => {
   }
   data.name = value;
 };
+
+export const validateInputField = (state, setState) => {
+  if (state.value === undefined || state.value.trim() === "") {
+    setState({
+      ...state,
+      isErrorExist: true,
+      errorClassName: "input-error",
+      errorMessage: "Required",
+    });
+  } else {
+    setState({
+      ...state,
+      isErrorExist: false,
+      errorClassName: "",
+      errorMessage: "",
+    });
+  }
+};
+
+export const validateUserEmail = (email, setEmail) => {
+  if (
+    email.value.trim() !== "" &&
+    email.value
+      .trim()
+      .match(
+        /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/
+      ) == null
+  ) {
+    setEmail({
+      ...email,
+      isErrorExist: true,
+      errorClassName: "input-error",
+      errorMessage: "Entered Email is Not Correct",
+    });
+  } else if (email.value.trim() !== "") {
+    setEmail({
+      ...email,
+      isErrorExist: false,
+      errorClassName: "",
+      errorMessage: "",
+    });
+  }
+};

@@ -7,15 +7,17 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { sideBarReducer } from "./Store/Reducers/sideBarReducer";
 import { navBarReducer } from "./Store/Reducers/navBarReducer";
-import { userDetailsReducer } from "./Store/Reducers/userDetailsReducer";
+import { adminReducer } from "./Store/Reducers/adminReducer";
 import thunk from "redux-thunk";
 import { UIReducer } from "./Store/Reducers/UIReducer";
+import { UserReducer } from "./Store/Reducers/userReducer";
 
 const rootReducer = combineReducers({
   sideBarReducer,
   navBarReducer,
-  userDetails: userDetailsReducer,
+  userDetails: adminReducer, //Need To change the userDetails to adminDetails
   uiDetails: UIReducer,
+  loggedInUserInfo : UserReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
