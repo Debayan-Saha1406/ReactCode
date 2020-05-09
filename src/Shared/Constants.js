@@ -1,8 +1,8 @@
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
-  login: "/login",
+    //"http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
+  login: "/adminlogin",
   update: `/userInfo/`,
   profileImage: "/profileImage/",
   register: "/register",
@@ -16,11 +16,14 @@ export const apiUrl = {
   movies: "/movies",
   movieLanguages: "/movieLanguages",
   review: "/review",
+  userLogin: "/userLogin",
+  movieUserRatings: `/movieUserRatings/`,
 };
 
 export const constants = {
   userDetails: "userDetails",
   loginDetails: "loginDetails",
+  userMovieRating: "userMovieRating",
   passwordStrength: {
     0: "Very Weak",
     1: "Weak",

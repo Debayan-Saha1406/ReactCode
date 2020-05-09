@@ -41,7 +41,7 @@ const Login = (props) => {
         password: password.value,
       };
       dispatch(toggleLoader(true, "15%"));
-      ServiceProvider.post(apiUrl.login, body).then((response) => {
+      ServiceProvider.post(apiUrl.userLogin, body).then((response) => {
         if (response.status === 404) {
           dispatch(toggleLoader(false, 1));
           showErrorMessage(response.data.errors);

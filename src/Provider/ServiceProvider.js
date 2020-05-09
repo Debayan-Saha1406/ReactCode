@@ -15,6 +15,13 @@ function getWithParam(url, id) {
   });
 }
 
+function getWithTwoParams(url, id1, id2) {
+  return request({
+    url: url + id1 + "/" + id2,
+    method: httpVerbs.Get,
+  });
+}
+
 function post(url, data) {
   return request({
     url: url,
@@ -44,6 +51,7 @@ const ServiceProvider = {
   put,
   deleteItem,
   getWithParam,
+  getWithTwoParams,
 };
 
 export default ServiceProvider;

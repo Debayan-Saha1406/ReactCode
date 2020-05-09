@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import Header from "../Common/Header";
@@ -13,6 +14,7 @@ import {
   movieDetailTabs,
   monthNames,
   popupType,
+  constants,
 } from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import {
@@ -23,8 +25,13 @@ import LoaderProvider from "../../../Provider/LoaderProvider";
 import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
 import { Redirect } from "react-router-dom";
+import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 
-let releaseYear = "";
+let releaseYear = "",
+  localStorageUserMovieRating = [],
+  loginDetails = {},
+  movieId = 0;
 class MovieDetails extends Component {
   state = {
     selectedTab: movieDetailTabs.overview,
@@ -41,6 +48,7 @@ class MovieDetails extends Component {
     pageSize: 5,
     openPopupClassName: "",
     isMovieDetailPresent: false,
+    userRating: -1,
   };
 
   toggleTab = (destTab) => {
@@ -51,7 +59,14 @@ class MovieDetails extends Component {
   };
 
   componentDidMount() {
-    const movieId = this.props.match.params.name;
+    movieId = this.props.match.params.name;
+    localStorageUserMovieRating = getLocalStorageItem(
+      constants.userMovieRating
+    );
+
+    loginDetails = getLocalStorageItem(constants.loginDetails);
+    this.fetchMovieUserRatings(movieId);
+
     this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
       if (response.status === 200) {
@@ -77,8 +92,10 @@ class MovieDetails extends Component {
   };
 
   toggleAllStars = () => {
-    if (!this.state.isRatingGiven) {
+    if (!this.state.isRatingGiven && this.state.indexClicked === -1) {
       this.setState({ indexClicked: -1 });
+    } else {
+      this.setState({ indexClicked: this.state.userRating });
     }
   };
 
@@ -89,24 +106,36 @@ class MovieDetails extends Component {
   handleStarClick = (index) => {
     if (this.props.isUserLoggedIn) {
       const movieDetail = { ...this.state.movie };
-      movieDetail.movie.avgRating = +(
-        (movieDetail.movie.avgRating * movieDetail.movie.totalRatings +
-          (index + 1)) /
-        (movieDetail.movie.totalRatings + 1)
-      ).toFixed(1);
-      movieDetail.movie.totalRatings += 1;
+      this.setAvgRating(movieDetail, index);
+
+      if (!this.state.isRatingGiven) {
+        movieDetail.movie.totalRatings += 1;
+      }
 
       const body = {
         avgRating: movieDetail.movie.avgRating,
+        userEmail: this.props.loggedInEmail,
+        userRating: index + 1,
+        totalRating: movieDetail.movie.totalRatings,
       };
-
+      this.props.toggleLoader(true, "15%");
       ServiceProvider.put(
         apiUrl.rating,
         this.state.movie.movie.movieId,
         body
       ).then((response) => {
         if (response.status === 200) {
-          this.setState({ isRatingGiven: true, movie: movieDetail });
+          this.setState(
+            {
+              isRatingGiven: true,
+              movie: movieDetail,
+              userRating: index,
+            },
+            () => {
+              this.fetchMovieUserRatings(movieId);
+              this.props.toggleLoader(false, 1);
+            }
+          );
         }
       });
     } else {
@@ -123,6 +152,49 @@ class MovieDetails extends Component {
       this.setState({ selectedTab: movieDetailTabs.review });
     }
   };
+
+  fetchMovieUserRatings(movieId) {
+    loginDetails = getLocalStorageItem(constants.loginDetails);
+    if (loginDetails) {
+      ServiceProvider.getWithTwoParams(
+        apiUrl.movieUserRatings,
+        loginDetails.email,
+        movieId
+      ).then((response) => {
+        if (response.status === 200 && response.data.data.length !== 0) {
+          response.data.data.forEach((movieRating) => {
+            if (movieRating.movieId == movieId) {
+              this.setState(
+                {
+                  indexClicked: movieRating.rating - 1,
+                  userRating: movieRating.rating - 1,
+                  isRatingGiven: true,
+                },
+                () => {}
+              );
+            }
+          });
+        }
+      });
+    }
+  }
+
+  setAvgRating(movieDetail, index) {
+    if (!this.state.isRatingGiven)
+      movieDetail.movie.avgRating = +(
+        (movieDetail.movie.avgRating * movieDetail.movie.totalRatings +
+          (index + 1)) /
+        (movieDetail.movie.totalRatings + 1)
+      ).toFixed(1);
+    else {
+      movieDetail.movie.avgRating = +(
+        (movieDetail.movie.avgRating * movieDetail.movie.totalRatings -
+          this.state.userRating +
+          (index + 1)) /
+        movieDetail.movie.totalRatings
+      ).toFixed(1);
+    }
+  }
 
   fetchReviews() {
     let body = {
@@ -213,6 +285,12 @@ class MovieDetails extends Component {
       });
     });
   };
+
+  componentDidUpdate() {
+    if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
+      this.fetchMovieUserRatings(movieId);
+    }
+  }
 
   render() {
     const { isMovieDetailPresent } = this.state;
@@ -499,6 +577,7 @@ const mapStateToProps = (state) => {
     showLoader: state.uiDetails.showLoader,
     screenOpacity: state.uiDetails.screenOpacity,
     isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
+    loggedInEmail: state.loggedInUserInfo.loggedInEmail,
   };
 };
 
