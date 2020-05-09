@@ -49,6 +49,7 @@ class MovieDetails extends Component {
     openPopupClassName: "",
     isMovieDetailPresent: false,
     userRating: -1,
+    reviewPopupType: popupType.addReview,
   };
 
   toggleTab = (destTab) => {
@@ -247,9 +248,12 @@ class MovieDetails extends Component {
     this.setState({ openPopupClassName: "" });
   };
 
-  openReviewPopup = () => {
+  openReviewPopup = (reviewPopupType) => {
     if (this.props.isUserLoggedIn) {
-      this.setState({ openPopupClassName: "openform" });
+      this.setState({
+        openPopupClassName: "openform",
+        reviewPopupType: reviewPopupType,
+      });
     } else {
       this.props.togglePopup("openform", popupType.login);
     }
@@ -548,6 +552,7 @@ class MovieDetails extends Component {
                               openReviewPopup={this.openReviewPopup}
                               pageNumberClicked={this.pageNumberClicked}
                               changeReviewCount={this.changeReviewCount}
+                              reviewPopupType={this.state.reviewPopupType}
                             ></MovieReview>
                           )}
                         {this.state.selectedTab === movieDetailTabs.cast &&

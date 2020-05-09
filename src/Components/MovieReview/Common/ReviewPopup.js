@@ -2,6 +2,7 @@
 import React from "react";
 import "../../../css/movie-single.css";
 import { useState } from "react";
+import { popupType } from "./../../../Shared/Constants";
 
 const ReviewPopup = (props) => {
   const [reviewTitle, setReviewTitle] = useState("");
@@ -18,7 +19,11 @@ const ReviewPopup = (props) => {
           >
             x
           </a>
-          <h3 className="add-review">Add Review</h3>
+          {props.reviewPopupType === popupType.editReview ? (
+            <h3 className="add-review">Edit Review </h3>
+          ) : (
+            <h3 className="add-review">Add Review </h3>
+          )}
           <form method="post">
             <div className="row">
               <label htmlFor="username">Review Title:</label>
@@ -62,11 +67,15 @@ const ReviewPopup = (props) => {
                     props.postReview(e, reviewTitle, reviewDescription)
                   }
                 >
-                  Post Review
+                  {props.reviewPopupType === popupType.editReview
+                    ? "Update Review"
+                    : "Post Review"}
                 </button>
               ) : (
                 <button type="submit" disabled={true} id="not-allowed">
-                  Post Review
+                  {props.reviewPopupType === popupType.editReview
+                    ? "Update Review"
+                    : "Post Review"}
                 </button>
               )}
             </div>

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl, movieDetailTabs } from "../../../Shared/Constants";
+import { apiUrl, movieDetailTabs, popupType } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
@@ -26,6 +26,7 @@ class MovieReview extends Component {
             openPopupClassName={this.props.openPopupClassName}
             closeReviewPopup={this.props.closeReviewPopup}
             postReview={this.props.postReview}
+            reviewPopupType={this.props.reviewPopupType}
           ></ReviewPopup>
         }
         <div className="row">
@@ -40,7 +41,7 @@ class MovieReview extends Component {
               className="redbtn"
               id="black-hover"
               style={{ cursor: "pointer" }}
-              onClick={this.props.openReviewPopup}
+              onClick={() => this.props.openReviewPopup(popupType.addReview)}
             >
               Write Review
             </a>
@@ -66,8 +67,25 @@ class MovieReview extends Component {
                   <li key={index}>
                     <h3 style={{ color: "yellow" }}>{review.reviewTitle}</h3>
                     <p className="time">
-                      {review.reviewDate} by <a> {review.userEmail}</a>
+                      {review.reviewDate} by{" "}
+                      <a className="link-color"> {review.userEmail}</a>
+                      {this.props.loggedInEmail === review.userEmail && (
+                        <i
+                          className="fa fa-pencil"
+                          aria-hidden="true"
+                          style={{
+                            float: "right",
+                            cursor: "pointer",
+                            color: "#ffaa3c",
+                          }}
+                          id="edit-pencil"
+                          onClick={() =>
+                            this.props.openReviewPopup(popupType.editReview)
+                          }
+                        ></i>
+                      )}
                     </p>
+
                     <p>{review.reviewDescription}</p>
                   </li>
                 ))}
@@ -89,6 +107,12 @@ class MovieReview extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    loggedInEmail: state.loggedInUserInfo.loggedInEmail,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleLoader: (showLoader, screenOpacity) => {
@@ -97,4 +121,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(MovieReview);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieReview);

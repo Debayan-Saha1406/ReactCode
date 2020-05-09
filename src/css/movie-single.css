@@ -1567,3 +1567,11 @@ li.non-active-page:hover {
   color: red !important;
   margin-top: 5px !important;
 }
+
+.link-color {
+  color: #4280bf !important;
+}
+
+#edit-pencil:hover {
+  color: #4280bf !important;
+}
