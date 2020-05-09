@@ -6,7 +6,23 @@ import { popupType } from "./../../../Shared/Constants";
 
 const ReviewPopup = (props) => {
   const [reviewTitle, setReviewTitle] = useState("");
+  const [isEditReviewContentSet, setIsEditReviewContent] = useState(false);
   const [reviewDescription, setReviewDescription] = useState("");
+  if (
+    props.reviewPopupType === popupType.editReview &&
+    !isEditReviewContentSet &&
+    props.isPopupClosed !== true
+  ) {
+    setReviewTitle(props.reviewTitle);
+    setReviewDescription(props.reviewDescription);
+    setIsEditReviewContent(true);
+  }
+
+  const closeReviewPopup = () => {
+    setIsEditReviewContent(false);
+    props.closeReviewPopup();
+  };
+
   return (
     <div className={`overlay ${props.openPopupClassName}`}>
       <div className="login-wrapper" id="login-content">
@@ -14,7 +30,7 @@ const ReviewPopup = (props) => {
           <a
             className="close"
             data-ol-has-click-handler=""
-            onClick={props.closeReviewPopup}
+            onClick={closeReviewPopup}
             style={{ cursor: "pointer" }}
           >
             x
@@ -39,6 +55,7 @@ const ReviewPopup = (props) => {
                 onChange={(e) => {
                   setReviewTitle(e.target.value);
                 }}
+                value={reviewTitle}
               />
             </div>
             <br></br>
@@ -56,6 +73,7 @@ const ReviewPopup = (props) => {
                 onChange={(e) => {
                   setReviewDescription(e.target.value);
                 }}
+                value={reviewDescription}
               />
             </div>
             <br></br>

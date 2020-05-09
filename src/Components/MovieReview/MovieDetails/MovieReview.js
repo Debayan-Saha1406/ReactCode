@@ -9,7 +9,38 @@ import { connect } from "react-redux";
 import ReviewPopup from "./../Common/ReviewPopup";
 
 class MovieReview extends Component {
-  state = {};
+  state = {
+    openPopupClassName: "",
+    reviewPopupType: popupType.addReview,
+    reviewDescription: "",
+    reviewTitle: "",
+    isPopupClosed: false,
+  };
+
+  openReviewPopup = (reviewPopupType, reviewTitle, reviewDescription) => {
+    if (this.props.isUserLoggedIn) {
+      debugger;
+      this.setState({
+        openPopupClassName: "openform",
+        reviewPopupType: reviewPopupType,
+        reviewTitle: reviewTitle,
+        reviewDescription: reviewDescription,
+        isPopupClosed: false,
+      });
+    } else {
+      this.props.togglePopup("openform", popupType.login);
+    }
+  };
+
+  closeReviewPopup = () => {
+    this.setState({
+      openPopupClassName: "",
+      reviewTitle: "",
+      reviewDescription: "",
+      isPopupClosed: true,
+    });
+  };
+
   render() {
     return (
       <div
@@ -23,10 +54,13 @@ class MovieReview extends Component {
       >
         {
           <ReviewPopup
-            openPopupClassName={this.props.openPopupClassName}
-            closeReviewPopup={this.props.closeReviewPopup}
+            openPopupClassName={this.state.openPopupClassName}
+            closeReviewPopup={this.closeReviewPopup}
             postReview={this.props.postReview}
-            reviewPopupType={this.props.reviewPopupType}
+            reviewPopupType={this.state.reviewPopupType}
+            reviewTitle={this.state.reviewTitle}
+            reviewDescription={this.state.reviewDescription}
+            isPopupClosed={this.state.isPopupClosed}
           ></ReviewPopup>
         }
         <div className="row">
@@ -41,7 +75,7 @@ class MovieReview extends Component {
               className="redbtn"
               id="black-hover"
               style={{ cursor: "pointer" }}
-              onClick={() => this.props.openReviewPopup(popupType.addReview)}
+              onClick={this.openReviewPopup}
             >
               Write Review
             </a>
@@ -80,7 +114,11 @@ class MovieReview extends Component {
                           }}
                           id="edit-pencil"
                           onClick={() =>
-                            this.props.openReviewPopup(popupType.editReview)
+                            this.openReviewPopup(
+                              popupType.editReview,
+                              review.reviewTitle,
+                              review.reviewDescription
+                            )
                           }
                         ></i>
                       )}
@@ -110,6 +148,7 @@ class MovieReview extends Component {
 const mapStateToProps = (state) => {
   return {
     loggedInEmail: state.loggedInUserInfo.loggedInEmail,
+    isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
   };
 };
 

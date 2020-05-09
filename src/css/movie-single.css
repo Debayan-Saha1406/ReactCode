@@ -1575,3 +1575,7 @@ li.non-active-page:hover {
 #edit-pencil:hover {
   color: #4280bf !important;
 }
+
+div#overlay {
+  background-color: rgba(0, 0, 0, 0.25);
+}
