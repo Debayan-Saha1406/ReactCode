@@ -82,7 +82,13 @@ const ReviewPopup = (props) => {
                 <button
                   type="submit"
                   onClick={(e) =>
-                    props.postReview(e, reviewTitle, reviewDescription)
+                    props.postReview(
+                      e,
+                      reviewTitle,
+                      reviewDescription,
+                      props.reviewId,
+                      props.reviewPopupType
+                    )
                   }
                 >
                   {props.reviewPopupType === popupType.editReview

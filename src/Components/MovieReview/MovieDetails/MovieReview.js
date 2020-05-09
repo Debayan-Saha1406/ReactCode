@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl, movieDetailTabs, popupType } from "../../../Shared/Constants";
+import { movieDetailTabs, popupType } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
@@ -15,17 +14,25 @@ class MovieReview extends Component {
     reviewDescription: "",
     reviewTitle: "",
     isPopupClosed: false,
+    reviewId: 0,
+    needToClosePopup: false,
   };
 
-  openReviewPopup = (reviewPopupType, reviewTitle, reviewDescription) => {
+  openReviewPopup = (
+    reviewPopupType,
+    reviewTitle,
+    reviewDescription,
+    reviewId
+  ) => {
+    debugger;
     if (this.props.isUserLoggedIn) {
-      debugger;
       this.setState({
         openPopupClassName: "openform",
         reviewPopupType: reviewPopupType,
         reviewTitle: reviewTitle,
         reviewDescription: reviewDescription,
         isPopupClosed: false,
+        reviewId: reviewId,
       });
     } else {
       this.props.togglePopup("openform", popupType.login);
@@ -40,6 +47,14 @@ class MovieReview extends Component {
       isPopupClosed: true,
     });
   };
+
+  componentDidUpdate() {
+    if (this.props.needToClosePopup && !this.state.needToClosePopup) {
+      this.setState({ needToClosePopup: true }, () => {
+        this.closeReviewPopup();
+      });
+    }
+  }
 
   render() {
     return (
@@ -61,6 +76,7 @@ class MovieReview extends Component {
             reviewTitle={this.state.reviewTitle}
             reviewDescription={this.state.reviewDescription}
             isPopupClosed={this.state.isPopupClosed}
+            reviewId={this.state.reviewId}
           ></ReviewPopup>
         }
         <div className="row">
@@ -117,7 +133,8 @@ class MovieReview extends Component {
                             this.openReviewPopup(
                               popupType.editReview,
                               review.reviewTitle,
-                              review.reviewDescription
+                              review.reviewDescription,
+                              review.id
                             )
                           }
                         ></i>

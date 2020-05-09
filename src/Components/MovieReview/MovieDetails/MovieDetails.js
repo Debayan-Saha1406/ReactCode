@@ -26,10 +26,8 @@ import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
 import { Redirect } from "react-router-dom";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
-import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 
 let releaseYear = "",
-  localStorageUserMovieRating = [],
   loginDetails = {},
   movieId = 0;
 class MovieDetails extends Component {
@@ -42,7 +40,6 @@ class MovieDetails extends Component {
     isReviewDataFetched: false,
     redirectToNotFound: false,
     reviews: [],
-    fetchingReviewData: false,
     totalReviews: 0,
     pageNumber: 1,
     pageSize: 5,
@@ -50,10 +47,10 @@ class MovieDetails extends Component {
     isMovieDetailPresent: false,
     userRating: -1,
     reviewPopupType: popupType.addReview,
+    needToClosePopup: false,
   };
 
   toggleTab = (destTab) => {
-    this.setState({ fetchingReviewData: true });
     this.props.toggleLoader(true, "15%");
     this.fetchReviews();
     this.setState({ selectedTab: destTab });
@@ -61,9 +58,6 @@ class MovieDetails extends Component {
 
   componentDidMount() {
     movieId = this.props.match.params.name;
-    localStorageUserMovieRating = getLocalStorageItem(
-      constants.userMovieRating
-    );
 
     loginDetails = getLocalStorageItem(constants.loginDetails);
     this.fetchMovieUserRatings(movieId);
@@ -147,7 +141,6 @@ class MovieDetails extends Component {
   handleReviewTabSelection = () => {
     if (this.state.reviews.length === 0) {
       this.props.toggleLoader(true, "15%");
-      this.setState({ fetchingReviewData: true });
       this.fetchReviews();
     } else {
       this.setState({ selectedTab: movieDetailTabs.review });
@@ -210,7 +203,6 @@ class MovieDetails extends Component {
           totalReviews: response.data.data.totalCount,
           openPopupClassName: "",
           selectedTab: movieDetailTabs.review,
-          fetchingReviewData: false,
         },
         () => {
           this.props.toggleLoader(false, 1);
@@ -219,7 +211,13 @@ class MovieDetails extends Component {
     });
   }
 
-  postReview = (e, reviewTitle, reviewDescription) => {
+  postReview = (
+    e,
+    reviewTitle,
+    reviewDescription,
+    reviewId,
+    reviewPopupType
+  ) => {
     e.preventDefault();
     const todayDate = new Date();
     let reviewDate =
@@ -228,20 +226,30 @@ class MovieDetails extends Component {
       todayDate.getDate() +
       ", " +
       todayDate.getFullYear();
-    this.setState({ fetchingReviewData: true });
     this.props.toggleLoader(true, "15%");
     const body = {
-      movieId: this.state.movie.movie.movieId,
       reviewTitle: reviewTitle.trim(),
       reviewDescription: reviewDescription.trim(),
-      userEmail: "", //need to get the login user's email
+      userEmail: this.props.loggedInEmail,
       reviewDate: reviewDate,
     };
-    ServiceProvider.post(apiUrl.review, body).then((response) => {
-      if (response.status === 200) {
-        this.fetchReviews();
-      }
-    });
+
+    if (reviewPopupType === popupType.editReview) {
+      ServiceProvider.put(apiUrl.updateReview, reviewId, body).then(
+        (response) => {
+          if (response.status === 200) {
+            this.fetchReviews();
+            this.setState({ needToClosePopup: true });
+          }
+        }
+      );
+    } else {
+      ServiceProvider.post(apiUrl.postReview, body).then((response) => {
+        if (response.status === 200) {
+          this.fetchReviews();
+        }
+      });
+    }
   };
 
   closeReviewPopup = () => {
@@ -553,6 +561,7 @@ class MovieDetails extends Component {
                               pageNumberClicked={this.pageNumberClicked}
                               changeReviewCount={this.changeReviewCount}
                               reviewPopupType={this.state.reviewPopupType}
+                              needToClosePopup={this.state.needToClosePopup}
                             ></MovieReview>
                           )}
                         {this.state.selectedTab === movieDetailTabs.cast &&
