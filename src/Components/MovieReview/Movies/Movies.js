@@ -111,14 +111,6 @@ class Movies extends Component {
     });
   };
 
-  redirectToDetail = (movieId, movieName) => {
-    this.setState({
-      redirectToDetail: true,
-      movieIdClicked: movieId,
-      movieName,
-    });
-  };
-
   getFilteredMovies = (
     e,
     movieName,
@@ -213,17 +205,6 @@ class Movies extends Component {
   };
 
   render() {
-    if (this.state.redirectToDetail) {
-      return (
-        <Redirect
-          to={{
-            pathname: `/movie-details/${this.state.movieIdClicked}`,
-            state: { movieId: this.state.movieIdClicked },
-          }}
-        />
-      );
-    }
-
     return (
       <React.Fragment>
         <div id="loaderContainer">
@@ -253,15 +234,11 @@ class Movies extends Component {
                     selectList={this.selectList}
                   ></Topbar>
                   {this.state.showList && (
-                    <List
-                      moviesList={this.state.moviesList}
-                      redirectToDetail={this.redirectToDetail}
-                    ></List>
+                    <List moviesList={this.state.moviesList}></List>
                   )}
                   {this.state.showGrid && (
                     <Grid
                       moviesList={this.state.moviesList}
-                      redirectToDetail={this.redirectToDetail}
                       toggleReadMoreOpacity={this.toggleReadMoreOpacity}
                       readMoreOpacity={this.state.readMoreOpacity}
                     ></Grid>

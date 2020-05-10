@@ -29,9 +29,9 @@ class Router extends Component {
           <Route path="/register" component={Register} />
           <Route path="/resetPassword" component={ResetPassword} />
           <Route path="/home" component={Home} />
-          <Route path="/movie-details/:name" component={MovieDetails} />
+          <Route path="/movie-details/:id" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
-          <Route path="/celebrity-details" component={CelebrityDetails} />
+          <Route path="/celebrity-details/:id" component={CelebrityDetails} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="*" to="/login" />
         </Switch>

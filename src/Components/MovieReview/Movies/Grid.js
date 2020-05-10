@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import image from "../../../images/mv1.jpg";
+import { Link } from "react-router-dom";
 
 const Grid = (props) => {
   return (
@@ -18,14 +19,7 @@ const Grid = (props) => {
             style={{ opacity: props.readMoreOpacity }}
             onMouseOver={() => props.toggleReadMoreOpacity(1)}
           >
-            <a
-              onClick={() => {
-                props.redirectToDetail(movie.movieId, movie.movieName);
-              }}
-            >
-              {" "}
-              Read more{" "}
-            </a>
+            <Link to={`/movie-details/${movie.movieId}`}> Read more </Link>
           </div>
 
           <div className="mv-item-infor">

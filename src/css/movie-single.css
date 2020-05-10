@@ -1086,6 +1086,7 @@ img {
 
 .movie-item-style-2-list .mv-item-infor .rate {
   font-size: 12px;
+  margin-top: 10px;
 }
 
 .movie-item-style-2-list .mv-item-infor p {
@@ -1683,4 +1684,8 @@ p.ceb-single {
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
   padding: 50px 0;
+}
+
+.celebrity-name:hover {
+  color: #ffaa3c !important;
 }

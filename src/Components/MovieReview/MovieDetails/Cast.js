@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import image from "../../../images/cast1.jpg";
+import { Link } from "react-router-dom";
 
 const Cast = (props) => {
   return (
@@ -53,7 +54,12 @@ const Cast = (props) => {
                     ((star.celebrityName.match(/\b\w/g) || []).pop() || "")
                   ).toUpperCase()}
                 </h4>
-                <a href="#">{star.celebrityName}</a>
+                <Link
+                  to={`/celebrity-details/${star.id}`}
+                  className="celebrity-name"
+                >
+                  {star.celebrityName}
+                </Link>
               </div>
               <p>... {star.characterName}</p>
             </div>

@@ -1,16 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import image from "../../../images/mv1.jpg";
+import { Link } from "react-router-dom";
 
 const List = (props) => {
   return props.moviesList.map((movie, index) => (
     <div key={index} className="movie-item-style-2-list">
       <img src={image} alt="" />
       <div className="mv-item-infor">
-        <h6
-          className="heading"
-          onClick={() => props.redirectToDetail(movie.movieId, movie.movieName)}
-        >
+        <Link className="heading" to={`/movie-details/${movie.movieId}`}>
           {movie.movieName}
           <span>
             (
@@ -20,7 +18,7 @@ const List = (props) => {
             )}
             )
           </span>
-        </h6>
+        </Link>
         <p className="rate">
           <i
             className="fa fa-star"

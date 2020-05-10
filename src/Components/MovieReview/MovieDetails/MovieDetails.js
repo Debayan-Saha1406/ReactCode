@@ -47,7 +47,7 @@ class MovieDetails extends Component {
   };
 
   componentDidMount() {
-    movieId = this.props.match.params.name;
+    movieId = this.props.match.params.id;
 
     loginDetails = getLocalStorageItem(constants.loginDetails);
     this.fetchMovieUserRatings(movieId);
