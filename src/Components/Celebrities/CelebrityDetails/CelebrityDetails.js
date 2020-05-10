@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState } from "react";
 import Overview from "../CelebrityDetails/Overview";
 import Header from "./../../MovieReview/Common/Header";
 import "../../../css/movie-single.css";
 import image from "../../../images/movie-single.jpg";
-import { page } from "../../../Shared/Constants";
+import { page, celebrityTabs } from "../../../Shared/Constants";
+import Biography from "./Biography";
 
 const CelebrityDetails = (props) => {
+  const [selectedTab, setSelectedTab] = useState(celebrityTabs.overview);
   return (
     <div>
       <Header page={page.details}></Header>
@@ -33,22 +35,119 @@ const CelebrityDetails = (props) => {
                 <div class="movie-tabs">
                   <div class="tabs">
                     <ul class="tab-links tabs-mv">
-                      <li class="active">
-                        <a href="#overviewceb">Overview</a>
-                      </li>
-                      <li>
-                        <a href="#biography"> biography</a>
-                      </li>
-                      <li>
-                        <a href="#filmography">filmography</a>
-                      </li>
+                      {selectedTab === celebrityTabs.overview ? (
+                        <li class="active">
+                          <a
+                            onClick={() =>
+                              setSelectedTab(celebrityTabs.overview)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            Overview
+                          </a>
+                        </li>
+                      ) : (
+                        <li>
+                          <a
+                            onClick={() =>
+                              setSelectedTab(celebrityTabs.overview)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            Overview
+                          </a>
+                        </li>
+                      )}
+                      {selectedTab === celebrityTabs.biography ? (
+                        <li className="active">
+                          <a
+                            onClick={() =>
+                              setSelectedTab(celebrityTabs.biography)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            biography
+                          </a>
+                        </li>
+                      ) : (
+                        <li>
+                          <a
+                            onClick={() =>
+                              setSelectedTab(celebrityTabs.biography)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            biography
+                          </a>
+                        </li>
+                      )}
+                      {selectedTab === celebrityTabs.filmography ? (
+                        <li className="active">
+                          <a
+                            onClick={() =>
+                              setSelectedTab(celebrityTabs.filmography)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            filmography
+                          </a>
+                        </li>
+                      ) : (
+                        <li>
+                          <a
+                            onClick={() =>
+                              setSelectedTab(celebrityTabs.filmography)
+                            }
+                            style={{ cursor: "pointer" }}
+                          >
+                            filmography
+                          </a>
+                        </li>
+                      )}
                     </ul>
                     <div class="tab-content">
-                      <div id="overviewceb" class="tab active">
-                        <div class="row">
-                          <Overview></Overview>
+                      {selectedTab === celebrityTabs.overview ? (
+                        <div
+                          id="overviewceb"
+                          class="tab active"
+                          style={{ display: "block" }}
+                        >
+                          <div class="row">
+                            <Overview></Overview>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div
+                          id="overviewceb"
+                          class="tab"
+                          style={{ display: "none" }}
+                        >
+                          <div class="row">
+                            <Overview></Overview>
+                          </div>
+                        </div>
+                      )}
+                      {selectedTab === celebrityTabs.biography ? (
+                        <div
+                          id="biography"
+                          class="tab active"
+                          style={{ display: "block" }}
+                        >
+                          <div class="row">
+                            <Biography></Biography>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          id="biography"
+                          class="tab"
+                          style={{ display: "none" }}
+                        >
+                          <div class="row">
+                            <Biography></Biography>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -1689,3 +1689,61 @@ p.ceb-single {
 .celebrity-name:hover {
   color: #ffaa3c !important;
 }
+
+.movie-single .movie-single-ct .tab .rv-hd {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tabs .tab-content {
+  padding-left: 15px;
+}
+
+.movie-single .movie-single-ct .tab .biography {
+  width: 100%;
+  padding-left: 20px;
+  margin-top: 30px;
+}
+
+@media (max-width: 767px) {
+  .movie-single .movie-img,
+  .movie-single .mv-ceb {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .tabs ul.tabs-mv {
+    padding: 10px 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .tabs ul.tabs-mv li {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .tabs ul.tabs-mv li {
+    margin-right: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .tabs ul.tabs-mv li a {
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .tabs ul.tab-links,
+  .tabs ul.tab-links-2,
+  .tabs ul.tab-links-3 {
+    display: inherit !important;
+  }
+}

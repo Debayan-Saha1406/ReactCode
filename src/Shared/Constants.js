@@ -126,3 +126,9 @@ export const popupType = {
 export const page = {
   details: "details",
 };
+
+export const celebrityTabs = {
+  overview: "overview",
+  biography: "biography",
+  filmography: "filmography",
+};
