@@ -12,9 +12,9 @@ import {
   apiUrl,
   ratingStars,
   movieDetailTabs,
-  monthNames,
   popupType,
   constants,
+  page,
 } from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import {
@@ -199,35 +199,37 @@ class MovieDetails extends Component {
   renderMovieDetails(isMovieDetailPresent) {
     return (
       <div
-        className="background"
         style={{
           opacity: this.props.screenOpacity,
         }}
       >
-        <Header></Header>
-        <div className="hero mv-single-hero">
-          {this.state.showVideo && (
-            <div className="overlay openform">
-              <div className="login-wrapper" id="login-content">
-                <div
-                  className="close-cross"
-                  onClick={() => this.showTrailer(false)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <i class="fa fa-times-circle"></i>
-                </div>
-                <ReactPlayer
-                  url={
-                    isMovieDetailPresent && this.state.movie.movie.youtubeUrl
-                  }
-                  controls={true}
-                  style={{ backgroundColor: "black" }}
-                />
-              </div>
+        <Header page={page.details}></Header>
+        <div class="hero hero3">
+          <div class="celeb-container">
+            <div class="row">
+              <div class="col-md-12"></div>
             </div>
-          )}
+          </div>
         </div>
-        <div className="page-single movie-single movie_single">
+        {this.state.showVideo && (
+          <div className="overlay openform">
+            <div className="login-wrapper" id="login-content">
+              <div
+                className="close-cross"
+                onClick={() => this.showTrailer(false)}
+                style={{ cursor: "pointer" }}
+              >
+                <i class="fa fa-times-circle"></i>
+              </div>
+              <ReactPlayer
+                url={isMovieDetailPresent && this.state.movie.movie.youtubeUrl}
+                controls={true}
+                style={{ backgroundColor: "black" }}
+              />
+            </div>
+          </div>
+        )}
+        <div className="celebrity-single movie-single movie_single movie-detail-single">
           <div className="container">
             <div className="row ipad-width2">
               <div className="col-md-4 col-sm-12 col-xs-12">

@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-    // "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-    "https://localhost:44357/api",
+    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+  //"https://localhost:44357/api",
   login: "/adminlogin",
   update: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -121,4 +121,8 @@ export const popupType = {
   register: "Register",
   addReview: "AddReview",
   editReview: "EditReview",
+};
+
+export const page = {
+  details: "details",
 };

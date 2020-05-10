@@ -180,7 +180,7 @@ ul {
 }
 
 .tabs ul.tabs-mv li a {
-  font-size: 18px;
+  font-size: 18px !important;
   padding-bottom: 15px;
   border-bottom: 3px solid transparent;
 }
@@ -1370,6 +1370,7 @@ img {
 
 .side-heading {
   margin-bottom: 10px !important;
+  color: white;
 }
 
 .release-date {
@@ -1578,4 +1579,108 @@ li.non-active-page:hover {
 
 div#overlay {
   background-color: rgba(0, 0, 0, 0.25);
+}
+
+.hero3 {
+  background: url(../images/movie-single.jpg) no-repeat;
+  height: 538px;
+}
+
+.hero {
+  background-position: center;
+  text-align: center;
+  background-size: cover;
+  position: relative;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 445px;
+}
+
+.cebleb-single {
+  margin-top: -240px;
+}
+
+.movie-detail-single {
+  margin-top: -327px;
+}
+
+.celebrity-single {
+  padding: 75px 0;
+  background-color: #020d18;
+}
+
+.hero:before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.celeb-container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 992px) {
+  .col-md-12 {
+    width: 100%;
+  }
+}
+
+.movie-single .movie-img,
+.movie-single .mv-ceb {
+  margin-right: 30px;
+  margin-bottom: 60px;
+}
+
+.movie-single .movie-img img,
+.movie-single .mv-ceb img {
+  width: 100%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.bd-hd {
+  font-family: "Dosis", sans-serif;
+  font-size: 36px;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: none;
+  margin-bottom: 25px;
+}
+
+p.ceb-single {
+  font-size: 18px;
+}
+
+@media (min-width: 992px) {
+  .celeb-container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 768px) {
+  .celeb-container {
+    width: 750px;
+  }
+}
+
+.site-header-celebrity {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  background-color: transparent;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  padding: 50px 0;
 }

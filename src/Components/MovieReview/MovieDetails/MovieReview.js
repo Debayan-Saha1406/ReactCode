@@ -149,16 +149,18 @@ class MovieReview extends Component {
     };
 
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState(
-        {
-          reviews: response.data.data.reviews,
-          totalReviews: response.data.data.totalCount,
-          openPopupClassName: "",
-        },
-        () => {
-          this.props.toggleLoader(false, 1);
-        }
-      );
+      if (response.status === 200) {
+        this.setState(
+          {
+            reviews: response.data.data.reviews,
+            totalReviews: response.data.data.totalCount,
+            openPopupClassName: "",
+          },
+          () => {
+            this.props.toggleLoader(false, 1);
+          }
+        );
+      }
     });
   }
 

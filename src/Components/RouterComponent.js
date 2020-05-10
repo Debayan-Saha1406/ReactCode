@@ -11,6 +11,7 @@ import Movies from "./MovieReview/Movies/Movies";
 import MovieDetails from "./MovieReview/MovieDetails/MovieDetails";
 import NotFound from "./MovieReview/Common/NotFound";
 import Home from "./MovieReview/MovieHome/Home";
+import CelebrityDetails from "./Celebrities/CelebrityDetails/CelebrityDetails";
 
 class Router extends Component {
   render() {
@@ -30,6 +31,7 @@ class Router extends Component {
           <Route path="/home" component={Home} />
           <Route path="/movie-details/:name" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
+          <Route path="/celebrity-details" component={CelebrityDetails} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="*" to="/login" />
         </Switch>
