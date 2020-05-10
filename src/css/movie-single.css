@@ -1765,3 +1765,13 @@ p.ceb-single {
   margin-right: 15px;
   max-width: 10%;
 }
+
+.blue-link {
+  cursor: pointer;
+  color: #4280bf !important;
+}
+
+a.blue-link:hover {
+  cursor: pointer;
+  color: #ffaa3c !important;
+}

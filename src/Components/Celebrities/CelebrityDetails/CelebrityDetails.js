@@ -10,34 +10,42 @@ import Filmography from "./Filmography";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(celebrityTabs.overview);
+
+  const redirectToTab = (tabType) => {
+    if (tabType === celebrityTabs.biography) {
+      setSelectedTab(celebrityTabs.biography);
+    } else if (tabType === celebrityTabs.filmography) {
+      setSelectedTab(celebrityTabs.filmography);
+    }
+  };
   return (
     <div>
       <Header page={page.details}></Header>
-      <div class="hero hero3">
-        <div class="celeb-container">
-          <div class="row">
-            <div class="col-md-12"></div>
+      <div className="hero hero3">
+        <div className="celeb-container">
+          <div className="row">
+            <div className="col-md-12"></div>
           </div>
         </div>
       </div>
 
-      <div class="celebrity-single movie-single cebleb-single">
-        <div class="container">
-          <div class="row ipad-width">
-            <div class="col-md-4 col-sm-12 col-xs-12">
-              <div class="mv-ceb">
+      <div className="celebrity-single movie-single cebleb-single">
+        <div className="container">
+          <div className="row ipad-width">
+            <div className="col-md-4 col-sm-12 col-xs-12">
+              <div className="mv-ceb">
                 <img src={image} alt="" />
               </div>
             </div>
-            <div class="col-md-8 col-sm-12 col-xs-12">
-              <div class="movie-single-ct">
-                <h1 class="bd-hd">Hugh Jackman</h1>
-                <p class="ceb-single">Actor | Producer</p>
-                <div class="movie-tabs">
-                  <div class="tabs">
-                    <ul class="tab-links tabs-mv">
+            <div className="col-md-8 col-sm-12 col-xs-12">
+              <div className="movie-single-ct">
+                <h1 className="bd-hd">Hugh Jackman</h1>
+                <p className="ceb-single">Actor | Producer</p>
+                <div className="movie-tabs">
+                  <div className="tabs">
+                    <ul className="tab-links tabs-mv">
                       {selectedTab === celebrityTabs.overview ? (
-                        <li class="active">
+                        <li className="active">
                           <a
                             onClick={() =>
                               setSelectedTab(celebrityTabs.overview)
@@ -106,24 +114,27 @@ const CelebrityDetails = (props) => {
                         </li>
                       )}
                     </ul>
-                    <div class="tab-content">
+                    <div className="tab-content">
                       {selectedTab === celebrityTabs.overview ? (
                         <div
                           id="overviewceb"
-                          class="tab active"
+                          className="tab active"
                           style={{ display: "block" }}
                         >
-                          <div class="row">
-                            <Overview></Overview>
+                          <div className="row" style={{ marginTop: "30px" }}>
+                            <Overview
+                              setSelectedTab={setSelectedTab}
+                              redirectToTab={redirectToTab}
+                            ></Overview>
                           </div>
                         </div>
                       ) : (
                         <div
                           id="overviewceb"
-                          class="tab"
+                          className="tab"
                           style={{ display: "none" }}
                         >
-                          <div class="row">
+                          <div className="row">
                             <Overview></Overview>
                           </div>
                         </div>
@@ -131,20 +142,20 @@ const CelebrityDetails = (props) => {
                       {selectedTab === celebrityTabs.biography ? (
                         <div
                           id="biography"
-                          class="tab active"
+                          className="tab active"
                           style={{ display: "block" }}
                         >
-                          <div class="row">
+                          <div className="row">
                             <Biography></Biography>
                           </div>
                         </div>
                       ) : (
                         <div
                           id="biography"
-                          class="tab"
+                          className="tab"
                           style={{ display: "none" }}
                         >
-                          <div class="row">
+                          <div className="row">
                             <Biography></Biography>
                           </div>
                         </div>
@@ -153,20 +164,20 @@ const CelebrityDetails = (props) => {
                     {selectedTab === celebrityTabs.filmography ? (
                       <div
                         id="filmography"
-                        class="tab active"
+                        className="tab active"
                         style={{ display: "block" }}
                       >
-                        <div class="row">
+                        <div className="row">
                           <Filmography></Filmography>
                         </div>{" "}
                       </div>
                     ) : (
                       <div
                         id="filmography"
-                        class="tab"
+                        className="tab"
                         style={{ display: "none" }}
                       >
-                        <div class="row">
+                        <div className="row">
                           <Filmography></Filmography>
                         </div>
                       </div>
