@@ -1,11 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import { movieDetailTabs, popupType } from "../../../Shared/Constants";
+import {
+  movieDetailTabs,
+  popupType,
+  apiUrl,
+  monthNames,
+} from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 import { connect } from "react-redux";
 import ReviewPopup from "./../Common/ReviewPopup";
+import ServiceProvider from "../../../Provider/ServiceProvider";
 
 class MovieReview extends Component {
   state = {
@@ -13,9 +19,12 @@ class MovieReview extends Component {
     reviewPopupType: popupType.addReview,
     reviewDescription: "",
     reviewTitle: "",
-    isPopupClosed: false,
     reviewId: 0,
     needToClosePopup: false,
+    reviews: [],
+    pageNumber: 1,
+    pageSize: 5,
+    totalReviews: 0,
   };
 
   openReviewPopup = (
@@ -24,16 +33,22 @@ class MovieReview extends Component {
     reviewDescription,
     reviewId
   ) => {
-    debugger;
     if (this.props.isUserLoggedIn) {
-      this.setState({
-        openPopupClassName: "openform",
-        reviewPopupType: reviewPopupType,
-        reviewTitle: reviewTitle,
-        reviewDescription: reviewDescription,
-        isPopupClosed: false,
-        reviewId: reviewId,
-      });
+      if (reviewPopupType === popupType.editReview) {
+        this.setState({
+          openPopupClassName: "openform",
+          reviewPopupType: reviewPopupType,
+          reviewTitle: reviewTitle,
+          reviewDescription: reviewDescription,
+          reviewId: reviewId,
+        });
+      } else {
+        this.setState({
+          openPopupClassName: "openform",
+          reviewPopupType: reviewPopupType,
+          reviewId: reviewId,
+        });
+      }
     } else {
       this.props.togglePopup("openform", popupType.login);
     }
@@ -44,17 +59,112 @@ class MovieReview extends Component {
       openPopupClassName: "",
       reviewTitle: "",
       reviewDescription: "",
-      isPopupClosed: true,
     });
   };
 
-  componentDidUpdate() {
-    if (this.props.needToClosePopup && !this.state.needToClosePopup) {
-      this.setState({ needToClosePopup: true }, () => {
-        this.closeReviewPopup();
+  postReview = (
+    e,
+    reviewTitle,
+    reviewDescription,
+    reviewId,
+    reviewPopupType
+  ) => {
+    e.preventDefault();
+    const todayDate = new Date();
+    let reviewDate =
+      monthNames[todayDate.getMonth()] +
+      " " +
+      todayDate.getDate() +
+      ", " +
+      todayDate.getFullYear();
+    this.props.toggleLoader(true, "15%");
+    const body = {
+      reviewTitle: reviewTitle.trim(),
+      reviewDescription: reviewDescription.trim(),
+      userEmail: this.props.loggedInEmail,
+      reviewDate: reviewDate,
+    };
+
+    if (reviewPopupType === popupType.editReview) {
+      ServiceProvider.put(apiUrl.updateReview, reviewId, body).then(
+        (response) => {
+          if (response.status === 200) {
+            this.fetchReviews();
+            this.closeReviewPopup();
+          }
+        }
+      );
+    } else {
+      body.movieId = this.props.movieId;
+      ServiceProvider.post(apiUrl.postReview, body).then((response) => {
+        if (response.status === 200) {
+          this.fetchReviews();
+          this.closeReviewPopup();
+        }
       });
     }
+  };
+
+  pageNumberClicked = (page) => {
+    const body = {
+      pageNumber: page,
+      pageSize: this.state.pageSize,
+      searchQuery: this.props.movieId,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        reviews: response.data.data.reviews,
+        totalReviews: response.data.data.totalCount,
+        pageNumber: page,
+      });
+    });
+  };
+
+  changeReviewCount = (e) => {
+    this.setState({ pageSize: e.target.value });
+    const body = {
+      pageNumber: 1,
+      pageSize: e.target.value,
+      searchQuery: this.props.movieId,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState({
+        reviews: response.data.data.reviews,
+        totalReviews: response.data.data.totalCount,
+        pageNumber: 1,
+      });
+    });
+  };
+
+  componentDidMount() {
+    this.props.toggleLoader(true, "15%");
+    this.fetchReviews();
   }
+
+  fetchReviews() {
+    let body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchQuery: this.props.movieId,
+    };
+
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState(
+        {
+          reviews: response.data.data.reviews,
+          totalReviews: response.data.data.totalCount,
+          openPopupClassName: "",
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+        }
+      );
+    });
+  }
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
   render() {
     return (
@@ -71,12 +181,12 @@ class MovieReview extends Component {
           <ReviewPopup
             openPopupClassName={this.state.openPopupClassName}
             closeReviewPopup={this.closeReviewPopup}
-            postReview={this.props.postReview}
+            postReview={this.postReview}
             reviewPopupType={this.state.reviewPopupType}
             reviewTitle={this.state.reviewTitle}
             reviewDescription={this.state.reviewDescription}
-            isPopupClosed={this.state.isPopupClosed}
             reviewId={this.state.reviewId}
+            handleChange={this.handleChange}
           ></ReviewPopup>
         }
         <div className="row">
@@ -98,7 +208,7 @@ class MovieReview extends Component {
           </div>
           <div className="topbar-filter">
             <p>
-              Found <span>{this.props.totalReviews}</span> in total
+              Found <span>{this.state.totalReviews}</span> in total
             </p>
             <label className="filterBy">Filter by:</label>
             <select className="popularity">
@@ -112,8 +222,8 @@ class MovieReview extends Component {
           </div>
           <div className="mv-user-review-item">
             <ul>
-              {this.props.reviews &&
-                this.props.reviews.map((review, index) => (
+              {this.state.reviews &&
+                this.state.reviews.map((review, index) => (
                   <li key={index}>
                     <h3 style={{ color: "yellow" }}>{review.reviewTitle}</h3>
                     <p className="time">
@@ -146,13 +256,13 @@ class MovieReview extends Component {
                 ))}
             </ul>
           </div>
-          {this.props.totalReviews > 0 && (
+          {this.state.totalReviews > 0 && (
             <Pagination
-              pageSize={this.props.pageSize}
-              totalCount={this.props.totalReviews}
-              currentPage={this.props.pageNumber}
-              changeCount={this.props.changeReviewCount}
-              pageNumberClicked={this.props.pageNumberClicked}
+              pageSize={this.state.pageSize}
+              totalCount={this.state.totalReviews}
+              currentPage={this.state.pageNumber}
+              changeCount={this.changeReviewCount}
+              pageNumberClicked={this.pageNumberClicked}
               description="Reviews"
             ></Pagination>
           )}

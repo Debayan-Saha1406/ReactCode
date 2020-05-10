@@ -37,22 +37,12 @@ class MovieDetails extends Component {
     indexClicked: -1,
     showVideo: false,
     isRatingGiven: false,
-    isReviewDataFetched: false,
     redirectToNotFound: false,
-    reviews: [],
-    totalReviews: 0,
-    pageNumber: 1,
-    pageSize: 5,
-    openPopupClassName: "",
     isMovieDetailPresent: false,
     userRating: -1,
-    reviewPopupType: popupType.addReview,
-    needToClosePopup: false,
   };
 
   toggleTab = (destTab) => {
-    this.props.toggleLoader(true, "15%");
-    this.fetchReviews();
     this.setState({ selectedTab: destTab });
   };
 
@@ -138,15 +128,6 @@ class MovieDetails extends Component {
     }
   };
 
-  handleReviewTabSelection = () => {
-    if (this.state.reviews.length === 0) {
-      this.props.toggleLoader(true, "15%");
-      this.fetchReviews();
-    } else {
-      this.setState({ selectedTab: movieDetailTabs.review });
-    }
-  };
-
   fetchMovieUserRatings(movieId) {
     loginDetails = getLocalStorageItem(constants.loginDetails);
     if (loginDetails) {
@@ -189,114 +170,6 @@ class MovieDetails extends Component {
       ).toFixed(1);
     }
   }
-
-  fetchReviews() {
-    let body = {
-      pageNumber: this.state.pageNumber,
-      pageSize: this.state.pageSize,
-      searchQuery: this.state.movie.movie.movieId,
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState(
-        {
-          reviews: response.data.data.reviews,
-          totalReviews: response.data.data.totalCount,
-          openPopupClassName: "",
-          selectedTab: movieDetailTabs.review,
-        },
-        () => {
-          this.props.toggleLoader(false, 1);
-        }
-      );
-    });
-  }
-
-  postReview = (
-    e,
-    reviewTitle,
-    reviewDescription,
-    reviewId,
-    reviewPopupType
-  ) => {
-    e.preventDefault();
-    const todayDate = new Date();
-    let reviewDate =
-      monthNames[todayDate.getMonth()] +
-      " " +
-      todayDate.getDate() +
-      ", " +
-      todayDate.getFullYear();
-    this.props.toggleLoader(true, "15%");
-    const body = {
-      reviewTitle: reviewTitle.trim(),
-      reviewDescription: reviewDescription.trim(),
-      userEmail: this.props.loggedInEmail,
-      reviewDate: reviewDate,
-    };
-
-    if (reviewPopupType === popupType.editReview) {
-      ServiceProvider.put(apiUrl.updateReview, reviewId, body).then(
-        (response) => {
-          if (response.status === 200) {
-            this.fetchReviews();
-            this.setState({ needToClosePopup: true });
-          }
-        }
-      );
-    } else {
-      ServiceProvider.post(apiUrl.postReview, body).then((response) => {
-        if (response.status === 200) {
-          this.fetchReviews();
-        }
-      });
-    }
-  };
-
-  closeReviewPopup = () => {
-    this.setState({ openPopupClassName: "" });
-  };
-
-  openReviewPopup = (reviewPopupType) => {
-    if (this.props.isUserLoggedIn) {
-      this.setState({
-        openPopupClassName: "openform",
-        reviewPopupType: reviewPopupType,
-      });
-    } else {
-      this.props.togglePopup("openform", popupType.login);
-    }
-  };
-
-  pageNumberClicked = (page) => {
-    const body = {
-      pageNumber: page,
-      pageSize: this.state.pageSize,
-      searchQuery: this.state.movie.movie.movieId,
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-        pageNumber: page,
-      });
-    });
-  };
-
-  changeReviewCount = (e) => {
-    this.setState({ pageSize: e.target.value });
-    const body = {
-      pageNumber: 1,
-      pageSize: e.target.value,
-      searchQuery: this.state.movie.movie.movieId,
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-        pageNumber: 1,
-      });
-    });
-  };
 
   componentDidUpdate() {
     if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
@@ -484,7 +357,11 @@ class MovieDetails extends Component {
                         {this.state.selectedTab === movieDetailTabs.review ? (
                           <li className="active">
                             <a
-                              onClick={this.handleReviewTabSelection}
+                              onClick={() => {
+                                this.setState({
+                                  selectedTab: movieDetailTabs.review,
+                                });
+                              }}
                               style={{ cursor: "pointer" }}
                             >
                               {" "}
@@ -494,7 +371,11 @@ class MovieDetails extends Component {
                         ) : (
                           <li>
                             <a
-                              onClick={this.handleReviewTabSelection}
+                              onClick={() => {
+                                this.setState({
+                                  selectedTab: movieDetailTabs.review,
+                                });
+                              }}
                               style={{ cursor: "pointer" }}
                             >
                               {" "}
@@ -549,19 +430,8 @@ class MovieDetails extends Component {
                           isMovieDetailPresent && (
                             <MovieReview
                               movieName={this.state.movie.movie.movieName}
+                              movieId={this.state.movie.movie.movieId}
                               selectedTab={this.state.selectedTab}
-                              reviews={this.state.reviews}
-                              totalReviews={this.state.totalReviews}
-                              postReview={this.postReview}
-                              pageSize={this.state.pageSize}
-                              pageNumber={this.state.pageNumber}
-                              openPopupClassName={this.state.openPopupClassName}
-                              closeReviewPopup={this.closeReviewPopup}
-                              openReviewPopup={this.openReviewPopup}
-                              pageNumberClicked={this.pageNumberClicked}
-                              changeReviewCount={this.changeReviewCount}
-                              reviewPopupType={this.state.reviewPopupType}
-                              needToClosePopup={this.state.needToClosePopup}
                             ></MovieReview>
                           )}
                         {this.state.selectedTab === movieDetailTabs.cast &&

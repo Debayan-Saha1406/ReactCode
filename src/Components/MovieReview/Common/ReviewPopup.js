@@ -1,28 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import "../../../css/movie-single.css";
-import { useState } from "react";
 import { popupType } from "./../../../Shared/Constants";
 
 const ReviewPopup = (props) => {
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [isEditReviewContentSet, setIsEditReviewContent] = useState(false);
-  const [reviewDescription, setReviewDescription] = useState("");
-  if (
-    props.reviewPopupType === popupType.editReview &&
-    !isEditReviewContentSet &&
-    props.isPopupClosed !== true
-  ) {
-    setReviewTitle(props.reviewTitle);
-    setReviewDescription(props.reviewDescription);
-    setIsEditReviewContent(true);
-  }
-
-  const closeReviewPopup = () => {
-    setIsEditReviewContent(false);
-    props.closeReviewPopup();
-  };
-
   return (
     <div className={`overlay ${props.openPopupClassName}`}>
       <div className="login-wrapper" id="login-content">
@@ -30,7 +11,7 @@ const ReviewPopup = (props) => {
           <a
             className="close"
             data-ol-has-click-handler=""
-            onClick={closeReviewPopup}
+            onClick={props.closeReviewPopup}
             style={{ cursor: "pointer" }}
           >
             x
@@ -47,15 +28,15 @@ const ReviewPopup = (props) => {
             <div className="row">
               <input
                 type="text"
-                name="username"
+                name="reviewTitle"
                 id="username"
                 placeholder="Review Title"
                 required="required"
                 className="review-title"
                 onChange={(e) => {
-                  setReviewTitle(e.target.value);
+                  props.handleChange(e);
                 }}
-                value={reviewTitle}
+                value={props.reviewTitle}
               />
             </div>
             <br></br>
@@ -65,27 +46,28 @@ const ReviewPopup = (props) => {
             <div className="row">
               <textarea
                 type="text"
+                name="reviewDescription"
                 id="review-description"
                 required="required"
                 placeholder="Review Description"
                 rows="4"
                 cols="50"
                 onChange={(e) => {
-                  setReviewDescription(e.target.value);
+                  props.handleChange(e);
                 }}
-                value={reviewDescription}
+                value={props.reviewDescription}
               />
             </div>
             <br></br>
             <div className="row">
-              {reviewTitle !== "" && reviewDescription !== "" ? (
+              {props.reviewTitle !== "" && props.reviewDescription !== "" ? (
                 <button
                   type="submit"
                   onClick={(e) =>
                     props.postReview(
                       e,
-                      reviewTitle,
-                      reviewDescription,
+                      props.reviewTitle,
+                      props.reviewDescription,
                       props.reviewId,
                       props.reviewPopupType
                     )
