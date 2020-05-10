@@ -1709,6 +1709,12 @@ p.ceb-single {
   margin-top: 30px;
 }
 
+.movie-single .movie-single-ct .tab .filmography {
+  width: 100%;
+  padding-left: 20px;
+  margin-top: 30px;
+}
+
 @media (max-width: 767px) {
   .movie-single .movie-img,
   .movie-single .mv-ceb {
@@ -1746,4 +1752,16 @@ p.ceb-single {
   .tabs ul.tab-links-3 {
     display: inherit !important;
   }
+}
+
+.movie-single .movie-single-ct .mvcast-item .cast-it .cebleb-film {
+  width: 90%;
+}
+
+.movie-single .movie-single-ct .mvcast-item .cast-it img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-right: 15px;
+  max-width: 10%;
 }

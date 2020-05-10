@@ -6,6 +6,7 @@ import "../../../css/movie-single.css";
 import image from "../../../images/movie-single.jpg";
 import { page, celebrityTabs } from "../../../Shared/Constants";
 import Biography from "./Biography";
+import Filmography from "./Filmography";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(celebrityTabs.overview);
@@ -149,6 +150,27 @@ const CelebrityDetails = (props) => {
                         </div>
                       )}
                     </div>
+                    {selectedTab === celebrityTabs.filmography ? (
+                      <div
+                        id="filmography"
+                        class="tab active"
+                        style={{ display: "block" }}
+                      >
+                        <div class="row">
+                          <Filmography></Filmography>
+                        </div>{" "}
+                      </div>
+                    ) : (
+                      <div
+                        id="filmography"
+                        class="tab"
+                        style={{ display: "none" }}
+                      >
+                        <div class="row">
+                          <Filmography></Filmography>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

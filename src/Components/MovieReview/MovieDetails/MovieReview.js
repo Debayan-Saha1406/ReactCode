@@ -12,6 +12,7 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import ReviewPopup from "./../Common/ReviewPopup";
 import ServiceProvider from "../../../Provider/ServiceProvider";
+import DetailTopBar from "../Common/DetailTopBar";
 
 class MovieReview extends Component {
   state = {
@@ -208,20 +209,7 @@ class MovieReview extends Component {
               Write Review
             </a>
           </div>
-          <div className="topbar-filter">
-            <p>
-              Found <span>{this.state.totalReviews}</span> in total
-            </p>
-            <label className="filterBy">Filter by:</label>
-            <select className="popularity">
-              <option value="popularity">Popularity Descending</option>
-              <option value="popularity">Popularity Ascending</option>
-              <option value="rating">Rating Descending</option>
-              <option value="rating">Rating Ascending</option>
-              <option value="date">Release date Descending</option>
-              <option value="date">Release date Ascending</option>
-            </select>
-          </div>
+          <DetailTopBar totalCount={this.state.totalReviews}></DetailTopBar>
           <div className="mv-user-review-item">
             <ul>
               {this.state.reviews &&
