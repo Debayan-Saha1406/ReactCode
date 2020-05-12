@@ -11,6 +11,7 @@ import ServiceProvider from "../../../Provider/ServiceProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
+import "../../../css/movie-single.css";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(celebrityTabs.overview);
@@ -219,9 +220,14 @@ const CelebrityDetails = (props) => {
                           className="tab active"
                           style={{ display: "block" }}
                         >
-                          <div className="row">
-                            <Filmography></Filmography>
-                          </div>{" "}
+                          {isCelebrityDetailFetched && (
+                            <div className="row">
+                              <Filmography
+                                celebrityName={celebrity.celebrityName}
+                                celebrityId={celebrity.id}
+                              ></Filmography>
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div

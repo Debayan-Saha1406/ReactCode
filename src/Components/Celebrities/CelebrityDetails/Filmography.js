@@ -1,98 +1,94 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DetailTopBar from "../../MovieReview/Common/DetailTopBar";
 import image from "../../../images/movie-single.jpg";
+import Pagination from "./../../MovieReview/Common/Pagination";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import ServiceProvider from "../../../Provider/ServiceProvider";
+import { apiUrl, sortDirection, sortColumns } from "../../../Shared/Constants";
+import { Link } from "react-router-dom";
+import "../../../css/movie-single.css";
 
-const Filmography = () => {
+const initialState = {
+  pageNumber: 1,
+  pageSize: 5,
+  sortByColumn: sortColumns.movieName,
+  sortByDirection: sortDirection.asc,
+};
+
+const Filmography = (props) => {
+  const [movies, setMovies] = useState([]);
+  const [totalMovies, setTotalMovies] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(toggleLoader(true, "15%"));
+    const body = {
+      pageNumber: initialState.pageNumber,
+      pageSize: pageSize,
+      sortColumn: initialState.sortByColumn,
+      sortDirection: initialState.sortByDirection,
+      celebrityId: props.celebrityId,
+    };
+    ServiceProvider.post(apiUrl.celebrityMovies, body).then((response) => {
+      if (response.status === 200) {
+        setMovies(response.data.data.details);
+        setTotalMovies(response.data.data.totalCount);
+        dispatch(toggleLoader(false, 1));
+      }
+    });
+  }, [pageSize]);
+
+  const changeMovieCount = (e) => {
+    setPageSize(e.target.value);
+  };
+
+  const pageNumberClicked = () => {};
+
   return (
     <div className="filmography">
       <div>
         <h3>Filmography of</h3>
-        <h2>Hugh Jackman</h2>
+        <h2>{props.celebrityName}</h2>
       </div>
 
-      <DetailTopBar totalCount={10}></DetailTopBar>
+      <DetailTopBar totalCount={totalMovies}></DetailTopBar>
       <div className="mvcast-item">
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src={image} alt="" />
-            <div>
-              <a href="#">X-Men: Apocalypse </a>
-              <p className="time">Logan</p>
+        {movies.map((movie) => (
+          <div className="cast-it">
+            <div className="cast-left cebleb-film">
+              <img src={image} alt="" />
+              <div>
+                <Link
+                  to={`/movie-details/${movie.movieId}`}
+                  className="blue-link"
+                  style={{ cursor: "pointer" }}
+                >
+                  {movie.movieName}{" "}
+                </Link>
+                <p className="time">{movie.characterName}</p>
+              </div>
             </div>
+            <p>
+              ...{" "}
+              {movie.releaseDate.substring(
+                movie.releaseDate.indexOf(",") + 2,
+                movie.releaseDate.length
+              )}
+            </p>
           </div>
-          <p>... 2016</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film2.jpg" alt="" />
-            <div>
-              <a href="#">Eddie the Eagle </a>
-              <p className="time">Bronson Peary</p>
-            </div>
-          </div>
-          <p>... 2015</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film3.jpg" alt="" />
-            <div>
-              <a href="#">Me and Earl and the Dying Girl </a>
-              <p className="time">Hugh Jackman</p>
-            </div>
-          </div>
-          <p>... 2015</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film4.jpg" alt="" />
-            <div>
-              <a href="#">Night at the Museum 3 </a>
-              <p className="time">Blackbeard</p>
-            </div>
-          </div>
-          <p>... 2014</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film5.jpg" alt="" />
-            <div>
-              <a href="#">X-Men: Days of Future Past </a>
-              <p className="time">Wolverine</p>
-            </div>
-          </div>
-          <p>... 2012</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film6.jpg" alt="" />
-            <div>
-              <a href="#">The Wolverine </a>
-              <p className="time">Logan</p>
-            </div>
-          </div>
-          <p>... 2011</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film7.jpg" alt="" />
-            <div>
-              <a href="#">Rise of the Guardians </a>
-              <p className="time">Bunny</p>
-            </div>
-          </div>
-          <p>... 2011</p>
-        </div>
-        <div className="cast-it">
-          <div className="cast-left cebleb-film">
-            <img src="images/uploads/film8.jpg" alt="" />
-            <div>
-              <a href="#">The Prestige </a>
-              <p className="time">Robert Angier</p>
-            </div>
-          </div>
-          <p>... 2010</p>
-        </div>
+        ))}
+        <Pagination
+          pageSize={pageSize}
+          totalCount={totalMovies}
+          currentPage={initialState.pageNumber}
+          changeCount={changeMovieCount}
+          pageNumberClicked={pageNumberClicked}
+          description="Movies"
+        ></Pagination>
       </div>
     </div>
   );

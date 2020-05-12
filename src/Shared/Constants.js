@@ -20,6 +20,7 @@ export const apiUrl = {
   movieUserRatings: `/movieUserRatings/`,
   updateReview: "/review/",
   celebrity: "/celebrity/",
+  celebrityMovies: "/celebrityMovies",
 };
 
 export const constants = {
