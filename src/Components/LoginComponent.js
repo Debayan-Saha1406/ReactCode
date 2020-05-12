@@ -195,7 +195,6 @@ class Login extends Component {
   };
 
   handleSuccess = (response) => {
-    console.log(response);
     googleResponse.email = response.profileObj.email;
     googleResponse.imageUrl = response.profileObj.imageUrl;
     googleResponse.firstName = response.profileObj.name.substring(
