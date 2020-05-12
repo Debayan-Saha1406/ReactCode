@@ -12,8 +12,6 @@ import { Link } from "react-router-dom";
 import "../../../css/movie-single.css";
 
 const initialState = {
-  pageNumber: 1,
-  pageSize: 5,
   sortByColumn: sortColumns.movieName,
   sortByDirection: sortDirection.asc,
 };
@@ -22,12 +20,13 @@ const Filmography = (props) => {
   const [movies, setMovies] = useState([]);
   const [totalMovies, setTotalMovies] = useState(0);
   const [pageSize, setPageSize] = useState(5);
+  const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
     const body = {
-      pageNumber: initialState.pageNumber,
+      pageNumber: pageNumber,
       pageSize: pageSize,
       sortColumn: initialState.sortByColumn,
       sortDirection: initialState.sortByDirection,
@@ -40,13 +39,15 @@ const Filmography = (props) => {
         dispatch(toggleLoader(false, 1));
       }
     });
-  }, [pageSize]);
+  }, [pageSize, pageNumber]);
 
   const changeMovieCount = (e) => {
     setPageSize(e.target.value);
   };
 
-  const pageNumberClicked = () => {};
+  const pageNumberClicked = (page) => {
+    setPageNumber(page);
+  };
 
   return (
     <div className="filmography">
@@ -84,7 +85,7 @@ const Filmography = (props) => {
         <Pagination
           pageSize={pageSize}
           totalCount={totalMovies}
-          currentPage={initialState.pageNumber}
+          currentPage={pageNumber}
           changeCount={changeMovieCount}
           pageNumberClicked={pageNumberClicked}
           description="Movies"

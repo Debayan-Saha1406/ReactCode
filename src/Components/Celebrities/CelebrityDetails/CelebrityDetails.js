@@ -59,16 +59,16 @@ const CelebrityDetails = (props) => {
         }}
       >
         <Header page={page.details}></Header>
-        <div
-          className="hero hero3"
-          //style={{ background: `url(${image}) no-repeat`, height: `538px` }}
-        >
-          <div className="celeb-container">
-            <div className="row">
-              <div className="col-md-12"></div>
-            </div>
-          </div>
-        </div>
+        {isCelebrityDetailFetched && (
+          <div
+            className="hero hero3"
+            style={{
+              background: `url(${celebrity.photo}) no-repeat`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          ></div>
+        )}
 
         <div className="celebrity-single movie-single cebleb-single">
           <div className="container">
