@@ -15,7 +15,7 @@ import {
 
 const initialState = {
   value: "",
-  isErrorExist: true,
+  isErrorExist: false,
   errorClassName: "",
   errorMessage: "",
 };
@@ -40,7 +40,11 @@ const Register = (props) => {
       !email.isErrorExist &&
       !password.isErrorExist &&
       !firstName.isErrorExist &&
-      !confirmPassword.isErrorExist
+      !confirmPassword.isErrorExist &&
+      email.value !== "" &&
+      password.value !== "" &&
+      firstName.value !== "" &&
+      confirmPassword.value !== ""
     ) {
       const body = {
         firstName: firstName.value,
@@ -104,120 +108,135 @@ const Register = (props) => {
           <h3>sign up</h3>
           <form method="post">
             <div className="row">
-              <label htmlFor="email-2">
+              <label htmlFor="email-2" style={{ marginBottom: "15px" }}>
                 your email:
-                <br></br>
-                <input
-                  id="input"
-                  type="text"
-                  name="email"
-                  placeholder=""
-                  onChange={(e) =>
-                    setEmail({
-                      ...email,
-                      value: e.target.value,
-                      errorClassName: "",
-                      errorMessage: "",
-                    })
-                  }
-                  className={email.errorClassName}
-                  value={email.value}
-                />
-                {email.isErrorExist && (
-                  <label className="error-message">{email.errorMessage}</label>
-                )}
+                <div>
+                  <input
+                    id="input"
+                    type="text"
+                    name="email"
+                    placeholder=""
+                    onChange={(e) =>
+                      setEmail({
+                        ...email,
+                        value: e.target.value,
+                        errorClassName: "",
+                        errorMessage: "",
+                      })
+                    }
+                    className={email.errorClassName}
+                    value={email.value}
+                    style={{ width: "100%", marginLeft: "0px" }}
+                  />
+                  {email.isErrorExist && (
+                    <i
+                      class="fa fa-exclamation-circle"
+                      id="warning-exclamation"
+                    ></i>
+                  )}
+                </div>
               </label>
             </div>
             <div className="row">
-              <label htmlFor="username-2">
+              <label htmlFor="username-2" style={{ marginBottom: "15px" }}>
                 First Name:
-                <br></br>
-                <input
-                  id="input"
-                  type="text"
-                  name="firstName"
-                  onChange={(e) =>
-                    setFirstName({
-                      ...firstName,
-                      value: e.target.value,
-                      errorClassName: "",
-                      errorMessage: "",
-                    })
-                  }
-                  className={firstName.errorClassName}
-                  value={firstName.value}
-                />
-                {firstName.isErrorExist && (
-                  <label className="error-message">
-                    {firstName.errorMessage}
-                  </label>
-                )}
+                <div>
+                  <input
+                    id="input"
+                    type="text"
+                    name="firstName"
+                    onChange={(e) =>
+                      setFirstName({
+                        ...firstName,
+                        value: e.target.value,
+                        errorClassName: "",
+                        errorMessage: "",
+                      })
+                    }
+                    className={firstName.errorClassName}
+                    value={firstName.value}
+                    style={{ width: "100%", marginLeft: "0px" }}
+                  />
+                  {firstName.isErrorExist && (
+                    <i
+                      class="fa fa-exclamation-circle"
+                      id="warning-exclamation"
+                    ></i>
+                  )}
+                </div>
               </label>
             </div>
             <div className="row">
-              <label htmlFor="username-2">
+              <label htmlFor="username-2" style={{ marginBottom: "15px" }}>
                 Last Name:
-                <br></br>
                 <input
                   id="input"
                   type="text"
                   name="lastName"
                   onChange={(e) => setLastName(e.target.value)}
                   value={lastName}
+                  style={{ width: "100%", marginLeft: "0px" }}
                 />
               </label>
             </div>
             <div className="row">
-              <label htmlFor="password-2">
+              <label htmlFor="password-2" style={{ marginBottom: "15px" }}>
                 Password:
-                <br></br>
-                <input
-                  id="input"
-                  type="password"
-                  name="password"
-                  placeholder=""
-                  onChange={(e) =>
-                    setPassword({
-                      ...password,
-                      value: e.target.value,
-                      errorClassName: "",
-                      errorMessage: "",
-                    })
-                  }
-                  value={password.value}
-                  className={password.errorClassName}
-                />
-                {password.isErrorExist && (
-                  <label className="error-message">
-                    {password.errorMessage}
-                  </label>
-                )}
+                <div>
+                  <input
+                    id="input"
+                    type="password"
+                    name="password"
+                    placeholder=""
+                    onChange={(e) =>
+                      setPassword({
+                        ...password,
+                        value: e.target.value,
+                        errorClassName: "",
+                        errorMessage: "",
+                      })
+                    }
+                    value={password.value}
+                    className={password.errorClassName}
+                    style={{ width: "100%", marginLeft: "0px" }}
+                  />
+                  {password.isErrorExist && (
+                    <i
+                      class="fa fa-exclamation-circle"
+                      id="warning-exclamation"
+                    ></i>
+                  )}
+                </div>
               </label>
             </div>
             <div className="row">
-              <label htmlFor="repassword-2">
+              <label htmlFor="repassword-2" style={{ marginBottom: "15px" }}>
                 re-type Password:
-                <input
-                  id="input"
-                  type="password"
-                  name="password"
-                  placeholder=""
-                  onChange={(e) =>
-                    setConfirmPassword({
-                      ...confirmPassword,
-                      value: e.target.value,
-                      errorClassName: "",
-                      errorMessage: "",
-                    })
-                  }
-                  value={confirmPassword.value}
-                  className={confirmPassword.errorClassName}
-                />
-                {confirmPassword.isErrorExist && (
-                  <label className="error-message">
-                    {confirmPassword.errorMessage}
-                  </label>
-                )}
+                <div>
+                  <input
+                    id="input"
+                    type="password"
+                    name="password"
+                    placeholder=""
+                    onChange={(e) =>
+                      setConfirmPassword({
+                        ...confirmPassword,
+                        value: e.target.value,
+                        errorClassName: "",
+                        errorMessage: "",
+                      })
+                    }
+                    value={confirmPassword.value}
+                    className={confirmPassword.errorClassName}
+                    style={{ width: "100%", marginLeft: "0px" }}
+                  />
+                  {confirmPassword.isErrorExist && (
+                    <i
+                      class="fa fa-exclamation-circle"
+                      id="warning-exclamation"
+                    ></i>
+                  )}
+                </div>
               </label>
             </div>
             <div className="row">

@@ -15,6 +15,8 @@ import {
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import Logout from "./Logout";
+import ForgotPassword from "./ForgotPassword";
+import { ToastContainer } from "react-toastify";
 
 class Header extends Component {
   state = {
@@ -81,6 +83,12 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
+        {this.props.popupType === popupType.forgotPassword && (
+          <ForgotPassword
+            loginPopupClassName={this.props.popupClassName}
+            handleClose={() => this.props.togglePopup("", popupType.logout)}
+          ></ForgotPassword>
+        )}
         {this.props.popupType === popupType.logout && (
           <Logout
             loginPopupClassName={this.props.popupClassName}
@@ -277,6 +285,7 @@ class Header extends Component {
             </ul>
           </div>
         </div>
+        <ToastContainer autoClose={3000}></ToastContainer>
       </header>
     );
   }

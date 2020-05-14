@@ -1277,7 +1277,8 @@ img {
 
 .forgot {
   color: blue;
-  margin-left: 55px;
+  float: right;
+  font-weight: bold;
 }
 
 .overlay .login-content .remember span {

@@ -8,11 +8,15 @@ import {
 import { useDispatch } from "react-redux";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl, constants } from "../../../Shared/Constants";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import {
+  toggleLoader,
+  togglePopup,
+} from "./../../../Store/Actions/actionCreator";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
 import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { popupType } from "./../../../Shared/Constants";
 
 const initialState = {
   value: "",
@@ -67,6 +71,10 @@ const Login = (props) => {
         }
       });
     }
+  };
+
+  const handleForgotPassword = () => {
+    dispatch(togglePopup("openform", popupType.forgotPassword));
   };
 
   useEffect(() => {
@@ -162,20 +170,20 @@ const Login = (props) => {
                 </div>
               </label>
             </div>
-            <div className="row">
-              <div className="remember">
-                <div>
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    value="Remember me"
-                    checked={rememberMe}
-                    onChange={() => setRememberMe(!rememberMe)}
-                  />
-                  <span>Remember me</span>
-                </div>
-                <div className="right"></div>
-                <a className="forgot" href="#">
+            <div className="row" style={{ marginBottom: "10px" }}>
+              <div className="col-6">
+                <input
+                  type="checkbox"
+                  name="remember"
+                  value="Remember me"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                  style={{ marginTop: "2px" }}
+                />
+                <span>Remember me</span>
+              </div>
+              <div className="col-6">
+                <a className="forgot" onClick={handleForgotPassword}>
                   Forget password ?
                 </a>
               </div>

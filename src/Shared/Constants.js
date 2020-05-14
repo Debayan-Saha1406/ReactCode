@@ -124,6 +124,7 @@ export const popupType = {
   addReview: "AddReview",
   editReview: "EditReview",
   logout: "Logout",
+  forgotPassword: "ForgotPassword",
 };
 
 export const page = {
