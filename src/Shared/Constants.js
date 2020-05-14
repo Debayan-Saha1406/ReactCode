@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-    // "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-    "https://localhost:44357/api",
+    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+  // "https://localhost:44357/api",
   login: "/adminlogin",
   update: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -123,6 +123,7 @@ export const popupType = {
   register: "Register",
   addReview: "AddReview",
   editReview: "EditReview",
+  logout: "Logout",
 };
 
 export const page = {
@@ -138,4 +139,11 @@ export const celebrityTabs = {
 export const gender = {
   male: "male",
   female: "female",
+};
+
+export const menuItem = {
+  home: "home",
+  movies: "movies",
+  about: "about",
+  loggedInEmail: "loggedInEmail",
 };

@@ -3,8 +3,8 @@ import * as actionTypes from "../Actions/actions";
 const initialState = {
   showLoader: false,
   screenOpacity: 1,
-  loginPopupClassName: "",
-  registerPopupClassName: "",
+  popupClassName: "",
+  popupType: "",
 };
 
 export const UIReducer = (state = initialState, action) => {
@@ -15,15 +15,11 @@ export const UIReducer = (state = initialState, action) => {
         showLoader: action.showLoader,
         screenOpacity: action.screenOpacity,
       };
-    case actionTypes.TOGGLE_LOGIN_POPUP:
+    case actionTypes.TOGGLE_POPUP:
       return {
         ...state,
-        loginPopupClassName: action.loginPopupClassName,
-      };
-    case actionTypes.TOGGLE_REGISTER_POPUP:
-      return {
-        ...state,
-        registerPopupClassName: action.registerPopupClassName,
+        popupClassName: action.popupClassName,
+        popupType: action.popupType,
       };
     default:
       return state;

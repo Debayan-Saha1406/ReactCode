@@ -101,16 +101,11 @@ export const toggleLoader = (showLoader, screenOpacity) => {
   };
 };
 
-export const togglePopup = (popupClassName, popupTypePassed) => {
-  if (popupTypePassed === popupType.login) {
-    return {
-      type: actionTypes.TOGGLE_LOGIN_POPUP,
-      loginPopupClassName: popupClassName,
-    };
-  }
+export const togglePopup = (popupClassName, popupType) => {
   return {
-    type: actionTypes.TOGGLE_REGISTER_POPUP,
-    registerPopupClassName: popupClassName,
+    type: actionTypes.TOGGLE_POPUP,
+    popupClassName: popupClassName,
+    popupType: popupType,
   };
 };
 

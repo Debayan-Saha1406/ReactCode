@@ -6,20 +6,28 @@ import Login from "./Login";
 import Register from "./Register";
 import { connect } from "react-redux";
 import { togglePopup } from "./../../../Store/Actions/actionCreator";
-import { popupType, constants, page } from "./../../../Shared/Constants";
+import {
+  popupType,
+  constants,
+  page,
+  menuItem,
+} from "./../../../Shared/Constants";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
+import Logout from "./Logout";
 
 class Header extends Component {
   state = {
     display: "none",
     active: "",
-    currentMenuItem: "home",
+    currentMenuItem: menuItem.home,
     isUserLoggedIn: false,
     loggedInEmail: "",
+    headerDropdownClass: "none",
   };
 
   componentDidMount() {
+    this.setActiveMenuItem();
     const loginDetails = getLocalStorageItem(constants.loginDetails);
     if (!loginDetails) {
       this.props.saveUserInfo("", false);
@@ -39,22 +47,59 @@ class Header extends Component {
   };
 
   setCurrentMenuItem = (currentMenuItem) => {
-    this.setState({ currentMenuItem });
+    this.setState({ currentMenuItem, headerDropdownClass: "none" });
+  };
+
+  handleDropdownClick = () => {
+    this.setActiveMenuItem();
+    if (this.state.headerDropdownClass === "block") {
+      this.setState({
+        headerDropdownClass: "none",
+        currentMenuItem: menuItem.home,
+      });
+    } else {
+      this.setState({
+        headerDropdownClass: "block",
+        currentMenuItem: menuItem.loggedInEmail,
+      });
+    }
+  };
+
+  setActiveMenuItem() {
+    if (window.location.pathname.includes(menuItem.movies)) {
+      this.setState({ currentMenuItem: menuItem.movies });
+    } else {
+      this.setState({ currentMenuItem: menuItem.home });
+    }
+  }
+
+  handleLogout = () => {
+    this.props.togglePopup("openform", popupType.logout);
   };
 
   render() {
     return (
       <React.Fragment>
-        <Login
-          loginPopupClassName={this.props.loginPopupClassName}
-          closeLoginPopup={() => this.props.togglePopup("", popupType.login)}
-        ></Login>
-        <Register
-          registerPopupClassName={this.props.registerPopupClassName}
-          closeRegisterPopup={() =>
-            this.props.togglePopup("", popupType.register)
-          }
-        ></Register>
+        {this.props.popupType === popupType.logout && (
+          <Logout
+            loginPopupClassName={this.props.popupClassName}
+            handleClose={() => this.props.togglePopup("", popupType.logout)}
+          ></Logout>
+        )}
+        {this.props.popupType === popupType.login && (
+          <Login
+            loginPopupClassName={this.props.popupClassName}
+            closeLoginPopup={() => this.props.togglePopup("", popupType.login)}
+          ></Login>
+        )}
+        {this.props.popupType === popupType.register && (
+          <Register
+            registerPopupClassName={this.props.popupClassName}
+            closeRegisterPopup={() =>
+              this.props.togglePopup("", popupType.register)
+            }
+          ></Register>
+        )}
         {this.props.page === page.details
           ? this.renderHeader("site-header-celebrity")
           : this.renderHeader("site-header")}
@@ -83,7 +128,7 @@ class Header extends Component {
               <i className="fa fa-bars"></i>
             </button>
             <ul className="menu">
-              {this.state.currentMenuItem === "home" ? (
+              {this.state.currentMenuItem === menuItem.home ? (
                 <li className="menu-item current-menu-item">
                   <Link
                     to="/home"
@@ -105,7 +150,7 @@ class Header extends Component {
               <li className="menu-item">
                 <a>About</a>
               </li>
-              {this.state.currentMenuItem === "movie" ? (
+              {this.state.currentMenuItem === menuItem.movies ? (
                 <li className="menu-item current-menu-item">
                   <Link
                     to="/movies"
@@ -137,11 +182,49 @@ class Header extends Component {
                 </li>
               )}
               {this.props.isUserLoggedIn ? (
-                <li className="menu-item">
-                  <a onClick={() => {}} style={{ cursor: "pointer" }}>
-                    {this.props.loggedInEmail}
-                  </a>
-                </li>
+                this.state.currentMenuItem === menuItem.loggedInEmail ? (
+                  <li
+                    className="menu-item current-menu-item"
+                    id="dropbtn"
+                    onClick={this.handleDropdownClick}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {this.props.loggedInEmail}{" "}
+                    <i
+                      className="fa fa-caret-down"
+                      style={{ marginRight: "10px" }}
+                    ></i>
+                    <div
+                      className="dropdown-content"
+                      style={{ display: this.state.headerDropdownClass }}
+                    >
+                      <a href="#">Edit Profile</a>
+                      <a onClick={this.handleLogout}>Logout</a>
+                      <a href="#">Link 3</a>
+                    </div>
+                  </li>
+                ) : (
+                  <li
+                    className="menu-item"
+                    id="dropbtn"
+                    onClick={this.handleDropdownClick}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {this.props.loggedInEmail}{" "}
+                    <i
+                      className="fa fa-caret-down"
+                      style={{ marginRight: "10px" }}
+                    ></i>
+                    <div
+                      className="dropdown-content"
+                      style={{ display: this.state.headerDropdownClass }}
+                    >
+                      <a href="#">Edit Profile</a>
+                      <a href="#">Logout</a>
+                      <a href="#">Link 3</a>
+                    </div>
+                  </li>
+                )
               ) : (
                 <li className="menu-item">
                   <a
@@ -200,10 +283,10 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    loginPopupClassName: state.uiDetails.loginPopupClassName,
-    registerPopupClassName: state.uiDetails.registerPopupClassName,
+    popupClassName: state.uiDetails.popupClassName,
     isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
     loggedInEmail: state.loggedInUserInfo.loggedInEmail,
+    popupType: state.uiDetails.popupType,
   };
 };
 

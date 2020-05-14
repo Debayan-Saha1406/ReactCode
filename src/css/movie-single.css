@@ -1475,7 +1475,7 @@ a#black-hover {
   color: black;
   font-weight: bold;
   text-transform: uppercase;
-  background-color: #dcf836;
+  background-color: #ffaa3c;
   width: 100%;
 }
 
@@ -1771,4 +1771,53 @@ p.ceb-single {
 a.blue-link:hover {
   cursor: pointer;
   color: #ffaa3c !important;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 210px;
+  margin-top: 15px;
+  font-size: 15px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px !important;
+  text-decoration: none;
+  display: block !important;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  float: none;
+  background-color: #ddd !important;
+  color: black !important;
+  padding: 12px 16px !important;
+  text-decoration: none;
+  display: block !important;
+  text-align: left;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
 }
