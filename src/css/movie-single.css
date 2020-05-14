@@ -1821,3 +1821,11 @@ a.blue-link:hover {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
+#warning-exclamation {
+  font-size: 18px;
+  color: red;
+  float: right;
+  margin-right: 10px;
+  transform: translateY(-167%);
+}

@@ -28,10 +28,11 @@ class Header extends Component {
 
   componentDidMount() {
     this.setActiveMenuItem();
-    const loginDetails = getLocalStorageItem(constants.loginDetails);
-    if (!loginDetails) {
+    const userDetails = getLocalStorageItem(constants.userDetails);
+    if (!userDetails) {
       this.props.saveUserInfo("", false);
     } else {
+      const loginDetails = getLocalStorageItem(constants.loginDetails);
       this.props.saveUserInfo(loginDetails.email, true);
     }
   }

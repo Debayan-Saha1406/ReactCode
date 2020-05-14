@@ -1,17 +1,29 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { clearLocalStorage } from "../../../Provider/LocalStorageProvider";
+import {
+  clearLocalStorage,
+  removeLocalStorageItem,
+} from "../../../Provider/LocalStorageProvider";
 import { useDispatch } from "react-redux";
 import { togglePopup } from "../../../Store/Actions/actionCreator";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
+import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { constants } from "../../../Shared/Constants";
 
 const Logout = (props) => {
   const dispatch = useDispatch();
 
   const handleLogout = (e) => {
     e.preventDefault();
+    const loginDetails = getLocalStorageItem(constants.loginDetails);
+    if (loginDetails) {
+      if (loginDetails.rememberMe) {
+        removeLocalStorageItem(constants.userDetails);
+      } else {
+        clearLocalStorage();
+      }
+    }
     dispatch(saveUserInfo("", false));
-    clearLocalStorage();
     props.handleClose();
   };
 
