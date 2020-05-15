@@ -161,7 +161,7 @@ const ResetPassword = (props) => {
                 New Password:
                 <div>
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     id="username"
                     onChange={(e) => handleInputChange(e, setPassword)}
@@ -183,7 +183,7 @@ const ResetPassword = (props) => {
                 Confirm Password:
                 <div>
                   <input
-                    type="text"
+                    type="password"
                     name="confirmPassword"
                     id="username"
                     onChange={(e) => handleInputChange(e, setConfirmPassword)}

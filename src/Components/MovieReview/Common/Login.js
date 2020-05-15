@@ -20,7 +20,7 @@ import { popupType } from "./../../../Shared/Constants";
 
 const initialState = {
   value: "",
-  isErrorExist: false,
+  isErrorExist: true,
   errorClassName: "",
 };
 const Login = (props) => {
@@ -37,44 +37,54 @@ const Login = (props) => {
 
   const login = (e) => {
     e.preventDefault();
-    validateInputField(email, setEmail);
-    validateInputField(password, setPassword);
-    validateUserEmail(email, setEmail);
 
-    if (
-      !email.isErrorExist &&
-      !password.isErrorExist &&
-      email.value !== "" &&
-      password.value !== ""
-    ) {
-      const body = {
-        email: email.value,
-        password: password.value,
-      };
-      dispatch(toggleLoader(true, "15%"));
-      ServiceProvider.post(apiUrl.userLogin, body).then((response) => {
-        if (response.status === 404) {
-          dispatch(toggleLoader(false, 1));
-          showErrorMessage(response.data.errors);
-        }
-        if (response.status === 200) {
-          dispatch(toggleLoader(false, 1));
-          clearValues();
-          props.closeLoginPopup();
-          setLocalStorageItem(constants.userDetails, response.data.data);
-          setLocalStorageItem(constants.loginDetails, {
-            email: email.value,
-            password: password.value,
-            rememberMe: rememberMe,
-          });
-          dispatch(saveUserInfo(email.value, true));
-        }
-      });
+    if (email.value === "") {
+      setInputFieldError(email, setEmail);
     }
+
+    if (password.value === "") {
+      setInputFieldError(password, setPassword);
+    }
+
+    sendLoginRequest(email, password, dispatch, clearValues, props, rememberMe);
+  };
+
+  const setInputFieldError = (inputField, setData) => {
+    setData({
+      ...[inputField],
+      isErrorExist: true,
+      errorClassName: "input-error",
+    });
   };
 
   const handleForgotPassword = () => {
     dispatch(togglePopup("openform", popupType.forgotPassword));
+  };
+
+  const setUiState = (e, isErrorExist, setData) => {
+    if (isErrorExist) {
+      setData({
+        ...[e.target.name],
+        isErrorExist: true,
+        value: e.target.value,
+        errorClassName: "input-error",
+      });
+    } else {
+      setData({
+        ...[e.target.name],
+        isErrorExist: false,
+        value: e.target.value,
+        errorClassName: "",
+      });
+    }
+  };
+
+  const handleInputChange = (e, setData) => {
+    let isErrorExist = validateInputField(e.target.value);
+    if (e.target.name === "email") {
+      isErrorExist = validateUserEmail(e.target.value);
+    }
+    setUiState(e, isErrorExist, setData);
   };
 
   useEffect(() => {
@@ -115,22 +125,15 @@ const Login = (props) => {
                 <div>
                   <input
                     type="text"
-                    name="username"
+                    name="email"
                     id="username"
                     required="required"
-                    onChange={(e) =>
-                      setEmail({
-                        ...email,
-                        value: e.target.value,
-                        errorClassName: "",
-                        isErrorExist: false,
-                      })
-                    }
+                    onChange={(e) => handleInputChange(e, setEmail)}
                     style={{ width: "100%", marginLeft: "0px" }}
                     className={email.errorClassName}
                     value={email.value}
                   />
-                  {email.isErrorExist && (
+                  {email.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
@@ -149,19 +152,12 @@ const Login = (props) => {
                     name="password"
                     id="password"
                     required="required"
-                    onChange={(e) =>
-                      setPassword({
-                        ...password,
-                        value: e.target.value,
-                        errorClassName: "",
-                        isErrorExist: false,
-                      })
-                    }
+                    onChange={(e) => handleInputChange(e, setPassword)}
                     style={{ width: "100%", marginLeft: "0px" }}
                     value={password.value}
                     className={password.errorClassName}
                   />
-                  {password.isErrorExist && (
+                  {password.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
@@ -201,3 +197,37 @@ const Login = (props) => {
 };
 
 export default Login;
+function sendLoginRequest(
+  email,
+  password,
+  dispatch,
+  clearValues,
+  props,
+  rememberMe
+) {
+  if (!email.isErrorExist && !password.isErrorExist) {
+    const body = {
+      email: email.value,
+      password: password.value,
+    };
+    dispatch(toggleLoader(true, "15%"));
+    ServiceProvider.post(apiUrl.userLogin, body).then((response) => {
+      if (response.status === 404) {
+        dispatch(toggleLoader(false, 1));
+        showErrorMessage(response.data.errors);
+      }
+      if (response.status === 200) {
+        dispatch(toggleLoader(false, 1));
+        clearValues();
+        props.closeLoginPopup();
+        setLocalStorageItem(constants.userDetails, response.data.data);
+        setLocalStorageItem(constants.loginDetails, {
+          email: email.value,
+          password: password.value,
+          rememberMe: rememberMe,
+        });
+        dispatch(saveUserInfo(email.value, true));
+      }
+    });
+  }
+}

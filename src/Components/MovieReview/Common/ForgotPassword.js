@@ -4,20 +4,23 @@ import React from "react";
 import { useState } from "react";
 import { validateInputField } from "../../../Shared/Services/ValidationService";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import {
+  toggleLoader,
+  togglePopup,
+} from "./../../../Store/Actions/actionCreator";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
 import { validateUserEmail } from "./../../../Shared/Services/ValidationService";
 import { useEffect } from "react";
+import { popupType } from "./../../../Shared/Constants";
 
 const ForgotPassword = (props) => {
   const [email, setEmail] = useState({
     value: "",
-    isErrorExist: false,
+    isErrorExist: true,
     errorClassName: "",
   });
-  const [isSendMailClicked, setIsSendMailClicked] = useState(false);
   const dispatch = useDispatch();
   const handleClose = (e) => {
     e.preventDefault();
@@ -25,13 +28,16 @@ const ForgotPassword = (props) => {
   };
   const handleSendMail = (e) => {
     e.preventDefault();
-    setIsSendMailClicked(true);
-    validateInputField(email, setEmail);
-    validateUserEmail(email, setEmail);
-  };
 
-  useEffect(() => {
-    if (!email.isErrorExist && email.value !== "" && isSendMailClicked) {
+    if (email.value.trim() === "") {
+      setEmail({
+        ...email,
+        isErrorExist: true,
+        errorClassName: "input-error",
+      });
+    }
+
+    if (!email.isErrorExist) {
       const body = {
         email: email.value,
       };
@@ -44,14 +50,38 @@ const ForgotPassword = (props) => {
         if (response.status === 200) {
           dispatch(toggleLoader(false, 1));
           clearValues();
-          props.handleClose();
+          dispatch(togglePopup("openform", popupType.resetPassword));
         }
       });
     }
-  }, [isSendMailClicked === true]);
+  };
 
   const clearValues = () => {
     setEmail({ value: "", isErrorExist: false, errorClassName: "" });
+  };
+
+  const setUiState = (value, isErrorExist) => {
+    if (isErrorExist) {
+      setEmail({
+        ...email,
+        isErrorExist: true,
+        value: value,
+        errorClassName: "input-error",
+      });
+    } else {
+      setEmail({
+        ...email,
+        isErrorExist: false,
+        value: value,
+        errorClassName: "",
+      });
+    }
+  };
+
+  const handleInputChange = (e, setData) => {
+    let isErrorExist = validateInputField(e.target.value);
+    isErrorExist = validateUserEmail(e.target.value);
+    setUiState(e.target.value, isErrorExist);
   };
 
   return (
@@ -86,20 +116,12 @@ const ForgotPassword = (props) => {
                     name="username"
                     id="username"
                     required="required"
-                    onChange={(e) => {
-                      setEmail({
-                        ...email,
-                        value: e.target.value,
-                        errorClassName: "",
-                        isErrorExist: false,
-                      });
-                      setIsSendMailClicked(false);
-                    }}
+                    onChange={(e) => handleInputChange(e, setEmail)}
                     style={{ width: "100%", marginLeft: "0px" }}
                     className={email.errorClassName}
                     value={email.value}
                   />
-                  {email.isErrorExist && (
+                  {email.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
