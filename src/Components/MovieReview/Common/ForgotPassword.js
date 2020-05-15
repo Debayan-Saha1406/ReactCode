@@ -31,11 +31,7 @@ const ForgotPassword = (props) => {
   };
 
   useEffect(() => {
-    if (
-      !email.isErrorExist &&
-      email.value !== "" &&
-      isSendMailClicked === true
-    ) {
+    if (!email.isErrorExist && email.value !== "" && isSendMailClicked) {
       const body = {
         email: email.value,
       };
@@ -52,7 +48,7 @@ const ForgotPassword = (props) => {
         }
       });
     }
-  }, [email.isErrorExist === false, isSendMailClicked === true]);
+  }, [isSendMailClicked === true]);
 
   const clearValues = () => {
     setEmail({ value: "", isErrorExist: false, errorClassName: "" });

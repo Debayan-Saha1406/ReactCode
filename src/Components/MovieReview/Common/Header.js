@@ -17,6 +17,7 @@ import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import Logout from "./Logout";
 import ForgotPassword from "./ForgotPassword";
 import { ToastContainer } from "react-toastify";
+import ResetPassword from "./ResetPassword";
 
 class Header extends Component {
   state = {
@@ -83,6 +84,14 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
+        {this.props.popupType === popupType.resetPassword && (
+          <ResetPassword
+            loginPopupClassName={this.props.popupClassName}
+            handleClose={() =>
+              this.props.togglePopup("", popupType.resetPassword)
+            }
+          ></ResetPassword>
+        )}
         {this.props.popupType === popupType.forgotPassword && (
           <ForgotPassword
             loginPopupClassName={this.props.popupClassName}

@@ -1268,7 +1268,6 @@ img {
   font-size: 14px;
   color: #222222;
   font-weight: bold;
-  text-transform: capitalize;
   margin-top: 10px;
   height: 42px;
   border: 1px solid #e1e1e1;
@@ -1276,9 +1275,15 @@ img {
 }
 
 .forgot {
-  color: blue;
+  color: #4280bf !important;
   float: right;
   font-weight: bold;
+  cursor: pointer;
+}
+
+.forgot:hover {
+  color: darkblue !important;
+  cursor: pointer;
 }
 
 .overlay .login-content .remember span {
