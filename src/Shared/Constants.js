@@ -126,6 +126,7 @@ export const popupType = {
   logout: "Logout",
   forgotPassword: "ForgotPassword",
   resetPassword: "ResetPassword",
+  information: "Information",
 };
 
 export const page = {

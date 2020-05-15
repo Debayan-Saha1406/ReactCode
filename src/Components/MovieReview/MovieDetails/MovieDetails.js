@@ -204,7 +204,14 @@ class MovieDetails extends Component {
         }}
       >
         <Header page={page.details}></Header>
-        <div class="hero hero3">
+        <div
+          class="hero hero3"
+          style={{
+            background: `url(${image}) no-repeat`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        >
           <div class="celeb-container">
             <div class="row">
               <div class="col-md-12"></div>

@@ -50,7 +50,7 @@ const ForgotPassword = (props) => {
         if (response.status === 200) {
           dispatch(toggleLoader(false, 1));
           clearValues();
-          dispatch(togglePopup("openform", popupType.resetPassword));
+          dispatch(togglePopup("openform", popupType.information));
         }
       });
     }

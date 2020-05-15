@@ -18,6 +18,7 @@ import Logout from "./Logout";
 import ForgotPassword from "./ForgotPassword";
 import { ToastContainer } from "react-toastify";
 import ResetPassword from "./ResetPassword";
+import Information from "./Information";
 
 class Header extends Component {
   state = {
@@ -84,6 +85,18 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
+        {this.props.popupType === popupType.information && (
+          <Information
+            loginPopupClassName={this.props.popupClassName}
+            title={"Reset Password"}
+            content={
+              "Your Password Reset Email Has Been Sent. Please Check Your Inbox As You Will Need To Enter The Recovery Code In The Next Screen."
+            }
+            handleClose={() =>
+              this.props.togglePopup("", popupType.resetPassword)
+            }
+          ></Information>
+        )}
         {this.props.popupType === popupType.resetPassword && (
           <ResetPassword
             loginPopupClassName={this.props.popupClassName}
