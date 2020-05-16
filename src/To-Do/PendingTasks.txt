@@ -1,0 +1,3 @@
+Asterisks Left In whole Application
+Movie Filters Pagination Working Or Not Need to be checked thoroughly
+ToolTip Need to be checked if applied in the popup errors 
