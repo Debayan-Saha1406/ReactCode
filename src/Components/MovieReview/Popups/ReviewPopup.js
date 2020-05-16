@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import "../../../css/movie-single.css";
-import { popupType } from "./../../../Shared/Constants";
+import { popupType } from "../../../Shared/Constants";
 
 const ReviewPopup = (props) => {
   return (

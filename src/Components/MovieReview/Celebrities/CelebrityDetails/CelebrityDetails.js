@@ -1,17 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import Overview from "../CelebrityDetails/Overview";
-import Header from "./../../MovieReview/Common/Header";
-import "../../../css/movie-single.css";
-import image from "../../../images/movie-single.jpg";
-import { page, celebrityTabs, apiUrl, gender } from "../../../Shared/Constants";
+import Header from "../../Common/Header";
+import image from "../../../../images/movie-single.jpg";
+import {
+  page,
+  celebrityTabs,
+  apiUrl,
+  gender,
+} from "../../../../Shared/Constants";
 import Biography from "./Biography";
 import Filmography from "./Filmography";
-import ServiceProvider from "../../../Provider/ServiceProvider";
+import ServiceProvider from "../../../../Provider/ServiceProvider";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
-import LoaderProvider from "./../../../Provider/LoaderProvider";
-import "../../../css/movie-single.css";
+import { toggleLoader } from "../../../../Store/Actions/actionCreator";
+import LoaderProvider from "../../../../Provider/LoaderProvider";
+import "../../../../css/movie-single.css";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(celebrityTabs.overview);

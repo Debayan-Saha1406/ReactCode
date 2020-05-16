@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { useDispatch } from "react-redux";
 import { togglePopup } from "../../../Store/Actions/actionCreator";
 import { popupType } from "./../../../Shared/Constants";
+import { useDispatch } from "react-redux";
 
 const Information = (props) => {
   const dispatch = useDispatch();

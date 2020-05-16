@@ -1,22 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "./node_modules/react";
 import {
   validateInputField,
   validateUserEmail,
 } from "../../../Shared/Services/ValidationService";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "./node_modules/react-redux";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl, constants } from "../../../Shared/Constants";
 import {
   toggleLoader,
   togglePopup,
-} from "./../../../Store/Actions/actionCreator";
+} from "../../../Store/Actions/actionCreator
 import { showErrorMessage } from "../../../Provider/ToastProvider";
-import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
-import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
-import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
-import { popupType } from "./../../../Shared/Constants";
+import { setLocalStorageItem } from "../../../Provider/LocalStorageProvider
+import { saveUserInfo } from "../../../Store/Actions/actionCreator
+import { getLocalStorageItem } from "../../../Provider/LocalStorageProvider
+import { popupType } from "../../../Shared/Constants
 
 const initialState = {
   value: "",

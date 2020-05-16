@@ -4,11 +4,11 @@ import {
   clearLocalStorage,
   removeLocalStorageItem,
 } from "../../../Provider/LocalStorageProvider";
-import { useDispatch } from "react-redux";
-import { togglePopup } from "../../../Store/Actions/actionCreator";
-import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
-import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+
+import { saveUserInfo } from "../../../Store/Actions/actionCreator";
+import { getLocalStorageItem } from "../../../Provider/LocalStorageProvider";
 import { constants } from "../../../Shared/Constants";
+import { useDispatch } from "react-redux";
 
 const Logout = (props) => {
   const dispatch = useDispatch();

@@ -3,9 +3,9 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { validateInputField } from "../../../Shared/Services/ValidationService";
-import { validateUserEmail } from "./../../../Shared/Services/ValidationService";
+import { validateUserEmail } from "../../../Shared/Services/ValidationService";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl } from "../../../Shared/Constants";
 import { showErrorMessage } from "../../../Provider/ToastProvider";

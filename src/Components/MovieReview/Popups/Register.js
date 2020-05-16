@@ -9,9 +9,9 @@ import { useDispatch } from "react-redux";
 import {
   toggleLoader,
   saveUserInfo,
-} from "./../../../Store/Actions/actionCreator";
+} from "../../../Store/Actions/actionCreator";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
-import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { setLocalStorageItem } from "../../../Provider/LocalStorageProvider";
 import {
   validateInputField,
   validateUserEmail,

@@ -10,9 +10,9 @@ import Pagination from "../Common/Pagination";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 import { connect } from "react-redux";
-import ReviewPopup from "./../Common/ReviewPopup";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import DetailTopBar from "../Common/DetailTopBar";
+import ReviewPopup from "./../Popups/ReviewPopup";
 
 class MovieReview extends Component {
   state = {

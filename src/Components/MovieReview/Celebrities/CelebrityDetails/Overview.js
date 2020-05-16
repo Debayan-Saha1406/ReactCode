@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { celebrityTabs } from "./../../../Shared/Constants";
+import { celebrityTabs } from "../../../../Shared/Constants";
 
-import image from "../../../images/movie-single.jpg";
+import image from "../../../../images/movie-single.jpg";
 import { Link } from "react-router-dom";
 
 const Overview = (props) => {

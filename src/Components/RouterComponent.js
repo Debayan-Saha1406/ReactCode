@@ -11,7 +11,7 @@ import Movies from "./MovieReview/Movies/Movies";
 import MovieDetails from "./MovieReview/MovieDetails/MovieDetails";
 import NotFound from "./MovieReview/Common/NotFound";
 import Home from "./MovieReview/MovieHome/Home";
-import CelebrityDetails from "./Celebrities/CelebrityDetails/CelebrityDetails";
+import CelebrityDetails from "./MovieReview/Celebrities/CelebrityDetails/CelebrityDetails";
 
 class Router extends Component {
   render() {

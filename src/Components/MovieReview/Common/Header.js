@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import image from "../../../images/logo.png";
 import { Link } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
 import { connect } from "react-redux";
 import { togglePopup } from "./../../../Store/Actions/actionCreator";
 import {
@@ -14,11 +12,13 @@ import {
 } from "./../../../Shared/Constants";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
-import Logout from "./Logout";
-import ForgotPassword from "./ForgotPassword";
 import { ToastContainer } from "react-toastify";
-import ResetPassword from "./ResetPassword";
-import Information from "./Information";
+import ForgotPassword from "./../Popups/ForgotPassword";
+import ResetPassword from "./../Popups/ResetPassword";
+import Information from "./../Popups/Information";
+import Login from "./../../LoginComponent";
+import Register from "./../../RegisterComponent";
+import Logout from "./../Popups/Logout";
 
 class Header extends Component {
   state = {
