@@ -1907,7 +1907,7 @@ a.blue-link:hover {
   color: #dcf836;
 }
 
-.page-single {
+.profile-single {
   background-color: #020d18;
   padding: 75px 0;
 }
@@ -1938,4 +1938,34 @@ a.blue-link:hover {
 
 #spacing-below {
   margin-bottom: 25px !important;
+}
+
+.user-pro .password {
+  padding-top: 30px;
+}
+
+@media (max-width: 991px) {
+  .user-hero .hero-ct h1 {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .user-hero .hero-ct {
+    padding-top: 100px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .user-information {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 991px) {
+  .user-information {
+    margin-right: 0;
+    margin-bottom: 60px;
+  }
 }

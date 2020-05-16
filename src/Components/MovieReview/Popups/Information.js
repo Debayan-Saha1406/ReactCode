@@ -1,14 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { togglePopup } from "../../../Store/Actions/actionCreator";
-import { popupType } from "./../../../Shared/Constants";
-import { useDispatch } from "react-redux";
 
 const Information = (props) => {
-  const dispatch = useDispatch();
-  const handleOk = () => {
-    dispatch(togglePopup("openform", popupType.resetPassword));
-  };
   return (
     <div className={`overlay ${props.loginPopupClassName}`}>
       <div className="login-wrapper" id="login-content">
@@ -32,7 +25,7 @@ const Information = (props) => {
             </div>
 
             <div className="row">
-              <button onClick={handleOk}>Ok</button>
+              <button onClick={props.handleOk}>Ok</button>
             </div>
           </form>
         </div>
