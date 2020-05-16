@@ -2,16 +2,13 @@
 import React from "react";
 import image from "../../../images/movie-single.jpg";
 
-const SideMenu = () => {
+const SideMenu = (props) => {
   return (
     <div class="col-md-3 col-sm-12 col-xs-12">
       <div class="user-information">
         <div class="user-img">
-          <a href="#">
-            <img
-              src="https://haintheme.com/demo/html/bustter/images/uploads/user-img.png"
-              alt=""
-            />
+          <a>
+            <img src={props.profileImageUrl} alt="" />
             <br />
           </a>
           <a href="#" class="redbtn">

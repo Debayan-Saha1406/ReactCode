@@ -12,15 +12,34 @@ import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Information from "./../Popups/Information";
 
+const profileState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  profileImageUrl: "",
+};
+
 const UserProfile = (props) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isOkClicked, setIsOkClicked] = useState(false);
+  const [profileData, setProfileData] = useState(profileState);
   useEffect(() => {
-    debugger;
     const userDetails = getLocalStorageItem(constants.userDetails);
+    debugger;
     if (userDetails) {
       setIsUserLoggedIn(true);
+      setProfileData({
+        ...profileData,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        email: userDetails.email,
+        profileImageUrl: userDetails.profileImageUrl,
+      });
+      // setFirstName(userDetails.firstName);
+      // if (userDetails.lastName) {
+      //   setLastName(userDetails.lastName);
+      // }
     } else {
       setIsUserLoggedIn(false);
     }
@@ -55,7 +74,10 @@ const UserProfile = (props) => {
                 <div class="row">
                   <div class="col-md-12">
                     <div class="hero-ct">
-                      <h1>Edward kennedy’s profile</h1>
+                      <h1>
+                        {profileData.firstName} {""} {profileData.lastName}’s
+                        profile
+                      </h1>
                     </div>
                   </div>
                 </div>
@@ -64,10 +86,16 @@ const UserProfile = (props) => {
             <div class="profile-single">
               <div class="container">
                 <div class="row ipad-width">
-                  <SideMenu></SideMenu>
+                  <SideMenu
+                    profileImageUrl={profileData.profileImageUrl}
+                  ></SideMenu>
                   <div class="col-md-9 col-sm-12 col-xs-12">
                     <div class="form-style-1 user-pro" action="">
-                      <ProfileDetails></ProfileDetails>
+                      <ProfileDetails
+                        firstName={profileData.firstName}
+                        lastName={profileData.lastName}
+                        email={profileData.email}
+                      ></ProfileDetails>
                       <ChangePassword></ChangePassword>
                     </div>
                   </div>

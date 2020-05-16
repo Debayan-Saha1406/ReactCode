@@ -1471,6 +1471,10 @@ a#black-hover {
   background-color: grey;
 }
 
+#cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .error {
   color: #ffaa3c !important;
 }
@@ -1893,6 +1897,7 @@ a.blue-link:hover {
 
 .user-information .user-img img {
   margin-bottom: 30px;
+  border-radius: 50% !important;
 }
 
 .user-information ul li a {
