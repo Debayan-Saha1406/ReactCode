@@ -4,10 +4,14 @@ import React from "react";
 import { useState } from "react";
 import "../../../css/movie-single.css";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl } from "../../../Shared/Constants";
+import { apiUrl, constants } from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import {
+  toggleLoader,
+  saveUserInfo,
+} from "./../../../Store/Actions/actionCreator";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
+import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import {
   validateInputField,
   validateUserEmail,
@@ -15,9 +19,8 @@ import {
 
 const initialState = {
   value: "",
-  isErrorExist: false,
+  isErrorExist: true,
   errorClassName: "",
-  errorMessage: "",
 };
 const Register = (props) => {
   const [email, setEmail] = useState(initialState);
@@ -29,22 +32,29 @@ const Register = (props) => {
 
   const signUp = (e) => {
     e.preventDefault();
-    validateInputField(email, setEmail);
-    validateInputField(firstName, setFirstName);
-    validateInputField(password, setPassword);
-    validateInputField(confirmPassword, setConfirmPassword);
-    validateUserEmail(email, setEmail);
-    validatePasswordMatch(password, confirmPassword);
+    if (firstName.value === "") {
+      setInputFieldError(email, setFirstName);
+    }
+    if (email.value === "") {
+      setInputFieldError(email, setEmail);
+    }
+    if (password.value === "") {
+      setInputFieldError(password, setPassword);
+    }
+    if (confirmPassword.value === "") {
+      setInputFieldError(confirmPassword, setConfirmPassword);
+    }
+
+    if (password.value !== confirmPassword.value) {
+      setInputFieldError(confirmPassword, setConfirmPassword);
+    }
 
     if (
       !email.isErrorExist &&
       !password.isErrorExist &&
       !firstName.isErrorExist &&
       !confirmPassword.isErrorExist &&
-      email.value !== "" &&
-      password.value !== "" &&
-      firstName.value !== "" &&
-      confirmPassword.value !== ""
+      password.value === confirmPassword.value
     ) {
       const body = {
         firstName: firstName.value,
@@ -59,12 +69,45 @@ const Register = (props) => {
           showErrorMessage(response.data.errors);
         }
         if (response.status === 200) {
-          dispatch(toggleLoader(false, 1));
+          sendLoginRequest(email.value, password.value);
           clearValues();
-          props.closeRegisterPopup();
         }
       });
     }
+  };
+
+  const sendLoginRequest = (email, password) => {
+    const body = {
+      email: email,
+      password: password,
+    };
+    dispatch(toggleLoader(true, "15%"));
+    ServiceProvider.post(apiUrl.userLogin, body).then((response) => {
+      if (response.status === 404) {
+        dispatch(toggleLoader(false, 1));
+        showErrorMessage(response.data.errors);
+      }
+      if (response.status === 200) {
+        dispatch(toggleLoader(false, 1));
+        clearValues();
+        props.closeRegisterPopup();
+        setLocalStorageItem(constants.userDetails, response.data.data);
+        setLocalStorageItem(constants.loginDetails, {
+          email: email,
+          password: password,
+          rememberMe: false,
+        });
+        dispatch(saveUserInfo(email, true));
+      }
+    });
+  };
+
+  const setInputFieldError = (inputField, setData) => {
+    setData({
+      ...[inputField],
+      isErrorExist: true,
+      errorClassName: "input-error",
+    });
   };
 
   const clearValues = () => {
@@ -94,6 +137,32 @@ const Register = (props) => {
     }
   };
 
+  const setUiState = (e, isErrorExist, setData) => {
+    if (isErrorExist) {
+      setData({
+        ...[e.target.name],
+        isErrorExist: true,
+        value: e.target.value,
+        errorClassName: "input-error",
+      });
+    } else {
+      setData({
+        ...[e.target.name],
+        isErrorExist: false,
+        value: e.target.value,
+        errorClassName: "",
+      });
+    }
+  };
+
+  const handleInputChange = (e, setData) => {
+    let isErrorExist = validateInputField(e.target.value);
+    if (e.target.name === "email") {
+      isErrorExist = validateUserEmail(e.target.value);
+    }
+    setUiState(e, isErrorExist, setData);
+  };
+
   return (
     <div className={`overlay ${props.registerPopupClassName}`}>
       <div className="login-wrapper" id="signup-content">
@@ -116,19 +185,12 @@ const Register = (props) => {
                     type="text"
                     name="email"
                     placeholder=""
-                    onChange={(e) =>
-                      setEmail({
-                        ...email,
-                        value: e.target.value,
-                        errorClassName: "",
-                        errorMessage: "",
-                      })
-                    }
+                    onChange={(e) => handleInputChange(e, setEmail)}
                     className={email.errorClassName}
                     value={email.value}
                     style={{ width: "100%", marginLeft: "0px" }}
                   />
-                  {email.isErrorExist && (
+                  {email.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
@@ -145,19 +207,12 @@ const Register = (props) => {
                     id="input"
                     type="text"
                     name="firstName"
-                    onChange={(e) =>
-                      setFirstName({
-                        ...firstName,
-                        value: e.target.value,
-                        errorClassName: "",
-                        errorMessage: "",
-                      })
-                    }
+                    onChange={(e) => handleInputChange(e, setFirstName)}
                     className={firstName.errorClassName}
                     value={firstName.value}
                     style={{ width: "100%", marginLeft: "0px" }}
                   />
-                  {firstName.isErrorExist && (
+                  {firstName.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
@@ -188,19 +243,12 @@ const Register = (props) => {
                     type="password"
                     name="password"
                     placeholder=""
-                    onChange={(e) =>
-                      setPassword({
-                        ...password,
-                        value: e.target.value,
-                        errorClassName: "",
-                        errorMessage: "",
-                      })
-                    }
+                    onChange={(e) => handleInputChange(e, setPassword)}
                     value={password.value}
                     className={password.errorClassName}
                     style={{ width: "100%", marginLeft: "0px" }}
                   />
-                  {password.isErrorExist && (
+                  {password.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
@@ -216,21 +264,14 @@ const Register = (props) => {
                   <input
                     id="input"
                     type="password"
-                    name="password"
+                    name="confirmPassword"
                     placeholder=""
-                    onChange={(e) =>
-                      setConfirmPassword({
-                        ...confirmPassword,
-                        value: e.target.value,
-                        errorClassName: "",
-                        errorMessage: "",
-                      })
-                    }
+                    onChange={(e) => handleInputChange(e, setConfirmPassword)}
                     value={confirmPassword.value}
                     className={confirmPassword.errorClassName}
                     style={{ width: "100%", marginLeft: "0px" }}
                   />
-                  {confirmPassword.isErrorExist && (
+                  {confirmPassword.errorClassName === "input-error" && (
                     <i
                       class="fa fa-exclamation-circle"
                       id="warning-exclamation"
