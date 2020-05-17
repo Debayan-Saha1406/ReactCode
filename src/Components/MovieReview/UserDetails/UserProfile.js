@@ -14,6 +14,7 @@ import Information from "./../Popups/Information";
 import { useDispatch } from "react-redux";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import { useSelector } from "react-redux";
+import LoaderProvider from "./../../../Provider/LoaderProvider";
 
 const profileState = {
   firstName: "",
@@ -22,18 +23,22 @@ const profileState = {
   profileImageUrl: "",
 };
 
+let userDetails = {};
 const UserProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOkClicked, setIsOkClicked] = useState(false);
   const [profileData, setProfileData] = useState(profileState);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const dispatch = useDispatch();
   let isUserLoggedIn = useSelector(
     (state) => state.loggedInUserInfo.isUserLoggedIn
   );
+  const showLoader = useSelector((state) => state.uiDetails.showLoader);
+  const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
 
   useEffect(() => {
-    debugger;
-    const userDetails = getLocalStorageItem(constants.userDetails);
+    userDetails = getLocalStorageItem(constants.userDetails);
     if (userDetails) {
       dispatch(saveUserInfo(userDetails.email, true));
       setProfileData({
@@ -55,24 +60,38 @@ const UserProfile = (props) => {
     setIsOkClicked(true);
   };
 
+  const showInformation = (informationTitle, informationContent) => {
+    debugger;
+    setTitle(informationTitle);
+    setContent(informationContent);
+  };
   if (isOkClicked) {
     return <Redirect to="/home"></Redirect>;
   }
 
   return (
     <React.Fragment>
-      <div className="background">
+      <div id="loaderContainer">
+        <div id="loader">
+          {showLoader && <LoaderProvider visible={showLoader}></LoaderProvider>}
+        </div>
+      </div>
+      <div className="background" style={{ opacity: screenOpacity }}>
         {!isUserLoggedIn && !isLoading ? (
           <Information
-            handleOk={handleOk}
             title={"Log In"}
             content={"Please Login To Continue"}
             loginPopupClassName={"openform"}
-            handleClose={handleOk}
+            closePopup={handleOk}
           ></Information>
         ) : (
           <React.Fragment>
-            <Header page={page.details} handleOk={handleOk}></Header>
+            <Header
+              page={page.details}
+              handleOk={handleOk}
+              informationTitle={title}
+              informationContent={content}
+            ></Header>
             <div class="hero user-hero">
               <div class="container">
                 <div class="row">
@@ -100,7 +119,12 @@ const UserProfile = (props) => {
                         lastName={profileData.lastName}
                         email={profileData.email}
                       ></ProfileDetails>
-                      <ChangePassword></ChangePassword>
+                      {userDetails.email && (
+                        <ChangePassword
+                          email={userDetails.email}
+                          showInformation={showInformation}
+                        ></ChangePassword>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -6,13 +6,6 @@ const Information = (props) => {
     <div className={`overlay ${props.loginPopupClassName}`}>
       <div className="login-wrapper" id="login-content">
         <div className="login-content">
-          <a
-            className="close"
-            onClick={props.handleClose}
-            style={{ cursor: "pointer" }}
-          >
-            x
-          </a>
           <h3 style={{ fontSize: "25px" }}>{props.title}</h3>
           <form method="post">
             <div className="row">
@@ -25,7 +18,7 @@ const Information = (props) => {
             </div>
 
             <div className="row">
-              <button onClick={props.handleOk}>Ok</button>
+              <button onClick={props.closePopup}>Ok</button>
             </div>
           </form>
         </div>

@@ -86,16 +86,27 @@ class Header extends Component {
     return (
       <React.Fragment>
         {this.props.popupType === popupType.information && (
+          // <Information
+          //   loginPopupClassName={this.props.popupClassName}
+          //   title={"Reset Password"}
+          //   content={
+          //     "Your Password Reset Email Has Been Sent. Please Check Your Inbox As You Will Need To Enter The Recovery Code In The Next Screen."
+          //   }
+          //   handleClose={() =>
+          //     this.props.togglePopup("", popupType.resetPassword)
+          //   }
+          //   handleOk={() => this.props.togglePopup("", popupType.resetPassword)}
+          // ></Information>
           <Information
             loginPopupClassName={this.props.popupClassName}
-            title={"Reset Password"}
-            content={
-              "Your Password Reset Email Has Been Sent. Please Check Your Inbox As You Will Need To Enter The Recovery Code In The Next Screen."
-            }
-            handleClose={() =>
-              this.props.togglePopup("", popupType.resetPassword)
-            }
-            handleOk={() => this.props.togglePopup("", popupType.resetPassword)}
+            title={this.props.informationTitle}
+            content={this.props.informationContent}
+            closePopup={(e) => {
+              if (this.props.handleOk) {
+                this.props.handleOk(e);
+              }
+              this.props.togglePopup("", popupType.information);
+            }}
           ></Information>
         )}
         {this.props.popupType === popupType.resetPassword && (
@@ -109,14 +120,19 @@ class Header extends Component {
         {this.props.popupType === popupType.forgotPassword && (
           <ForgotPassword
             loginPopupClassName={this.props.popupClassName}
-            handleClose={() => this.props.togglePopup("", popupType.logout)}
+            handleClose={() =>
+              this.props.togglePopup("", popupType.forgotPassword)
+            }
           ></ForgotPassword>
         )}
         {this.props.popupType === popupType.logout && (
           <Logout
             loginPopupClassName={this.props.popupClassName}
             handleClose={(e) => {
-              this.props.handleOk(e);
+              if (this.props.handleOk) {
+                //To Handle Logout From side menu
+                this.props.handleOk(e);
+              }
               this.props.togglePopup("", popupType.logout);
             }}
           ></Logout>
