@@ -3,7 +3,7 @@ export const apiUrl = {
     // "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
     "https://localhost:44357/api",
   login: "/adminlogin",
-  update: `/userInfo/`,
+  userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
   register: "/register",
   forgotPassword: "/forgotPassword",

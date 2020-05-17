@@ -159,7 +159,8 @@ const ChangePassword = (props) => {
         <div class="col-md-2">
           <input
             class="submit"
-            type="submit"
+            id="black-hover"
+            style={{ cursor: "pointer" }}
             value="change"
             onClick={changePassword}
           />

@@ -21,9 +21,9 @@ const profileState = {
   lastName: "",
   email: "",
   profileImageUrl: "",
+  createdOn: "",
 };
 
-let userDetails = {};
 const UserProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOkClicked, setIsOkClicked] = useState(false);
@@ -38,7 +38,7 @@ const UserProfile = (props) => {
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
 
   useEffect(() => {
-    userDetails = getLocalStorageItem(constants.userDetails);
+    const userDetails = getLocalStorageItem(constants.userDetails);
     if (userDetails) {
       dispatch(saveUserInfo(userDetails.email, true));
       setProfileData({
@@ -47,6 +47,8 @@ const UserProfile = (props) => {
         lastName: userDetails.lastName,
         email: userDetails.email,
         profileImageUrl: userDetails.profileImageUrl,
+        createdOn: userDetails.createdOn,
+        userId: userDetails.userId,
       });
     } else {
       dispatch(saveUserInfo("", false));
@@ -118,13 +120,13 @@ const UserProfile = (props) => {
                         firstName={profileData.firstName}
                         lastName={profileData.lastName}
                         email={profileData.email}
+                        createdOn={profileData.createdOn}
+                        userId={profileData.userId}
                       ></ProfileDetails>
-                      {userDetails.email && (
-                        <ChangePassword
-                          email={userDetails.email}
-                          showInformation={showInformation}
-                        ></ChangePassword>
-                      )}
+                      <ChangePassword
+                        email={profileData.email}
+                        showInformation={showInformation}
+                      ></ChangePassword>
                     </div>
                   </div>
                 </div>

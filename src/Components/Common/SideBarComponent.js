@@ -50,7 +50,7 @@ class SideBar extends Component {
         lastName: this.props.updatedLastName,
       };
       this.props.toggleLoader(true, "15%");
-      ServiceProvider.put(apiUrl.update, this.props.userId, body).then(
+      ServiceProvider.put(apiUrl.userInfo, this.props.userId, body).then(
         (response) => {
           if (response.status === 200) {
             this.updateLocalStorage();

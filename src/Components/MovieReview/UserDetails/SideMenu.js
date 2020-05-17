@@ -19,7 +19,7 @@ const SideMenu = (props) => {
             <img src={props.profileImageUrl} alt="" />
             <br />
           </a>
-          <a href="#" class="redbtn">
+          <a class="redbtn" id="black-hover" style={{ cursor: "pointer" }}>
             Change avatar
           </a>
         </div>

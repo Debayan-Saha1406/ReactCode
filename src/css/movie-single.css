@@ -1984,3 +1984,7 @@ a.blue-link:hover {
   color: #dcf836 !important;
   cursor: pointer;
 }
+
+input#black-hover:hover {
+  color: black !important;
+}
