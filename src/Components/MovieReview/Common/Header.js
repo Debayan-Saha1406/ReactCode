@@ -28,6 +28,9 @@ class Header extends Component {
     isUserLoggedIn: false,
     loggedInEmail: "",
     headerDropdownClass: "none",
+    informationTitle: "",
+    informationContent: "",
+    isInformationPopupParent: false,
   };
 
   componentDidMount() {
@@ -82,6 +85,14 @@ class Header extends Component {
     this.props.togglePopup("openform", popupType.logout);
   };
 
+  showInformation = (title, content) => {
+    this.setState({
+      informationTitle: title,
+      informationContent: content,
+      isInformationPopupParent: true,
+    });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -99,13 +110,23 @@ class Header extends Component {
           // ></Information>
           <Information
             loginPopupClassName={this.props.popupClassName}
-            title={this.props.informationTitle}
-            content={this.props.informationContent}
+            title={
+              this.props.informationTitle
+                ? this.props.informationTitle
+                : this.state.informationTitle
+            }
+            content={
+              this.props.informationContent
+                ? this.props.informationContent
+                : this.state.informationContent
+            }
             closePopup={(e) => {
-              if (this.props.handleOk) {
+              if (this.state.isInformationPopupParent) {
+                this.props.togglePopup("openform", popupType.resetPassword);
+              } else if (this.props.handleOk) {
                 this.props.handleOk(e);
+                this.props.togglePopup("", popupType.information);
               }
-              this.props.togglePopup("", popupType.information);
             }}
           ></Information>
         )}
@@ -123,6 +144,7 @@ class Header extends Component {
             handleClose={() =>
               this.props.togglePopup("", popupType.forgotPassword)
             }
+            showInformation={this.showInformation}
           ></ForgotPassword>
         )}
         {this.props.popupType === popupType.logout && (

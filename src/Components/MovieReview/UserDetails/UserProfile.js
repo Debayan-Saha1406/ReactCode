@@ -63,10 +63,10 @@ const UserProfile = (props) => {
   };
 
   const showInformation = (informationTitle, informationContent) => {
-    debugger;
     setTitle(informationTitle);
     setContent(informationContent);
   };
+
   if (isOkClicked) {
     return <Redirect to="/home"></Redirect>;
   }

@@ -50,6 +50,10 @@ const ForgotPassword = (props) => {
         if (response.status === 200) {
           dispatch(toggleLoader(false, 1));
           clearValues();
+          props.showInformation(
+            "Reset Password",
+            "Your Password Reset Email Has Been Sent. Please Check Your Inbox As You Will Need To Enter The Recovery Code In The Next Screen."
+          );
           dispatch(togglePopup("openform", popupType.information));
         }
       });
