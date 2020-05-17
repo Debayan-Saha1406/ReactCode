@@ -30,7 +30,7 @@ class Header extends Component {
     headerDropdownClass: "none",
     informationTitle: "",
     informationContent: "",
-    isInformationPopupParent: false,
+    isForgotPasswordPopupContent: false,
   };
 
   componentDidMount() {
@@ -89,7 +89,7 @@ class Header extends Component {
     this.setState({
       informationTitle: title,
       informationContent: content,
-      isInformationPopupParent: true,
+      isForgotPasswordPopupContent: true,
     });
   };
 
@@ -121,7 +121,7 @@ class Header extends Component {
                 : this.state.informationContent
             }
             closePopup={(e) => {
-              if (this.state.isInformationPopupParent) {
+              if (this.state.isForgotPasswordPopupContent) {
                 this.props.togglePopup("openform", popupType.resetPassword);
               } else if (this.props.handleOk) {
                 this.props.handleOk(e);

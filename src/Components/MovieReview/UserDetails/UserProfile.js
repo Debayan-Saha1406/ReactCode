@@ -71,6 +71,13 @@ const UserProfile = (props) => {
     return <Redirect to="/home"></Redirect>;
   }
 
+  const changeProfileImageUrl = (image) => {
+    setProfileData({
+      ...profileData,
+      profileImageUrl: image,
+    });
+  };
+
   return (
     <React.Fragment>
       <div id="loaderContainer">
@@ -113,6 +120,8 @@ const UserProfile = (props) => {
                 <div class="row ipad-width">
                   <SideMenu
                     profileImageUrl={profileData.profileImageUrl}
+                    changeProfileImageUrl={changeProfileImageUrl}
+                    userId={profileData.userId}
                   ></SideMenu>
                   <div class="col-md-9 col-sm-12 col-xs-12">
                     <div class="form-style-1 user-pro" action="">

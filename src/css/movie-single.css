@@ -1898,6 +1898,8 @@ a.blue-link:hover {
 .user-information .user-img img {
   margin-bottom: 30px;
   border-radius: 50% !important;
+  width: 120px;
+  height: 120px;
 }
 
 .user-information ul li a {
