@@ -95,9 +95,7 @@ class Header extends Component {
             handleClose={() =>
               this.props.togglePopup("", popupType.resetPassword)
             }
-            handleOk={() =>
-              this.props.togglePopup("", popupType.resetPassword)
-            }
+            handleOk={() => this.props.togglePopup("", popupType.resetPassword)}
           ></Information>
         )}
         {this.props.popupType === popupType.resetPassword && (
@@ -117,7 +115,10 @@ class Header extends Component {
         {this.props.popupType === popupType.logout && (
           <Logout
             loginPopupClassName={this.props.popupClassName}
-            handleClose={() => this.props.togglePopup("", popupType.logout)}
+            handleClose={(e) => {
+              this.props.handleOk(e);
+              this.props.togglePopup("", popupType.logout);
+            }}
           ></Logout>
         )}
         {this.props.popupType === popupType.login && (
@@ -232,7 +233,7 @@ class Header extends Component {
                       className="dropdown-content"
                       style={{ display: this.state.headerDropdownClass }}
                     >
-                      <a href="#">Edit Profile</a>
+                      <Link to="/user-profile">View Profile</Link>
                       <a onClick={this.handleLogout}>Logout</a>
                       <a href="#">Link 3</a>
                     </div>

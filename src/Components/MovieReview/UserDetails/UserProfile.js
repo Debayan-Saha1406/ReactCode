@@ -11,6 +11,9 @@ import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Information from "./../Popups/Information";
+import { useDispatch } from "react-redux";
+import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
+import { useSelector } from "react-redux";
 
 const profileState = {
   firstName: "",
@@ -20,15 +23,19 @@ const profileState = {
 };
 
 const UserProfile = (props) => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isOkClicked, setIsOkClicked] = useState(false);
   const [profileData, setProfileData] = useState(profileState);
+  const dispatch = useDispatch();
+  let isUserLoggedIn = useSelector(
+    (state) => state.loggedInUserInfo.isUserLoggedIn
+  );
+
   useEffect(() => {
-    const userDetails = getLocalStorageItem(constants.userDetails);
     debugger;
+    const userDetails = getLocalStorageItem(constants.userDetails);
     if (userDetails) {
-      setIsUserLoggedIn(true);
+      dispatch(saveUserInfo(userDetails.email, true));
       setProfileData({
         ...profileData,
         firstName: userDetails.firstName,
@@ -36,17 +43,14 @@ const UserProfile = (props) => {
         email: userDetails.email,
         profileImageUrl: userDetails.profileImageUrl,
       });
-      // setFirstName(userDetails.firstName);
-      // if (userDetails.lastName) {
-      //   setLastName(userDetails.lastName);
-      // }
     } else {
-      setIsUserLoggedIn(false);
+      dispatch(saveUserInfo("", false));
     }
     setIsLoading(false);
-  }, []);
+  }, [isUserLoggedIn]);
 
   const handleOk = (e) => {
+    debugger;
     e.preventDefault();
     setIsOkClicked(true);
   };
@@ -68,7 +72,7 @@ const UserProfile = (props) => {
           ></Information>
         ) : (
           <React.Fragment>
-            <Header page={page.details}></Header>
+            <Header page={page.details} handleOk={handleOk}></Header>
             <div class="hero user-hero">
               <div class="container">
                 <div class="row">

@@ -1,8 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import image from "../../../images/movie-single.jpg";
+import { useDispatch } from "react-redux";
+import { togglePopup } from "./../../../Store/Actions/actionCreator";
+import { popupType } from "./../../../Shared/Constants";
+import "../../../css/movie-single.css";
 
 const SideMenu = (props) => {
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(togglePopup("openform", popupType.logout));
+  };
   return (
     <div class="col-md-3 col-sm-12 col-xs-12">
       <div class="user-information">
@@ -36,7 +44,9 @@ const SideMenu = (props) => {
               <a href="#">Change password</a>
             </li>
             <li>
-              <a href="#">Log out</a>
+              <a onClick={logout} className="white-pointer">
+                Log out
+              </a>
             </li>
           </ul>
         </div>

@@ -1974,3 +1974,13 @@ a.blue-link:hover {
     margin-bottom: 60px;
   }
 }
+
+.white-pointer {
+  color: white !important;
+  cursor: pointer;
+}
+
+.white-pointer:hover {
+  color: #dcf836 !important;
+  cursor: pointer;
+}

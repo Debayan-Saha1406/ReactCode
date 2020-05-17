@@ -5,10 +5,14 @@ import {
   removeLocalStorageItem,
 } from "../../../Provider/LocalStorageProvider";
 
-import { saveUserInfo } from "../../../Store/Actions/actionCreator";
+import {
+  saveUserInfo,
+  togglePopup,
+} from "../../../Store/Actions/actionCreator";
 import { getLocalStorageItem } from "../../../Provider/LocalStorageProvider";
 import { constants } from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
+import { popupType } from "./../../../Shared/Constants";
 
 const Logout = (props) => {
   const dispatch = useDispatch();
@@ -23,13 +27,14 @@ const Logout = (props) => {
         clearLocalStorage();
       }
     }
+    debugger;
     dispatch(saveUserInfo("", false));
-    props.handleClose();
+    props.handleClose(e);
   };
 
   const handleClose = (e) => {
     e.preventDefault();
-    props.handleClose();
+    dispatch(togglePopup("", popupType.logout));
   };
   return (
     <div className={`overlay ${props.loginPopupClassName}`}>
