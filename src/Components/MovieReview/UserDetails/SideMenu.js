@@ -2,7 +2,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { togglePopup } from "./../../../Store/Actions/actionCreator";
-import { popupType, constants } from "./../../../Shared/Constants";
+import {
+  popupType,
+  constants,
+  userProfileSideMenuItem,
+} from "./../../../Shared/Constants";
 import "../../../css/movie-single.css";
 import { ImagePickerProvider } from "./../../../Provider/ImagePickerProvider";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
@@ -74,13 +78,28 @@ const SideMenu = (props) => {
           <p>Account Details</p>
           <ul>
             <li class="active">
-              <a href="userprofile.html">Profile</a>
+              <a
+                onClick={() =>
+                  props.toggleSideMenuItem(userProfileSideMenuItem.profile)
+                }
+              >
+                Profile
+              </a>
             </li>
             <li>
-              <a href="userfavoritelist.html">Favorite movies</a>
+              <a
+                onClick={() =>
+                  props.toggleSideMenuItem(userProfileSideMenuItem.favoriteList)
+                }
+                className="white-pointer"
+              >
+                Favorite movies
+              </a>
             </li>
             <li>
-              <a href="userrate.html">Rated movies</a>
+              <a href="userrate.html" className="white-pointer">
+                Rated movies
+              </a>
             </li>
           </ul>
         </div>

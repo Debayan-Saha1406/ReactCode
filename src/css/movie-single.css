@@ -1990,3 +1990,40 @@ a.blue-link:hover {
 input#black-hover:hover {
   color: black !important;
 }
+
+.social-btn {
+  margin-bottom: 40px;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.social-btn .parent-btn {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: #dd003f;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-right: 35px;
+}
+
+.social-btn .parent-btn i {
+  padding: 13px 14px 12px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #dd003f;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+#footer-pagination {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.user-fav-list .movie-item-style-2 img {
+  width: 30%;
+}

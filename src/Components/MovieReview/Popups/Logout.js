@@ -27,7 +27,6 @@ const Logout = (props) => {
         clearLocalStorage();
       }
     }
-    debugger;
     dispatch(saveUserInfo("", false));
     props.handleClose(e);
   };

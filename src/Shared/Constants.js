@@ -12,16 +12,17 @@ export const apiUrl = {
   users: "/users",
   movie: "/movie/",
   reviews: "/reviews",
-  rating: "/rating/",
+  updateUserMovieDetails: "/userMovieDetails/",
   movies: "/movies",
   movieLanguages: "/movieLanguages",
   postReview: "/review",
   userLogin: "/userLogin",
-  movieUserRatings: `/movieUserRatings/`,
+  userMovieDetails: `/userMovieDetails/`,
   updateReview: "/review/",
   celebrity: "/celebrity/",
   celebrityMovies: "/celebrityMovies",
   changePassword: "/changePassword",
+  userFavoriteMovies: "/userFavoriteMovies",
 };
 
 export const constants = {
@@ -150,4 +151,10 @@ export const menuItem = {
   movies: "movies",
   about: "about",
   loggedInEmail: "loggedInEmail",
+};
+
+export const userProfileSideMenuItem = {
+  profile: "profile",
+  favoriteList: "favoriteList",
+  ratedMovies: "ratedMovies",
 };

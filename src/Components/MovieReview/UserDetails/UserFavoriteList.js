@@ -1,0 +1,152 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState, useEffect } from "react";
+import Pagination from "./../Common/Pagination";
+import Topbar from "../Common/Topbar";
+import { pageType } from "../../../Shared/Constants";
+import ServiceProvider from "./../../../Provider/ServiceProvider";
+import { apiUrl } from "./../../../Shared/Constants";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { Link } from "react-router-dom";
+import image from "../../../images/movie-single.jpg";
+
+const initialData = {
+  pageNumber: 1,
+  pageSize: 10,
+  totalMovies: 0,
+  moviesList: [],
+  sortColumn: "Id",
+  sortDirection: "asc",
+};
+const UserFavoriteList = (props) => {
+  const [paginationData, setPaginationData] = useState(initialData);
+  const [pageViewType, setPageViewType] = useState(pageType.list);
+  const [moviesList, setMoviesList] = useState(initialData.moviesList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const body = {
+      pageNumber: paginationData.pageNumber,
+      pageSize: paginationData.pageSize,
+      sortDirection: paginationData.sortDirection,
+      sortColumn: paginationData.sortColumn,
+      email: props.email,
+    };
+
+    ServiceProvider.post(apiUrl.userFavoriteMovies, body).then((response) => {
+      if (response.status === 200) {
+        setMoviesList(response.data.data.details);
+        setPaginationData({
+          ...initialData,
+          totalMovies: response.data.data.totalCount,
+        });
+        dispatch(toggleLoader(false, 1));
+      }
+    });
+  }, []);
+
+  const changeMovieCount = (e) => {
+    setPaginationData({ ...initialData, pageSize: e.target.value });
+  };
+
+  const pageNumberClicked = () => {};
+
+  const selectGrid = () => {
+    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
+    setPageViewType(pageType.grid);
+  };
+
+  const selectList = () => {
+    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
+    setPageViewType(pageType.list);
+  };
+
+  const fetchSortedData = () => {};
+
+  return (
+    <React.Fragment>
+      <Topbar
+        totalMovies={paginationData.totalMovies}
+        selectGrid={selectGrid}
+        pageType={pageViewType}
+        fetchSortedData={fetchSortedData}
+        selectList={selectList}
+      ></Topbar>
+      {/* <div class="topbar-filter user">
+        <p>
+          Found <span>1,608 movies</span> in total
+        </p>
+        <label>Sort by:</label>
+        <select>
+          <option value="range">-- Choose option --</option>
+          <option value="saab">-- Choose option 2--</option>
+        </select>
+        <a href="userfavoritelist.html" class="list">
+          <i class="ion-ios-list-outline active"></i>
+        </a>
+        <a href="userfavoritegrid.html" class="grid">
+          <i class="ion-grid "></i>
+        </a>
+      </div> */}
+      <div class="flex-wrap-movielist user-fav-list">
+        {moviesList.map((movie) => (
+          <div class="movie-item-style-2">
+            <img src={image} alt="" />
+            <div class="mv-item-infor">
+              <h6>
+                <Link
+                  className="heading"
+                  to={`/movie-details/${movie.movieId}`}
+                >
+                  {movie.movieName}{" "}
+                  <span>
+                    (
+                    {movie.releaseDate.substring(
+                      movie.releaseDate.indexOf(",") + 2,
+                      movie.releaseDate.length
+                    )}
+                    )
+                  </span>
+                </Link>
+              </h6>
+              <p class="rate">
+                <i
+                  className="fa fa-star"
+                  style={{
+                    fontSize: "20px",
+                    color: "yellow",
+                    marginRight: "5px",
+                  }}
+                ></i>
+                <span>{movie.avgRating}</span> /10
+              </p>
+              <p class="describe">
+                {movie.description.length > 200
+                  ? movie.description.substring(0, 200) + "..."
+                  : movie.description}
+              </p>
+              <p class="run-time"> Run Time: {movie.runTime}</p>
+              <p>Release: {movie.releaseDate}</p>
+              <p>
+                Stars: <a href="#">Robert Downey Jr.,</a>{" "}
+                <a href="#">Chris Evans,</a> <a href="#"> Chris Hemsworth</a>
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      {moviesList.length > 0 && (
+        <Pagination
+          pageSize={paginationData.pageSize}
+          totalCount={paginationData.totalMovies}
+          currentPage={paginationData.pageNumber}
+          changeCount={changeMovieCount}
+          pageNumberClicked={pageNumberClicked}
+          description="Movies"
+        ></Pagination>
+      )}
+    </React.Fragment>
+  );
+};
+
+export default UserFavoriteList;

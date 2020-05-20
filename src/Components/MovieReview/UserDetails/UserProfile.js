@@ -15,6 +15,9 @@ import { useDispatch } from "react-redux";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import { useSelector } from "react-redux";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
+import { userProfileSideMenuItem } from "../../../Shared/Constants";
+import UserFavoriteList from "./UserFavoriteList";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 const profileState = {
   firstName: "",
@@ -30,6 +33,9 @@ const UserProfile = (props) => {
   const [profileData, setProfileData] = useState(profileState);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [activeSideMenuItem, setActiveSideMenuItem] = useState(
+    userProfileSideMenuItem.profile
+  );
   const dispatch = useDispatch();
   let isUserLoggedIn = useSelector(
     (state) => state.loggedInUserInfo.isUserLoggedIn
@@ -78,6 +84,13 @@ const UserProfile = (props) => {
     });
   };
 
+  const toggleSideMenuItem = (activeSideMenuItem) => {
+    if (activeSideMenuItem === userProfileSideMenuItem.favoriteList) {
+      dispatch(toggleLoader(true, "15%"));
+    }
+    setActiveSideMenuItem(activeSideMenuItem);
+  };
+
   return (
     <React.Fragment>
       <div id="loaderContainer">
@@ -122,21 +135,30 @@ const UserProfile = (props) => {
                     profileImageUrl={profileData.profileImageUrl}
                     changeProfileImageUrl={changeProfileImageUrl}
                     userId={profileData.userId}
+                    toggleSideMenuItem={toggleSideMenuItem}
                   ></SideMenu>
                   <div class="col-md-9 col-sm-12 col-xs-12">
-                    <div class="form-style-1 user-pro" action="">
-                      <ProfileDetails
-                        firstName={profileData.firstName}
-                        lastName={profileData.lastName}
+                    {activeSideMenuItem === userProfileSideMenuItem.profile && (
+                      <div class="form-style-1 user-pro" action="">
+                        <ProfileDetails
+                          firstName={profileData.firstName}
+                          lastName={profileData.lastName}
+                          email={profileData.email}
+                          createdOn={profileData.createdOn}
+                          userId={profileData.userId}
+                        ></ProfileDetails>
+                        <ChangePassword
+                          email={profileData.email}
+                          showInformation={showInformation}
+                        ></ChangePassword>
+                      </div>
+                    )}
+                    {activeSideMenuItem ===
+                      userProfileSideMenuItem.favoriteList && (
+                      <UserFavoriteList
                         email={profileData.email}
-                        createdOn={profileData.createdOn}
-                        userId={profileData.userId}
-                      ></ProfileDetails>
-                      <ChangePassword
-                        email={profileData.email}
-                        showInformation={showInformation}
-                      ></ChangePassword>
-                    </div>
+                      ></UserFavoriteList>
+                    )}
                   </div>
                 </div>
               </div>

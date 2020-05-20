@@ -40,17 +40,36 @@ class MovieDetails extends Component {
     redirectToNotFound: false,
     isMovieDetailPresent: false,
     userRating: -1,
+    isFavourite: false,
+    resetValue: true,
   };
 
   toggleTab = (destTab) => {
     this.setState({ selectedTab: destTab });
   };
 
+  toggleFavourite = () => {
+    if (this.props.isUserLoggedIn) {
+      this.setState({ isFavourite: !this.state.isFavourite }, () => {
+        const movieDetail = { ...this.state.movie };
+        this.sendUserMovieDetailsRequest(
+          movieDetail,
+          this.state.indexClicked + 1
+        );
+      });
+    } else {
+      this.props.togglePopup("openform", popupType.login);
+    }
+  };
+
   componentDidMount() {
     movieId = this.props.match.params.id;
+    if (!this.props.isUserLoggedIn) {
+      this.setState({ indexClicked: -1, isFavourite: false });
+    }
 
     loginDetails = getLocalStorageItem(constants.loginDetails);
-    this.fetchMovieUserRatings(movieId);
+    this.fetchMovieUserRatings(movieId); //for Giving rating and Refresh
 
     this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
@@ -89,6 +108,7 @@ class MovieDetails extends Component {
   };
 
   handleStarClick = (index) => {
+    debugger;
     if (this.props.isUserLoggedIn) {
       const movieDetail = { ...this.state.movie };
       this.setAvgRating(movieDetail, index);
@@ -97,53 +117,59 @@ class MovieDetails extends Component {
         movieDetail.movie.totalRatings += 1;
       }
 
-      const body = {
-        avgRating: movieDetail.movie.avgRating,
-        userEmail: this.props.loggedInEmail,
-        userRating: index + 1,
-        totalRating: movieDetail.movie.totalRatings,
-      };
-      this.props.toggleLoader(true, "15%");
-      ServiceProvider.put(
-        apiUrl.rating,
-        this.state.movie.movie.movieId,
-        body
-      ).then((response) => {
-        if (response.status === 200) {
-          this.setState(
-            {
-              isRatingGiven: true,
-              movie: movieDetail,
-              userRating: index,
-            },
-            () => {
-              this.fetchMovieUserRatings(movieId);
-              this.props.toggleLoader(false, 1);
-            }
-          );
-        }
-      });
+      this.sendUserMovieDetailsRequest(movieDetail, index);
     } else {
       this.props.togglePopup("openform", popupType.login);
     }
   };
 
+  sendUserMovieDetailsRequest(movieDetail, index) {
+    const body = {
+      avgRating: movieDetail.movie.avgRating,
+      userEmail: this.props.loggedInEmail,
+      userRating: index + 1,
+      totalRating: movieDetail.movie.totalRatings,
+      isFavourite: this.state.isFavourite,
+    };
+    this.props.toggleLoader(true, "15%");
+    ServiceProvider.put(
+      apiUrl.updateUserMovieDetails,
+      this.state.movie.movie.movieId,
+      body
+    ).then((response) => {
+      if (response.status === 200) {
+        this.setState(
+          {
+            isRatingGiven: true,
+            movie: movieDetail,
+            userRating: index,
+          },
+          () => {
+            this.fetchMovieUserRatings(movieId);
+            this.props.toggleLoader(false, 1);
+          }
+        );
+      }
+    });
+  }
+
   fetchMovieUserRatings(movieId) {
     loginDetails = getLocalStorageItem(constants.loginDetails);
     if (loginDetails) {
       ServiceProvider.getWithTwoParams(
-        apiUrl.movieUserRatings,
+        apiUrl.userMovieDetails,
         loginDetails.email,
         movieId
       ).then((response) => {
         if (response.status === 200 && response.data.data.length !== 0) {
-          response.data.data.forEach((movieRating) => {
-            if (movieRating.movieId == movieId) {
+          response.data.data.forEach((movieUserDetails) => {
+            if (movieUserDetails.movieId == movieId) {
               this.setState(
                 {
-                  indexClicked: movieRating.rating - 1,
-                  userRating: movieRating.rating - 1,
+                  indexClicked: movieUserDetails.rating - 1,
+                  userRating: movieUserDetails.rating - 1,
                   isRatingGiven: true,
+                  isFavourite: movieUserDetails.isFavourite,
                 },
                 () => {}
               );
@@ -172,8 +198,32 @@ class MovieDetails extends Component {
   }
 
   componentDidUpdate() {
+    // if (!this.props.isUserLoggedIn && this.state.indexClicked !== -1) {
+    //   this.setState({ indexClicked: -1 });
+    // }
+    if (!this.props.isUserLoggedIn && this.state.resetValue !== false) {
+      this.setState({
+        isFavourite: false,
+        indexClicked: -1,
+        resetValue: false,
+      });
+    }
+
     if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
-      this.fetchMovieUserRatings(movieId);
+      const userDetails = getLocalStorageItem(constants.userDetails);
+      if (userDetails) {
+        if (userDetails.userMovieRating.length > 0) {
+          userDetails.userMovieRating.forEach((userMovieRating) => {
+            if (userMovieRating.movieId === Number(movieId)) {
+              this.setState({
+                indexClicked: userMovieRating.rating - 1,
+                isFavourite: userMovieRating.isFavourite,
+              });
+            }
+          });
+        }
+      }
+      //this.fetchMovieUserRatings(movieId);
     }
   }
 
@@ -272,6 +322,19 @@ class MovieDetails extends Component {
                     {isMovieDetailPresent && this.state.movie.movie.movieName}
                     <span>{releaseYear}</span>
                   </h1>
+                  <div class="social-btn">
+                    <div class="parent-btn">
+                      <i
+                        class="fa fa-heart"
+                        aria-hidden="true"
+                        onClick={this.toggleFavourite}
+                        style={{ cursor: "pointer" }}
+                      ></i>{" "}
+                      {this.state.isFavourite
+                        ? "Remove From  Favourite"
+                        : "Add to Favorite"}
+                    </div>
+                  </div>
                   <div className="movie-rate" onMouseOut={this.toggleAllStars}>
                     <div className="rate">
                       <i
@@ -325,6 +388,7 @@ class MovieDetails extends Component {
                                 }}
                                 onMouseOver={() => this.toggleStar(index)}
                                 onMouseOut={() => this.toggleStar(index)}
+                                onClick={() => this.handleStarClick(index)}
                               ></i>
                             )}
                           </li>

@@ -17,7 +17,7 @@ const Pagination = (props) => {
     pages.push(i);
   }
   return (
-    <div className="topbar-filter">
+    <div className="topbar-filter" id="footer-pagination">
       <label className="filterBy">{description} per page:</label>
       <select onChange={(e) => changeCount(e)}>
         <option value={5}>5 {description}</option>
