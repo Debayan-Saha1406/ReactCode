@@ -2,75 +2,26 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "./../Common/Pagination";
 import Topbar from "../Common/Topbar";
-import { pageType } from "../../../Shared/Constants";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { apiUrl } from "./../../../Shared/Constants";
-import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
 import image from "../../../images/movie-single.jpg";
 
-const initialData = {
-  pageNumber: 1,
-  pageSize: 10,
-  totalMovies: 0,
-  moviesList: [],
-  sortColumn: "Id",
-  sortDirection: "asc",
-};
 const UserFavoriteList = (props) => {
-  const [paginationData, setPaginationData] = useState(initialData);
-  const [pageViewType, setPageViewType] = useState(pageType.list);
-  const [moviesList, setMoviesList] = useState(initialData.moviesList);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const body = {
-      pageNumber: paginationData.pageNumber,
-      pageSize: paginationData.pageSize,
-      sortDirection: paginationData.sortDirection,
-      sortColumn: paginationData.sortColumn,
-      email: props.email,
-    };
-
-    ServiceProvider.post(apiUrl.userFavoriteMovies, body).then((response) => {
-      if (response.status === 200) {
-        setMoviesList(response.data.data.details);
-        setPaginationData({
-          ...initialData,
-          totalMovies: response.data.data.totalCount,
-        });
-        dispatch(toggleLoader(false, 1));
-      }
-    });
-  }, []);
-
   const changeMovieCount = (e) => {
-    setPaginationData({ ...initialData, pageSize: e.target.value });
+    // setPaginationData({ ...initialData, pageSize: e.target.value });
   };
 
   const pageNumberClicked = () => {};
-
-  const selectGrid = () => {
-    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
-    setPageViewType(pageType.grid);
-  };
-
-  const selectList = () => {
-    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
-    setPageViewType(pageType.list);
-  };
 
   const fetchSortedData = () => {};
 
   return (
     <React.Fragment>
       <Topbar
-        totalMovies={paginationData.totalMovies}
-        selectGrid={selectGrid}
-        pageType={pageViewType}
+        totalMovies={props.paginationData.totalMovies}
+        selectGrid={props.selectGrid}
+        pageType={props.pageViewType}
         fetchSortedData={fetchSortedData}
-        selectList={selectList}
+        selectList={props.selectList}
       ></Topbar>
       {/* <div class="topbar-filter user">
         <p>
@@ -89,7 +40,7 @@ const UserFavoriteList = (props) => {
         </a>
       </div> */}
       <div class="flex-wrap-movielist user-fav-list">
-        {moviesList.map((movie) => (
+        {props.moviesList.map((movie) => (
           <div class="movie-item-style-2">
             <img src={image} alt="" />
             <div class="mv-item-infor">
@@ -127,19 +78,16 @@ const UserFavoriteList = (props) => {
               </p>
               <p class="run-time"> Run Time: {movie.runTime}</p>
               <p>Release: {movie.releaseDate}</p>
-              <p>
-                Stars: <a href="#">Robert Downey Jr.,</a>{" "}
-                <a href="#">Chris Evans,</a> <a href="#"> Chris Hemsworth</a>
-              </p>
+              <p>Language:{movie.language}</p>
             </div>
           </div>
         ))}
       </div>
-      {moviesList.length > 0 && (
+      {props.moviesList.length > 0 && (
         <Pagination
-          pageSize={paginationData.pageSize}
-          totalCount={paginationData.totalMovies}
-          currentPage={paginationData.pageNumber}
+          pageSize={props.paginationData.pageSize}
+          totalCount={props.paginationData.totalMovies}
+          currentPage={props.paginationData.pageNumber}
           changeCount={changeMovieCount}
           pageNumberClicked={pageNumberClicked}
           description="Movies"

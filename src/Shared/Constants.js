@@ -155,6 +155,6 @@ export const menuItem = {
 
 export const userProfileSideMenuItem = {
   profile: "profile",
-  favoriteList: "favoriteList",
+  favoriteMovies: "favoriteMovies",
   ratedMovies: "ratedMovies",
 };

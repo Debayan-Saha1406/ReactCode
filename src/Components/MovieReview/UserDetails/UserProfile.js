@@ -5,7 +5,7 @@ import ProfileDetails from "./ProfileDetails";
 import ChangePassword from "./ChangePassword";
 import Header from "../Common/Header";
 import "../../../css/movie-single.css";
-import { page, constants } from "../../../Shared/Constants";
+import { page, constants, pageType } from "../../../Shared/Constants";
 import { useEffect } from "react";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { useState } from "react";
@@ -18,6 +18,9 @@ import LoaderProvider from "./../../../Provider/LoaderProvider";
 import { userProfileSideMenuItem } from "../../../Shared/Constants";
 import UserFavoriteList from "./UserFavoriteList";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import UserFavoriteGrid from "./UserFavoriteGrid";
+import ServiceProvider from "./../../../Provider/ServiceProvider";
+import { apiUrl } from "./../../../Shared/Constants";
 
 const profileState = {
   firstName: "",
@@ -27,12 +30,24 @@ const profileState = {
   createdOn: "",
 };
 
+const initialData = {
+  pageNumber: 1,
+  pageSize: 10,
+  totalMovies: 0,
+  moviesList: [],
+  sortColumn: "Id",
+  sortDirection: "asc",
+};
+
 const UserProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOkClicked, setIsOkClicked] = useState(false);
   const [profileData, setProfileData] = useState(profileState);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [pageViewType, setPageViewType] = useState(pageType.list);
+  const [moviesList, setMoviesList] = useState(initialData.moviesList);
+  const [paginationData, setPaginationData] = useState(initialData);
   const [activeSideMenuItem, setActiveSideMenuItem] = useState(
     userProfileSideMenuItem.profile
   );
@@ -62,6 +77,27 @@ const UserProfile = (props) => {
     setIsLoading(false);
   }, [isUserLoggedIn]);
 
+  const fetchData = () => {
+    const body = {
+      pageNumber: paginationData.pageNumber,
+      pageSize: paginationData.pageSize,
+      sortDirection: paginationData.sortDirection,
+      sortColumn: paginationData.sortColumn,
+      email: profileData.email,
+    };
+
+    ServiceProvider.post(apiUrl.userFavoriteMovies, body).then((response) => {
+      if (response.status === 200) {
+        setMoviesList(response.data.data.details);
+        setPaginationData({
+          ...initialData,
+          totalMovies: response.data.data.totalCount,
+        });
+        dispatch(toggleLoader(false, 1));
+      }
+    });
+  };
+
   const handleOk = (e) => {
     debugger;
     e.preventDefault();
@@ -85,10 +121,21 @@ const UserProfile = (props) => {
   };
 
   const toggleSideMenuItem = (activeSideMenuItem) => {
-    if (activeSideMenuItem === userProfileSideMenuItem.favoriteList) {
+    if (activeSideMenuItem === userProfileSideMenuItem.favoriteMovies) {
       dispatch(toggleLoader(true, "15%"));
+      fetchData();
     }
     setActiveSideMenuItem(activeSideMenuItem);
+  };
+
+  const selectGrid = () => {
+    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
+    setPageViewType(pageType.grid);
+  };
+
+  const selectList = () => {
+    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
+    setPageViewType(pageType.list);
   };
 
   return (
@@ -154,11 +201,27 @@ const UserProfile = (props) => {
                       </div>
                     )}
                     {activeSideMenuItem ===
-                      userProfileSideMenuItem.favoriteList && (
-                      <UserFavoriteList
-                        email={profileData.email}
-                      ></UserFavoriteList>
-                    )}
+                      userProfileSideMenuItem.favoriteMovies &&
+                      pageViewType === pageType.list && (
+                        <UserFavoriteList
+                          email={profileData.email}
+                          selectGrid={selectGrid}
+                          pageViewType={pageViewType}
+                          moviesList={moviesList}
+                          paginationData={paginationData}
+                        ></UserFavoriteList>
+                      )}
+                    {activeSideMenuItem ===
+                      userProfileSideMenuItem.favoriteMovies &&
+                      pageViewType === pageType.grid && (
+                        <UserFavoriteGrid
+                          email={profileData.email}
+                          selectList={selectList}
+                          pageViewType={pageViewType}
+                          moviesList={moviesList}
+                          paginationData={paginationData}
+                        ></UserFavoriteGrid>
+                      )}
                   </div>
                 </div>
               </div>

@@ -89,7 +89,9 @@ const SideMenu = (props) => {
             <li>
               <a
                 onClick={() =>
-                  props.toggleSideMenuItem(userProfileSideMenuItem.favoriteList)
+                  props.toggleSideMenuItem(
+                    userProfileSideMenuItem.favoriteMovies
+                  )
                 }
                 className="white-pointer"
               >

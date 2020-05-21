@@ -1430,7 +1430,7 @@ a#black-hover {
 }
 
 .heading:hover {
-  color: #ffaa3c;
+  color: #ffaa3c !important;
   cursor: pointer;
 }
 
