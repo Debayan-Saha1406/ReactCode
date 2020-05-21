@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React from "react";
 import { pageType } from "../../../Shared/Constants";
 
 const Topbar = (props) => {
@@ -9,7 +9,10 @@ const Topbar = (props) => {
         Found <span>{props.totalMovies}</span> in total
       </p>
       <label className="filterBy">Sort by:</label>
-      <select onChange={(e) => props.fetchSortedData(e)}>
+      <select
+        onChange={(e) => props.fetchSortedData(e)}
+        className="dropdown-padding"
+      >
         <option value={1}>Movie Name Ascending</option>
         <option value={2}> Movie Name Descending</option>
         <option value={3}>Rating Ascending</option>

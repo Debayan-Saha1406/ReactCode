@@ -24,7 +24,9 @@ const Grid = (props) => {
 
           <div className="mv-item-infor">
             <h6>
-              <a href="#">{movie.movieName}</a>
+              <Link className="heading" to={`/movie-details/${movie.movieId}`}>
+                {movie.movieName}
+              </Link>
             </h6>
             <p className="rate">
               <i

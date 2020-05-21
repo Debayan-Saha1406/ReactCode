@@ -15,12 +15,23 @@ import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
+import { useState } from "react";
 
 const SideMenu = (props) => {
   const dispatch = useDispatch();
+  const [activeSideMenuItem, setActiveSideMenuItem] = useState(
+    userProfileSideMenuItem.profile
+  );
 
   const logout = () => {
     dispatch(togglePopup("openform", popupType.logout));
+  };
+
+  const toggleSideMenuItem = (activeSideMenu) => {
+    if (activeSideMenuItem !== activeSideMenu) {
+      setActiveSideMenuItem(activeSideMenu);
+      props.toggleSideMenuItem(activeSideMenu);
+    }
   };
 
   const handleFileChange = (image) => {
@@ -77,40 +88,68 @@ const SideMenu = (props) => {
         <div class="user-fav">
           <p>Account Details</p>
           <ul>
-            <li class="active">
-              <a
-                onClick={() =>
-                  props.toggleSideMenuItem(userProfileSideMenuItem.profile)
-                }
-              >
-                Profile
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={() =>
-                  props.toggleSideMenuItem(
-                    userProfileSideMenuItem.favoriteMovies
-                  )
-                }
-                className="white-pointer"
-              >
-                Favorite movies
-              </a>
-            </li>
-            <li>
-              <a href="userrate.html" className="white-pointer">
-                Rated movies
-              </a>
-            </li>
+            {activeSideMenuItem === userProfileSideMenuItem.profile ? (
+              <li className="active">
+                <a
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.profile)
+                  }
+                >
+                  Profile
+                </a>
+              </li>
+            ) : (
+              <li>
+                <a
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.profile)
+                  }
+                  className="white-pointer"
+                >
+                  Profile
+                </a>
+              </li>
+            )}
+            {activeSideMenuItem === userProfileSideMenuItem.favoriteMovies ? (
+              <li className="active">
+                <a
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.favoriteMovies)
+                  }
+                >
+                  Favorite movies
+                </a>
+              </li>
+            ) : (
+              <li>
+                <a
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.favoriteMovies)
+                  }
+                  className="white-pointer"
+                >
+                  Favorite movies
+                </a>
+              </li>
+            )}
+            {activeSideMenuItem === userProfileSideMenuItem.ratedMovies ? (
+              <li className="active">
+                <a href="userrate.html" className="white-pointer">
+                  Rated movies
+                </a>
+              </li>
+            ) : (
+              <li>
+                <a href="userrate.html" className="white-pointer">
+                  Rated movies
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <div class="user-fav">
           <p>Others</p>
           <ul>
-            <li>
-              <a href="#">Change password</a>
-            </li>
             <li>
               <a onClick={logout} className="white-pointer">
                 Log out

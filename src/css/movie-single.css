@@ -1892,7 +1892,12 @@ a.blue-link:hover {
 }
 
 .user-information ul li.active a {
-  color: #dcf836;
+  color: #ffaa3c;
+}
+
+.user-information ul li.active a:hover {
+  color: #dcf836 !important;
+  cursor: pointer;
 }
 
 .user-information .user-img img {
@@ -2026,4 +2031,8 @@ input#black-hover:hover {
 
 .user-fav-list .movie-item-style-2 img {
   width: 30%;
+}
+
+.dropdown-padding {
+  padding-left: 10px;
 }

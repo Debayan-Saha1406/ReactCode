@@ -19,7 +19,7 @@ const Pagination = (props) => {
   return (
     <div className="topbar-filter" id="footer-pagination">
       <label className="filterBy">{description} per page:</label>
-      <select onChange={(e) => changeCount(e)}>
+      <select onChange={(e) => changeCount(e)} className="dropdown-padding">
         <option value={5}>5 {description}</option>
         <option value={10}>10 {description}</option>
       </select>
