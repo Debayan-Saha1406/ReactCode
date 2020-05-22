@@ -6,7 +6,7 @@ const DetailTopBar = (props) => {
       <p>
         Found <span>{props.totalCount}</span> in total
       </p>
-      <label className="filterBy">Filter by:</label>
+      <label className="filterBy">Sort by:</label>
       <select className="popularity">
         <option value="popularity">Popularity Descending</option>
         <option value="popularity">Popularity Ascending</option>

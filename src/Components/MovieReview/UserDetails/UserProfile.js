@@ -21,6 +21,7 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import UserFavoriteGrid from "./UserFavoriteGrid";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
+import UserRatedMovies from "./UserRatedMovies";
 
 const profileState = {
   firstName: "",
@@ -48,6 +49,7 @@ const UserProfile = (props) => {
   const [pageViewType, setPageViewType] = useState(pageType.list);
   const [moviesList, setMoviesList] = useState(initialData.moviesList);
   const [paginationData, setPaginationData] = useState(initialData);
+
   const [activeSideMenuItem, setActiveSideMenuItem] = useState(
     userProfileSideMenuItem.profile
   );
@@ -223,6 +225,12 @@ const UserProfile = (props) => {
                           paginationData={paginationData}
                         ></UserFavoriteGrid>
                       )}
+                    {activeSideMenuItem ===
+                      userProfileSideMenuItem.ratedMovies && (
+                      <UserRatedMovies
+                        email={profileData.email}
+                      ></UserRatedMovies>
+                    )}
                   </div>
                 </div>
               </div>

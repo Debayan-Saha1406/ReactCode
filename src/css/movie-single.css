@@ -2036,3 +2036,55 @@ input#black-hover:hover {
 .dropdown-padding {
   padding-left: 10px;
 }
+
+.movie-item-style-2 .mv-item-infor p {
+  margin-bottom: 0;
+}
+
+.userrate .sm-text {
+  background-color: #233a50;
+  width: 90px;
+  text-align: center;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin-top: 15px;
+  margin-bottom: 10px !important;
+  text-transform: capitalize;
+}
+
+.movie-item-style-2 .mv-item-infor .rate {
+  font-size: 12px;
+}
+
+.movie-item-style-2 .mv-item-infor h6 {
+  margin-bottom: 10px;
+}
+
+.userrate h6 {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: #abb7c4;
+  font-weight: bold;
+  text-transform: none;
+  margin-bottom: 15px;
+}
+
+.userrate p.time.sm {
+  color: #4280bf;
+  margin-bottom: 10px;
+}
+
+.userrate img {
+  width: 100px;
+}
+
+.userrate {
+  align-items: flex-start;
+  border-bottom: 1px solid #405266;
+  padding-bottom: 30px;
+}
+
+.review-heading {
+  padding-top: 10px;
+}

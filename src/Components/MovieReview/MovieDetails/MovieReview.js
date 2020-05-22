@@ -26,6 +26,7 @@ class MovieReview extends Component {
     pageNumber: 1,
     pageSize: 5,
     totalReviews: 0,
+    isReviewGiven: false,
   };
 
   openReviewPopup = (
@@ -34,6 +35,7 @@ class MovieReview extends Component {
     reviewDescription,
     reviewId
   ) => {
+    debugger;
     if (this.props.isUserLoggedIn) {
       if (reviewPopupType === popupType.editReview) {
         this.setState({
@@ -56,11 +58,17 @@ class MovieReview extends Component {
   };
 
   closeReviewPopup = () => {
-    this.setState({
-      openPopupClassName: "",
-      reviewTitle: "",
-      reviewDescription: "",
-    });
+    if (!this.state.isReviewGiven) {
+      this.setState({
+        openPopupClassName: "",
+        reviewDescription: "",
+        reviewTitle: "",
+      });
+    } else {
+      this.setState({
+        openPopupClassName: "",
+      });
+    }
   };
 
   postReview = (
@@ -87,7 +95,7 @@ class MovieReview extends Component {
     };
 
     if (reviewPopupType === popupType.editReview) {
-      ServiceProvider.put(apiUrl.updateReview, reviewId, body).then(
+      ServiceProvider.put(apiUrl.updateReview, this.state.reviewId, body).then(
         (response) => {
           if (response.status === 200) {
             this.fetchReviews();
@@ -151,6 +159,17 @@ class MovieReview extends Component {
 
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
       if (response.status === 200) {
+        // {May Impact performance need to think if there are large number of reviews}
+        response.data.data.reviews.forEach((review) => {
+          if (review.userEmail === this.props.loggedInEmail) {
+            this.setState({
+              isReviewGiven: true,
+              reviewTitle: review.reviewTitle,
+              reviewDescription: review.reviewDescription,
+              reviewId: review.id,
+            });
+          }
+        });
         this.setState(
           {
             reviews: response.data.data.reviews,
@@ -200,14 +219,32 @@ class MovieReview extends Component {
               <h3>Reviews Related To</h3>
               <h2>{this.props.movieName}</h2>
             </div>
-            <a
-              className="redbtn"
-              id="black-hover"
-              style={{ cursor: "pointer" }}
-              onClick={this.openReviewPopup}
-            >
-              Write Review
-            </a>
+            {this.state.isReviewGiven ? (
+              <a
+                className="redbtn"
+                id="black-hover"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  this.openReviewPopup(
+                    popupType.editReview,
+                    this.state.reviewTitle,
+                    this.state.reviewDescription,
+                    this.state.reviewId
+                  )
+                }
+              >
+                Edit Review
+              </a>
+            ) : (
+              <a
+                className="redbtn"
+                id="black-hover"
+                style={{ cursor: "pointer" }}
+                onClick={this.openReviewPopup}
+              >
+                Write Review
+              </a>
+            )}
           </div>
           <DetailTopBar totalCount={this.state.totalReviews}></DetailTopBar>
           <div className="mv-user-review-item">
@@ -219,28 +256,7 @@ class MovieReview extends Component {
                     <p className="time">
                       {review.reviewDate} by{" "}
                       <a className="link-color"> {review.userEmail}</a>
-                      {this.props.loggedInEmail === review.userEmail && (
-                        <i
-                          className="fa fa-pencil"
-                          aria-hidden="true"
-                          style={{
-                            float: "right",
-                            cursor: "pointer",
-                            color: "#ffaa3c",
-                          }}
-                          id="edit-pencil"
-                          onClick={() =>
-                            this.openReviewPopup(
-                              popupType.editReview,
-                              review.reviewTitle,
-                              review.reviewDescription,
-                              review.id
-                            )
-                          }
-                        ></i>
-                      )}
                     </p>
-
                     <p>{review.reviewDescription}</p>
                   </li>
                 ))}

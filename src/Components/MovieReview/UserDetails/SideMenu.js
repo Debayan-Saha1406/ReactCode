@@ -134,13 +134,22 @@ const SideMenu = (props) => {
             )}
             {activeSideMenuItem === userProfileSideMenuItem.ratedMovies ? (
               <li className="active">
-                <a href="userrate.html" className="white-pointer">
+                <a
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.ratedMovies)
+                  }
+                >
                   Rated movies
                 </a>
               </li>
             ) : (
               <li>
-                <a href="userrate.html" className="white-pointer">
+                <a
+                  className="white-pointer"
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.ratedMovies)
+                  }
+                >
                   Rated movies
                 </a>
               </li>
