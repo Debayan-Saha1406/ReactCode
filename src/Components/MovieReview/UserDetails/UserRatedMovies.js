@@ -31,9 +31,13 @@ const UserRatedMovies = (props) => {
   const [reviewRatingList, setReviewRatingList] = useState(
     initialData.reviewRatingList
   );
-  const [showDeleteReviewPopup, setShowDeleteReviewPopup] = useState(false);
+  const [isPopupVisible, setPopupVisibility] = useState(false);
   const [reviewIdToDelete, setReviewIdToDelete] = useState(0);
+  const [ratingIdToDelete, setRatingIdToDelete] = useState(0);
   const [popupClassName, setPopupClassName] = useState("");
+  const [deletePopupType, setDeletePopupType] = useState(
+    popupType.deleteRating
+  );
   const dispatch = useDispatch();
 
   const changeReviewCount = () => {};
@@ -49,15 +53,26 @@ const UserRatedMovies = (props) => {
   }, []);
 
   const openDeleteReviewPopup = (reviewId) => {
-    setShowDeleteReviewPopup(true);
+    setPopupVisibility(true);
     setReviewIdToDelete(reviewId);
+    setDeletePopupType(popupType.deleteReview);
+    setPopupClassName("openform");
+  };
+
+  const openDeleteRatingPopup = (ratingId) => {
+    setPopupVisibility(true);
+    setRatingIdToDelete(ratingId);
+    setDeletePopupType(popupType.deleteRating);
     setPopupClassName("openform");
   };
 
   const handleOk = (e) => {
     e.preventDefault();
-    ServiceProvider.deleteItem(apiUrl.deleteReview, reviewIdToDelete).then(
-      (response) => {
+    if (deletePopupType === popupType.deleteRating) {
+      ServiceProvider.deleteItem(
+        apiUrl.deleteUserRating,
+        ratingIdToDelete
+      ).then((response) => {
         if (response.status === 200) {
           fetchReviewRatingData(
             reviewRatingData,
@@ -67,23 +82,40 @@ const UserRatedMovies = (props) => {
             setReviewRatingData
           );
           setPopupClassName("");
-          setShowDeleteReviewPopup(false);
+          setPopupVisibility(false);
         }
-      }
-    );
+      });
+    } else {
+      deleteReview(
+        reviewIdToDelete,
+        reviewRatingData,
+        props,
+        dispatch,
+        setReviewRatingList,
+        setReviewRatingData,
+        setPopupClassName,
+        setPopupVisibility
+      );
+    }
   };
 
   const handleCancel = () => {
     setPopupClassName("");
-    setShowDeleteReviewPopup(false);
+    setPopupVisibility(false);
   };
 
-  if (showDeleteReviewPopup) {
+  if (isPopupVisible) {
     return (
       <UserContentPopup
-        title={"Delete Review"}
+        title={
+          deletePopupType === popupType.deleteReview
+            ? "Delete Review"
+            : "Delete Rating"
+        }
         content={
-          "This review will be deleted permanently. You have to again write the review for this movie."
+          deletePopupType === popupType.deleteReview
+            ? "This review will be deleted permanently. You have to again write the review for this movie."
+            : "Your rating will be deleted permanently. You have to again give rating fo this movie."
         }
         loginPopupClassName={popupClassName}
         handlePrimaryButtonClick={handleOk}
@@ -120,8 +152,21 @@ const UserRatedMovies = (props) => {
                 </span>
               </Link>
             </h6>
-            {reviewRatingData.userRating && (
+            {reviewRatingData.userRating !== 0 && (
               <React.Fragment>
+                <p
+                  className="delete"
+                  style={{
+                    float: "right",
+                    marginTop: "15px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    openDeleteRatingPopup(reviewRatingData.ratingId)
+                  }
+                >
+                  Delete
+                </p>
                 <p class="time sm-text">your rate:</p>
                 <p class="rate">
                   <i
@@ -178,6 +223,33 @@ const UserRatedMovies = (props) => {
 };
 
 export default UserRatedMovies;
+function deleteReview(
+  reviewIdToDelete,
+  reviewRatingData,
+  props,
+  dispatch,
+  setReviewRatingList,
+  setReviewRatingData,
+  setPopupClassName,
+  setPopupVisibility
+) {
+  ServiceProvider.deleteItem(apiUrl.deleteReview, reviewIdToDelete).then(
+    (response) => {
+      if (response.status === 200) {
+        fetchReviewRatingData(
+          reviewRatingData,
+          props,
+          dispatch,
+          setReviewRatingList,
+          setReviewRatingData
+        );
+        setPopupClassName("");
+        setPopupVisibility(false);
+      }
+    }
+  );
+}
+
 function fetchReviewRatingData(
   reviewRatingData,
   props,

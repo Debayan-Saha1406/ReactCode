@@ -25,6 +25,7 @@ export const apiUrl = {
   userFavoriteMovies: "/userFavoriteMovies",
   userRatedMovies: "/userRatedMovies",
   deleteReview: "/review/",
+  deleteUserRating: "/userRating/",
 };
 
 export const constants = {
@@ -131,6 +132,8 @@ export const popupType = {
   forgotPassword: "ForgotPassword",
   resetPassword: "ResetPassword",
   information: "Information",
+  deleteReview: "DeleteReview",
+  deleteRating: "DeleteRating",
 };
 
 export const page = {

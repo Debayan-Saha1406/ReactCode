@@ -154,6 +154,7 @@ class MovieDetails extends Component {
   }
 
   fetchMovieUserRatings(movieId) {
+    debugger;
     loginDetails = getLocalStorageItem(constants.loginDetails);
     if (loginDetails) {
       ServiceProvider.getWithTwoParams(
