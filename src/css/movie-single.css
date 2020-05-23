@@ -2088,3 +2088,12 @@ input#black-hover:hover {
 .review-heading {
   padding-top: 10px;
 }
+
+.delete{
+  color: #4280bf;
+  
+}
+
+.delete:hover{
+  color: #ffaa3c;
+}

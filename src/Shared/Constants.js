@@ -24,6 +24,7 @@ export const apiUrl = {
   changePassword: "/changePassword",
   userFavoriteMovies: "/userFavoriteMovies",
   userRatedMovies: "/userRatedMovies",
+  deleteReview: "/review/",
 };
 
 export const constants = {

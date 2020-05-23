@@ -8,8 +8,14 @@ import { useState } from "react";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import {
+  toggleLoader,
+  togglePopup,
+} from "./../../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
+import { popupType } from "./../../../Shared/Constants";
+import Information from "./../Popups/Information";
+import UserContentPopup from "../Popups/UserContentPopup";
 
 const initialData = {
   pageNumber: 1,
@@ -25,31 +31,69 @@ const UserRatedMovies = (props) => {
   const [reviewRatingList, setReviewRatingList] = useState(
     initialData.reviewRatingList
   );
+  const [showDeleteReviewPopup, setShowDeleteReviewPopup] = useState(false);
+  const [reviewIdToDelete, setReviewIdToDelete] = useState(0);
+  const [popupClassName, setPopupClassName] = useState("");
   const dispatch = useDispatch();
 
   const changeReviewCount = () => {};
 
   useEffect(() => {
-    const body = {
-      pageNumber: reviewRatingData.pageNumber,
-      pageSize: reviewRatingData.pageSize,
-      sortDirection: reviewRatingData.sortDirection,
-      sortColumn: reviewRatingData.sortColumn,
-      email: props.email,
-    };
-
-    dispatch(toggleLoader(true, "15%"));
-    ServiceProvider.post(apiUrl.userRatedMovies, body).then((response) => {
-      if (response.status === 200) {
-        setReviewRatingList(response.data.data.details);
-        setReviewRatingData({
-          ...initialData,
-          totalReviewRatings: response.data.data.totalCount,
-        });
-        dispatch(toggleLoader(false, 1));
-      }
-    });
+    fetchReviewRatingData(
+      reviewRatingData,
+      props,
+      dispatch,
+      setReviewRatingList,
+      setReviewRatingData
+    );
   }, []);
+
+  const openDeleteReviewPopup = (reviewId) => {
+    setShowDeleteReviewPopup(true);
+    setReviewIdToDelete(reviewId);
+    setPopupClassName("openform");
+  };
+
+  const handleOk = (e) => {
+    e.preventDefault();
+    ServiceProvider.deleteItem(apiUrl.deleteReview, reviewIdToDelete).then(
+      (response) => {
+        if (response.status === 200) {
+          fetchReviewRatingData(
+            reviewRatingData,
+            props,
+            dispatch,
+            setReviewRatingList,
+            setReviewRatingData
+          );
+          setPopupClassName("");
+          setShowDeleteReviewPopup(false);
+        }
+      }
+    );
+  };
+
+  const handleCancel = () => {
+    setPopupClassName("");
+    setShowDeleteReviewPopup(false);
+  };
+
+  if (showDeleteReviewPopup) {
+    return (
+      <UserContentPopup
+        title={"Delete Review"}
+        content={
+          "This review will be deleted permanently. You have to again write the review for this movie."
+        }
+        loginPopupClassName={popupClassName}
+        handlePrimaryButtonClick={handleOk}
+        handleSecondaryButtonClick={handleCancel}
+        primaryButtonText="Ok"
+        secondaryButtonText="Cancel"
+      ></UserContentPopup>
+    );
+  }
+
   const pageNumberClicked = () => {};
   return (
     <React.Fragment>
@@ -59,7 +103,7 @@ const UserRatedMovies = (props) => {
       {reviewRatingList.map((reviewRatingData) => (
         <div class="movie-item-style-2 userrate">
           <img src={reviewRatingData.movieLogo} alt="" />
-          <div class="mv-item-infor">
+          <div class="mv-item-infor" style={{ width: "100%" }}>
             <h6>
               <Link
                 className="heading"
@@ -94,7 +138,21 @@ const UserRatedMovies = (props) => {
             )}
             {reviewRatingData.reviewId && (
               <React.Fragment>
+                <p
+                  className="delete"
+                  style={{
+                    float: "right",
+                    marginTop: "15px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    openDeleteReviewPopup(reviewRatingData.reviewId)
+                  }
+                >
+                  Delete
+                </p>
                 <p class="time sm-text">your reviews:</p>
+
                 <h6 className="review-heading">
                   {reviewRatingData.reviewTitle}
                 </h6>
@@ -120,3 +178,29 @@ const UserRatedMovies = (props) => {
 };
 
 export default UserRatedMovies;
+function fetchReviewRatingData(
+  reviewRatingData,
+  props,
+  dispatch,
+  setReviewRatingList,
+  setReviewRatingData
+) {
+  const body = {
+    pageNumber: reviewRatingData.pageNumber,
+    pageSize: reviewRatingData.pageSize,
+    sortDirection: reviewRatingData.sortDirection,
+    sortColumn: reviewRatingData.sortColumn,
+    email: props.email,
+  };
+  dispatch(toggleLoader(true, "15%"));
+  ServiceProvider.post(apiUrl.userRatedMovies, body).then((response) => {
+    if (response.status === 200) {
+      setReviewRatingList(response.data.data.details);
+      setReviewRatingData({
+        ...initialData,
+        totalReviewRatings: response.data.data.totalCount,
+      });
+      dispatch(toggleLoader(false, 1));
+    }
+  });
+}
