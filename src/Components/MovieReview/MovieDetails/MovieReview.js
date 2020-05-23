@@ -7,7 +7,10 @@ import {
   monthNames,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import {
+  toggleLoader,
+  togglePopup,
+} from "./../../../Store/Actions/actionCreator";
 
 import { connect } from "react-redux";
 import ServiceProvider from "../../../Provider/ServiceProvider";
@@ -35,7 +38,6 @@ class MovieReview extends Component {
     reviewDescription,
     reviewId
   ) => {
-    debugger;
     if (this.props.isUserLoggedIn) {
       if (reviewPopupType === popupType.editReview) {
         this.setState({
@@ -289,6 +291,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleLoader: (showLoader, screenOpacity) => {
       dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+    togglePopup: (popupClassName, popupType) => {
+      dispatch(togglePopup(popupClassName, popupType));
     },
   };
 };

@@ -192,11 +192,17 @@ class Movies extends Component {
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
     };
+    this.props.toggleLoader(true, "15%");
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
-      this.setState({
-        moviesList: response.data.data.details,
-        totalMovies: response.data.data.totalCount,
-      });
+      this.setState(
+        {
+          moviesList: response.data.data.details,
+          totalMovies: response.data.data.totalCount,
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+        }
+      );
     });
   }
 

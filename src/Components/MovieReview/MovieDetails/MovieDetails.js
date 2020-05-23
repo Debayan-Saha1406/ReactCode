@@ -210,22 +210,21 @@ class MovieDetails extends Component {
       });
     }
 
-    if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
-      const userDetails = getLocalStorageItem(constants.userDetails);
-      if (userDetails) {
-        if (userDetails.userMovieRating.length > 0) {
-          userDetails.userMovieRating.forEach((userMovieRating) => {
-            if (userMovieRating.movieId === Number(movieId)) {
-              this.setState({
-                indexClicked: userMovieRating.rating - 1,
-                isFavourite: userMovieRating.isFavourite,
-              });
-            }
-          });
-        }
-      }
-      //this.fetchMovieUserRatings(movieId);
-    }
+    // if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
+    //   const userDetails = getLocalStorageItem(constants.userDetails);
+    //   if (userDetails) {
+    //     if (userDetails.userMovieRating.length > 0) {
+    //       userDetails.userMovieRating.forEach((userMovieRating) => {
+    //         if (userMovieRating.movieId == movieId) {
+    //           this.setState({
+    //             indexClicked: userMovieRating.rating - 1,
+    //             isFavourite: userMovieRating.isFavourite,
+    //           });
+    //         }
+    //       });
+    //     }
+    //   }
+    //this.fetchMovieUserRatings(movieId);
   }
 
   render() {
@@ -287,7 +286,10 @@ class MovieDetails extends Component {
             </div>
           </div>
         )}
-        <div className="celebrity-single movie-single movie_single movie-detail-single">
+        <div
+          className="celebrity-single movie-single movie_single movie-detail-single"
+          id="movie-detail"
+        >
           <div className="container">
             <div className="row ipad-width2">
               <div className="col-md-4 col-sm-12 col-xs-12">
@@ -336,7 +338,11 @@ class MovieDetails extends Component {
                         : "Add to Favorite"}
                     </div>
                   </div>
-                  <div className="movie-rate" onMouseOut={this.toggleAllStars}>
+                  <div
+                    className="movie-rate"
+                    onMouseOut={this.toggleAllStars}
+                    id="movie-rate"
+                  >
                     <div className="rate">
                       <i
                         className="fa fa-star"

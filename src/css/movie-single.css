@@ -1410,7 +1410,7 @@ a#black-hover {
 }
 
 #yellow :hover {
-  color: #dcf836;
+  color: #ffaa3c !important;
 }
 
 .close-cross {
@@ -2089,11 +2089,18 @@ input#black-hover:hover {
   padding-top: 10px;
 }
 
-.delete{
+.delete {
   color: #4280bf;
-  
 }
 
-.delete:hover{
+.delete:hover {
   color: #ffaa3c;
+}
+
+#movie-rate {
+  margin-bottom: 32px;
+}
+
+#movie-detail {
+  padding: 25px 0;
 }

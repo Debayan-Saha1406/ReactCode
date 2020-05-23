@@ -11,6 +11,7 @@ const Searchbox = (props) => {
   const [toYear, setToYear] = useState(0);
   const [languages, setLanguage] = useState([]);
   const [languageId, setSelectedLanguageId] = useState(0);
+  const [isFormDirty, setIsFormDirty] = useState(false);
 
   useEffect(() => {
     ServiceProvider.get(apiUrl.movieLanguages).then((response) => {
@@ -42,14 +43,20 @@ const Searchbox = (props) => {
                 <input
                   type="text"
                   placeholder="Enter keywords"
-                  onChange={(e) => setMovieName(e.target.value)}
+                  onChange={(e) => {
+                    setIsFormDirty(true);
+                    setMovieName(e.target.value);
+                  }}
                   value={movieName}
                 />
               </div>
               <div className="col-md-12 form-it">
                 <label>{props.languageLabel}</label>
                 <select
-                  onChange={(e) => setSelectedLanguageId(e.target.value)}
+                  onChange={(e) => {
+                    setIsFormDirty(true);
+                    setSelectedLanguageId(e.target.value);
+                  }}
                   value={languageId}
                 >
                   <option value={0}>-- Select the language below --</option>
@@ -64,7 +71,10 @@ const Searchbox = (props) => {
                 <label>{props.ratingLabel}</label>
 
                 <select
-                  onChange={(e) => setRating(e.target.value)}
+                  onChange={(e) => {
+                    setIsFormDirty(true);
+                    setRating(e.target.value);
+                  }}
                   value={selectedRating}
                 >
                   <option value={0}>-- Select the rating range below --</option>
@@ -80,7 +90,10 @@ const Searchbox = (props) => {
                 <div className="row">
                   <div className="col-md-6">
                     <select
-                      onChange={(e) => setFromYear(e.target.value)}
+                      onChange={(e) => {
+                        setIsFormDirty(true);
+                        setFromYear(e.target.value);
+                      }}
                       value={fromYear}
                     >
                       <option value={0}>From</option>
@@ -92,6 +105,7 @@ const Searchbox = (props) => {
                   <div className="col-md-6">
                     <select
                       onChange={(e) => {
+                        setIsFormDirty(true);
                         setToYear(e.target.value);
                       }}
                       value={toYear}
@@ -117,7 +131,8 @@ const Searchbox = (props) => {
                   fromYear != 0 ||
                   toYear != 0 ||
                   languageId != 0) &&
-                toYear >= fromYear ? (
+                toYear >= fromYear &&
+                fromYear != 0 ? (
                   <input
                     className="submit"
                     type="submit"
@@ -146,7 +161,8 @@ const Searchbox = (props) => {
                 selectedRating != 0 ||
                 fromYear != 0 ||
                 toYear != 0 ||
-                languageId != 0 ? (
+                languageId != 0 ||
+                isFormDirty ? (
                   <button
                     className="reset"
                     type="submit"
