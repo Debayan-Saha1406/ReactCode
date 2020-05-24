@@ -6,7 +6,7 @@ const Topbar = (props) => {
   return (
     <div className="topbar-filter fw">
       <p>
-        Found <span>{props.totalMovies}</span> in total
+        Found <span>{props.totalCount}</span> in total
       </p>
       <label className="filterBy">Sort by:</label>
       <select
@@ -20,7 +20,7 @@ const Topbar = (props) => {
       </select>
       {props.pageType === pageType.grid ? (
         <a
-          onClick={props.selectList}
+          onClick={() => props.setPageType(pageType.list)}
           className="list"
           style={{ cursor: "pointer" }}
         >
@@ -34,7 +34,7 @@ const Topbar = (props) => {
       {props.pageType === pageType.list ? (
         <a
           className="grid"
-          onClick={props.selectGrid}
+          onClick={() => props.setPageType(pageType.grid)}
           style={{ cursor: "pointer" }}
         >
           <i className="fa fa-th" aria-hidden="true"></i>

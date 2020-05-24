@@ -156,6 +156,7 @@ export const menuItem = {
   movies: "movies",
   about: "about",
   loggedInEmail: "loggedInEmail",
+  celebrities: "celebrities",
 };
 
 export const userProfileSideMenuItem = {

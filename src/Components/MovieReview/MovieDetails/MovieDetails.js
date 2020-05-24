@@ -34,14 +34,14 @@ class MovieDetails extends Component {
   state = {
     selectedTab: movieDetailTabs.overview,
     movie: {},
-    indexClicked: -1,
+    indexHovered: -1,
     showVideo: false,
     isRatingGiven: false,
     redirectToNotFound: false,
     isMovieDetailPresent: false,
     userRating: -1,
     isFavourite: false,
-    resetValue: true,
+    hoverStar: true,
   };
 
   toggleTab = (destTab) => {
@@ -54,7 +54,7 @@ class MovieDetails extends Component {
         const movieDetail = { ...this.state.movie };
         this.sendUserMovieDetailsRequest(
           movieDetail,
-          this.state.indexClicked + 1
+          this.state.indexHovered + 1
         );
       });
     } else {
@@ -96,7 +96,7 @@ class MovieDetails extends Component {
   };
 
   toggleAllStars = () => {
-    if (!this.state.isRatingGiven && this.state.indexClicked === -1) {
+    if (!this.state.isRatingGiven && this.state.indexHovered === -1) {
       this.setState({ indexClicked: -1 });
     } else {
       this.setState({ indexClicked: this.state.userRating });
@@ -154,7 +154,6 @@ class MovieDetails extends Component {
   }
 
   fetchMovieUserRatings(movieId) {
-    debugger;
     loginDetails = getLocalStorageItem(constants.loginDetails);
     if (loginDetails) {
       ServiceProvider.getWithTwoParams(
@@ -199,16 +198,16 @@ class MovieDetails extends Component {
   }
 
   componentDidUpdate() {
-    // if (!this.props.isUserLoggedIn && this.state.indexClicked !== -1) {
-    //   this.setState({ indexClicked: -1 });
-    // }
-    if (!this.props.isUserLoggedIn && this.state.resetValue !== false) {
-      this.setState({
-        isFavourite: false,
-        indexClicked: -1,
-        resetValue: false,
-      });
+    if (!this.props.isUserLoggedIn && !this.state.hoverStar) {
+      this.setState({ indexClicked: -1, hoverStar: false });
     }
+    // if (!this.props.isUserLoggedIn && this.state.resetValue !== false) {
+    //   this.setState({
+    //     isFavourite: false,
+    //     indexClicked: -1,
+    //     resetValue: false,
+    //   });
+    // }
 
     // if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
     //   const userDetails = getLocalStorageItem(constants.userDetails);
@@ -373,7 +372,7 @@ class MovieDetails extends Component {
                       <ul className="menu">
                         {ratingStars.map((rating, index) => (
                           <li key={rating}>
-                            {this.state.indexClicked >= index ? (
+                            {this.state.indexHovered >= index ? (
                               <i
                                 className="fa fa-star"
                                 style={{

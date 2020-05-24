@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import "../../../css/movie-single.css";
 import Header from "../Common/Header";
-import { Redirect } from "react-router-dom";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import {
   apiUrl,
@@ -24,7 +23,6 @@ import Grid from "./Grid";
 class Movies extends Component {
   state = {
     readMoreOpacity: 0,
-    showList: true,
     showGrid: false,
     pageNumber: 1,
     pageSize: 10,
@@ -73,12 +71,18 @@ class Movies extends Component {
     });
   };
 
-  selectGrid = () => {
-    this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
-  };
-
-  selectList = () => {
-    this.setState({ showList: true, showGrid: false, pageType: pageType.list });
+  setPageType = (moviePageType) => {
+    if (moviePageType === pageType.list) {
+      this.setState({
+        showGrid: false,
+        pageType: pageType.list,
+      });
+    } else {
+      this.setState({
+        showGrid: true,
+        pageType: pageType.grid,
+      });
+    }
   };
 
   changeMovieCount = (e) => {
@@ -233,13 +237,12 @@ class Movies extends Component {
               <div className="row ipad-width2">
                 <div className="col-md-8 col-sm-12 col-xs-12">
                   <Topbar
-                    totalMovies={this.state.totalMovies}
-                    selectGrid={this.selectGrid}
+                    totalCount={this.state.totalMovies}
                     pageType={this.state.pageType}
                     fetchSortedData={this.fetchSortedData}
-                    selectList={this.selectList}
+                    setPageType={this.setPageType}
                   ></Topbar>
-                  {this.state.showList && (
+                  {!this.state.showGrid && (
                     <List moviesList={this.state.moviesList}></List>
                   )}
                   {this.state.showGrid && (

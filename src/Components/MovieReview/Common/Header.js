@@ -205,7 +205,7 @@ class Header extends Component {
                 <li className="menu-item current-menu-item">
                   <Link
                     to="/home"
-                    onClick={() => this.setCurrentMenuItem("home")}
+                    onClick={() => this.setCurrentMenuItem(menuItem.home)}
                   >
                     Home
                   </Link>
@@ -214,7 +214,7 @@ class Header extends Component {
                 <li className="menu-item">
                   <Link
                     to="/home"
-                    onClick={() => this.setCurrentMenuItem("home")}
+                    onClick={() => this.setCurrentMenuItem(menuItem.home)}
                   >
                     Home
                   </Link>
@@ -227,7 +227,7 @@ class Header extends Component {
                 <li className="menu-item current-menu-item">
                   <Link
                     to="/movies"
-                    onClick={() => this.setCurrentMenuItem("movie")}
+                    onClick={() => this.setCurrentMenuItem(menuItem.movies)}
                   >
                     Movies
                   </Link>
@@ -236,9 +236,32 @@ class Header extends Component {
                 <li className="menu-item">
                   <Link
                     to="/movies"
-                    onClick={() => this.setCurrentMenuItem("movie")}
+                    onClick={() => this.setCurrentMenuItem(menuItem.movies)}
                   >
                     Movies
+                  </Link>
+                </li>
+              )}
+              {this.state.currentMenuItem === menuItem.celebrities ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/celebrities"
+                    onClick={() =>
+                      this.setCurrentMenuItem(menuItem.celebrities)
+                    }
+                  >
+                    Celebrities
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/celebrities"
+                    onClick={() =>
+                      this.setCurrentMenuItem(menuItem.celebrities)
+                    }
+                  >
+                    Celebrities
                   </Link>
                 </li>
               )}
