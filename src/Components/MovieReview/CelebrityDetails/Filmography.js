@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import image from "../../../images/movie-single.jpg";
-import Pagination from "../../Common/Pagination";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import { apiUrl, sortDirection, sortColumns } from "../../../Shared/Constants";
@@ -10,6 +9,7 @@ import { Link } from "react-router-dom";
 import "../../../css/movie-single.css";
 import DetailTopBar from "./../Common/DetailTopBar";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
+import Pagination from "../Common/Pagination";
 
 const initialState = {
   sortByColumn: sortColumns.movieName,

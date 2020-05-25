@@ -26,7 +26,7 @@ const Overview = (props) => {
                   id="yellow"
                 >
                   <span onClick={() => props.toggleTab("review")}>
-                    See All {props.reviews.length} Reviews{" "}
+                    See All Reviews
                   </span>
                 </a>
               </div>
@@ -36,14 +36,17 @@ const Overview = (props) => {
                 <h3>{props.reviews[0].reviewTitle}</h3>
                 <p className="time">
                   {props.reviews[0].reviewDate} by{" "}
-                  <a href="#"> {props.reviews[0].userEmail}</a>
+                  <a style={{ color: "white" }}>{props.reviews[0].userEmail}</a>
                 </p>
                 <p>{props.reviews[0].reviewDescription}</p>
               </div>
             )}
           </div>
 
-          <div className="col-md-4 col-xs-12 col-sm-12">
+          <div
+            className="col-md-4 col-xs-12 col-sm-12"
+            style={{ marginTop: "28px" }}
+          >
             <div className="sb-it">
               <h6 className="side-heading">Director: </h6>
               <ul className="menu">

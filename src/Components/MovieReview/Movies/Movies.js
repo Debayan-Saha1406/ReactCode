@@ -20,6 +20,7 @@ import Searchbox from "../Common/Searchbox";
 import { setSearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
 import List from "./List";
 import Grid from "./Grid";
+import NoResultFound from "../Common/NoResultFound";
 
 class Movies extends Component {
   state = {
@@ -244,17 +245,22 @@ class Movies extends Component {
                     setPageType={this.setPageType}
                     sortBylist={movieSortTypeList}
                   ></Topbar>
-                  {!this.state.showGrid && (
-                    <List moviesList={this.state.moviesList}></List>
+                  {this.state.moviesList.length === 0 ? (
+                    <NoResultFound></NoResultFound>
+                  ) : (
+                    <React.Fragment>
+                      {!this.state.showGrid && (
+                        <List moviesList={this.state.moviesList}></List>
+                      )}
+                      {this.state.showGrid && (
+                        <Grid
+                          moviesList={this.state.moviesList}
+                          toggleReadMoreOpacity={this.toggleReadMoreOpacity}
+                          readMoreOpacity={this.state.readMoreOpacity}
+                        ></Grid>
+                      )}
+                    </React.Fragment>
                   )}
-                  {this.state.showGrid && (
-                    <Grid
-                      moviesList={this.state.moviesList}
-                      toggleReadMoreOpacity={this.toggleReadMoreOpacity}
-                      readMoreOpacity={this.state.readMoreOpacity}
-                    ></Grid>
-                  )}
-
                   {this.state.moviesList.length > 0 && (
                     <Pagination
                       pageSize={this.state.pageSize}

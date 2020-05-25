@@ -2138,7 +2138,7 @@ input#black-hover:hover {
   .ceb-item-style-2 {
     display: flex;
     flex-direction: column;
-    background-color: #091a2c;
+    /* background-color: #091a2c; */
     padding-top: 20px;
   }
 }
@@ -2198,4 +2198,20 @@ input#black-hover:hover {
   color: #ffffff;
   font-weight: 700;
   text-transform: none;
+}
+
+@media (max-width: 767px) {
+  .celebrity-items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+}
+
+.no-result {
+  width: 100%;
+  color: white;
+  text-align: center;
 }

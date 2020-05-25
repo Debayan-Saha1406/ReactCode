@@ -220,9 +220,6 @@ class Header extends Component {
                   </Link>
                 </li>
               )}
-              <li className="menu-item">
-                <a>About</a>
-              </li>
               {this.state.currentMenuItem === menuItem.movies ? (
                 <li className="menu-item current-menu-item">
                   <Link
@@ -250,7 +247,7 @@ class Header extends Component {
                       this.setCurrentMenuItem(menuItem.celebrities)
                     }
                   >
-                    Celebrities
+                    Celebs
                   </Link>
                 </li>
               ) : (
@@ -261,7 +258,7 @@ class Header extends Component {
                       this.setCurrentMenuItem(menuItem.celebrities)
                     }
                   >
-                    Celebrities
+                    Celebs
                   </Link>
                 </li>
               )}

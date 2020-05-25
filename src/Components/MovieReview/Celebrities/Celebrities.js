@@ -22,6 +22,7 @@ import {
 } from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import NoResultFound from "../Common/NoResultFound";
 
 const initialData = {
   totalCelebrities: 0,
@@ -204,20 +205,27 @@ const Celebrities = () => {
                   setPageType={setPageType}
                   sortBylist={celebritySortTypeList}
                 ></Topbar>
-                {!page.showGrid && (
-                  <div className="row">
-                    {
-                      <CelebrityList
+                {celebrityData.celebrityList.length === 0 ? (
+                  <NoResultFound></NoResultFound>
+                ) : (
+                  <React.Fragment>
+                    {!page.showGrid && (
+                      <div className="row">
+                        {
+                          <CelebrityList
+                            celebs={celebrityData.celebrityList}
+                          ></CelebrityList>
+                        }
+                      </div>
+                    )}
+                    {page.showGrid && (
+                      <CelebrityGrid
                         celebs={celebrityData.celebrityList}
-                      ></CelebrityList>
-                    }
-                  </div>
+                      ></CelebrityGrid>
+                    )}
+                  </React.Fragment>
                 )}
-                {page.showGrid && (
-                  <CelebrityGrid
-                    celebs={celebrityData.celebrityList}
-                  ></CelebrityGrid>
-                )}
+
                 {celebrityData.celebrityList.length > 0 && (
                   <Pagination
                     pageSize={celebrityData.pageSize}

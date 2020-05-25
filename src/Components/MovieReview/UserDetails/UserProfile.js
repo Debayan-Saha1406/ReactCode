@@ -130,14 +130,12 @@ const UserProfile = (props) => {
     setActiveSideMenuItem(activeSideMenuItem);
   };
 
-  const selectGrid = () => {
-    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
-    setPageViewType(pageType.grid);
-  };
-
-  const selectList = () => {
-    //this.setState({ showGrid: true, showList: false, pageType: pageType.grid });
-    setPageViewType(pageType.list);
+  const setPageType = (moviePageType) => {
+    if (moviePageType === pageType.list) {
+      setPageViewType(pageType.grid);
+    } else {
+      setPageViewType(pageType.list);
+    }
   };
 
   return (
@@ -208,7 +206,7 @@ const UserProfile = (props) => {
                       pageViewType === pageType.list && (
                         <UserFavoriteList
                           email={profileData.email}
-                          selectGrid={selectGrid}
+                          setPageType={setPageType}
                           pageViewType={pageViewType}
                           moviesList={moviesList}
                           paginationData={paginationData}
@@ -219,7 +217,7 @@ const UserProfile = (props) => {
                       pageViewType === pageType.grid && (
                         <UserFavoriteGrid
                           email={profileData.email}
-                          selectList={selectList}
+                          setPageType={setPageType}
                           pageViewType={pageViewType}
                           moviesList={moviesList}
                           paginationData={paginationData}

@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { popupType } from "./../../../Shared/Constants";
 import Information from "./../Popups/Information";
 import UserContentPopup from "../Popups/UserContentPopup";
+import NoResultFound from "./../Common/NoResultFound";
 
 const initialData = {
   pageNumber: 1,
@@ -132,82 +133,86 @@ const UserRatedMovies = (props) => {
       <DetailTopBar
         totalCount={reviewRatingData.totalReviewRatings}
       ></DetailTopBar>
-      {reviewRatingList.map((reviewRatingData) => (
-        <div class="movie-item-style-2 userrate">
-          <img src={reviewRatingData.movieLogo} alt="" />
-          <div class="mv-item-infor" style={{ width: "100%" }}>
-            <h6>
-              <Link
-                className="heading"
-                to={`/movie-details/${reviewRatingData.movieId}`}
-              >
-                {reviewRatingData.movieName}{" "}
-                <span>
-                  (
-                  {reviewRatingData.releaseDate.substring(
-                    reviewRatingData.releaseDate.indexOf(",") + 2,
-                    reviewRatingData.releaseDate.length
-                  )}
-                  )
-                </span>
-              </Link>
-            </h6>
-            {reviewRatingData.userRating !== 0 && (
-              <React.Fragment>
-                <p
-                  className="delete"
-                  style={{
-                    float: "right",
-                    marginTop: "15px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() =>
-                    openDeleteRatingPopup(reviewRatingData.ratingId)
-                  }
+      {reviewRatingList.length === 0 ? (
+        <NoResultFound></NoResultFound>
+      ) : (
+        reviewRatingList.map((reviewRatingData) => (
+          <div class="movie-item-style-2 userrate">
+            <img src={reviewRatingData.movieLogo} alt="" />
+            <div class="mv-item-infor" style={{ width: "100%" }}>
+              <h6>
+                <Link
+                  className="heading"
+                  to={`/movie-details/${reviewRatingData.movieId}`}
                 >
-                  Delete
-                </p>
-                <p class="time sm-text">your rate:</p>
-                <p class="rate">
-                  <i
-                    class="fa fa-star"
+                  {reviewRatingData.movieName}{" "}
+                  <span>
+                    (
+                    {reviewRatingData.releaseDate.substring(
+                      reviewRatingData.releaseDate.indexOf(",") + 2,
+                      reviewRatingData.releaseDate.length
+                    )}
+                    )
+                  </span>
+                </Link>
+              </h6>
+              {reviewRatingData.userRating !== 0 && (
+                <React.Fragment>
+                  <p
+                    className="delete"
                     style={{
-                      fontSize: "20px",
-                      color: "yellow",
-                      marginRight: "5px",
+                      float: "right",
+                      marginTop: "15px",
+                      cursor: "pointer",
                     }}
-                  ></i>
-                  <span>{reviewRatingData.userRating}</span> /10
-                </p>
-              </React.Fragment>
-            )}
-            {reviewRatingData.reviewId && (
-              <React.Fragment>
-                <p
-                  className="delete"
-                  style={{
-                    float: "right",
-                    marginTop: "15px",
-                    cursor: "pointer",
-                  }}
-                  onClick={() =>
-                    openDeleteReviewPopup(reviewRatingData.reviewId)
-                  }
-                >
-                  Delete
-                </p>
-                <p class="time sm-text">your reviews:</p>
+                    onClick={() =>
+                      openDeleteRatingPopup(reviewRatingData.ratingId)
+                    }
+                  >
+                    Delete
+                  </p>
+                  <p class="time sm-text">your rate:</p>
+                  <p class="rate">
+                    <i
+                      class="fa fa-star"
+                      style={{
+                        fontSize: "20px",
+                        color: "yellow",
+                        marginRight: "5px",
+                      }}
+                    ></i>
+                    <span>{reviewRatingData.userRating}</span> /10
+                  </p>
+                </React.Fragment>
+              )}
+              {reviewRatingData.reviewId && (
+                <React.Fragment>
+                  <p
+                    className="delete"
+                    style={{
+                      float: "right",
+                      marginTop: "15px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() =>
+                      openDeleteReviewPopup(reviewRatingData.reviewId)
+                    }
+                  >
+                    Delete
+                  </p>
+                  <p class="time sm-text">your reviews:</p>
 
-                <h6 className="review-heading">
-                  {reviewRatingData.reviewTitle}
-                </h6>
-                <p class="time sm">{reviewRatingData.reviewDate}</p>
-                <p>{reviewRatingData.reviewDescription}</p>
-              </React.Fragment>
-            )}
+                  <h6 className="review-heading">
+                    {reviewRatingData.reviewTitle}
+                  </h6>
+                  <p class="time sm">{reviewRatingData.reviewDate}</p>
+                  <p>{reviewRatingData.reviewDescription}</p>
+                </React.Fragment>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
       {reviewRatingList.length > 0 && (
         <Pagination
           pageSize={reviewRatingData.pageSize}
@@ -264,10 +269,20 @@ function fetchReviewRatingData(
     sortColumn: reviewRatingData.sortColumn,
     email: props.email,
   };
+  let isReviewRatingPresent = false;
   dispatch(toggleLoader(true, "15%"));
   ServiceProvider.post(apiUrl.userRatedMovies, body).then((response) => {
     if (response.status === 200) {
-      setReviewRatingList(response.data.data.details);
+      response.data.data.details.forEach((detail) => {
+        if (detail.reviewId !== null || detail.userRating !== 0) {
+          isReviewRatingPresent = true;
+        }
+      });
+      if (isReviewRatingPresent) {
+        setReviewRatingList(response.data.data.details); // May need to Review with Multiple Ratings And Review
+      } else {
+        setReviewRatingList([]);
+      }
       setReviewRatingData({
         ...initialData,
         totalReviewRatings: response.data.data.totalCount,
