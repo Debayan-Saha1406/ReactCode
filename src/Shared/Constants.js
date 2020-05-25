@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -26,6 +26,7 @@ export const apiUrl = {
   userRatedMovies: "/userRatedMovies",
   deleteReview: "/review/",
   deleteUserRating: "/userRating/",
+  celebrities: "/celebrities",
 };
 
 export const constants = {
@@ -110,6 +111,7 @@ export const movieSearchType = {
 export const sortColumns = {
   movieName: "MovieName",
   rating: "Rating",
+  celebrityName: "celebrityName",
 };
 
 export const sortDirection = {
@@ -164,3 +166,62 @@ export const userProfileSideMenuItem = {
   favoriteMovies: "favoriteMovies",
   ratedMovies: "ratedMovies",
 };
+
+export const celebritySortTypeList = [
+  { id: 1, value: "Celebrity Name Ascending" },
+  { id: 2, value: "Celebrity Name Descending" },
+];
+
+export const movieSortTypeList = [
+  { id: 1, value: "Movie Name Ascending" },
+  { id: 2, value: "Movie Name Descending" },
+  { id: 3, value: "Rating Ascending" },
+  { id: 4, value: "Rating Descending" },
+];
+
+export const celebritySearchType = {
+  celebrityName: "CelebrityName",
+  celebrityNameInitialGenderBirthYear: "CelebrityNameInitialGenderBirthYear",
+  celebrityNameInitialGender: "CelebrityNameInitialGender",
+  celebrityNameInitialBirthYear: "CelebrityNameInitialBirthYear",
+  celebrityNameInitial: "CelebrityNameInitial",
+  celebrityNameGenderBirthYear: "CelebrityNameGenderBirthYear",
+  celebrityNameGender: "CelebrityNameGender",
+  celebrityInitialGenderBirthYear: "CelebrityInitialGenderBirthYear",
+  celebrityInitialGender: "CelebrityInitialGender",
+  celebrityNameBirthYear: "CelebrityNameBirthYear",
+  celebrityInitialBirthYear: "CelebrityInitialBirthYear",
+  celebrityInitial: "CelebrityInitial",
+  birthYear: "BirthYear",
+  gender: "Gender",
+  genderBirthYear: "GenderBirthYear",
+};
+
+export const alphabets = [
+  { id: "a", value: "a" },
+  { id: "b", value: "b" },
+  { id: "c", value: "c" },
+  { id: "d", value: "d" },
+  { id: "e", value: "e" },
+  { id: "f", value: "f" },
+  { id: "g", value: "g" },
+  { id: "h", value: "h" },
+  { id: "i", value: "i" },
+  { id: "j", value: "j" },
+  { id: "k", value: "k" },
+  { id: "l", value: "l" },
+  { id: "m", value: "m" },
+  { id: "n", value: "n" },
+  { id: "o", value: "o" },
+  { id: "p", value: "p" },
+  { id: "q", value: "q" },
+  { id: "r", value: "r" },
+  { id: "s", value: "s" },
+  { id: "t", value: "t" },
+  { id: "u", value: "u" },
+  { id: "v", value: "v" },
+  { id: "w", value: "w" },
+  { id: "x", value: "x" },
+  { id: "y", value: "y" },
+  { id: "z", value: "z" },
+];

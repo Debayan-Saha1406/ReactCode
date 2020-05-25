@@ -9,6 +9,7 @@ import {
   pageType,
   sortColumns,
   sortDirection,
+  movieSortTypeList,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
@@ -241,6 +242,7 @@ class Movies extends Component {
                     pageType={this.state.pageType}
                     fetchSortedData={this.fetchSortedData}
                     setPageType={this.setPageType}
+                    sortBylist={movieSortTypeList}
                   ></Topbar>
                   {!this.state.showGrid && (
                     <List moviesList={this.state.moviesList}></List>

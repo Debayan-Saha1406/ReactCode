@@ -13,10 +13,9 @@ const Topbar = (props) => {
         onChange={(e) => props.fetchSortedData(e)}
         className="dropdown-padding"
       >
-        <option value={1}>Movie Name Ascending</option>
-        <option value={2}> Movie Name Descending</option>
-        <option value={3}>Rating Ascending</option>
-        <option value={4}>Rating Descending</option>
+        {props.sortBylist.map((sortByItem) => (
+          <option value={sortByItem.id}>{sortByItem.value}</option>
+        ))}
       </select>
       {props.pageType === pageType.grid ? (
         <a

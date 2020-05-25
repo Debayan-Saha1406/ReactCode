@@ -126,13 +126,10 @@ const Searchbox = (props) => {
                 </div>
               )}
               <div className="col-md-12 form-it">
-                {(movieName ||
-                  selectedRating != 0 ||
-                  fromYear != 0 ||
-                  toYear != 0 ||
-                  languageId != 0) &&
-                toYear >= fromYear &&
-                fromYear != 0 ? (
+                {movieName ||
+                selectedRating != 0 ||
+                languageId != 0 ||
+                (toYear >= fromYear && fromYear != 0 && toYear != 0) ? (
                   <input
                     className="submit"
                     type="submit"
