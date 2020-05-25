@@ -44,7 +44,7 @@ const Overview = (props) => {
                   >
                     {movie.movieName}{" "}
                   </Link>
-                  <p className="time">Logan</p>
+                  <p className="time">{movie.characterName}</p>
                 </div>
               </div>
               <p>{movie.releaseDate}</p>
