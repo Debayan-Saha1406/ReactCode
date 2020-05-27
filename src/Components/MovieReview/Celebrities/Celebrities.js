@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useState, useEffect } from "react";
 import Topbar from "../Common/Topbar";
@@ -23,14 +24,24 @@ import {
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import NoResultFound from "../Common/NoResultFound";
+import { getCelebritySearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
 
 const initialData = {
   totalCelebrities: 0,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 1,
   celebrityList: [],
   sortColumn: sortColumns.celebrityName,
   sortDirection: sortDirection.asc,
+};
+
+const state = {
+  celebrityName: "",
+  celebrityInitial: 0,
+  category: 0,
+  fromBirthYear: 0,
+  toBirthYear: 0,
+  searchType: "",
 };
 
 const celebrityPageType = {
@@ -39,130 +50,137 @@ const celebrityPageType = {
 };
 
 const Celebrities = () => {
+  const dispatch = useDispatch();
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
   const [celebrityData, setCelebrityData] = useState(initialData);
   const [page, togglePageType] = useState(celebrityPageType);
-  const dispatch = useDispatch();
+  const [
+    celebrityDetailsSearchBoxData,
+    setCelebrityDetailsSearchBoxData,
+  ] = useState(state);
 
-  const handleSubmit = (e, celebDetails) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    let searchType = "";
-    if (
-      celebDetails.celebrityName &&
-      celebDetails.celebrityInitial != 0 &&
-      celebDetails.category != 0 &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.celebrityNameInitialGenderBirthYear;
-    } else if (
-      celebDetails.celebrityName &&
-      celebDetails.celebrityInitial != 0 &&
-      celebDetails.category != 0
-    ) {
-      searchType = celebritySearchType.celebrityNameInitialGender;
-    } else if (
-      celebDetails.celebrityName &&
-      (celebDetails.celebrityInitial != 0) != 0 &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.celebrityNameInitialBirthYear;
-    } else if (
-      celebDetails.celebrityName &&
-      celebDetails.celebrityInitial != 0
-    ) {
-      searchType = celebritySearchType.celebrityNameInitial;
-    } else if (
-      celebDetails.celebrityName &&
-      celebDetails.category != 0 &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.celebrityNameGenderBirthYear;
-    } else if (celebDetails.celebrityName && celebDetails.category != 0) {
-      searchType = celebritySearchType.celebrityNameGender;
-    } else if (
-      celebDetails.celebrityInitial != 0 &&
-      celebDetails.category != 0 &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.celebrityInitialGenderBirthYear;
-    } else if (
-      celebDetails.celebrityInitial != 0 &&
-      celebDetails.category != 0
-    ) {
-      searchType = celebritySearchType.celebrityInitialGender;
-    } else if (
-      celebDetails.celebrityName &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.celebrityNameBirthYear;
-    } else if (
-      celebDetails.celebrityInitial != 0 &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.celebrityInitialBirthYear;
-    } else if (
-      celebDetails.category != 0 &&
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.genderBirthYear;
-    } else if (celebDetails.celebrityName) {
-      searchType = celebritySearchType.celebrityName;
-    } else if (celebDetails.celebrityInitial != 0) {
-      searchType = celebritySearchType.celebrityInitial;
-    } else if (
-      celebDetails.fromBirthYear != 0 &&
-      celebDetails.toBirthYear != 0
-    ) {
-      searchType = celebritySearchType.birthYear;
-    } else if (celebDetails.category != 0) {
-      searchType = celebritySearchType.gender;
-    }
+    let searchType = getCelebritySearchType(celebrityDetailsSearchBoxData);
+    dispatch(toggleLoader(true, "15%"));
+    const body = {
+      pageNumber: initialData.pageNumber,
+      pageSize: celebrityData.pageSize,
+      sortColumn: celebrityData.sortColumn,
+      sortDirection: celebrityData.sortDirection,
+      celebrityName: celebrityDetailsSearchBoxData.celebrityName,
+      celebrityInitial: celebrityDetailsSearchBoxData.celebrityInitial,
+      fromBirthYear: celebrityDetailsSearchBoxData.fromBirthYear,
+      toBirthYear: celebrityDetailsSearchBoxData.toBirthYear,
+      gender: celebrityDetailsSearchBoxData.category,
+      searchType: searchType,
+    };
+    fetchCelebsData(body, setCelebrityData, celebrityData);
+  };
+
+  const changeCelebrityCount = () => {};
+
+  const clearState = (e) => {
+    e.preventDefault();
+    setCelebrityDetailsSearchBoxData(state);
     dispatch(toggleLoader(true, "15%"));
     const body = {
       pageNumber: celebrityData.pageNumber,
       pageSize: celebrityData.pageSize,
       sortColumn: celebrityData.sortColumn,
       sortDirection: celebrityData.sortDirection,
-      celebrityName: celebDetails.celebrityName,
-      celebrityInitial: celebDetails.celebrityInitial,
-      fromBirthYear: celebDetails.fromBirthYear,
-      toBirthYear: celebDetails.toBirthYear,
-      gender: celebDetails.category,
-      searchType: searchType,
+      celebrityName: state.celebrityName,
+      celebrityInitial: state.celebrityInitial,
+      fromBirthYear: state.fromBirthYear,
+      toBirthYear: state.toBirthYear,
+      gender: state.category,
+      searchType: state.searchType,
     };
+    fetchCelebsData(body, setCelebrityData, celebrityData);
+  };
+
+  const setCelebrityDetails = (e) => {
+    setCelebrityDetailsSearchBoxData({
+      ...celebrityDetailsSearchBoxData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const pageNumberClicked = (page) => {
+    dispatch(toggleLoader(true, "15%"));
+    const body = {
+      pageNumber: page,
+      pageSize: celebrityData.pageSize,
+      sortColumn: celebrityData.sortColumn,
+      sortDirection: celebrityData.sortDirection,
+      celebrityName: celebrityDetailsSearchBoxData.celebrityName,
+      celebrityInitial: celebrityDetailsSearchBoxData.celebrityInitial,
+      fromBirthYear: celebrityDetailsSearchBoxData.fromBirthYear,
+      toBirthYear: celebrityDetailsSearchBoxData.toBirthYear,
+      category: celebrityDetailsSearchBoxData.category,
+      searchType: celebrityDetailsSearchBoxData.searchType,
+    };
+    fetchCelebsData(body, setCelebrityData, celebrityData);
+  };
+
+  const fetchSortedData = (e) => {
+    dispatch(toggleLoader(true, "15%"));
+    let body = {
+      pageNumber: celebrityData.pageNumber,
+      pageSize: celebrityData.pageSize,
+      sortColumn: sortColumns.celebrityName,
+      celebrityName: celebrityDetailsSearchBoxData.celebrityName,
+      celebrityInitial: celebrityDetailsSearchBoxData.celebrityInitial,
+      fromBirthYear: celebrityDetailsSearchBoxData.fromBirthYear,
+      toBirthYear: celebrityDetailsSearchBoxData.toBirthYear,
+      gender: celebrityDetailsSearchBoxData.category,
+      searchType: celebrityDetailsSearchBoxData.searchType,
+    };
+    if (e.target.value == 1) {
+      body.sortDirection = sortDirection.asc;
+    } else if (e.target.value == 2) {
+      body.sortDirection = sortDirection.desc;
+    }
+    fetchCelebsData(body, setCelebrityData, celebrityData);
+  };
+
+  useEffect(() => {
+    dispatch(toggleLoader(true, 0));
+    const body = {
+      pageNumber: celebrityData.pageNumber,
+      pageSize: celebrityData.pageSize,
+      sortColumn: celebrityData.sortColumn,
+      sortDirection: celebrityData.sortDirection,
+      celebrityName: celebrityDetailsSearchBoxData.celebrityName,
+      celebrityInitial: celebrityDetailsSearchBoxData.celebrityInitial,
+      fromBirthYear: celebrityDetailsSearchBoxData.fromBirthYear,
+      toBirthYear: celebrityDetailsSearchBoxData.toBirthYear,
+      gender: celebrityDetailsSearchBoxData.category,
+      searchType: celebrityDetailsSearchBoxData.searchType,
+    };
+    fetchCelebsData(body, setCelebrityData, celebrityData);
+  }, []);
+
+  const fetchCelebsData = (body, setCelebrityData, celebrityData) => {
     ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
       if (response.status === 200) {
         setCelebrityData({
           ...celebrityData,
           totalCelebrities: response.data.data.totalCount,
           celebrityList: response.data.data.details,
+          pageNumber: body.pageNumber,
+          sortColumn: body.sortColumn,
+          sortDirection: body.sortDirection,
+        });
+        setCelebrityDetailsSearchBoxData({
+          ...celebrityDetailsSearchBoxData,
+          searchType: body.searchType,
         });
         dispatch(toggleLoader(false, 1));
       }
     });
   };
-
-  const changeCelebrityCount = () => {};
-  const fetchInitialData = (screenOpacity) => {
-    dispatch(toggleLoader(true, screenOpacity));
-    fetchCelebsData(celebrityData, setCelebrityData, dispatch);
-  };
-  const pageNumberClicked = () => {};
-  const getFilteredMovies = () => {};
-
-  useEffect(() => {
-    dispatch(toggleLoader(true, 0));
-    fetchCelebsData(celebrityData, setCelebrityData, dispatch);
-  }, []);
-  const fetchSortedData = () => {};
 
   const setPageType = (celebrityPageType) => {
     if (celebrityPageType === pageType.grid) {
@@ -179,6 +197,7 @@ const Celebrities = () => {
       });
     }
   };
+
   return (
     <React.Fragment>
       <div id="loaderContainer">
@@ -240,7 +259,9 @@ const Celebrities = () => {
               <div class="col-md-4 col-xs-12 col-sm-12">
                 <CelebritySearchBox
                   handleSubmit={handleSubmit}
-                  fetchInitialData={fetchInitialData}
+                  setCelebrityDetails={setCelebrityDetails}
+                  celebrityDetails={celebrityDetailsSearchBoxData}
+                  clearState={clearState}
                 ></CelebritySearchBox>
               </div>
             </div>
@@ -252,21 +273,3 @@ const Celebrities = () => {
 };
 
 export default Celebrities;
-function fetchCelebsData(celebrityData, setCelebrityData, dispatch) {
-  const body = {
-    pageNumber: celebrityData.pageNumber,
-    pageSize: celebrityData.pageSize,
-    sortColumn: celebrityData.sortColumn,
-    sortDirection: celebrityData.sortDirection,
-  };
-  ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
-    if (response.status === 200) {
-      setCelebrityData({
-        ...celebrityData,
-        totalCelebrities: response.data.data.totalCount,
-        celebrityList: response.data.data.details,
-      });
-      dispatch(toggleLoader(false, 1));
-    }
-  });
-}

@@ -62,7 +62,7 @@ const CelebrityDetails = (props) => {
           <div
             className="hero hero3"
             style={{
-              background: `url(${celebrity.photo}) no-repeat`,
+              background: `url(${celebrity.coverPhoto})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
@@ -74,7 +74,7 @@ const CelebrityDetails = (props) => {
             <div className="row ipad-width">
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <div className="mv-ceb">
-                  <img src={image} alt="" />
+                  <img src={celebrity.photo} alt="" />
                   {/* { Replace celebrity.photo } */}
                 </div>
               </div>

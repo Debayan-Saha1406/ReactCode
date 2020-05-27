@@ -2,23 +2,13 @@
 import React, { useState } from "react";
 import { alphabets, gender, years } from "../../../Shared/Constants";
 
-const state = {
-  celebrityName: "",
-  celebrityInitial: 0,
-  category: 0,
-  fromBirthYear: 0,
-  toBirthYear: 0,
-};
-
-const CelebritySearchBox = (props) => {
-  const [celebrityDetails, setCelebrityDetails] = useState(state);
+const CelebritySearchBox = ({
+  celebrityDetails,
+  setCelebrityDetails,
+  handleSubmit,
+  clearState,
+}) => {
   const [isFormDirty, setIsFormDirty] = useState(false);
-
-  const clearState = (e) => {
-    e.preventDefault();
-    setCelebrityDetails(state);
-    props.fetchInitialData("15%");
-  };
 
   return (
     <div class="sidebar">
@@ -30,13 +20,11 @@ const CelebritySearchBox = (props) => {
               <label>Celebrity name</label>
               <input
                 type="text"
+                name="celebrityName"
                 placeholder="Enter keywords"
                 onChange={(e) => {
                   setIsFormDirty(true);
-                  setCelebrityDetails({
-                    ...celebrityDetails,
-                    celebrityName: e.target.value,
-                  });
+                  setCelebrityDetails(e);
                 }}
                 value={celebrityDetails.celebrityName}
               />
@@ -44,13 +32,11 @@ const CelebritySearchBox = (props) => {
             <div class="col-md-12 form-it">
               <label>Celebrity Letter</label>
               <select
+                name="celebrityInitial"
                 style={{ textTransform: "capitalize" }}
                 onChange={(e) => {
                   setIsFormDirty(true);
-                  setCelebrityDetails({
-                    ...celebrityDetails,
-                    celebrityInitial: e.target.value,
-                  });
+                  setCelebrityDetails(e);
                 }}
                 value={celebrityDetails.celebrityInitial}
               >
@@ -68,12 +54,10 @@ const CelebritySearchBox = (props) => {
             <div class="col-md-12 form-it">
               <label>Category</label>
               <select
+                name="category"
                 onChange={(e) => {
                   setIsFormDirty(true);
-                  setCelebrityDetails({
-                    ...celebrityDetails,
-                    category: e.target.value,
-                  });
+                  setCelebrityDetails(e);
                 }}
                 value={celebrityDetails.category}
               >
@@ -87,12 +71,10 @@ const CelebritySearchBox = (props) => {
               <div class="row">
                 <div class="col-md-6">
                   <select
+                    name="fromBirthYear"
                     onChange={(e) => {
                       setIsFormDirty(true);
-                      setCelebrityDetails({
-                        ...celebrityDetails,
-                        fromBirthYear: e.target.value,
-                      });
+                      setCelebrityDetails(e);
                     }}
                     value={celebrityDetails.fromBirthYear}
                   >
@@ -104,12 +86,10 @@ const CelebritySearchBox = (props) => {
                 </div>
                 <div class="col-md-6">
                   <select
+                    name="toBirthYear"
                     onChange={(e) => {
                       setIsFormDirty(true);
-                      setCelebrityDetails({
-                        ...celebrityDetails,
-                        toBirthYear: e.target.value,
-                      });
+                      setCelebrityDetails(e);
                     }}
                     value={celebrityDetails.toBirthYear}
                   >
@@ -121,15 +101,6 @@ const CelebritySearchBox = (props) => {
                 </div>
               </div>
             </div>
-            {celebrityDetails.toBirthYear < celebrityDetails.fromBirthYear &&
-              celebrityDetails.toBirthYear != 0 &&
-              celebrityDetails.fromBirthYear != 0 && (
-                <div className="col-md-12">
-                  <label className="error">
-                    "To Year" Must Be More Than "From Year"
-                  </label>
-                </div>
-              )}
             <div class="col-md-12 form-it">
               {celebrityDetails.celebrityName ||
               celebrityDetails.celebrityInitial != 0 ||
@@ -141,7 +112,7 @@ const CelebritySearchBox = (props) => {
                   class="submit"
                   type="submit"
                   value="submit"
-                  onClick={(e) => props.handleSubmit(e, celebrityDetails)}
+                  onClick={(e) => handleSubmit(e)}
                 />
               ) : (
                 <input

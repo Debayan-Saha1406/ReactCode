@@ -2178,6 +2178,7 @@ input#black-hover:hover {
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
   width: 200px;
+  height: 300px;
 }
 
 .celebrity-items .ceb-item h2 {

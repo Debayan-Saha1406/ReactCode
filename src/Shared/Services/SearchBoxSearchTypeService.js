@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 import { movieSearchType } from "./../Constants";
+import { celebritySearchType } from "./../Constants";
 
 export const setSearchType = (
   movieName,
@@ -48,6 +49,79 @@ export const setSearchType = (
     searchType = movieSearchType.releaseYear;
   } else if (languageId != 0) {
     searchType = movieSearchType.language;
+  }
+  return searchType;
+};
+
+export const getCelebritySearchType = (celebDetails) => {
+  let searchType = "";
+  if (
+    celebDetails.celebrityName &&
+    celebDetails.celebrityInitial != 0 &&
+    celebDetails.category != 0 &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.celebrityNameInitialGenderBirthYear;
+  } else if (
+    celebDetails.celebrityName &&
+    celebDetails.celebrityInitial != 0 &&
+    celebDetails.category != 0
+  ) {
+    searchType = celebritySearchType.celebrityNameInitialGender;
+  } else if (
+    celebDetails.celebrityName &&
+    (celebDetails.celebrityInitial != 0) != 0 &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.celebrityNameInitialBirthYear;
+  } else if (celebDetails.celebrityName && celebDetails.celebrityInitial != 0) {
+    searchType = celebritySearchType.celebrityNameInitial;
+  } else if (
+    celebDetails.celebrityName &&
+    celebDetails.category != 0 &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.celebrityNameGenderBirthYear;
+  } else if (celebDetails.celebrityName && celebDetails.category != 0) {
+    searchType = celebritySearchType.celebrityNameGender;
+  } else if (
+    celebDetails.celebrityInitial != 0 &&
+    celebDetails.category != 0 &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.celebrityInitialGenderBirthYear;
+  } else if (celebDetails.celebrityInitial != 0 && celebDetails.category != 0) {
+    searchType = celebritySearchType.celebrityInitialGender;
+  } else if (
+    celebDetails.celebrityName &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.celebrityNameBirthYear;
+  } else if (
+    celebDetails.celebrityInitial != 0 &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.celebrityInitialBirthYear;
+  } else if (
+    celebDetails.category != 0 &&
+    celebDetails.fromBirthYear != 0 &&
+    celebDetails.toBirthYear != 0
+  ) {
+    searchType = celebritySearchType.genderBirthYear;
+  } else if (celebDetails.celebrityName) {
+    searchType = celebritySearchType.celebrityName;
+  } else if (celebDetails.celebrityInitial != 0) {
+    searchType = celebritySearchType.celebrityInitial;
+  } else if (celebDetails.fromBirthYear != 0 && celebDetails.toBirthYear != 0) {
+    searchType = celebritySearchType.birthYear;
+  } else if (celebDetails.category != 0) {
+    searchType = celebritySearchType.gender;
   }
   return searchType;
 };

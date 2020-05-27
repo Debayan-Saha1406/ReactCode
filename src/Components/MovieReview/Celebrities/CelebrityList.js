@@ -9,7 +9,11 @@ const CelebrityList = (props) => {
       {props.celebs.map((celeb) => (
         <div class="col-md-12">
           <div class="ceb-item-style-2">
-            <img src={celeb.photo} alt="" style={{ height: "175px" }} />
+            <img
+              src={celeb.photo}
+              alt=""
+              style={{ height: "175px", width: "120px" }}
+            />
             <div class="ceb-infor">
               <h2>
                 <Link className="heading" to={`/celebrity-details/${celeb.id}`}>
@@ -22,7 +26,11 @@ const CelebrityList = (props) => {
                   : "Actress"}
                 , {celeb.nationality}
               </span>
-              <p style={{ marginTop: "10px" }}>{celeb.biography} </p>
+              <p style={{ marginTop: "10px" }}>
+                {celeb.biography.length > 200
+                  ? celeb.biography.substring(0, 200) + "..."
+                  : celeb.biography.description}{" "}
+              </p>
             </div>
           </div>
         </div>

@@ -10,6 +10,8 @@ import "../../../css/movie-single.css";
 import DetailTopBar from "./../Common/DetailTopBar";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import Pagination from "../Common/Pagination";
+import NotFound from "./../Common/NotFound";
+import NoResultFound from "../Common/NoResultFound";
 
 const initialState = {
   sortByColumn: sortColumns.movieName,
@@ -58,38 +60,44 @@ const Filmography = (props) => {
 
       <DetailTopBar totalCount={totalMovies}></DetailTopBar>
       <div className="mvcast-item">
-        {movies.map((movie) => (
-          <div className="cast-it">
-            <div className="cast-left cebleb-film">
-              <img src={image} alt="" />
-              <div>
-                <Link
-                  to={`/movie-details/${movie.movieId}`}
-                  className="blue-link"
-                  style={{ cursor: "pointer" }}
-                >
-                  {movie.movieName}{" "}
-                </Link>
-                <p className="time">{movie.characterName}</p>
+        {movies.length === 0 ? (
+          <NoResultFound></NoResultFound>
+        ) : (
+          movies.map((movie) => (
+            <div className="cast-it">
+              <div className="cast-left cebleb-film">
+                <img src={image} alt="" />
+                <div>
+                  <Link
+                    to={`/movie-details/${movie.movieId}`}
+                    className="blue-link"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {movie.movieName}{" "}
+                  </Link>
+                  <p className="time">{movie.characterName}</p>
+                </div>
               </div>
+              <p>
+                ...{" "}
+                {movie.releaseDate.substring(
+                  movie.releaseDate.indexOf(",") + 2,
+                  movie.releaseDate.length
+                )}
+              </p>
             </div>
-            <p>
-              ...{" "}
-              {movie.releaseDate.substring(
-                movie.releaseDate.indexOf(",") + 2,
-                movie.releaseDate.length
-              )}
-            </p>
-          </div>
-        ))}
-        <Pagination
-          pageSize={pageSize}
-          totalCount={totalMovies}
-          currentPage={pageNumber}
-          changeCount={changeMovieCount}
-          pageNumberClicked={pageNumberClicked}
-          description="Movies"
-        ></Pagination>
+          ))
+        )}
+        {movies.length > 0 && (
+          <Pagination
+            pageSize={pageSize}
+            totalCount={totalMovies}
+            currentPage={pageNumber}
+            changeCount={changeMovieCount}
+            pageNumberClicked={pageNumberClicked}
+            description="Movies"
+          ></Pagination>
+        )}
       </div>
     </div>
   );
