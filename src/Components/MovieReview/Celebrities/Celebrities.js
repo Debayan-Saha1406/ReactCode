@@ -7,20 +7,13 @@ import Header from "../Common/Header";
 import LoaderProvider from "../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
 import "../../../css/movie-single.css";
-//import "../../../css/home.css";
 import Pagination from "../Common/Pagination";
-import Searchbox from "./../Common/Searchbox";
-import { pageType, celebritySearchType } from "../../../Shared/Constants";
+import { pageType, celebCountList } from "../../../Shared/Constants";
 import CelebritySearchBox from "./CelebritySearchBox";
 import { celebritySortTypeList } from "./../../../Shared/Constants";
 import CelebrityGrid from "./CelebrityGrid";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
-import {
-  apiUrl,
-  sortColumns,
-  sortDirection,
-  movieSortTypeList,
-} from "../../../Shared/Constants";
+import { apiUrl, sortColumns, sortDirection } from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import NoResultFound from "../Common/NoResultFound";
@@ -29,7 +22,7 @@ import { getCelebritySearchType } from "../../../Shared/Services/SearchBoxSearch
 const initialData = {
   totalCelebrities: 0,
   pageNumber: 1,
-  pageSize: 1,
+  pageSize: 20,
   celebrityList: [],
   sortColumn: sortColumns.celebrityName,
   sortDirection: sortDirection.asc,
@@ -79,11 +72,25 @@ const Celebrities = () => {
     fetchCelebsData(body, setCelebrityData, celebrityData);
   };
 
-  const changeCelebrityCount = () => {};
+  const changeCelebrityCount = (e) => {
+    dispatch(toggleLoader(true, "15%"));
+    const body = {
+      pageNumber: celebrityData.pageNumber,
+      pageSize: Number(e.target.value),
+      sortColumn: celebrityData.sortColumn,
+      sortDirection: celebrityData.sortDirection,
+      celebrityName: state.celebrityName,
+      celebrityInitial: state.celebrityInitial,
+      fromBirthYear: state.fromBirthYear,
+      toBirthYear: state.toBirthYear,
+      gender: state.category,
+      searchType: state.searchType,
+    };
+    fetchCelebsData(body, setCelebrityData, celebrityData);
+  };
 
   const clearState = (e) => {
     e.preventDefault();
-    setCelebrityDetailsSearchBoxData(state);
     dispatch(toggleLoader(true, "15%"));
     const body = {
       pageNumber: celebrityData.pageNumber,
@@ -118,7 +125,7 @@ const Celebrities = () => {
       celebrityInitial: celebrityDetailsSearchBoxData.celebrityInitial,
       fromBirthYear: celebrityDetailsSearchBoxData.fromBirthYear,
       toBirthYear: celebrityDetailsSearchBoxData.toBirthYear,
-      category: celebrityDetailsSearchBoxData.category,
+      gender: celebrityDetailsSearchBoxData.category,
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
     fetchCelebsData(body, setCelebrityData, celebrityData);
@@ -170,12 +177,18 @@ const Celebrities = () => {
           totalCelebrities: response.data.data.totalCount,
           celebrityList: response.data.data.details,
           pageNumber: body.pageNumber,
+          pageSize: body.pageSize,
           sortColumn: body.sortColumn,
           sortDirection: body.sortDirection,
         });
         setCelebrityDetailsSearchBoxData({
           ...celebrityDetailsSearchBoxData,
           searchType: body.searchType,
+          celebrityName: body.celebrityName,
+          celebrityInitial: body.celebrityInitial,
+          category: body.gender,
+          fromBirthYear: body.fromBirthYear,
+          toBirthYear: body.toBirthYear,
         });
         dispatch(toggleLoader(false, 1));
       }
@@ -253,6 +266,7 @@ const Celebrities = () => {
                     changeCount={changeCelebrityCount}
                     pageNumberClicked={pageNumberClicked}
                     description="Celebs"
+                    countList={celebCountList}
                   ></Pagination>
                 )}
               </div>

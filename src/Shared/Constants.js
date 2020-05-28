@@ -168,8 +168,8 @@ export const userProfileSideMenuItem = {
 };
 
 export const celebritySortTypeList = [
-  { id: 1, value: "Celebrity Name Ascending" },
-  { id: 2, value: "Celebrity Name Descending" },
+  { id: 1, value: "Celeb Name Ascending" },
+  { id: 2, value: "Celeb Name Descending" },
 ];
 
 export const movieSortTypeList = [
@@ -224,4 +224,9 @@ export const alphabets = [
   { id: "x", value: "x" },
   { id: "y", value: "y" },
   { id: "z", value: "z" },
+];
+
+export const celebCountList = [
+  { id: 20, value: 20 },
+  { id: 50, value: 50 },
 ];
