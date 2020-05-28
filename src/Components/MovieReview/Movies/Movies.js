@@ -10,6 +10,7 @@ import {
   sortColumns,
   sortDirection,
   movieSortTypeList,
+  movieCountList,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
@@ -21,6 +22,7 @@ import { setSearchType } from "../../../Shared/Services/SearchBoxSearchTypeServi
 import List from "./List";
 import Grid from "./Grid";
 import NoResultFound from "../Common/NoResultFound";
+import { countList } from "./../../../Shared/Constants";
 
 class Movies extends Component {
   state = {
@@ -267,6 +269,7 @@ class Movies extends Component {
                       totalCount={this.state.totalMovies}
                       currentPage={this.state.pageNumber}
                       changeCount={this.changeMovieCount}
+                      countList={countList}
                       pageNumberClicked={this.pageNumberClicked}
                       description="Movies"
                     ></Pagination>

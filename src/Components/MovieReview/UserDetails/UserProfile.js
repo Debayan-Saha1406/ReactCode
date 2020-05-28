@@ -131,7 +131,7 @@ const UserProfile = (props) => {
   };
 
   const setPageType = (moviePageType) => {
-    if (moviePageType === pageType.list) {
+    if (moviePageType === pageType.grid) {
       setPageViewType(pageType.grid);
     } else {
       setPageViewType(pageType.list);

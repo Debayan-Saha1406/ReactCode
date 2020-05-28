@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import image from "../../../images/movie-single.jpg";
 import { movieSortTypeList } from "../../../Shared/Constants";
 import NoResultFound from "../Common/NoResultFound";
+import { countList } from "./../../../Shared/Constants";
 
 const UserFavoriteList = (props) => {
   const changeMovieCount = (e) => {
@@ -25,22 +26,6 @@ const UserFavoriteList = (props) => {
         setPageType={props.setPageType}
         sortBylist={movieSortTypeList}
       ></Topbar>
-      {/* <div class="topbar-filter user">
-        <p>
-          Found <span>1,608 movies</span> in total
-        </p>
-        <label>Sort by:</label>
-        <select>
-          <option value="range">-- Choose option --</option>
-          <option value="saab">-- Choose option 2--</option>
-        </select>
-        <a href="userfavoritelist.html" class="list">
-          <i class="ion-ios-list-outline active"></i>
-        </a>
-        <a href="userfavoritegrid.html" class="grid">
-          <i class="ion-grid "></i>
-        </a>
-      </div> */}
       <div class="flex-wrap-movielist user-fav-list">
         {props.moviesList.length === 0 ? (
           <NoResultFound></NoResultFound>
@@ -96,6 +81,7 @@ const UserFavoriteList = (props) => {
           currentPage={props.paginationData.pageNumber}
           changeCount={changeMovieCount}
           pageNumberClicked={pageNumberClicked}
+          countList={countList}
           description="Movies"
         ></Pagination>
       )}

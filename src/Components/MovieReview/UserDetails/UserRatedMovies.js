@@ -17,6 +17,7 @@ import { popupType } from "./../../../Shared/Constants";
 import Information from "./../Popups/Information";
 import UserContentPopup from "../Popups/UserContentPopup";
 import NoResultFound from "./../Common/NoResultFound";
+import { countList } from "./../../../Shared/Constants";
 
 const initialData = {
   pageNumber: 1,
@@ -219,6 +220,7 @@ const UserRatedMovies = (props) => {
           totalCount={reviewRatingData.totalReviewRatings}
           currentPage={reviewRatingData.pageNumber}
           changeCount={changeReviewCount}
+          countList={countList}
           pageNumberClicked={pageNumberClicked}
           description="Reviews"
         ></Pagination>

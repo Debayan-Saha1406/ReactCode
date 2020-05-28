@@ -226,7 +226,8 @@ export const alphabets = [
   { id: "z", value: "z" },
 ];
 
-export const celebCountList = [
-  { id: 20, value: 20 },
+export const countList = [
+  { id: 10, value: 10 },
+  { id: 25, value: 25 },
   { id: 50, value: 50 },
 ];

@@ -5,6 +5,7 @@ import {
   popupType,
   apiUrl,
   monthNames,
+  reviewCountList,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import {
@@ -16,6 +17,7 @@ import { connect } from "react-redux";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import DetailTopBar from "../Common/DetailTopBar";
 import ReviewPopup from "./../Popups/ReviewPopup";
+import { countList } from "./../../../Shared/Constants";
 
 class MovieReview extends Component {
   state = {
@@ -269,6 +271,7 @@ class MovieReview extends Component {
               pageSize={this.state.pageSize}
               totalCount={this.state.totalReviews}
               currentPage={this.state.pageNumber}
+              countList={countList}
               changeCount={this.changeReviewCount}
               pageNumberClicked={this.pageNumberClicked}
               description="Reviews"

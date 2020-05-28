@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import NoResultFound from "../Common/NoResultFound";
 import { getCelebritySearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
+import { countList } from "./../../../Shared/Constants";
 
 const initialData = {
   totalCelebrities: 0,
@@ -266,7 +267,7 @@ const Celebrities = () => {
                     changeCount={changeCelebrityCount}
                     pageNumberClicked={pageNumberClicked}
                     description="Celebs"
-                    countList={celebCountList}
+                    countList={countList}
                   ></Pagination>
                 )}
               </div>

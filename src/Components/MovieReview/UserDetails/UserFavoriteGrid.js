@@ -5,6 +5,7 @@ import Pagination from "../Common/Pagination";
 import image from "../../../images/movie-single.jpg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { countList, movieSortTypeList } from "./../../../Shared/Constants";
 
 const UserFavoriteGrid = (props) => {
   const [readMoreOpacity, setReadMoreOpacity] = useState(0);
@@ -15,10 +16,10 @@ const UserFavoriteGrid = (props) => {
     <React.Fragment>
       <Topbar
         totalMovies={props.paginationData.totalMovies}
-        selectGrid={props.selectGrid}
         pageType={props.pageViewType}
         fetchSortedData={fetchSortedData}
-        selectList={props.selectList}
+        sortBylist={movieSortTypeList}
+        setPageType={props.setPageType}
       ></Topbar>
       <div class="flex-wrap-movielist grid-fav">
         {props.moviesList.map((movie) => (
@@ -70,6 +71,7 @@ const UserFavoriteGrid = (props) => {
           currentPage={props.paginationData.pageNumber}
           changeCount={changeMovieCount}
           pageNumberClicked={pageNumberClicked}
+          countList={countList}
           description="Movies"
         ></Pagination>
       )}
