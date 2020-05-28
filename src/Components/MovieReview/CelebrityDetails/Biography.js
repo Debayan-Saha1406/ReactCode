@@ -6,7 +6,7 @@ const Biography = (props) => {
     <div class="biography">
       <div>
         <h3>Biography of</h3>
-        <h2>{celebrityName}</h2>
+        <h2 style={{ color: "white" }}>{celebrityName}</h2>
       </div>
       <p>{biography}</p>
     </div>

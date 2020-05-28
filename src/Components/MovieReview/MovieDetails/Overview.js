@@ -49,58 +49,52 @@ const Overview = (props) => {
           >
             <div className="sb-it">
               <h6 className="side-heading">Director: </h6>
-              <ul className="menu">
+              <p>
                 {props.directors.map((director, index) => (
-                  <li
+                  <span
                     key={index}
-                    style={{ color: "#4280bf", marginBottom: "10px" }}
+                    className="space-margin"
+                    style={{ marginBottom: "10px" }}
                   >
-                    <span className="space-margin">
-                      {props.directors.length - 1 === index
-                        ? director.directorName
-                        : director.directorName + ","}
-                    </span>
-                  </li>
+                    {props.directors.length - 1 === index
+                      ? director.directorName
+                      : director.directorName + ","}
+                  </span>
                 ))}
-              </ul>
+              </p>
             </div>
-            <br></br>
             <div className="sb-it">
               <h6 className="side-heading">Stars: </h6>
-              <ul className="menu">
+              <p>
                 {props.celebrities.map((celebrity, index) => (
-                  <li
+                  <span
                     key={index}
-                    style={{ color: "#4280bf", marginBottom: "10px" }}
+                    className="space-margin"
+                    style={{ marginBottom: "10px" }}
                   >
-                    <span className="space-margin">
-                      {props.celebrities.length - 1 === index
-                        ? celebrity.celebrityName
-                        : celebrity.celebrityName + ","}
-                    </span>
-                  </li>
+                    {props.celebrities.length - 1 === index
+                      ? celebrity.celebrityName
+                      : celebrity.celebrityName + ","}
+                  </span>
                 ))}
-              </ul>
+              </p>
             </div>
-            <br></br>
             <div className="sb-it">
               <h6 className="side-heading">Genres:</h6>
-              <ul className="menu">
+              <p>
                 {props.genres.map((genre, index) => (
-                  <li
+                  <span
                     key={index}
-                    style={{ color: "#4280bf", marginBottom: "10px" }}
+                    className="space-margin"
+                    style={{ marginBottom: "10px" }}
                   >
-                    <span className="space-margin">
-                      {props.genres.length - 1 === index
-                        ? genre.genreName
-                        : genre.genreName + ","}
-                    </span>
-                  </li>
+                    {props.genres.length - 1 === index
+                      ? genre.genreName
+                      : genre.genreName + ","}
+                  </span>
                 ))}
-              </ul>
+              </p>
             </div>
-            <br></br>
             <div className="sb-it">
               <h6 className="side-heading">Release Date:</h6>
               <p className="release-date">{props.movieOverview.releaseDate}</p>

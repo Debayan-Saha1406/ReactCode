@@ -254,16 +254,16 @@ class MovieDetails extends Component {
       >
         <Header page={page.details}></Header>
         <div
-          class="hero hero3"
+          className="hero hero3"
           style={{
             background: `url(${image}) no-repeat`,
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}
         >
-          <div class="celeb-container">
-            <div class="row">
-              <div class="col-md-12"></div>
+          <div className="celeb-container">
+            <div className="row">
+              <div className="col-md-12"></div>
             </div>
           </div>
         </div>
@@ -324,10 +324,10 @@ class MovieDetails extends Component {
                     {isMovieDetailPresent && this.state.movie.movie.movieName}
                     <span>{releaseYear}</span>
                   </h1>
-                  <div class="social-btn">
-                    <div class="parent-btn">
+                  <div className="social-btn">
+                    <div className="parent-btn">
                       <i
-                        class="fa fa-heart"
+                        className="fa fa-heart"
                         aria-hidden="true"
                         onClick={this.toggleFavourite}
                         style={{ cursor: "pointer" }}

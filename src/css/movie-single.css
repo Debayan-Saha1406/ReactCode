@@ -518,9 +518,9 @@ a#writeReview :hover {
   margin-bottom: 20px;
 }
 
-.movie-single .movie-single-ct .mvcast-item .cast-it p {
+/* .movie-single .movie-single-ct .mvcast-item .cast-it p {
   margin-bottom: 0;
-}
+} */
 
 .movie-single .movie-single-ct .mvcast-item .cast-it p {
   width: 40%;

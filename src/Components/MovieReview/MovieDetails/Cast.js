@@ -18,7 +18,7 @@ const Cast = (props) => {
         <br></br>
         <br></br>
         <h3>
-          Cast of <span style={{ color: "#4280bf" }}>{props.movieName}</span>
+          Cast of <span style={{ color: "white" }}>{props.movieName}</span>
         </h3>
 
         <div className="title-hd-sm">

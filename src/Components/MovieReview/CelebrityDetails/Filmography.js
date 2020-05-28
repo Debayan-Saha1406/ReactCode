@@ -12,6 +12,7 @@ import ServiceProvider from "./../../../Provider/ServiceProvider";
 import Pagination from "../Common/Pagination";
 import NotFound from "./../Common/NotFound";
 import NoResultFound from "../Common/NoResultFound";
+import { countList } from "./../../../Shared/Constants";
 
 const initialState = {
   sortByColumn: sortColumns.movieName,
@@ -55,7 +56,7 @@ const Filmography = (props) => {
     <div className="filmography">
       <div>
         <h3>Filmography of</h3>
-        <h2>{props.celebrityName}</h2>
+        <h2 style={{ color: "white" }}>{props.celebrityName}</h2>
       </div>
 
       <DetailTopBar totalCount={totalMovies}></DetailTopBar>
@@ -75,7 +76,9 @@ const Filmography = (props) => {
                   >
                     {movie.movieName}{" "}
                   </Link>
-                  <p className="time">{movie.characterName}</p>
+                  <p className="time" style={{ width: "auto" }}>
+                    {movie.characterName}
+                  </p>
                 </div>
               </div>
               <p>
@@ -95,6 +98,7 @@ const Filmography = (props) => {
             currentPage={pageNumber}
             changeCount={changeMovieCount}
             pageNumberClicked={pageNumberClicked}
+            countList={countList}
             description="Movies"
           ></Pagination>
         )}

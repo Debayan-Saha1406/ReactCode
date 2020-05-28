@@ -221,7 +221,7 @@ class MovieReview extends Component {
               <br></br>
               <br></br>
               <h3>Reviews Related To</h3>
-              <h2>{this.props.movieName}</h2>
+              <h2 style={{ color: "white" }}>{this.props.movieName}</h2>
             </div>
             {this.state.isReviewGiven ? (
               <a
@@ -259,7 +259,7 @@ class MovieReview extends Component {
                     <h3 style={{ color: "yellow" }}>{review.reviewTitle}</h3>
                     <p className="time">
                       {review.reviewDate} by{" "}
-                      <a className="link-color"> {review.userEmail}</a>
+                      <a style={{ color: "white" }}> {review.userEmail}</a>
                     </p>
                     <p>{review.reviewDescription}</p>
                   </li>
