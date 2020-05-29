@@ -227,7 +227,9 @@ export const alphabets = [
 ];
 
 export const countList = [
-  { id: 10, value: 10 },
-  { id: 25, value: 25 },
-  { id: 50, value: 50 },
+  { id: 1, value: 1 },
+  { id: 2, value: 2 },
+  // { id: 10, value: 10 },
+  // { id: 25, value: 25 },
+  // { id: 50, value: 50 },
 ];

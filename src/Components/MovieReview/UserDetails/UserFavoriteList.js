@@ -7,8 +7,11 @@ import image from "../../../images/movie-single.jpg";
 import { movieSortTypeList } from "../../../Shared/Constants";
 import NoResultFound from "../Common/NoResultFound";
 import { countList } from "./../../../Shared/Constants";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 const UserFavoriteList = (props) => {
+  const dispatch = useDispatch();
   const changeMovieCount = (e) => {
     // setPaginationData({ ...initialData, pageSize: e.target.value });
   };
@@ -16,6 +19,12 @@ const UserFavoriteList = (props) => {
   const pageNumberClicked = () => {};
 
   const fetchSortedData = () => {};
+
+  const handleSuccessulImageLoad = (isLastImage) => {
+    if (isLastImage && props.isImageLoaded) {
+      dispatch(toggleLoader(false, 1));
+    }
+  };
 
   return (
     <React.Fragment>
@@ -30,9 +39,18 @@ const UserFavoriteList = (props) => {
         {props.moviesList.length === 0 ? (
           <NoResultFound></NoResultFound>
         ) : (
-          props.moviesList.map((movie) => (
+          props.moviesList.map((movie, index) => (
             <div class="movie-item-style-2">
-              <img src={image} alt="" />
+              <img
+                src={movie.movieLogo}
+                style={{ height: "260px", width: "170px" }}
+                alt=""
+                onLoad={() =>
+                  handleSuccessulImageLoad(
+                    props.moviesList.length - 1 === index
+                  )
+                }
+              />
               <div class="mv-item-infor">
                 <h6>
                   <Link
@@ -61,14 +79,30 @@ const UserFavoriteList = (props) => {
                   ></i>
                   <span>{movie.avgRating}</span> /10
                 </p>
-                <p class="describe">
+                <p class="describe" style={{ marginTop: "20px" }}>
                   {movie.description.length > 200
                     ? movie.description.substring(0, 200) + "..."
                     : movie.description}
                 </p>
-                <p class="run-time"> Run Time: {movie.runTime}</p>
-                <p>Release: {movie.releaseDate}</p>
-                <p>Language:{movie.language}</p>
+                <p class="run-time" style={{ marginTop: "20px" }}>
+                  {" "}
+                  Run Time:{" "}
+                  <span style={{ color: "white", marginLeft: "5px" }}>
+                    {movie.runTime}
+                  </span>
+                </p>
+                <p>
+                  Release:{" "}
+                  <span style={{ color: "white", marginLeft: "5px" }}>
+                    {movie.releaseDate}
+                  </span>{" "}
+                </p>
+                <p>
+                  Language:
+                  <span style={{ color: "white", marginLeft: "5px" }}>
+                    {movie.language}
+                  </span>
+                </p>
               </div>
             </div>
           ))

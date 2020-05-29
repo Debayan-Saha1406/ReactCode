@@ -125,7 +125,7 @@ class MovieDetails extends Component {
     const body = {
       avgRating: movieDetail.movie.avgRating,
       userEmail: this.props.loggedInEmail,
-      userRating: index + 1,
+      userRating: index,
       totalRating: movieDetail.movie.totalRatings,
       isFavourite: this.state.isFavourite,
     };
@@ -321,9 +321,9 @@ class MovieDetails extends Component {
                     </div>
                     <div className="btn-transform transform-vertical">
                       <div>
-                        <a href="#" className="item item-1 yellowbtn">
+                        <a className="item item-1 yellowbtn" id="view-gallery">
                           {" "}
-                          <i className="ion-card"></i> View Imdb
+                          View Gallery
                         </a>
                       </div>
                     </div>

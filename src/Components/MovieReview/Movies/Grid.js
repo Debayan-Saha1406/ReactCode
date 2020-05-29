@@ -19,9 +19,10 @@ const Grid = (props) => {
         <div key={index} className="movie-item-style-2 movie-item-style-1">
           <img
             src={movie.movieLogo}
+            style={{ opacity: props.imageOpacity }}
             alt=""
-            onMouseOver={() => props.toggleReadMoreOpacity(1)}
-            onMouseOut={() => props.toggleReadMoreOpacity(0)}
+            onMouseOver={() => props.toggleOpacity(1)}
+            onMouseOut={() => props.toggleOpacity(0)}
             onLoad={() =>
               handleSuccessfulImageLoad(props.moviesList.length - 1 === index)
             }
@@ -29,7 +30,7 @@ const Grid = (props) => {
           <div
             className="hvr-inner"
             style={{ opacity: props.readMoreOpacity }}
-            onMouseOver={() => props.toggleReadMoreOpacity(1)}
+            onMouseOver={() => props.toggleOpacity(1)}
           >
             <Link to={`/movie-details/${movie.movieId}`}> Read more </Link>
           </div>

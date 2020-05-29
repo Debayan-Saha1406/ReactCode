@@ -2,17 +2,28 @@ import React from "react";
 import image from "../../../images/movie-single.jpg";
 import { gender } from "../../../Shared/Constants";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 const CelebrityList = (props) => {
+  const dispatch = useDispatch();
+  const hideLoader = (isLastImage) => {
+    if (isLastImage && props.isImageLoaded) {
+      dispatch(toggleLoader(false, 1));
+    }
+  };
   return (
     <React.Fragment>
-      {props.celebs.map((celeb) => (
+      {props.celebs.map((celeb, index) => (
         <div class="col-md-12">
           <div class="ceb-item-style-2">
             <img
               src={celeb.photo}
               alt=""
-              style={{ height: "175px", width: "120px" }}
+              style={{ height: "260px", width: "170px" }}
+              onLoad={() => {
+                hideLoader(props.celebs.length - 1 === index);
+              }}
             />
             <div class="ceb-infor">
               <h2>

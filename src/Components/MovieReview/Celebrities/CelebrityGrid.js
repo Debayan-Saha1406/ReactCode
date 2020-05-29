@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import image from "../../../images/movie-single.jpg";
 import { Link } from "react-router-dom";
@@ -8,7 +9,7 @@ const CelebrityGrid = (props) => {
     <div class="celebrity-items">
       {props.celebs.map((celeb) => (
         <div class="ceb-item">
-          <a href="celebritysingle.html">
+          <a>
             <img src={celeb.photo} alt="" />
           </a>
           <div class="ceb-infor">

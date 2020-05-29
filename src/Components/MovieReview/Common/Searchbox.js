@@ -4,13 +4,23 @@ import React, { useState, useEffect } from "react";
 import { rating, years, apiUrl } from "../../../Shared/Constants";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 
-const Searchbox = (props) => {
-  const [movieName, setMovieName] = useState("");
-  const [selectedRating, setRating] = useState(0);
-  const [fromYear, setFromYear] = useState(0);
-  const [toYear, setToYear] = useState(0);
+const Searchbox = ({
+  setMovieDetails,
+  movieDetails,
+  title,
+  movieNameLabel,
+  languageLabel,
+  ratingLabel,
+  releaseYearLabel,
+  handleSubmit,
+  clearState,
+}) => {
+  // const [movieName, setMovieName] = useState("");
+  // const [selectedRating, setRating] = useState(0);
+  // const [fromYear, setFromYear] = useState(0);
+  // const [toYear, setToYear] = useState(0);
   const [languages, setLanguage] = useState([]);
-  const [languageId, setSelectedLanguageId] = useState(0);
+  // const [languageId, setSelectedLanguageId] = useState(0);
   const [isFormDirty, setIsFormDirty] = useState(false);
 
   useEffect(() => {
@@ -21,43 +31,35 @@ const Searchbox = (props) => {
     });
   }, []);
 
-  const clearState = (e) => {
-    e.preventDefault();
-    setMovieName("");
-    setRating(0);
-    setFromYear(0);
-    setToYear(0);
-    setSelectedLanguageId(0);
-    props.fetchInitialData("15%");
-  };
-
   return (
     <div className="col-md-4 col-sm-12 col-xs-12">
       <div className="sidebar">
         <div className="searh-form">
-          <h4 className="sb-title">{props.title}</h4>
+          <h4 className="sb-title">{title}</h4>
           <form className="form-style-1" action="#">
             <div className="row">
               <div className="col-md-12 form-it">
-                <label>{props.movieNameLabel}</label>
+                <label>{movieNameLabel}</label>
                 <input
                   type="text"
+                  name="movieName"
                   placeholder="Enter keywords"
                   onChange={(e) => {
                     setIsFormDirty(true);
-                    setMovieName(e.target.value);
+                    setMovieDetails(e);
                   }}
-                  value={movieName}
+                  value={movieDetails.movieName}
                 />
               </div>
               <div className="col-md-12 form-it">
-                <label>{props.languageLabel}</label>
+                <label>{languageLabel}</label>
                 <select
+                  name="languageId"
                   onChange={(e) => {
                     setIsFormDirty(true);
-                    setSelectedLanguageId(e.target.value);
+                    setMovieDetails(e);
                   }}
-                  value={languageId}
+                  value={movieDetails.languageId}
                 >
                   <option value={0}>-- Select the language below --</option>
                   {languages.map((language, index) => (
@@ -68,14 +70,14 @@ const Searchbox = (props) => {
                 </select>
               </div>
               <div className="col-md-12 form-it">
-                <label>{props.ratingLabel}</label>
-
+                <label>{ratingLabel}</label>
                 <select
+                  name="selectedRating"
                   onChange={(e) => {
                     setIsFormDirty(true);
-                    setRating(e.target.value);
+                    setMovieDetails(e);
                   }}
-                  value={selectedRating}
+                  value={movieDetails.selectedRating}
                 >
                   <option value={0}>-- Select the rating range below --</option>
                   {rating.map((rating) => (
@@ -86,15 +88,16 @@ const Searchbox = (props) => {
                 </select>
               </div>
               <div className="col-md-12 form-it">
-                <label>{props.releaseYearLabel}</label>
+                <label>{releaseYearLabel}</label>
                 <div className="row">
                   <div className="col-md-6">
                     <select
+                      name="fromYear"
                       onChange={(e) => {
                         setIsFormDirty(true);
-                        setFromYear(e.target.value);
+                        setMovieDetails(e);
                       }}
-                      value={fromYear}
+                      value={movieDetails.fromYear}
                     >
                       <option value={0}>From</option>
                       {years.map((year) => (
@@ -104,11 +107,12 @@ const Searchbox = (props) => {
                   </div>
                   <div className="col-md-6">
                     <select
+                      name="toYear"
                       onChange={(e) => {
                         setIsFormDirty(true);
-                        setToYear(e.target.value);
+                        setMovieDetails(e);
                       }}
-                      value={toYear}
+                      value={movieDetails.toYear}
                     >
                       <option value={0}>To</option>
                       {years.map((year) => (
@@ -118,31 +122,17 @@ const Searchbox = (props) => {
                   </div>
                 </div>
               </div>
-              {toYear < fromYear && toYear != 0 && fromYear != 0 && (
-                <div className="col-md-12">
-                  <label className="error">
-                    "To Year" Must Be More Than "From Year"
-                  </label>
-                </div>
-              )}
               <div className="col-md-12 form-it">
-                {movieName ||
-                selectedRating != 0 ||
-                languageId != 0 ||
-                (toYear >= fromYear && fromYear != 0 && toYear != 0) ? (
+                {movieDetails.movieName ||
+                movieDetails.selectedRating != 0 ||
+                movieDetails.languageId != 0 ||
+                (movieDetails.toYear >= movieDetails.fromYear &&
+                  movieDetails.fromYear != 0 &&
+                  movieDetails.toYear != 0) ? (
                   <input
                     className="submit"
                     type="submit"
-                    onClick={(e) =>
-                      props.getFilteredMovies(
-                        e,
-                        movieName,
-                        selectedRating,
-                        fromYear,
-                        toYear,
-                        languageId
-                      )
-                    }
+                    onClick={(e) => handleSubmit(e, movieDetails)}
                   />
                 ) : (
                   <input
@@ -154,11 +144,11 @@ const Searchbox = (props) => {
                 )}
               </div>
               <div className="col-md-12 form-it">
-                {movieName ||
-                selectedRating != 0 ||
-                fromYear != 0 ||
-                toYear != 0 ||
-                languageId != 0 ||
+                {movieDetails.movieName ||
+                movieDetails.selectedRating != 0 ||
+                movieDetails.fromYear != 0 ||
+                movieDetails.toYear != 0 ||
+                movieDetails.languageId != 0 ||
                 isFormDirty ? (
                   <button
                     className="reset"

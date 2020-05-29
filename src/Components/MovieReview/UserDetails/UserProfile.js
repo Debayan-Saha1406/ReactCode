@@ -49,7 +49,7 @@ const UserProfile = (props) => {
   const [pageViewType, setPageViewType] = useState(pageType.list);
   const [moviesList, setMoviesList] = useState(initialData.moviesList);
   const [paginationData, setPaginationData] = useState(initialData);
-
+  const [isImageLoaded, setIsImageLoading] = useState(false);
   const [activeSideMenuItem, setActiveSideMenuItem] = useState(
     userProfileSideMenuItem.profile
   );
@@ -79,7 +79,7 @@ const UserProfile = (props) => {
     setIsLoading(false);
   }, [isUserLoggedIn]);
 
-  const fetchData = () => {
+  const fetchData = (hideLoader) => {
     const body = {
       pageNumber: paginationData.pageNumber,
       pageSize: paginationData.pageSize,
@@ -95,7 +95,12 @@ const UserProfile = (props) => {
           ...initialData,
           totalMovies: response.data.data.totalCount,
         });
-        dispatch(toggleLoader(false, 1));
+        if (hideLoader && response.data.data.totalCount !== 0) {
+          setIsImageLoading(true);
+        } else {
+          setIsImageLoading(false);
+          dispatch(toggleLoader(false, 1));
+        }
       }
     });
   };
@@ -125,7 +130,7 @@ const UserProfile = (props) => {
   const toggleSideMenuItem = (activeSideMenuItem) => {
     if (activeSideMenuItem === userProfileSideMenuItem.favoriteMovies) {
       dispatch(toggleLoader(true, "15%"));
-      fetchData();
+      fetchData(true);
     }
     setActiveSideMenuItem(activeSideMenuItem);
   };
@@ -210,6 +215,7 @@ const UserProfile = (props) => {
                           pageViewType={pageViewType}
                           moviesList={moviesList}
                           paginationData={paginationData}
+                          isImageLoaded={isImageLoaded}
                         ></UserFavoriteList>
                       )}
                     {activeSideMenuItem ===
@@ -221,6 +227,7 @@ const UserProfile = (props) => {
                           pageViewType={pageViewType}
                           moviesList={moviesList}
                           paginationData={paginationData}
+                          isImageLoaded={isImageLoaded}
                         ></UserFavoriteGrid>
                       )}
                     {activeSideMenuItem ===

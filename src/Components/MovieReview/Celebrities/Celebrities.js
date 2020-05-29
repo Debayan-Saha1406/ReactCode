@@ -23,7 +23,7 @@ import { countList } from "./../../../Shared/Constants";
 const initialData = {
   totalCelebrities: 0,
   pageNumber: 1,
-  pageSize: 20,
+  pageSize: 1,
   celebrityList: [],
   sortColumn: sortColumns.celebrityName,
   sortDirection: sortDirection.asc,
@@ -53,6 +53,7 @@ const Celebrities = () => {
     celebrityDetailsSearchBoxData,
     setCelebrityDetailsSearchBoxData,
   ] = useState(state);
+  const [isImageLoaded, setIsImageLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,7 +77,7 @@ const Celebrities = () => {
   const changeCelebrityCount = (e) => {
     dispatch(toggleLoader(true, "15%"));
     const body = {
-      pageNumber: celebrityData.pageNumber,
+      pageNumber: initialData.pageNumber,
       pageSize: Number(e.target.value),
       sortColumn: celebrityData.sortColumn,
       sortDirection: celebrityData.sortDirection,
@@ -167,10 +168,15 @@ const Celebrities = () => {
       gender: celebrityDetailsSearchBoxData.category,
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData);
+    fetchCelebsData(body, setCelebrityData, celebrityData, !isImageLoaded);
   }, []);
 
-  const fetchCelebsData = (body, setCelebrityData, celebrityData) => {
+  const fetchCelebsData = (
+    body,
+    setCelebrityData,
+    celebrityData,
+    showLoader
+  ) => {
     ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
       if (response.status === 200) {
         setCelebrityData({
@@ -191,7 +197,12 @@ const Celebrities = () => {
           fromBirthYear: body.fromBirthYear,
           toBirthYear: body.toBirthYear,
         });
-        dispatch(toggleLoader(false, 1));
+        if (showLoader) {
+          setIsImageLoading(true);
+        } else {
+          setIsImageLoading(false);
+          dispatch(toggleLoader(false, 1));
+        }
       }
     });
   };
@@ -247,6 +258,7 @@ const Celebrities = () => {
                         {
                           <CelebrityList
                             celebs={celebrityData.celebrityList}
+                            isImageLoaded={isImageLoaded}
                           ></CelebrityList>
                         }
                       </div>

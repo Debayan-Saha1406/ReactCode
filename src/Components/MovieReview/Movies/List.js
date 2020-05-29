@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import image from "../../../images/mv1.jpg";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
@@ -9,7 +8,7 @@ const List = (props) => {
   const dispatch = useDispatch();
 
   const handleSuccessfulImageLoad = (isLastImage) => {
-    if (isLastImage) {
+    if (isLastImage && props.isImageLoaded) {
       dispatch(toggleLoader(false, 1));
     }
   };
@@ -25,7 +24,7 @@ const List = (props) => {
       />
       <div className="mv-item-infor">
         <Link className="heading" to={`/movie-details/${movie.movieId}`}>
-          {movie.movieName}
+          {movie.movieName}{" "}
           <span>
             (
             {movie.releaseDate.substring(
@@ -44,7 +43,7 @@ const List = (props) => {
               marginRight: "5px",
             }}
           ></i>
-          <span>{movie.avgRating}</span> /10
+          <span style={{ color: "white" }}>{movie.avgRating}</span> /10
         </p>
         <p className="describe">
           {movie.description.length > 200
@@ -53,11 +52,20 @@ const List = (props) => {
         </p>
         <p className="run-time">
           {" "}
-          Run Time: {movie.runTime} <br></br>
-          <span>Release: {movie.releaseDate}</span>
+          Run Time:{" "}
+          <span style={{ color: "white", marginLeft: "5px" }}>
+            {movie.runTime}
+          </span>{" "}
+          <br></br>
+          <span>
+            Release:
+            <span style={{ color: "white", marginLeft: "5px" }}>
+              {movie.releaseDate}
+            </span>
+          </span>
         </p>
         <p>
-          Language: <a href="#">{movie.language}</a>
+          Language: <span style={{ color: "white" }}>{movie.language}</span>
         </p>
       </div>
     </div>

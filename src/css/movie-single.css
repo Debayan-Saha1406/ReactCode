@@ -2289,3 +2289,7 @@ input#black-hover:hover {
     opacity: 0.75;
   }
 }
+
+a#view-gallery:hover {
+  color: crimson;
+}

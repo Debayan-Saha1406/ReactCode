@@ -27,9 +27,10 @@ import { countList } from "./../../../Shared/Constants";
 class Movies extends Component {
   state = {
     readMoreOpacity: 0,
+    imageOpacity: 1,
     showGrid: false,
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 1,
     searchQuery: "",
     moviesList: [],
     totalMovies: 0,
@@ -39,38 +40,54 @@ class Movies extends Component {
     sortDirection: "asc",
     searchData: {
       movieName: "",
-      rating: 0,
+      selectedRating: 0,
       fromYear: 0,
       toYear: 0,
       languageId: 0,
-      searchType: null,
+      searchType: "",
     },
     pageType: pageType.list,
+    imageLoaded: false,
   };
 
   componentDidMount() {
-    this.fetchInitialData(0);
-  }
-
-  fetchInitialData = (screenOpacity) => {
-    this.props.toggleLoader(true, screenOpacity);
+    this.props.toggleLoader(true, 0);
     const body = {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize,
+      searchType: this.state.searchData.searchType,
+      movieName: this.state.searchData.movieName,
+      selectedRating: this.state.searchData.selectedRating,
+      fromYear: this.state.searchData.fromYear,
+      toYear: this.state.searchData.toYear,
+      languageId: this.state.searchData.languageId,
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
     };
-    ServiceProvider.post(apiUrl.movies, body).then((response) => {
-      if (response.status === 200) {
-        this.setState(
-          {
-            moviesList: response.data.data.details,
-            totalMovies: response.data.data.totalCount,
-          },
-          () => {}
-        );
-      }
-    });
+    this.fetchMovies(body, !this.state.imageLoaded);
+  }
+
+  setMovieDetails = (e) => {
+    const searchData = { ...this.state.searchData };
+    searchData[e.target.name] = e.target.value;
+    this.setState({ searchData });
+  };
+
+  clearState = (e) => {
+    e.preventDefault();
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchType: "",
+      movieName: "",
+      selectedRating: 0,
+      fromYear: 0,
+      toYear: 0,
+      languageId: 0,
+      sortColumn: this.state.sortColumn,
+      sortDirection: this.state.sortDirection,
+    };
+    this.fetchMovies(body);
   };
 
   setPageType = (moviePageType) => {
@@ -88,110 +105,13 @@ class Movies extends Component {
   };
 
   changeMovieCount = (e) => {
-    this.setState({ pageSize: e.target.value });
+    this.props.toggleLoader(true, "15%");
     const body = {
-      pageNumber: this.state.pageNumber,
+      pageNumber: 1,
       pageSize: e.target.value,
-      searchQuery: "", //Needs to be changed once more movies are added
-    };
-    ServiceProvider.post(apiUrl.movies, body).then((response) => {
-      this.setState({
-        moviesList: response.data.data.details,
-        totalMovies: response.data.data.totalCount,
-      });
-    });
-  };
-
-  pageNumberClicked = (page) => {
-    const body = {
-      pageNumber: page,
-      pageSize: this.state.pageSize,
-      searchQuery: "", //Needs to be changed once more movies are added
-    };
-    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        moviesList: response.data.data.details,
-        totalMovies: response.data.data.totalCount,
-        pageNumber: page,
-      });
-    });
-  };
-
-  getFilteredMovies = (
-    e,
-    movieName,
-    selectedRating,
-    fromYear,
-    toYear,
-    languageId
-  ) => {
-    e.preventDefault();
-    let searchType = setSearchType(
-      movieName,
-      selectedRating,
-      fromYear,
-      toYear,
-      languageId
-    );
-
-    this.setSearchDataInState(
-      movieName,
-      selectedRating,
-      languageId,
-      fromYear,
-      toYear,
-      searchType
-    );
-  };
-
-  fetchSortedData = (e) => {
-    const state = { ...this.state };
-    if (e.target.value == 1) {
-      state.sortColumn = sortColumns.movieName;
-      state.sortDirection = sortDirection.asc;
-    } else if (e.target.value == 2) {
-      state.sortColumn = sortColumns.movieName;
-      state.sortDirection = sortDirection.desc;
-    } else if (e.target.value == 3) {
-      state.sortColumn = sortColumns.rating;
-      state.sortDirection = sortDirection.asc;
-    } else {
-      state.sortColumn = sortColumns.rating;
-      state.sortDirection = sortDirection.desc;
-    }
-
-    this.setState(state, () => {
-      this.fetchApiData();
-    });
-  };
-
-  setSearchDataInState(
-    movieName,
-    selectedRating,
-    languageId,
-    fromYear,
-    toYear,
-    searchType
-  ) {
-    const searchData = { ...this.state.searchData };
-    searchData.movieName = movieName ? movieName : null;
-    searchData.rating = selectedRating;
-    searchData.languageId = languageId;
-    searchData.fromYear = fromYear != 0 ? fromYear : null;
-    searchData.toYear = toYear != 0 ? toYear : null;
-    searchData.searchType = searchType;
-    this.setState({ searchData }, () => {
-      this.fetchApiData();
-    });
-  }
-
-  fetchApiData() {
-    const body = {
-      pageNumber: this.state.pageNumber,
-      pageSize: this.state.pageSize,
       searchType: this.state.searchData.searchType,
       movieName: this.state.searchData.movieName,
-      selectedRating: this.state.searchData.rating,
+      selectedRating: this.state.searchData.selectedRating,
       fromYear: this.state.searchData.fromYear,
       toYear: this.state.searchData.toYear,
       languageId: this.state.searchData.languageId,
@@ -199,21 +119,138 @@ class Movies extends Component {
       sortDirection: this.state.sortDirection,
     };
     this.props.toggleLoader(true, "15%");
+    this.fetchMovies(body, !this.state.imageLoaded);
+  };
+
+  pageNumberClicked = (page) => {
+    this.props.toggleLoader(true, "15%");
+    const body = {
+      pageNumber: page,
+      pageSize: this.state.pageSize,
+      searchType: this.state.searchData.searchType,
+      movieName: this.state.searchData.movieName,
+      selectedRating: this.state.searchData.selectedRating,
+      fromYear: this.state.searchData.fromYear,
+      toYear: this.state.searchData.toYear,
+      languageId: this.state.searchData.languageId,
+      sortColumn: this.state.sortColumn,
+      sortDirection: this.state.sortDirection,
+    };
+    this.fetchMovies(body);
+  };
+
+  fetchSortedData = (e) => {
+    this.props.toggleLoader(true, "15%");
+    let { sortColumn, sortByDirection } = this.getSortingDetails(e);
+
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchType: this.state.searchData.searchType,
+      movieName: this.state.searchData.movieName,
+      selectedRating: this.state.searchData.selectedRating,
+      fromYear: this.state.searchData.fromYear,
+      toYear: this.state.searchData.toYear,
+      languageId: this.state.searchData.languageId,
+      sortColumn: sortColumn,
+      sortDirection: sortByDirection,
+    };
+    this.fetchMovies(body);
+  };
+
+  handleSubmit = (e, movieDetails) => {
+    e.preventDefault();
+    this.props.toggleLoader(true, "15%");
+    let searchType = setSearchType(
+      movieDetails.movieName,
+      movieDetails.selectedRating,
+      movieDetails.fromYear,
+      movieDetails.toYear,
+      movieDetails.languageId
+    );
+
+    const body = {
+      pageNumber: 1,
+      pageSize: this.state.pageSize,
+      searchType: searchType,
+      movieName: movieDetails.movieName,
+      selectedRating: movieDetails.selectedRating,
+      fromYear: movieDetails.fromYear,
+      toYear: movieDetails.toYear,
+      languageId: movieDetails.languageId,
+      sortColumn: this.state.sortColumn,
+      sortDirection: this.state.sortDirection,
+    };
+
+    this.fetchMovies(body);
+  };
+
+  getSortingDetails(e) {
+    let sortColumn = "",
+      sortByDirection = "";
+    if (e.target.value == 1) {
+      sortColumn = sortColumns.movieName;
+      sortByDirection = sortDirection.asc;
+    } else if (e.target.value == 2) {
+      sortColumn = sortColumns.movieName;
+      sortByDirection = sortDirection.desc;
+    } else if (e.target.value == 3) {
+      sortColumn = sortColumns.rating;
+      sortByDirection = sortDirection.asc;
+    } else {
+      sortColumn = sortColumns.rating;
+      sortByDirection = sortDirection.desc;
+    }
+    return { sortColumn, sortByDirection };
+  }
+
+  fetchMovies(body, hideLoader) {
     ServiceProvider.post(apiUrl.movies, body).then((response) => {
-      this.setState(
-        {
-          moviesList: response.data.data.details,
-          totalMovies: response.data.data.totalCount,
-        },
-        () => {
-          this.props.toggleLoader(false, 1);
+      if (response.status === 200) {
+        const searchData = { ...this.state.searchData };
+        searchData.movieName = body.movieName;
+        searchData.selectedRating = body.selectedRating;
+        searchData.languageId = body.languageId;
+        searchData.searchType = body.searchType;
+        searchData.fromYear = body.fromYear;
+        searchData.toYear = body.toYear;
+        if (hideLoader) {
+          this.setState({
+            isImageLoaded: true,
+            moviesList: response.data.data.details,
+            totalMovies: response.data.data.totalCount,
+            pageSize: body.pageSize,
+            pageNumber: body.pageNumber,
+            sortColumn: body.sortColumn,
+            sortDirection: body.sortDirection,
+            searchData,
+          });
+        } else {
+          this.setState(
+            {
+              moviesList: response.data.data.details,
+              totalMovies: response.data.data.totalCount,
+              pageSize: body.pageSize,
+              pageNumber: body.pageNumber,
+              sortColumn: body.sortColumn,
+              sortDirection: body.sortDirection,
+              searchData,
+            },
+            () => {
+              this.props.toggleLoader(false, 1);
+            }
+          );
         }
-      );
+      }
     });
   }
 
-  toggleReadMoreOpacity = (opacity) => {
-    this.setState({ readMoreOpacity: opacity });
+  toggleOpacity = (opacity) => {
+    if (opacity === 1) {
+      this.setState({ readMoreOpacity: opacity, imageOpacity: 0.2 });
+    } else {
+      this.setState({ readMoreOpacity: opacity, imageOpacity: 1 });
+    }
   };
 
   render() {
@@ -250,13 +287,17 @@ class Movies extends Component {
                   ) : (
                     <React.Fragment>
                       {!this.state.showGrid && (
-                        <List moviesList={this.state.moviesList}></List>
+                        <List
+                          moviesList={this.state.moviesList}
+                          isImageLoaded={this.state.isImageLoaded}
+                        ></List>
                       )}
                       {this.state.showGrid && (
                         <Grid
                           moviesList={this.state.moviesList}
-                          toggleReadMoreOpacity={this.toggleReadMoreOpacity}
+                          toggleOpacity={this.toggleOpacity}
                           readMoreOpacity={this.state.readMoreOpacity}
+                          imageOpacity={this.state.imageOpacity}
                         ></Grid>
                       )}
                     </React.Fragment>
@@ -278,10 +319,13 @@ class Movies extends Component {
                   movieNameLabel="Movie Name"
                   ratingLabel="Rating Range"
                   releaseYearLabel="Release Year"
-                  getFilteredMovies={this.getFilteredMovies}
+                  handleSubmit={this.handleSubmit}
                   languageLabel="Language"
                   reviewLabel="Review Count"
                   fetchInitialData={this.fetchInitialData}
+                  setMovieDetails={this.setMovieDetails}
+                  movieDetails={this.state.searchData}
+                  clearState={this.clearState}
                 ></Searchbox>
               </div>
             </div>

@@ -281,14 +281,17 @@ function fetchReviewRatingData(
         }
       });
       if (isReviewRatingPresent) {
-        setReviewRatingList(response.data.data.details); // May need to Review with Multiple Ratings And Review
+        setReviewRatingList(response.data.data.details);
+        setReviewRatingData({
+          ...reviewRatingData,
+          totalReviewRatings: response.data.data.totalCount,
+        });
+        // May need to Review with Multiple Ratings And Review
       } else {
         setReviewRatingList([]);
+        setReviewRatingData({ ...reviewRatingData, totalReviewRatings: 0 });
       }
-      setReviewRatingData({
-        ...initialData,
-        totalReviewRatings: response.data.data.totalCount,
-      });
+
       dispatch(toggleLoader(false, 1));
     }
   });
