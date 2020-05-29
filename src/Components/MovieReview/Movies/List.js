@@ -2,11 +2,27 @@
 import React from "react";
 import image from "../../../images/mv1.jpg";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 const List = (props) => {
+  const dispatch = useDispatch();
+
+  const handleSuccessfulImageLoad = (isLastImage) => {
+    if (isLastImage) {
+      dispatch(toggleLoader(false, 1));
+    }
+  };
   return props.moviesList.map((movie, index) => (
     <div key={index} className="movie-item-style-2-list">
-      <img src={image} alt="" />
+      <img
+        src={movie.movieLogo}
+        alt=""
+        style={{ height: "260px", width: "170px" }}
+        onLoad={() => {
+          handleSuccessfulImageLoad(props.moviesList.length - 1 === index);
+        }}
+      />
       <div className="mv-item-infor">
         <Link className="heading" to={`/movie-details/${movie.movieId}`}>
           {movie.movieName}

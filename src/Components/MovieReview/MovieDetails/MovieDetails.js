@@ -81,9 +81,7 @@ class MovieDetails extends Component {
         );
         this.setState(
           { movie: response.data.data, isMovieDetailPresent: true },
-          () => {
-            this.props.toggleLoader(false, 1);
-          }
+          () => {}
         );
       } else if (response.status === 404) {
         this.setState({ redirectToNotFound: true });
@@ -197,6 +195,10 @@ class MovieDetails extends Component {
     }
   }
 
+  handleImageLoad = () => {
+    this.props.toggleLoader(false, 1);
+  };
+
   componentDidUpdate() {
     if (!this.props.isUserLoggedIn && !this.state.hoverStar) {
       this.setState({ indexClicked: -1, hoverStar: false });
@@ -253,20 +255,22 @@ class MovieDetails extends Component {
         }}
       >
         <Header page={page.details}></Header>
-        <div
-          className="hero hero3"
-          style={{
-            background: `url(${image}) no-repeat`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-        >
-          <div className="celeb-container">
-            <div className="row">
-              <div className="col-md-12"></div>
+        {isMovieDetailPresent && (
+          <div
+            className="hero hero3"
+            style={{
+              background: `url(${this.state.movie.movie.coverPhoto}) no-repeat`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          >
+            <div className="celeb-container">
+              <div className="row">
+                <div className="col-md-12"></div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         {this.state.showVideo && (
           <div className="overlay openform">
             <div className="login-wrapper" id="login-content">
@@ -293,7 +297,15 @@ class MovieDetails extends Component {
             <div className="row ipad-width2">
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <div className="movie-img sticky-sb">
-                  {<img src={image} alt="" />}
+                  {
+                    <img
+                      src={
+                        isMovieDetailPresent && this.state.movie.movie.movieLogo
+                      }
+                      onLoad={this.handleImageLoad}
+                      alt=""
+                    />
+                  }
                   <div className="movie-btn">
                     <div className="btn-transform transform-vertical red">
                       <div>

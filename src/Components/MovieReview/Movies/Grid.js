@@ -2,17 +2,29 @@
 import React from "react";
 import image from "../../../images/mv1.jpg";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 const Grid = (props) => {
+  const dispatch = useDispatch();
+  const handleSuccessfulImageLoad = (isLastImage) => {
+    if (isLastImage) {
+      dispatch(toggleLoader(false, 1));
+    }
+  };
+
   return (
     <div className="flex-wrap-movielist mv-grid-fw">
       {props.moviesList.map((movie, index) => (
         <div key={index} className="movie-item-style-2 movie-item-style-1">
           <img
-            src={image}
+            src={movie.movieLogo}
             alt=""
             onMouseOver={() => props.toggleReadMoreOpacity(1)}
             onMouseOut={() => props.toggleReadMoreOpacity(0)}
+            onLoad={() =>
+              handleSuccessfulImageLoad(props.moviesList.length - 1 === index)
+            }
           />
           <div
             className="hvr-inner"

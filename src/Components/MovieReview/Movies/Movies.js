@@ -67,9 +67,7 @@ class Movies extends Component {
             moviesList: response.data.data.details,
             totalMovies: response.data.data.totalCount,
           },
-          () => {
-            this.props.toggleLoader(false, 1);
-          }
+          () => {}
         );
       }
     });
