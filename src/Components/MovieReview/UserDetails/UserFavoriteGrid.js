@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import Topbar from "./../Common/Topbar";
-import Pagination from "../Common/Pagination";
-import image from "../../../images/movie-single.jpg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { countList, movieSortTypeList } from "./../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
-import NoResultFound from "./../Common/NoResultFound";
+
+const opacity = {
+  readMoreOpacity: 0,
+  imageOpacity: 1,
+  movieIndexHovered: -1,
+};
 
 const UserFavoriteGrid = (props) => {
-  const [readMoreOpacity, setReadMoreOpacity] = useState(0);
-  const [imageOpacity, setImageOpacity] = useState(1);
+  const [gridMovie, setGridMovieOpacity] = useState(opacity);
   const dispatch = useDispatch();
 
   const handleSuccessulImageLoad = (isLastImage) => {
@@ -21,13 +21,21 @@ const UserFavoriteGrid = (props) => {
     }
   };
 
-  const setOpacity = (readMoreOpacity) => {
+  const setOpacity = (readMoreOpacity, index) => {
     if (readMoreOpacity === 1) {
-      setImageOpacity(0.2);
-      setReadMoreOpacity(1);
+      setGridMovieOpacity({
+        ...gridMovie,
+        imageOpacity: 0.2,
+        readMoreOpacity: 1,
+        movieIndexHovered: index,
+      });
     } else {
-      setImageOpacity(1);
-      setReadMoreOpacity(0);
+      setGridMovieOpacity({
+        ...gridMovie,
+        imageOpacity: 1,
+        readMoreOpacity: 0,
+        movieIndexHovered: -1,
+      });
     }
   };
 
@@ -35,26 +43,51 @@ const UserFavoriteGrid = (props) => {
     <div class="flex-wrap-movielist grid-fav">
       {props.moviesList.map((movie, index) => (
         <div class="movie-item-style-2 movie-item-style-1 style-3">
-          <img
-            src={movie.movieLogo}
-            style={{ opacity: imageOpacity }}
-            alt=""
-            onMouseOver={() => setOpacity(1)}
-            onMouseOut={() => setOpacity(0)}
-            onLoad={() =>
-              handleSuccessulImageLoad(props.moviesList.length - 1 === index)
-            }
-          />
-          <div
-            class="hvr-inner"
-            style={{ opacity: readMoreOpacity }}
-            onMouseOver={() => setOpacity(1)}
-          >
-            <Link to={`/movie-details/${movie.movieId}`}>
-              {" "}
-              Read more <i class="ion-android-arrow-dropright"></i>{" "}
-            </Link>
-          </div>
+          {gridMovie.movieIndexHovered === index ? (
+            <img
+              src={movie.movieLogo}
+              style={{ opacity: gridMovie.imageOpacity }}
+              alt=""
+              onMouseOver={() => setOpacity(1, index)}
+              onMouseOut={() => setOpacity(0, index)}
+              onLoad={() =>
+                handleSuccessulImageLoad(props.moviesList.length - 1 === index)
+              }
+            />
+          ) : (
+            <img
+              src={movie.movieLogo}
+              alt=""
+              onMouseOver={() => setOpacity(1, index)}
+              onMouseOut={() => setOpacity(0, index)}
+              onLoad={() =>
+                handleSuccessulImageLoad(props.moviesList.length - 1 === index)
+              }
+            />
+          )}
+          {gridMovie.movieIndexHovered === index ? (
+            <div
+              class="hvr-inner"
+              style={{ opacity: gridMovie.readMoreOpacity }}
+              onMouseOver={() => setOpacity(1, index)}
+            >
+              <Link to={`/movie-details/${movie.movieId}`}>
+                {" "}
+                Read more <i class="ion-android-arrow-dropright"></i>{" "}
+              </Link>
+            </div>
+          ) : (
+            <div
+              class="hvr-inner"
+              style={{ opacity: 0 }}
+              onMouseOver={() => setOpacity(1, index)}
+            >
+              <Link to={`/movie-details/${movie.movieId}`}>
+                {" "}
+                Read more <i class="ion-android-arrow-dropright"></i>{" "}
+              </Link>
+            </div>
+          )}
           <div class="mv-item-infor">
             <h6>
               <Link className="heading" to={`/movie-details/${movie.movieId}`}>

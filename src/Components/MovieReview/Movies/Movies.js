@@ -48,6 +48,7 @@ class Movies extends Component {
     },
     pageType: pageType.list,
     imageLoaded: false,
+    movieIndexHovered: -1,
   };
 
   componentDidMount() {
@@ -245,11 +246,19 @@ class Movies extends Component {
     });
   }
 
-  toggleOpacity = (opacity) => {
+  toggleOpacity = (opacity, movieIndexHovered) => {
     if (opacity === 1) {
-      this.setState({ readMoreOpacity: opacity, imageOpacity: 0.2 });
+      this.setState({
+        readMoreOpacity: opacity,
+        imageOpacity: 0.2,
+        movieIndexHovered,
+      });
     } else {
-      this.setState({ readMoreOpacity: opacity, imageOpacity: 1 });
+      this.setState({
+        readMoreOpacity: opacity,
+        imageOpacity: 1,
+        movieIndexHovered: -1,
+      });
     }
   };
 
@@ -298,6 +307,7 @@ class Movies extends Component {
                           toggleOpacity={this.toggleOpacity}
                           readMoreOpacity={this.state.readMoreOpacity}
                           imageOpacity={this.state.imageOpacity}
+                          movieIndexHovered={this.state.movieIndexHovered}
                         ></Grid>
                       )}
                     </React.Fragment>

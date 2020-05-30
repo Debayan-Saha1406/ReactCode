@@ -1,12 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
-import Pagination from "./../Common/Pagination";
-import Topbar from "../Common/Topbar";
+import React from "react";
 import { Link } from "react-router-dom";
-import image from "../../../images/movie-single.jpg";
-import { movieSortTypeList } from "../../../Shared/Constants";
-import NoResultFound from "../Common/NoResultFound";
-import { countList } from "./../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
