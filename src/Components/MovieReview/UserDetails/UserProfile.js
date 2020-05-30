@@ -31,6 +31,7 @@ import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
 import UserRatedMovies from "./UserRatedMovies";
 import { sortDirection } from "./../../../Shared/Constants";
+import UserFavorite from "./UserFavorite";
 
 const profileState = {
   firstName: "",
@@ -40,25 +41,12 @@ const profileState = {
   createdOn: "",
 };
 
-const initialData = {
-  pageNumber: 1,
-  pageSize: 1,
-  totalMovies: 0,
-  moviesList: [],
-  sortColumn: "Id",
-  sortDirection: "asc",
-};
-
 const UserProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isOkClicked, setIsOkClicked] = useState(false);
   const [profileData, setProfileData] = useState(profileState);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [pageViewType, setPageViewType] = useState(pageType.list);
-  const [moviesList, setMoviesList] = useState(initialData.moviesList);
-  const [paginationData, setPaginationData] = useState(initialData);
-  const [isImageLoaded, setIsImageLoading] = useState(false);
   const [activeSideMenuItem, setActiveSideMenuItem] = useState(
     userProfileSideMenuItem.profile
   );
@@ -88,24 +76,6 @@ const UserProfile = (props) => {
     setIsLoading(false);
   }, [isUserLoggedIn]);
 
-  const fetchData = (hideLoader) => {
-    const body = {
-      pageNumber: paginationData.pageNumber,
-      pageSize: paginationData.pageSize,
-      sortDirection: paginationData.sortDirection,
-      sortColumn: paginationData.sortColumn,
-      email: profileData.email,
-    };
-
-    getUserFavoriteMovies(
-      body,
-      setMoviesList,
-      setPaginationData,
-      setIsImageLoading,
-      hideLoader
-    );
-  };
-
   const handleOk = (e) => {
     e.preventDefault();
     setIsOkClicked(true);
@@ -128,120 +98,7 @@ const UserProfile = (props) => {
   };
 
   const toggleSideMenuItem = (activeSideMenuItem) => {
-    if (activeSideMenuItem === userProfileSideMenuItem.favoriteMovies) {
-      dispatch(toggleLoader(true, "15%"));
-      fetchData(true);
-    }
     setActiveSideMenuItem(activeSideMenuItem);
-  };
-
-  const setPageType = (moviePageType) => {
-    if (moviePageType === pageType.grid) {
-      debugger;
-      setPageViewType(pageType.grid);
-    } else {
-      setPageViewType(pageType.list);
-    }
-  };
-
-  const pageNumberClicked = (page) => {
-    dispatch(toggleLoader(true, "15%"));
-    const body = {
-      pageNumber: page,
-      pageSize: paginationData.pageSize,
-      sortDirection: paginationData.sortDirection,
-      sortColumn: paginationData.sortColumn,
-      email: profileData.email,
-    };
-
-    getUserFavoriteMovies(
-      body,
-      setMoviesList,
-      setPaginationData,
-      setIsImageLoading
-    );
-  };
-
-  const changeMovieCount = (e) => {
-    dispatch(toggleLoader(true, "15%"));
-    const body = {
-      pageNumber: initialData.pageNumber,
-      pageSize: e.target.value,
-      sortDirection: paginationData.sortDirection,
-      sortColumn: paginationData.sortColumn,
-      email: profileData.email,
-    };
-
-    getUserFavoriteMovies(
-      body,
-      setMoviesList,
-      setPaginationData,
-      setIsImageLoading
-    );
-  };
-
-  const fetchSortedData = (e) => {
-    dispatch(toggleLoader(true, "15%"));
-    let { sortColumn, sortByDirection } = getSortingDetails(e);
-    const body = {
-      pageNumber: initialData.pageNumber,
-      pageSize: paginationData.pageSize,
-      sortDirection: sortByDirection,
-      sortColumn: sortColumn,
-      email: profileData.email,
-    };
-
-    getUserFavoriteMovies(
-      body,
-      setMoviesList,
-      setPaginationData,
-      setIsImageLoading
-    );
-  };
-
-  const getSortingDetails = (e) => {
-    let sortColumn = "",
-      sortByDirection = "";
-    if (e.target.value == 1) {
-      sortColumn = sortColumns.movieName;
-      sortByDirection = sortDirection.asc;
-    } else if (e.target.value == 2) {
-      sortColumn = sortColumns.movieName;
-      sortByDirection = sortDirection.desc;
-    } else if (e.target.value == 3) {
-      sortColumn = sortColumns.rating;
-      sortByDirection = sortDirection.asc;
-    } else {
-      sortColumn = sortColumns.rating;
-      sortByDirection = sortDirection.desc;
-    }
-    return { sortColumn, sortByDirection };
-  };
-
-  const getUserFavoriteMovies = (
-    body,
-    setMoviesList,
-    setPaginationData,
-    setIsImageLoading,
-    hideLoader
-  ) => {
-    ServiceProvider.post(apiUrl.userFavoriteMovies, body).then((response) => {
-      if (response.status === 200) {
-        setMoviesList(response.data.data.details);
-        setPaginationData({
-          ...initialData,
-          totalMovies: response.data.data.totalCount,
-          pageNumber: body.pageNumber,
-          pageSize: body.pageSize,
-        });
-        if (hideLoader && response.data.data.totalCount !== 0) {
-          setIsImageLoading(true);
-        } else {
-          setIsImageLoading(false);
-          dispatch(toggleLoader(false, 1));
-        }
-      }
-    });
   };
 
   return (
@@ -308,37 +165,9 @@ const UserProfile = (props) => {
                       </div>
                     )}
                     {activeSideMenuItem ===
-                      userProfileSideMenuItem.favoriteMovies &&
-                      pageViewType === pageType.list && (
-                        <UserFavoriteList
-                          email={profileData.email}
-                          setPageType={setPageType}
-                          pageViewType={pageViewType}
-                          moviesList={moviesList}
-                          paginationData={paginationData}
-                          isImageLoaded={isImageLoaded}
-                          pageNumberClicked={pageNumberClicked}
-                          changeMovieCount={changeMovieCount}
-                          fetchSortedData={fetchSortedData}
-                          sortByList={movieSortTypeList}
-                        ></UserFavoriteList>
-                      )}
-                    {activeSideMenuItem ===
-                      userProfileSideMenuItem.favoriteMovies &&
-                      pageViewType === pageType.grid && (
-                        <UserFavoriteGrid
-                          email={profileData.email}
-                          setPageType={setPageType}
-                          pageViewType={pageViewType}
-                          moviesList={moviesList}
-                          paginationData={paginationData}
-                          isImageLoaded={isImageLoaded}
-                          pageNumberClicked={pageNumberClicked}
-                          changeMovieCount={changeMovieCount}
-                          fetchSortedData={fetchSortedData}
-                          sortByList={movieSortTypeList}
-                        ></UserFavoriteGrid>
-                      )}
+                      userProfileSideMenuItem.favoriteMovies && (
+                      <UserFavorite email={profileData.email}></UserFavorite>
+                    )}
                     {activeSideMenuItem ===
                       userProfileSideMenuItem.ratedMovies && (
                       <UserRatedMovies

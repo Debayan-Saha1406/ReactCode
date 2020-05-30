@@ -32,79 +32,50 @@ const UserFavoriteGrid = (props) => {
   };
 
   return (
-    <React.Fragment>
-      <Topbar
-        totalCount={props.paginationData.totalMovies}
-        pageType={props.pageViewType}
-        fetchSortedData={props.fetchSortedData}
-        sortBylist={props.sortByList}
-        setPageType={props.setPageType}
-      ></Topbar>
-      <div class="flex-wrap-movielist grid-fav">
-        {props.moviesList.length === 0 ? (
-          <NoResultFound></NoResultFound>
-        ) : (
-          props.moviesList.map((movie, index) => (
-            <div class="movie-item-style-2 movie-item-style-1 style-3">
-              <img
-                src={movie.movieLogo}
-                style={{ opacity: imageOpacity }}
-                alt=""
-                onMouseOver={() => setOpacity(1)}
-                onMouseOut={() => setOpacity(0)}
-                onLoad={() =>
-                  handleSuccessulImageLoad(
-                    props.moviesList.length - 1 === index
-                  )
-                }
-              />
-              <div
-                class="hvr-inner"
-                style={{ opacity: readMoreOpacity }}
-                onMouseOver={() => setOpacity(1)}
-              >
-                <Link to={`/movie-details/${movie.movieId}`}>
-                  {" "}
-                  Read more <i class="ion-android-arrow-dropright"></i>{" "}
-                </Link>
-              </div>
-              <div class="mv-item-infor">
-                <h6>
-                  <Link
-                    className="heading"
-                    to={`/movie-details/${movie.movieId}`}
-                  >
-                    {movie.movieName}
-                  </Link>
-                </h6>
-                <p class="rate">
-                  <i
-                    class="fa fa-star"
-                    style={{
-                      fontSize: "20px",
-                      color: "yellow",
-                      marginRight: "5px",
-                    }}
-                  ></i>
-                  <span>{movie.avgRating}</span> /10
-                </p>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-      {props.moviesList.length > 0 && (
-        <Pagination
-          pageSize={props.paginationData.pageSize}
-          totalCount={props.paginationData.totalMovies}
-          currentPage={props.paginationData.pageNumber}
-          changeCount={props.changeMovieCount}
-          pageNumberClicked={props.pageNumberClicked}
-          countList={countList}
-          description="Movies"
-        ></Pagination>
-      )}
-    </React.Fragment>
+    <div class="flex-wrap-movielist grid-fav">
+      {props.moviesList.map((movie, index) => (
+        <div class="movie-item-style-2 movie-item-style-1 style-3">
+          <img
+            src={movie.movieLogo}
+            style={{ opacity: imageOpacity }}
+            alt=""
+            onMouseOver={() => setOpacity(1)}
+            onMouseOut={() => setOpacity(0)}
+            onLoad={() =>
+              handleSuccessulImageLoad(props.moviesList.length - 1 === index)
+            }
+          />
+          <div
+            class="hvr-inner"
+            style={{ opacity: readMoreOpacity }}
+            onMouseOver={() => setOpacity(1)}
+          >
+            <Link to={`/movie-details/${movie.movieId}`}>
+              {" "}
+              Read more <i class="ion-android-arrow-dropright"></i>{" "}
+            </Link>
+          </div>
+          <div class="mv-item-infor">
+            <h6>
+              <Link className="heading" to={`/movie-details/${movie.movieId}`}>
+                {movie.movieName}
+              </Link>
+            </h6>
+            <p class="rate">
+              <i
+                class="fa fa-star"
+                style={{
+                  fontSize: "20px",
+                  color: "yellow",
+                  marginRight: "5px",
+                }}
+              ></i>
+              <span>{movie.avgRating}</span> /10
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 
