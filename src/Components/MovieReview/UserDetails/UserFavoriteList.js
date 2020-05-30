@@ -12,13 +12,6 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
 const UserFavoriteList = (props) => {
   const dispatch = useDispatch();
-  const changeMovieCount = (e) => {
-    // setPaginationData({ ...initialData, pageSize: e.target.value });
-  };
-
-  const pageNumberClicked = () => {};
-
-  const fetchSortedData = () => {};
 
   const handleSuccessulImageLoad = (isLastImage) => {
     if (isLastImage && props.isImageLoaded) {
@@ -31,9 +24,9 @@ const UserFavoriteList = (props) => {
       <Topbar
         totalCount={props.paginationData.totalMovies}
         pageType={props.pageViewType}
-        fetchSortedData={fetchSortedData}
+        fetchSortedData={props.fetchSortedData}
         setPageType={props.setPageType}
-        sortBylist={movieSortTypeList}
+        sortBylist={props.sortByList}
       ></Topbar>
       <div class="flex-wrap-movielist user-fav-list">
         {props.moviesList.length === 0 ? (
@@ -113,8 +106,8 @@ const UserFavoriteList = (props) => {
           pageSize={props.paginationData.pageSize}
           totalCount={props.paginationData.totalMovies}
           currentPage={props.paginationData.pageNumber}
-          changeCount={changeMovieCount}
-          pageNumberClicked={pageNumberClicked}
+          changeCount={props.changeMovieCount}
+          pageNumberClicked={props.pageNumberClicked}
           countList={countList}
           description="Movies"
         ></Pagination>

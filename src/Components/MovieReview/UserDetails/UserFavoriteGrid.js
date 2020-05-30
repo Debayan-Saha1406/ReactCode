@@ -14,9 +14,6 @@ const UserFavoriteGrid = (props) => {
   const [readMoreOpacity, setReadMoreOpacity] = useState(0);
   const [imageOpacity, setImageOpacity] = useState(1);
   const dispatch = useDispatch();
-  const fetchSortedData = () => {};
-  const changeMovieCount = () => {};
-  const pageNumberClicked = () => {};
 
   const handleSuccessulImageLoad = (isLastImage) => {
     if (isLastImage && props.isImageLoaded) {
@@ -39,8 +36,8 @@ const UserFavoriteGrid = (props) => {
       <Topbar
         totalCount={props.paginationData.totalMovies}
         pageType={props.pageViewType}
-        fetchSortedData={fetchSortedData}
-        sortBylist={movieSortTypeList}
+        fetchSortedData={props.fetchSortedData}
+        sortBylist={props.sortByList}
         setPageType={props.setPageType}
       ></Topbar>
       <div class="flex-wrap-movielist grid-fav">
@@ -101,8 +98,8 @@ const UserFavoriteGrid = (props) => {
           pageSize={props.paginationData.pageSize}
           totalCount={props.paginationData.totalMovies}
           currentPage={props.paginationData.pageNumber}
-          changeCount={changeMovieCount}
-          pageNumberClicked={pageNumberClicked}
+          changeCount={props.changeMovieCount}
+          pageNumberClicked={props.pageNumberClicked}
           countList={countList}
           description="Movies"
         ></Pagination>
