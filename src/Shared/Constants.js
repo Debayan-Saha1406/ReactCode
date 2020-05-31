@@ -111,9 +111,10 @@ export const movieSearchType = {
 export const sortColumns = {
   movieName: "MovieName",
   rating: "Rating",
-  celebrityName: "celebrityName",
+  celebrityName: "CelebrityName",
   reviewDate: "ReviewDate",
   releaseDate: "ReleaseDate",
+  birthDate: "BirthDate",
 };
 
 export const sortDirection = {
@@ -172,6 +173,8 @@ export const userProfileSideMenuItem = {
 export const celebritySortTypeList = [
   { id: 1, value: "Celeb Name Ascending" },
   { id: 2, value: "Celeb Name Descending" },
+  { id: 3, value: "Birth Date Ascending" },
+  { id: 4, value: "Birth Date Descending" },
 ];
 
 export const movieSortTypeList = [
@@ -181,6 +184,13 @@ export const movieSortTypeList = [
   { id: 4, value: "Rating Descending" },
   { id: 5, value: "Release Date Ascending" },
   { id: 6, value: "Release Date Descending" },
+];
+
+export const filmographySortTypeList = [
+  { id: 1, value: "Movie Name Ascending" },
+  { id: 2, value: "Movie Name Descending" },
+  { id: 3, value: "Release Date Ascending" },
+  { id: 4, value: "Release Date Descending" },
 ];
 
 export const userMovieRatingReviewSortTypeList = [

@@ -198,8 +198,14 @@ class Movies extends Component {
     } else if (e.target.value == 3) {
       sortColumn = sortColumns.rating;
       sortByDirection = sortDirection.asc;
-    } else {
+    } else if (e.target.value == 4) {
       sortColumn = sortColumns.rating;
+      sortByDirection = sortDirection.desc;
+    } else if (e.target.value == 5) {
+      sortColumn = sortColumns.releaseDate;
+      sortByDirection = sortDirection.asc;
+    } else {
+      sortColumn = sortColumns.releaseDate;
       sortByDirection = sortDirection.desc;
     }
     return { sortColumn, sortByDirection };

@@ -35,13 +35,39 @@ const CelebrityList = (props) => {
                 {celeb.gender.toLowerCase() === gender.male.toLowerCase()
                   ? "Actor"
                   : "Actress"}
-                , {celeb.nationality}
               </span>
               <p style={{ marginTop: "10px" }}>
                 {celeb.biography.length > 200
                   ? celeb.biography.substring(0, 200) + "..."
                   : celeb.biography.description}{" "}
               </p>
+
+              <span style={{ textTransform: "none", fontSize: "14px" }}>
+                Date Of Birth :{" "}
+                <span
+                  style={{
+                    color: "white",
+                    textTransform: "none",
+                    fontSize: "14px",
+                  }}
+                >
+                  {celeb.dateOfBirth}
+                </span>
+              </span>
+              <br></br>
+              <br></br>
+              <span style={{ textTransform: "none", fontSize: "14px" }}>
+                Nationality:{" "}
+                <span
+                  style={{
+                    color: "white",
+                    textTransform: "none",
+                    fontSize: "14px",
+                  }}
+                >
+                  {celeb.nationality}
+                </span>
+              </span>
             </div>
           </div>
         </div>

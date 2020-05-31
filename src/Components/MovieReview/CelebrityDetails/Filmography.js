@@ -1,10 +1,17 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import image from "../../../images/movie-single.jpg";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
-import { apiUrl, sortDirection, sortColumns } from "../../../Shared/Constants";
+import {
+  apiUrl,
+  sortDirection,
+  sortColumns,
+  movieSortTypeList,
+  filmographySortTypeList,
+} from "../../../Shared/Constants";
 import { Link } from "react-router-dom";
 import "../../../css/movie-single.css";
 import DetailTopBar from "./../Common/DetailTopBar";
@@ -24,6 +31,7 @@ const Filmography = (props) => {
   const [totalMovies, setTotalMovies] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
+  const [sortDetails, setSortingDetails] = useState(initialState);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,8 +39,8 @@ const Filmography = (props) => {
     const body = {
       pageNumber: pageNumber,
       pageSize: pageSize,
-      sortColumn: initialState.sortByColumn,
-      sortDirection: initialState.sortByDirection,
+      sortColumn: sortDetails.sortByColumn,
+      sortDirection: sortDetails.sortByDirection,
       celebrityId: props.celebrityId,
     };
     ServiceProvider.post(apiUrl.celebrityMovies, body).then((response) => {
@@ -42,14 +50,48 @@ const Filmography = (props) => {
         dispatch(toggleLoader(false, 1));
       }
     });
-  }, [pageSize, pageNumber]);
+  }, [
+    pageSize,
+    pageNumber,
+    sortDetails.sortByColumn,
+    sortDetails.sortByDirection,
+  ]);
 
   const changeMovieCount = (e) => {
-    setPageSize(e.target.value);
+    setPageSize(Number(e.target.value));
+    setPageNumber(1);
   };
 
   const pageNumberClicked = (page) => {
     setPageNumber(page);
+  };
+
+  const fetchSortedData = (e) => {
+    let { sortColumn, sortByDirection } = getSortingDetails(e);
+    setSortingDetails({
+      ...sortDetails,
+      sortByColumn: sortColumn,
+      sortByDirection: sortByDirection,
+    });
+  };
+
+  const getSortingDetails = (e) => {
+    let sortColumn = "",
+      sortByDirection = "";
+    if (e.target.value == 1) {
+      sortColumn = sortColumns.movieName;
+      sortByDirection = sortDirection.asc;
+    } else if (e.target.value == 2) {
+      sortColumn = sortColumns.movieName;
+      sortByDirection = sortDirection.desc;
+    } else if (e.target.value == 3) {
+      sortColumn = sortColumns.releaseDate;
+      sortByDirection = sortDirection.asc;
+    } else {
+      sortColumn = sortColumns.releaseDate;
+      sortByDirection = sortDirection.desc;
+    }
+    return { sortColumn, sortByDirection };
   };
 
   return (
@@ -59,7 +101,11 @@ const Filmography = (props) => {
         <h2 style={{ color: "white" }}>{props.celebrityName}</h2>
       </div>
 
-      <DetailTopBar totalCount={totalMovies}></DetailTopBar>
+      <DetailTopBar
+        totalCount={totalMovies}
+        sortBylist={filmographySortTypeList}
+        fetchSortedData={fetchSortedData}
+      ></DetailTopBar>
       <div className="mvcast-item">
         {movies.length === 0 ? (
           <NoResultFound></NoResultFound>
@@ -67,7 +113,7 @@ const Filmography = (props) => {
           movies.map((movie) => (
             <div className="cast-it">
               <div className="cast-left cebleb-film">
-                <img src={image} alt="" />
+                <img src={movie.movieLogo} alt="" />
                 <div>
                   <Link
                     to={`/movie-details/${movie.movieId}`}

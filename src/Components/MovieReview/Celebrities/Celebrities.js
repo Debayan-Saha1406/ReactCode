@@ -147,8 +147,16 @@ const Celebrities = () => {
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
     if (e.target.value == 1) {
+      body.sortColumn = sortColumns.celebrityName;
       body.sortDirection = sortDirection.asc;
     } else if (e.target.value == 2) {
+      body.sortColumn = sortColumns.celebrityName;
+      body.sortDirection = sortDirection.desc;
+    } else if (e.target.value == 3) {
+      body.sortColumn = sortColumns.birthDate;
+      body.sortDirection = sortDirection.asc;
+    } else {
+      body.sortColumn = sortColumns.birthDate;
       body.sortDirection = sortDirection.desc;
     }
     fetchCelebsData(body, setCelebrityData, celebrityData);

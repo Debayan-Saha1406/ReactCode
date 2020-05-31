@@ -34,7 +34,11 @@ const Overview = (props) => {
           {props.movies.map((movie, index) => (
             <div className="cast-it" key={index}>
               <div className="cast-left cebleb-film">
-                <img src={image} alt="" />
+                <img
+                  src={movie.movieLogo}
+                  alt=""
+                  style={{ marginRight: "10px", marginTop: "-10px" }}
+                />
                 {/* Replace movie.movieLogo here */}
                 <div>
                   <Link
