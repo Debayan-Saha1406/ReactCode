@@ -32,7 +32,6 @@ const CelebrityDetails = (props) => {
           setCelebrityResponse(response.data.data.celebrityResponse);
           setMovies(response.data.data.movieResponse);
           setIsCelebrityDetailFetched(true);
-          dispatch(toggleLoader(false, 1));
         }
       }
     );
@@ -45,6 +44,13 @@ const CelebrityDetails = (props) => {
       setSelectedTab(celebrityTabs.filmography);
     }
   };
+
+  const handleSuccessfulImageLoad = () => {
+    setTimeout(() => {
+      dispatch(toggleLoader(false, 1));
+    }, 2000);
+  };
+
   return (
     <React.Fragment>
       <div id="loaderContainer">
@@ -74,7 +80,11 @@ const CelebrityDetails = (props) => {
             <div className="row ipad-width">
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <div className="mv-ceb">
-                  <img src={celebrity.photo} alt="" />
+                  <img
+                    src={celebrity.photo}
+                    alt=""
+                    onLoad={handleSuccessfulImageLoad}
+                  />
                   {/* { Replace celebrity.photo } */}
                 </div>
               </div>

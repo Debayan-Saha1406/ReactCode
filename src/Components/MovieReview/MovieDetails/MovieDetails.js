@@ -196,7 +196,9 @@ class MovieDetails extends Component {
   }
 
   handleImageLoad = () => {
-    this.props.toggleLoader(false, 1);
+    setTimeout(() => {
+      this.props.toggleLoader(false, 1); //To ensure background image is also loaded
+    }, 2000);
   };
 
   componentDidUpdate() {
