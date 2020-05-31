@@ -8,7 +8,7 @@ const List = (props) => {
   const dispatch = useDispatch();
 
   const handleSuccessfulImageLoad = (isLastImage) => {
-    if (isLastImage && props.isImageLoaded) {
+    if (isLastImage && props.isImageLoading) {
       dispatch(toggleLoader(false, 1));
     }
   };

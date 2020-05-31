@@ -47,7 +47,7 @@ class Movies extends Component {
       searchType: "",
     },
     pageType: pageType.list,
-    imageLoaded: false,
+    isImageLoading: false,
     movieIndexHovered: -1,
   };
 
@@ -65,7 +65,7 @@ class Movies extends Component {
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
     };
-    this.fetchMovies(body, !this.state.imageLoaded);
+    this.fetchMovies(body, true);
   }
 
   setMovieDetails = (e) => {
@@ -107,6 +107,10 @@ class Movies extends Component {
 
   changeMovieCount = (e) => {
     this.props.toggleLoader(true, "15%");
+    let hideLoader = true;
+    if (e.target.value > this.state.pageSize) {
+      hideLoader = false;
+    }
     const body = {
       pageNumber: 1,
       pageSize: e.target.value,
@@ -120,7 +124,7 @@ class Movies extends Component {
       sortDirection: this.state.sortDirection,
     };
     this.props.toggleLoader(true, "15%");
-    this.fetchMovies(body, !this.state.imageLoaded);
+    this.fetchMovies(body, hideLoader);
   };
 
   pageNumberClicked = (page) => {
@@ -137,7 +141,7 @@ class Movies extends Component {
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
     };
-    this.fetchMovies(body);
+    this.fetchMovies(body, false);
   };
 
   fetchSortedData = (e) => {
@@ -221,9 +225,9 @@ class Movies extends Component {
         searchData.searchType = body.searchType;
         searchData.fromYear = body.fromYear;
         searchData.toYear = body.toYear;
-        if (hideLoader) {
+        if (!hideLoader) {
           this.setState({
-            isImageLoaded: true,
+            isImageLoading: true,
             moviesList: response.data.data.details,
             totalMovies: response.data.data.totalCount,
             pageSize: body.pageSize,
@@ -235,6 +239,7 @@ class Movies extends Component {
         } else {
           this.setState(
             {
+              isImageLoading: false,
               moviesList: response.data.data.details,
               totalMovies: response.data.data.totalCount,
               pageSize: body.pageSize,
@@ -304,7 +309,7 @@ class Movies extends Component {
                       {!this.state.showGrid && (
                         <List
                           moviesList={this.state.moviesList}
-                          isImageLoaded={this.state.isImageLoaded}
+                          isImageLoading={this.state.isImageLoading}
                         ></List>
                       )}
                       {this.state.showGrid && (

@@ -53,7 +53,7 @@ const Celebrities = () => {
     celebrityDetailsSearchBoxData,
     setCelebrityDetailsSearchBoxData,
   ] = useState(state);
-  const [isImageLoaded, setIsImageLoading] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,6 +76,11 @@ const Celebrities = () => {
 
   const changeCelebrityCount = (e) => {
     dispatch(toggleLoader(true, "15%"));
+    let hideLoader = true;
+
+    if (e.target.value > celebrityData.pageSize) {
+      hideLoader = false;
+    }
     const body = {
       pageNumber: initialData.pageNumber,
       pageSize: Number(e.target.value),
@@ -88,7 +93,7 @@ const Celebrities = () => {
       gender: state.category,
       searchType: state.searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData);
+    fetchCelebsData(body, setCelebrityData, celebrityData, hideLoader);
   };
 
   const clearState = (e) => {
@@ -130,7 +135,7 @@ const Celebrities = () => {
       gender: celebrityDetailsSearchBoxData.category,
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData);
+    fetchCelebsData(body, setCelebrityData, celebrityData, false);
   };
 
   const fetchSortedData = (e) => {
@@ -176,14 +181,14 @@ const Celebrities = () => {
       gender: celebrityDetailsSearchBoxData.category,
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData, !isImageLoaded);
+    fetchCelebsData(body, setCelebrityData, celebrityData, false);
   }, []);
 
   const fetchCelebsData = (
     body,
     setCelebrityData,
     celebrityData,
-    showLoader
+    hideloader
   ) => {
     ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
       if (response.status === 200) {
@@ -205,7 +210,7 @@ const Celebrities = () => {
           fromBirthYear: body.fromBirthYear,
           toBirthYear: body.toBirthYear,
         });
-        if (showLoader) {
+        if (!hideloader) {
           setIsImageLoading(true);
         } else {
           setIsImageLoading(false);
@@ -266,7 +271,7 @@ const Celebrities = () => {
                         {
                           <CelebrityList
                             celebs={celebrityData.celebrityList}
-                            isImageLoaded={isImageLoaded}
+                            isImageLoading={isImageLoading}
                           ></CelebrityList>
                         }
                       </div>

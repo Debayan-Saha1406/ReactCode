@@ -8,7 +8,7 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 const CelebrityList = (props) => {
   const dispatch = useDispatch();
   const hideLoader = (isLastImage) => {
-    if (isLastImage && props.isImageLoaded) {
+    if (isLastImage && props.isImageLoading) {
       dispatch(toggleLoader(false, 1));
     }
   };
