@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import Header from "../Common/Header";
-import image from "../../../images/movie-single.jpg";
 import "../../../css/movie-single.css";
 import MovieReview from "./MovieReview";
 import Overview from "./Overview";
@@ -10,7 +9,6 @@ import Cast from "./Cast";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import {
   apiUrl,
-  ratingStars,
   movieDetailTabs,
   popupType,
   constants,
@@ -26,6 +24,7 @@ import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
 import { Redirect } from "react-router-dom";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import StarRating from "../Common/StarRating";
 
 let releaseYear = "",
   loginDetails = {},
@@ -34,14 +33,13 @@ class MovieDetails extends Component {
   state = {
     selectedTab: movieDetailTabs.overview,
     movie: {},
-    indexHovered: -1,
     showVideo: false,
     isRatingGiven: false,
     redirectToNotFound: false,
     isMovieDetailPresent: false,
     userRating: -1,
     isFavourite: false,
-    hoverStar: true,
+    isRatingDataFetched: false,
   };
 
   toggleTab = (destTab) => {
@@ -52,10 +50,7 @@ class MovieDetails extends Component {
     if (this.props.isUserLoggedIn) {
       this.setState({ isFavourite: !this.state.isFavourite }, () => {
         const movieDetail = { ...this.state.movie };
-        this.sendUserMovieDetailsRequest(
-          movieDetail,
-          this.state.indexHovered + 1
-        );
+        this.sendUserMovieDetailsRequest(movieDetail, this.state.userRating);
       });
     } else {
       this.props.togglePopup("openform", popupType.login);
@@ -64,12 +59,6 @@ class MovieDetails extends Component {
 
   componentDidMount() {
     movieId = this.props.match.params.id;
-    if (!this.props.isUserLoggedIn) {
-      this.setState({ indexClicked: -1, isFavourite: false });
-    }
-
-    loginDetails = getLocalStorageItem(constants.loginDetails);
-    this.fetchMovieUserRatings(movieId); //for Giving rating and Refresh
 
     this.props.toggleLoader(true, 0);
     ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
@@ -79,53 +68,40 @@ class MovieDetails extends Component {
           index + 1,
           response.data.data.movie.releaseDate.length
         );
-        this.setState(
-          { movie: response.data.data, isMovieDetailPresent: true },
-          () => {}
-        );
+        this.setState({
+          movie: response.data.data,
+          isMovieDetailPresent: true,
+        });
       } else if (response.status === 404) {
         this.setState({ redirectToNotFound: true });
       }
     });
   }
 
-  toggleStar = (index) => {
-    this.setState({ indexClicked: index });
-  };
-
-  toggleAllStars = () => {
-    if (!this.state.isRatingGiven && this.state.indexHovered === -1) {
-      this.setState({ indexClicked: -1 });
-    } else {
-      this.setState({ indexClicked: this.state.userRating });
-    }
-  };
-
   showTrailer = (showVideo) => {
     this.setState({ showVideo });
   };
 
-  handleStarClick = (index) => {
-    debugger;
+  changeRating = (newRating) => {
     if (this.props.isUserLoggedIn) {
       const movieDetail = { ...this.state.movie };
-      this.setAvgRating(movieDetail, index);
+      this.setAvgRating(movieDetail, newRating);
 
       if (!this.state.isRatingGiven) {
         movieDetail.movie.totalRatings += 1;
       }
 
-      this.sendUserMovieDetailsRequest(movieDetail, index);
+      this.sendUserMovieDetailsRequest(movieDetail, newRating);
     } else {
       this.props.togglePopup("openform", popupType.login);
     }
   };
 
-  sendUserMovieDetailsRequest(movieDetail, index) {
+  sendUserMovieDetailsRequest(movieDetail, userRating) {
     const body = {
       avgRating: movieDetail.movie.avgRating,
       userEmail: this.props.loggedInEmail,
-      userRating: index,
+      userRating: userRating,
       totalRating: movieDetail.movie.totalRatings,
       isFavourite: this.state.isFavourite,
     };
@@ -140,10 +116,9 @@ class MovieDetails extends Component {
           {
             isRatingGiven: true,
             movie: movieDetail,
-            userRating: index,
+            userRating: userRating,
           },
           () => {
-            this.fetchMovieUserRatings(movieId);
             this.props.toggleLoader(false, 1);
           }
         );
@@ -152,44 +127,46 @@ class MovieDetails extends Component {
   }
 
   fetchMovieUserRatings(movieId) {
-    loginDetails = getLocalStorageItem(constants.loginDetails);
-    if (loginDetails) {
-      ServiceProvider.getWithTwoParams(
-        apiUrl.userMovieDetails,
-        loginDetails.email,
-        movieId
-      ).then((response) => {
-        if (response.status === 200 && response.data.data.length !== 0) {
-          response.data.data.forEach((movieUserDetails) => {
-            if (movieUserDetails.movieId == movieId) {
-              this.setState(
-                {
-                  indexClicked: movieUserDetails.rating - 1,
-                  userRating: movieUserDetails.rating - 1,
-                  isRatingGiven: true,
-                  isFavourite: movieUserDetails.isFavourite,
-                },
-                () => {}
-              );
+    ServiceProvider.getWithTwoParams(
+      apiUrl.userMovieDetails,
+      loginDetails.email,
+      movieId
+    ).then((response) => {
+      if (response.status === 200 && response.data.data.length !== 0) {
+        response.data.data.forEach((movieUserDetails) => {
+          if (movieUserDetails.movieId == movieId) {
+            if (movieUserDetails.rating !== 0) {
+              this.setState({
+                userRating: movieUserDetails.rating,
+                isRatingGiven: true,
+                isRatingDataFetched: true,
+                isFavourite: movieUserDetails.isFavourite,
+              });
+            } else {
+              this.setState({
+                isRatingGiven: false,
+                isRatingDataFetched: true,
+                isFavourite: movieUserDetails.isFavourite,
+              });
             }
-          });
-        }
-      });
-    }
+          }
+        });
+      }
+    });
   }
 
-  setAvgRating(movieDetail, index) {
+  setAvgRating(movieDetail, userRating) {
     if (!this.state.isRatingGiven)
       movieDetail.movie.avgRating = +(
         (movieDetail.movie.avgRating * movieDetail.movie.totalRatings +
-          (index + 1)) /
+          userRating) /
         (movieDetail.movie.totalRatings + 1)
       ).toFixed(1);
     else {
       movieDetail.movie.avgRating = +(
         (movieDetail.movie.avgRating * movieDetail.movie.totalRatings -
           this.state.userRating +
-          (index + 1)) /
+          userRating) /
         movieDetail.movie.totalRatings
       ).toFixed(1);
     }
@@ -202,32 +179,21 @@ class MovieDetails extends Component {
   };
 
   componentDidUpdate() {
-    if (!this.props.isUserLoggedIn && !this.state.hoverStar) {
-      this.setState({ indexClicked: -1, hoverStar: false });
+    //Need To Check For Extra Api Calls
+    if (!this.props.isUserLoggedIn && this.state.userRating !== -1) {
+      this.setState({
+        userRating: -1,
+        isRatingGiven: false,
+        isFavourite: false,
+      });
     }
-    // if (!this.props.isUserLoggedIn && this.state.resetValue !== false) {
-    //   this.setState({
-    //     isFavourite: false,
-    //     indexClicked: -1,
-    //     resetValue: false,
-    //   });
-    // }
 
-    // if (this.state.indexClicked === -1 && this.props.isUserLoggedIn) {
-    //   const userDetails = getLocalStorageItem(constants.userDetails);
-    //   if (userDetails) {
-    //     if (userDetails.userMovieRating.length > 0) {
-    //       userDetails.userMovieRating.forEach((userMovieRating) => {
-    //         if (userMovieRating.movieId == movieId) {
-    //           this.setState({
-    //             indexClicked: userMovieRating.rating - 1,
-    //             isFavourite: userMovieRating.isFavourite,
-    //           });
-    //         }
-    //       });
-    //     }
-    //   }
-    //this.fetchMovieUserRatings(movieId);
+    if (this.props.isUserLoggedIn && !this.state.isRatingDataFetched) {
+      loginDetails = getLocalStorageItem(constants.loginDetails);
+      if (loginDetails) {
+        this.fetchMovieUserRatings(movieId); //for Giving rating and Refresh
+      }
+    }
   }
 
   render() {
@@ -351,19 +317,14 @@ class MovieDetails extends Component {
                         : "Add to Favorite"}
                     </div>
                   </div>
-                  <div
-                    className="movie-rate"
-                    onMouseOut={this.toggleAllStars}
-                    id="movie-rate"
-                  >
+                  <div className="movie-rate" id="movie-rate">
                     <div className="rate">
                       <i
                         className="fa fa-star"
                         id="rating-icon"
                         style={{
-                          fontSize: "17px",
+                          fontSize: "25px",
                           color: "yellow",
-                          cursor: "pointer",
                         }}
                       ></i>
                       <p>
@@ -384,35 +345,10 @@ class MovieDetails extends Component {
                     <div className="rate-star">
                       <p>Rate This Movie: </p>
                       <ul className="menu">
-                        {ratingStars.map((rating, index) => (
-                          <li key={rating}>
-                            {this.state.indexHovered >= index ? (
-                              <i
-                                className="fa fa-star"
-                                style={{
-                                  fontSize: "17px",
-                                  color: "yellow",
-                                  cursor: "pointer",
-                                }}
-                                onMouseOver={() => this.toggleStar(index)}
-                                onMouseOut={() => this.toggleStar(index)}
-                                onClick={() => this.handleStarClick(index)}
-                              ></i>
-                            ) : (
-                              <i
-                                className="fa fa-star-o"
-                                style={{
-                                  fontSize: "17px",
-                                  color: "white",
-                                  cursor: "pointer",
-                                }}
-                                onMouseOver={() => this.toggleStar(index)}
-                                onMouseOut={() => this.toggleStar(index)}
-                                onClick={() => this.handleStarClick(index)}
-                              ></i>
-                            )}
-                          </li>
-                        ))}
+                        <StarRating
+                          userRating={this.state.userRating}
+                          changeRating={this.changeRating}
+                        ></StarRating>
                       </ul>
                     </div>
                   </div>
