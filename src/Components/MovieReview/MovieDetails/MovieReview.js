@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import {
@@ -6,6 +7,9 @@ import {
   apiUrl,
   monthNames,
   reviewCountList,
+  reviewSortTypeList,
+  sortColumns,
+  sortDirection,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import {
@@ -32,6 +36,8 @@ class MovieReview extends Component {
     pageSize: 5,
     totalReviews: 0,
     isReviewGiven: false,
+    sortColumn: sortColumns.reviewDate,
+    sortByDirection: sortDirection.asc,
   };
 
   openReviewPopup = (
@@ -119,34 +125,88 @@ class MovieReview extends Component {
   };
 
   pageNumberClicked = (page) => {
+    this.props.toggleLoader(true, "15%");
     const body = {
       pageNumber: page,
       pageSize: this.state.pageSize,
       searchQuery: this.props.movieId,
+      sortColumn: this.state.sortColumn,
+      sortByDirection: this.state.sortByDirection,
     };
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-        pageNumber: page,
-      });
+      this.setState(
+        {
+          reviews: response.data.data.reviews,
+          totalReviews: response.data.data.totalCount,
+          pageNumber: page,
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+        }
+      );
     });
   };
 
   changeReviewCount = (e) => {
-    this.setState({ pageSize: e.target.value });
+    this.props.toggleLoader(true, "15%");
     const body = {
       pageNumber: 1,
-      pageSize: e.target.value,
+      pageSize: Number(e.target.value),
       searchQuery: this.props.movieId,
+      sortColumn: this.state.sortColumn,
+      sortByDirection: this.state.sortByDirection,
     };
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
-      this.setState({
-        reviews: response.data.data.reviews,
-        totalReviews: response.data.data.totalCount,
-        pageNumber: 1,
-      });
+      this.setState(
+        {
+          reviews: response.data.data.reviews,
+          totalReviews: response.data.data.totalCount,
+          pageNumber: body.pageNumber,
+          pageSize: body.pageSize,
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+        }
+      );
     });
+  };
+
+  fetchSortedData = (e) => {
+    this.props.toggleLoader(true, "15%");
+    let { sortColumn, sortByDirection } = this.getSortingDetails(e);
+    const body = {
+      pageNumber: this.state.pageNumber,
+      pageSize: this.state.pageSize,
+      searchQuery: this.props.movieId,
+      sortColumn: sortColumn,
+      sortByDirection: sortByDirection,
+    };
+    ServiceProvider.post(apiUrl.reviews, body).then((response) => {
+      this.setState(
+        {
+          reviews: response.data.data.reviews,
+          totalReviews: response.data.data.totalCount,
+          sortColumn: body.sortColumn,
+          sortByDirection: body.sortByDirection,
+        },
+        () => {
+          this.props.toggleLoader(false, 1);
+        }
+      );
+    });
+  };
+
+  getSortingDetails = (e) => {
+    let sortColumn = "",
+      sortByDirection = "";
+    if (e.target.value == 1) {
+      sortColumn = sortColumns.reviewDate;
+      sortByDirection = sortDirection.asc;
+    } else if (e.target.value == 2) {
+      sortColumn = sortColumns.reviewDate;
+      sortByDirection = sortDirection.desc;
+    }
+    return { sortColumn, sortByDirection };
   };
 
   componentDidMount() {
@@ -159,6 +219,8 @@ class MovieReview extends Component {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize,
       searchQuery: this.props.movieId,
+      sortColumn: this.state.sortColumn,
+      sortByDirection: this.state.sortByDirection,
     };
 
     ServiceProvider.post(apiUrl.reviews, body).then((response) => {
@@ -250,7 +312,11 @@ class MovieReview extends Component {
               </a>
             )}
           </div>
-          <DetailTopBar totalCount={this.state.totalReviews}></DetailTopBar>
+          <DetailTopBar
+            totalCount={this.state.totalReviews}
+            sortBylist={reviewSortTypeList}
+            fetchSortedData={this.fetchSortedData}
+          ></DetailTopBar>
           <div className="mv-user-review-item">
             <ul>
               {this.state.reviews &&

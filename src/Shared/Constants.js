@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -112,6 +112,8 @@ export const sortColumns = {
   movieName: "MovieName",
   rating: "Rating",
   celebrityName: "celebrityName",
+  reviewDate: "ReviewDate",
+  releaseDate: "ReleaseDate",
 };
 
 export const sortDirection = {
@@ -177,6 +179,22 @@ export const movieSortTypeList = [
   { id: 2, value: "Movie Name Descending" },
   { id: 3, value: "Rating Ascending" },
   { id: 4, value: "Rating Descending" },
+  { id: 5, value: "Release Date Ascending" },
+  { id: 6, value: "Release Date Descending" },
+];
+
+export const userMovieRatingReviewSortTypeList = [
+  { id: 1, value: "Movie Name Ascending" },
+  { id: 2, value: "Movie Name Descending" },
+  { id: 3, value: "Rating Ascending" },
+  { id: 4, value: "Rating Descending" },
+  { id: 5, value: "Review Date Ascending" },
+  { id: 6, value: "Review Date Descending" },
+];
+
+export const reviewSortTypeList = [
+  { id: 1, value: "Review Date Ascending" },
+  { id: 2, value: "Review Date Descending" },
 ];
 
 export const celebritySearchType = {

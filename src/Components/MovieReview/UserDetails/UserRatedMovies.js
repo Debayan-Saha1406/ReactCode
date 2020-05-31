@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import DetailTopBar from "./../Common/DetailTopBar";
@@ -6,7 +7,12 @@ import image from "../../../images/movie-single.jpg";
 import { useEffect } from "react";
 import { useState } from "react";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { apiUrl } from "./../../../Shared/Constants";
+import {
+  apiUrl,
+  movieSortTypeList,
+  sortColumns,
+  userMovieRatingReviewSortTypeList,
+} from "./../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import {
   toggleLoader,
@@ -18,14 +24,15 @@ import Information from "./../Popups/Information";
 import UserContentPopup from "../Popups/UserContentPopup";
 import NoResultFound from "./../Common/NoResultFound";
 import { countList } from "./../../../Shared/Constants";
+import { sortDirection } from "./../../../Shared/Constants";
 
 const initialData = {
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 1,
   totalReviewRatings: 0,
   reviewRatingList: [],
-  sortColumn: "Id",
-  sortDirection: "asc",
+  sortColumn: sortColumns.movieName,
+  sortDirection: sortDirection.asc,
 };
 
 const UserRatedMovies = (props) => {
@@ -42,15 +49,104 @@ const UserRatedMovies = (props) => {
   );
   const dispatch = useDispatch();
 
-  const changeReviewCount = () => {};
+  const changeReviewCount = (e) => {
+    const body = {
+      pageNumber: initialData.pageNumber,
+      pageSize: e.target.value,
+      sortDirection: reviewRatingData.sortDirection,
+      sortColumn: reviewRatingData.sortColumn,
+      email: props.email,
+    };
 
-  useEffect(() => {
     fetchReviewRatingData(
       reviewRatingData,
       props,
       dispatch,
       setReviewRatingList,
-      setReviewRatingData
+      setReviewRatingData,
+      body
+    );
+  };
+
+  const pageNumberClicked = (page) => {
+    const body = {
+      pageNumber: page,
+      pageSize: reviewRatingData.pageSize,
+      sortDirection: reviewRatingData.sortDirection,
+      sortColumn: reviewRatingData.sortColumn,
+      email: props.email,
+    };
+
+    fetchReviewRatingData(
+      reviewRatingData,
+      props,
+      dispatch,
+      setReviewRatingList,
+      setReviewRatingData,
+      body
+    );
+  };
+
+  const fetchSortedData = (e) => {
+    let { sortColumn, sortByDirection } = getSortingDetails(e);
+    const body = {
+      pageNumber: reviewRatingData.pageNumber,
+      pageSize: reviewRatingData.pageSize,
+      sortDirection: sortByDirection,
+      sortColumn: sortColumn,
+      email: props.email,
+    };
+
+    fetchReviewRatingData(
+      reviewRatingData,
+      props,
+      dispatch,
+      setReviewRatingList,
+      setReviewRatingData,
+      body
+    );
+  };
+
+  const getSortingDetails = (e) => {
+    let sortColumn = "",
+      sortByDirection = "";
+    if (e.target.value == 1) {
+      sortColumn = sortColumns.movieName;
+      sortByDirection = sortDirection.asc;
+    } else if (e.target.value == 2) {
+      sortColumn = sortColumns.movieName;
+      sortByDirection = sortDirection.desc;
+    } else if (e.target.value == 3) {
+      sortColumn = sortColumns.rating;
+      sortByDirection = sortDirection.asc;
+    } else if (e.target.value == 4) {
+      sortColumn = sortColumns.rating;
+      sortByDirection = sortDirection.desc;
+    } else if (e.target.value == 5) {
+      sortColumn = sortColumns.reviewDate;
+      sortByDirection = sortDirection.asc;
+    } else {
+      sortColumn = sortColumns.reviewDate;
+      sortByDirection = sortDirection.desc;
+    }
+    return { sortColumn, sortByDirection };
+  };
+
+  useEffect(() => {
+    const body = {
+      pageNumber: reviewRatingData.pageNumber,
+      pageSize: reviewRatingData.pageSize,
+      sortDirection: reviewRatingData.sortDirection,
+      sortColumn: reviewRatingData.sortColumn,
+      email: props.email,
+    };
+    fetchReviewRatingData(
+      reviewRatingData,
+      props,
+      dispatch,
+      setReviewRatingList,
+      setReviewRatingData,
+      body
     );
   }, []);
 
@@ -70,6 +166,13 @@ const UserRatedMovies = (props) => {
 
   const handleOk = (e) => {
     e.preventDefault();
+    const body = {
+      pageNumber: reviewRatingData.pageNumber,
+      pageSize: reviewRatingData.pageSize,
+      sortDirection: reviewRatingData.sortDirection,
+      sortColumn: reviewRatingData.sortColumn,
+      email: props.email,
+    };
     if (deletePopupType === popupType.deleteRating) {
       ServiceProvider.deleteItem(
         apiUrl.deleteUserRating,
@@ -81,7 +184,8 @@ const UserRatedMovies = (props) => {
             props,
             dispatch,
             setReviewRatingList,
-            setReviewRatingData
+            setReviewRatingData,
+            body
           );
           setPopupClassName("");
           setPopupVisibility(false);
@@ -128,11 +232,12 @@ const UserRatedMovies = (props) => {
     );
   }
 
-  const pageNumberClicked = () => {};
   return (
     <React.Fragment>
       <DetailTopBar
         totalCount={reviewRatingData.totalReviewRatings}
+        sortBylist={userMovieRatingReviewSortTypeList}
+        fetchSortedData={fetchSortedData}
       ></DetailTopBar>
       {reviewRatingList.length === 0 ? (
         <NoResultFound></NoResultFound>
@@ -240,6 +345,13 @@ function deleteReview(
   setPopupClassName,
   setPopupVisibility
 ) {
+  const body = {
+    pageNumber: reviewRatingData.pageNumber,
+    pageSize: reviewRatingData.pageSize,
+    sortDirection: reviewRatingData.sortDirection,
+    sortColumn: reviewRatingData.sortColumn,
+    email: props.email,
+  };
   ServiceProvider.deleteItem(apiUrl.deleteReview, reviewIdToDelete).then(
     (response) => {
       if (response.status === 200) {
@@ -248,7 +360,8 @@ function deleteReview(
           props,
           dispatch,
           setReviewRatingList,
-          setReviewRatingData
+          setReviewRatingData,
+          body
         );
         setPopupClassName("");
         setPopupVisibility(false);
@@ -262,15 +375,9 @@ function fetchReviewRatingData(
   props,
   dispatch,
   setReviewRatingList,
-  setReviewRatingData
+  setReviewRatingData,
+  body
 ) {
-  const body = {
-    pageNumber: reviewRatingData.pageNumber,
-    pageSize: reviewRatingData.pageSize,
-    sortDirection: reviewRatingData.sortDirection,
-    sortColumn: reviewRatingData.sortColumn,
-    email: props.email,
-  };
   let isReviewRatingPresent = false;
   dispatch(toggleLoader(true, "15%"));
   ServiceProvider.post(apiUrl.userRatedMovies, body).then((response) => {
@@ -285,6 +392,10 @@ function fetchReviewRatingData(
         setReviewRatingData({
           ...reviewRatingData,
           totalReviewRatings: response.data.data.totalCount,
+          pageSize: body.pageSize,
+          pageNumber: body.pageNumber,
+          sortColumn: body.sortColumn,
+          sortDirection: body.sortDirection,
         });
         // May need to Review with Multiple Ratings And Review
       } else {

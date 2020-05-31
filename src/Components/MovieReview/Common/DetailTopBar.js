@@ -7,13 +7,10 @@ const DetailTopBar = (props) => {
         Found <span>{props.totalCount}</span> in total
       </p>
       <label className="filterBy">Sort by:</label>
-      <select className="popularity">
-        <option value="popularity">Popularity Descending</option>
-        <option value="popularity">Popularity Ascending</option>
-        <option value="rating">Rating Descending</option>
-        <option value="rating">Rating Ascending</option>
-        <option value="date">Release date Descending</option>
-        <option value="date">Release date Ascending</option>
+      <select className="popularity" onChange={(e) => props.fetchSortedData(e)}>
+        {props.sortBylist.map((sortByItem) => (
+          <option value={sortByItem.id}>{sortByItem.value}</option>
+        ))}
       </select>
     </div>
   );
