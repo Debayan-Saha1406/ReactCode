@@ -106,6 +106,7 @@ class Movies extends Component {
   };
 
   changeMovieCount = (e) => {
+    debugger;
     this.props.toggleLoader(true, "15%");
     let hideLoader = true;
     if (e.target.value > this.state.pageSize) {
@@ -319,6 +320,7 @@ class Movies extends Component {
                           readMoreOpacity={this.state.readMoreOpacity}
                           imageOpacity={this.state.imageOpacity}
                           movieIndexHovered={this.state.movieIndexHovered}
+                          isImageLoading={this.state.isImageLoading}
                         ></Grid>
                       )}
                     </React.Fragment>

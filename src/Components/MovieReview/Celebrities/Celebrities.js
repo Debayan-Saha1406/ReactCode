@@ -279,6 +279,7 @@ const Celebrities = () => {
                     {page.showGrid && (
                       <CelebrityGrid
                         celebs={celebrityData.celebrityList}
+                        isImageLoading={isImageLoading}
                       ></CelebrityGrid>
                     )}
                   </React.Fragment>

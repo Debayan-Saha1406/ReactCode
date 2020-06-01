@@ -8,7 +8,8 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 const Grid = (props) => {
   const dispatch = useDispatch();
   const handleSuccessfulImageLoad = (isLastImage) => {
-    if (isLastImage) {
+    debugger;
+    if (isLastImage && props.isImageLoading) {
       dispatch(toggleLoader(false, 1));
     }
   };

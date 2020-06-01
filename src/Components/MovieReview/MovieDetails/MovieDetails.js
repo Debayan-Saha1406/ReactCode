@@ -306,12 +306,21 @@ class MovieDetails extends Component {
                   </h1>
                   <div className="social-btn">
                     <div className="parent-btn">
-                      <i
-                        className="fa fa-heart"
-                        aria-hidden="true"
-                        onClick={this.toggleFavourite}
-                        style={{ cursor: "pointer" }}
-                      ></i>{" "}
+                      {this.state.isFavourite ? (
+                        <i
+                          className="fa fa-heart"
+                          aria-hidden="true"
+                          onClick={this.toggleFavourite}
+                          style={{ cursor: "pointer" }}
+                        ></i>
+                      ) : (
+                        <i
+                          className="fa fa-heart-o"
+                          aria-hidden="true"
+                          onClick={this.toggleFavourite}
+                          style={{ cursor: "pointer" }}
+                        ></i>
+                      )}
                       {this.state.isFavourite
                         ? "Remove From  Favourite"
                         : "Add to Favorite"}

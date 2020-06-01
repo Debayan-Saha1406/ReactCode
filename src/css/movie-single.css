@@ -2162,7 +2162,7 @@ input#black-hover:hover {
   display: -ms-flexbox;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 }
 
@@ -2292,4 +2292,12 @@ input#black-hover:hover {
 
 a#view-gallery:hover {
   color: crimson;
+}
+
+@media (max-width: 767px) {
+  #movie-rate {
+    margin-bottom: 32px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
 }
