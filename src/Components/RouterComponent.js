@@ -14,6 +14,7 @@ import Home from "./MovieReview/MovieHome/Home";
 import UserProfile from "./MovieReview/UserDetails/UserProfile";
 import Celebrities from "./MovieReview/Celebrities/Celebrities";
 import CelebrityDetails from "./MovieReview/CelebrityDetails/CelebrityDetails";
+import Directors from "./MovieReview/Directors/Directors";
 
 class Router extends Component {
   render() {
@@ -35,6 +36,7 @@ class Router extends Component {
           <Route path="/movies" component={Movies} />
           <Route path="/celebrity-details/:id" component={CelebrityDetails} />
           <Route path="/celebrities/" component={Celebrities} />
+          <Route path="/directors/" component={Directors} />
           <Route path="/user-profile" component={UserProfile} />
           <Route path="/not-found" component={NotFound} />
           <Redirect from="*" to="/login" />

@@ -188,6 +188,7 @@ class MovieDetails extends Component {
         userRating: -1,
         isRatingGiven: false,
         isFavourite: false,
+        isRatingDataFetched: false,
       });
     }
 

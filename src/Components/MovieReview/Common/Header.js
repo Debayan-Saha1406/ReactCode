@@ -262,6 +262,25 @@ class Header extends Component {
                   </Link>
                 </li>
               )}
+              {this.state.currentMenuItem === menuItem.directors ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/directors"
+                    onClick={() => this.setCurrentMenuItem(menuItem.directors)}
+                  >
+                    Directors
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/directors"
+                    onClick={() => this.setCurrentMenuItem(menuItem.directors)}
+                  >
+                    Directors
+                  </Link>
+                </li>
+              )}
               {this.props.isUserLoggedIn ? null : (
                 <li className="menu-item">
                   <a
