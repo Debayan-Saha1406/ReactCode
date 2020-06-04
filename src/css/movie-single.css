@@ -2644,7 +2644,7 @@ a#view-gallery:hover {
   text-transform: none;
   border: none;
   height: 40px;
-  background: url(../images/search.png) no-repeat right 20px center;
+  /* background: url(../images/search.png) no-repeat right 20px center; */
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;

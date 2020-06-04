@@ -26,11 +26,12 @@ import { apiUrl } from "./../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import Pagination from "../Common/Pagination";
+import DirectorSearchBox from "./DirectorSearchBox";
 
 const initialData = {
   totalDirectors: 0,
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: 1,
   sortColumn: sortColumns.directorName,
   sortDirection: sortDirection.asc,
 };
@@ -47,7 +48,7 @@ const Directors = () => {
   const [directorList, setDirectorList] = useState([]);
   const dispatch = useDispatch();
   const [page, togglePageType] = useState(directorPageType);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const [directorName, setDirectorName] = useState("");
 
   const changeCelebrityCount = (e) => {
@@ -56,6 +57,24 @@ const Directors = () => {
       pageNumber: initialData.pageNumber,
       pageSize: Number(e.target.value),
     });
+    if (e.target.value > paginationData.pageSize) {
+      setIsImageLoading(true);
+    } else {
+      setIsImageLoading(false);
+    }
+  };
+
+  const clearState = (e) => {
+    e.preventDefault();
+    setDirectorName("");
+    setPaginationData({
+      ...paginationData,
+      pageNumber: initialData.pageNumber,
+      pageSize: paginationData.pageSize,
+      sortColumn: paginationData.sortColumn,
+      sortDirection: paginationData.sortDirection,
+    });
+    setIsImageLoading(false);
   };
 
   const pageNumberClicked = (page) => {
@@ -63,6 +82,7 @@ const Directors = () => {
       ...paginationData,
       pageNumber: page,
     });
+    setIsImageLoading(true);
   };
 
   const fetchSortedData = (e) => {
@@ -72,6 +92,7 @@ const Directors = () => {
       sortColumn: sortColumn,
       sortDirection: sortByDirection,
     });
+    setIsImageLoading(false);
   };
 
   const getSortingDetails = (e) => {
@@ -93,6 +114,12 @@ const Directors = () => {
     return { sortColumn, sortByDirection };
   };
 
+  const handleSubmit = (e, name) => {
+    e.preventDefault();
+    setDirectorName(name);
+    setIsImageLoading(false);
+  };
+
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
     const body = {
@@ -109,7 +136,12 @@ const Directors = () => {
           ...paginationData,
           totalDirectors: response.data.data.totalCount,
         });
-        dispatch(toggleLoader(false, 1));
+        if (isImageLoading) {
+          setIsImageLoading(true);
+        } else {
+          setIsImageLoading(false);
+          dispatch(toggleLoader(false, 1));
+        }
       }
     });
   }, [
@@ -117,6 +149,7 @@ const Directors = () => {
     paginationData.sortDirection,
     paginationData.pageSize,
     paginationData.pageNumber,
+    directorName,
   ]);
 
   const setPageType = (directorPageType) => {
@@ -150,7 +183,7 @@ const Directors = () => {
         <div class="page-single">
           <div class="container">
             <div class="row">
-              <div class="col-md-9 col-sm-12 col-xs-12">
+              <div class="col-md-8 col-sm-12 col-xs-12">
                 <Topbar
                   totalCount={paginationData.totalDirectors}
                   pageType={page.pageType}
@@ -194,13 +227,13 @@ const Directors = () => {
                 )}
               </div>
 
-              <div class="col-md-3 col-sm-12 col-xs-12">
-                <div class="sidebar">
-                  <div class="sb-search sb-it-box">
-                    <h4 class="sb-title">Search</h4>
-                    <input type="text" placeholder="Enter keywords" />
-                  </div>
-                </div>
+              <div class="col-md-4 col-sm-12 col-xs-12">
+                <DirectorSearchBox
+                  handleSubmit={handleSubmit}
+                  setDirectorName={setDirectorName}
+                  directorName={directorName}
+                  clearState={clearState}
+                ></DirectorSearchBox>
               </div>
             </div>
           </div>
