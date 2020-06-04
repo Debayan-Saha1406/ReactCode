@@ -2587,7 +2587,6 @@ a#view-gallery:hover {
 .blog-it-infor h3 a {
   font-family: "Dosis", sans-serif;
   font-size: 18px;
-  color: #4280bf;
   font-weight: bold;
   text-transform: none;
 }
@@ -2653,7 +2652,7 @@ a#view-gallery:hover {
   padding-left: 15px;
 }
 
-.blog-item-style-3:hover img {
+.director-photo:hover {
   transform: scale(1.1);
   -webkit-transform: scale(1.1);
   -moz-transform: scale(1.1);
@@ -2664,7 +2663,7 @@ a#view-gallery:hover {
   -o-transition: all 0.5s ease-out;
   transition: all 0.5s ease-out;
 }
-.blog-item-style-3:hover .blog-it-infor h3 a {
+.director-photo:hover .blog-it-infor h3 a {
   color: #dcf836;
 }
 
