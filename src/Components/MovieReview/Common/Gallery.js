@@ -41,6 +41,7 @@ const Gallery = (props) => {
   };
 
   const fetchPreviousImage = () => {
+    toggleLoader(true);
     if (currentIndex !== 0) {
       setCurrentImage(galleryImages[currentIndex - 1]);
       setCurrentIndex(currentIndex - 1);
@@ -51,6 +52,7 @@ const Gallery = (props) => {
   };
 
   const fetchNextImage = () => {
+    toggleLoader(true);
     if (currentIndex !== galleryImages.length - 1) {
       setCurrentImage(galleryImages[currentIndex + 1]);
       setCurrentIndex(currentIndex + 1);

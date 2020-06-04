@@ -197,19 +197,19 @@ const Directors = () => {
                   <React.Fragment>
                     {!page.showGrid && (
                       <div className="row">
-                        {
-                          <DirectorList
-                            directors={directorList}
-                            isImageLoading={isImageLoading}
-                          ></DirectorList>
-                        }
+                        <DirectorList
+                          directors={directorList}
+                          isImageLoading={isImageLoading}
+                        ></DirectorList>
                       </div>
                     )}
                     {page.showGrid && (
-                      <DirectorGrid
-                        directors={directorList}
-                        isImageLoading={isImageLoading}
-                      ></DirectorGrid>
+                      <div className="row">
+                        <DirectorGrid
+                          directors={directorList}
+                          isImageLoading={isImageLoading}
+                        ></DirectorGrid>
+                      </div>
                     )}
                   </React.Fragment>
                 )}

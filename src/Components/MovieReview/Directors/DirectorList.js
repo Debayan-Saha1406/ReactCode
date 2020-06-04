@@ -19,7 +19,7 @@ const DirectorList = (props) => {
             className="director-photo"
             src={director.photo}
             alt=""
-            style={{ height: "260px", width: "170px" }}
+            style={{ height: "260px", width: "180px" }}
             onLoad={() => {
               hideLoader(props.directors.length - 1 === index);
             }}
