@@ -35,7 +35,12 @@ const Cast = (props) => {
                     ((director.directorName.match(/\b\w/g) || []).pop() || "")
                   ).toUpperCase()}
                 </h4>
-                <a href="#">{director.directorName}</a>
+                <Link
+                  to={`/director-details/${director.id}`}
+                  className="celebrity-name"
+                >
+                  {director.directorName}
+                </Link>
               </div>
               <p>... Director</p>
             </div>

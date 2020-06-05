@@ -52,6 +52,15 @@ const Filmography = (props) => {
           dispatch(toggleLoader(false, 1));
         }
       });
+    } else {
+      body.directorId = props.directorId;
+      ServiceProvider.post(apiUrl.directorMovies, body).then((response) => {
+        if (response.status === 200) {
+          setMovies(response.data.data.details);
+          setTotalMovies(response.data.data.totalCount);
+          dispatch(toggleLoader(false, 1));
+        }
+      });
     }
   }, [
     pageSize,

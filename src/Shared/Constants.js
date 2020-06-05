@@ -30,6 +30,7 @@ export const apiUrl = {
   movieGalleryImages: "/movieGallery/",
   directors: "/directors",
   director: "/director/",
+  directorMovies: "/directorMovies",
 };
 
 export const constants = {
