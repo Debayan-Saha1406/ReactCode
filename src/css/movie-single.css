@@ -2476,13 +2476,12 @@ a#view-gallery:hover {
 }
 
 #fancybox-width {
-  width: 973px;
+  /* width: 973px; */
   top: 48px;
-  left: 18%;
 }
 
 #fancybox-inner-dimensions {
-  width: 943px;
+  /* width: 943px; */
   height: 628px;
 }
 
@@ -2522,6 +2521,24 @@ a#view-gallery:hover {
   #fancybox-inner-dimensions {
     width: 950px;
     height: 700px;
+  }
+}
+
+@media only screen and (min-width: 411px) and (max-width: 767px) {
+  #fancybox-width {
+    top: 250px;
+  }
+}
+
+@media screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) {
+  #fancybox-width {
+    top: 150px;
+  }
+}
+
+@media only screen and (min-width: 375px) and (max-width: 767px) {
+  #fancybox-width {
+    top: 250px;
   }
 }
 

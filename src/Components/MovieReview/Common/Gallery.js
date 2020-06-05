@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
 import ImageGalleryLoader from "./ImageGalleryLoader";
+import windowSize from "react-window-size";
 
 const Gallery = (props) => {
   const [nextButtonVisibility, setNextButtonVisibility] = useState("hidden");
@@ -81,6 +82,8 @@ const Gallery = (props) => {
             position: "absolute",
             opacity: "1",
             overflow: "visible",
+            width: props.windowWidth - 40 < 973 ? props.windowWidth - 40 : 973,
+            left: props.windowWidth - 40 < 1023 ? "20px" : "20%",
           }}
         >
           <div
@@ -91,7 +94,12 @@ const Gallery = (props) => {
               <div
                 class="fancybox-inner"
                 id="fancybox-inner-dimensions"
-                style={{ overflow: "visible" }}
+                style={{
+                  overflow: "visible",
+                  width:
+                    props.windowWidth - 70 < 943 ? props.windowWidth - 70 : 943,
+                  // left: props.windowWidth - 70 < 973 ? "20px" : "20%",
+                }}
               >
                 <div id="loaderContainer">
                   <div id="loader">
@@ -150,4 +158,4 @@ const Gallery = (props) => {
   );
 };
 
-export default Gallery;
+export default windowSize(Gallery);
