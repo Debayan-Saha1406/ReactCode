@@ -20,6 +20,7 @@ const Gallery = (props) => {
     "hidden"
   );
   const [showloader, toggleLoader] = useState(false);
+  const [opacity, toggleOpacity] = useState(0);
   const [galleryImages, setGalleryImages] = useState([]);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const Gallery = (props) => {
 
   const fetchNextImage = () => {
     toggleLoader(true);
+    toggleOpacity(0.2);
     if (currentIndex !== galleryImages.length - 1) {
       setCurrentImage(galleryImages[currentIndex + 1]);
       setCurrentIndex(currentIndex + 1);
@@ -65,6 +67,7 @@ const Gallery = (props) => {
 
   const handleImageLoad = () => {
     toggleLoader(false);
+    toggleOpacity(1);
   };
   return (
     <React.Fragment>
@@ -98,7 +101,6 @@ const Gallery = (props) => {
                   overflow: "visible",
                   width:
                     props.windowWidth - 70 < 943 ? props.windowWidth - 70 : 943,
-                  // left: props.windowWidth - 70 < 973 ? "20px" : "20%",
                 }}
               >
                 <div id="loaderContainer">
@@ -111,6 +113,7 @@ const Gallery = (props) => {
                   src={currentImage ? currentImage : galleryImages[0]}
                   alt=""
                   onLoad={handleImageLoad}
+                  style={{ opacity: opacity }}
                 />
               </div>
               <a

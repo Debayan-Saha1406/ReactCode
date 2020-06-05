@@ -11,6 +11,7 @@ import {
   sortColumns,
   movieSortTypeList,
   filmographySortTypeList,
+  detailPageType,
 } from "../../../Shared/Constants";
 import { Link } from "react-router-dom";
 import "../../../css/movie-single.css";
@@ -41,15 +42,17 @@ const Filmography = (props) => {
       pageSize: pageSize,
       sortColumn: sortDetails.sortByColumn,
       sortDirection: sortDetails.sortByDirection,
-      celebrityId: props.celebrityId,
     };
-    ServiceProvider.post(apiUrl.celebrityMovies, body).then((response) => {
-      if (response.status === 200) {
-        setMovies(response.data.data.details);
-        setTotalMovies(response.data.data.totalCount);
-        dispatch(toggleLoader(false, 1));
-      }
-    });
+    if (props.type === detailPageType.celebrity) {
+      body.celebrityId = props.celebrityId;
+      ServiceProvider.post(apiUrl.celebrityMovies, body).then((response) => {
+        if (response.status === 200) {
+          setMovies(response.data.data.details);
+          setTotalMovies(response.data.data.totalCount);
+          dispatch(toggleLoader(false, 1));
+        }
+      });
+    }
   }, [
     pageSize,
     pageNumber,
@@ -98,7 +101,7 @@ const Filmography = (props) => {
     <div className="filmography">
       <div>
         <h3>Filmography of</h3>
-        <h2 style={{ color: "white" }}>{props.celebrityName}</h2>
+        <h2 style={{ color: "white" }}>{props.name}</h2>
       </div>
 
       <DetailTopBar

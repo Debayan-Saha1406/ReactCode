@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -29,6 +29,7 @@ export const apiUrl = {
   celebrities: "/celebrities",
   movieGalleryImages: "/movieGallery/",
   directors: "/directors",
+  director: "/director/",
 };
 
 export const constants = {
@@ -146,7 +147,7 @@ export const page = {
   details: "details",
 };
 
-export const celebrityTabs = {
+export const detailPageTabs = {
   overview: "overview",
   biography: "biography",
   filmography: "filmography",
@@ -270,3 +271,8 @@ export const countList = [
   // { id: 25, value: 25 },
   // { id: 50, value: 50 },
 ];
+
+export const detailPageType = {
+  celebrity: "celebrity",
+  director: "director",
+};

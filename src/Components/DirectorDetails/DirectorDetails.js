@@ -1,29 +1,29 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
-import Overview from "../CelebrityDetails/Overview";
+import React from "react";
+import LoaderProvider from "./../../Provider/LoaderProvider";
+import Header from "./../MovieReview/Common/Header";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  page,
-  detailPageTabs,
-  apiUrl,
   gender,
+  detailPageTabs,
   detailPageType,
-} from "../../../Shared/Constants";
-import Biography from "./Biography";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleLoader } from "../../../Store/Actions/actionCreator";
-import "../../../css/movie-single.css";
-import Filmography from "./Filmography";
-import Header from "./../Common/Header";
-import LoaderProvider from "./../../../Provider/LoaderProvider";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
+} from "./../../Shared/Constants";
+import { toggleLoader } from "./../../Store/Actions/actionCreator";
+import { page } from "./../../Shared/Constants";
+import Overview from "../MovieReview/CelebrityDetails/Overview";
+import Biography from "./../MovieReview/CelebrityDetails/Biography";
+import Filmography from "./../MovieReview/CelebrityDetails/Filmography";
+import { useEffect } from "react";
+import ServiceProvider from "./../../Provider/ServiceProvider";
+import { apiUrl } from "./../../Shared/Constants";
 
-const CelebrityDetails = (props) => {
+const DirectorDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
-  const [celebrity, setCelebrityResponse] = useState({});
+  const [director, setDirectorResponse] = useState({});
   const [movies, setMovies] = useState([]);
-  const [isCelebrityDetailFetched, setIsCelebrityDetailFetched] = useState(
-    false
-  );
+  const [isDirectorDetailFetched, setIsDirectorDetailFetched] = useState(false);
   const dispatch = useDispatch();
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
@@ -31,12 +31,12 @@ const CelebrityDetails = (props) => {
   useEffect(() => {
     const celebrityId = props.match.params.id;
     dispatch(toggleLoader(true, 0));
-    ServiceProvider.getWithParam(apiUrl.celebrity, celebrityId).then(
+    ServiceProvider.getWithParam(apiUrl.director, celebrityId).then(
       (response) => {
         if (response.status === 200) {
-          setCelebrityResponse(response.data.data.celebrityResponse);
-          setMovies(response.data.data.movieResponse);
-          setIsCelebrityDetailFetched(true);
+          setDirectorResponse(response.data.data.directorResponse);
+          setMovies(response.data.data.directorMovieResponse);
+          setIsDirectorDetailFetched(true);
         }
       }
     );
@@ -59,9 +59,7 @@ const CelebrityDetails = (props) => {
   return (
     <React.Fragment>
       <div id="loaderContainer">
-        <div id="loader">
-          {showLoader && <LoaderProvider visible={showLoader}></LoaderProvider>}
-        </div>
+        <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
       </div>
       <div
         style={{
@@ -69,11 +67,11 @@ const CelebrityDetails = (props) => {
         }}
       >
         <Header page={page.details}></Header>
-        {isCelebrityDetailFetched && (
+        {isDirectorDetailFetched && (
           <div
             className="hero hero3"
             style={{
-              background: `url(${celebrity.coverPhoto})`,
+              background: `url(${director.coverPhoto})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
@@ -86,7 +84,8 @@ const CelebrityDetails = (props) => {
               <div className="col-md-4 col-sm-12 col-xs-12">
                 <div className="mv-ceb">
                   <img
-                    src={celebrity.photo}
+                    src={director.photo}
+                    style={{ width: "320px", height: "480px" }}
                     alt=""
                     onLoad={handleSuccessfulImageLoad}
                   />
@@ -95,13 +94,13 @@ const CelebrityDetails = (props) => {
               <div className="col-md-8 col-sm-12 col-xs-12">
                 <div className="movie-single-ct">
                   <h1 className="bd-hd">
-                    {isCelebrityDetailFetched && celebrity.celebrityName}
+                    {isDirectorDetailFetched && director.directorName}
                   </h1>
                   <p className="ceb-single">
-                    {isCelebrityDetailFetched &&
-                    celebrity.gender.toLowerCase() === gender.male.toLowerCase()
-                      ? "Actor"
-                      : "Actress"}{" "}
+                    {isDirectorDetailFetched &&
+                    director.gender.toLowerCase() === gender.male.toLowerCase()
+                      ? "Director"
+                      : "Women Director"}{" "}
                   </p>
                   <div className="movie-tabs">
                     <div className="tabs">
@@ -183,7 +182,7 @@ const CelebrityDetails = (props) => {
                             className="tab active"
                             style={{ display: "block" }}
                           >
-                            {isCelebrityDetailFetched && (
+                            {isDirectorDetailFetched && (
                               <div
                                 className="row"
                                 style={{ marginTop: "30px" }}
@@ -191,7 +190,7 @@ const CelebrityDetails = (props) => {
                                 <Overview
                                   setSelectedTab={setSelectedTab}
                                   redirectToTab={redirectToTab}
-                                  star={celebrity}
+                                  star={director}
                                   movies={movies}
                                 ></Overview>
                               </div>
@@ -210,11 +209,11 @@ const CelebrityDetails = (props) => {
                             className="tab active"
                             style={{ display: "block" }}
                           >
-                            {isCelebrityDetailFetched && (
+                            {isDirectorDetailFetched && (
                               <div className="row">
                                 <Biography
-                                  biography={celebrity.biography}
-                                  name={celebrity.celebrityName}
+                                  biography={director.biography}
+                                  name={director.celebrityName}
                                 ></Biography>
                               </div>
                             )}
@@ -233,12 +232,12 @@ const CelebrityDetails = (props) => {
                           className="tab active"
                           style={{ display: "block" }}
                         >
-                          {isCelebrityDetailFetched && (
+                          {isDirectorDetailFetched && (
                             <div className="row">
                               <Filmography
-                                name={celebrity.celebrityName}
-                                celebrityId={celebrity.id}
-                                type={detailPageType.celebrity}
+                                directorName={director.directorName}
+                                directorId={director.id}
+                                type={detailPageType.director}
                               ></Filmography>
                             </div>
                           )}
@@ -262,4 +261,4 @@ const CelebrityDetails = (props) => {
   );
 };
 
-export default CelebrityDetails;
+export default DirectorDetails;

@@ -1,19 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { celebrityTabs } from "../../../Shared/Constants";
-
-import image from "../../../images/movie-single.jpg";
+import { detailPageTabs } from "../../../Shared/Constants";
 import { Link } from "react-router-dom";
 
 const Overview = (props) => {
-  const { biography, dateOfBirth, nationality } = props.celebrity;
+  const { biography, dateOfBirth, nationality } = props.star;
   return (
     <React.Fragment>
       <div className="col-md-8 col-sm-12 col-xs-12">
-        <p>{biography}</p>
+        <p>
+          {biography.length > 400
+            ? biography.substring(0, 400) + "..."
+            : biography}{" "}
+        </p>
         <p className="time">
           <a
-            onClick={() => props.redirectToTab(celebrityTabs.biography)}
+            onClick={() => props.redirectToTab(detailPageTabs.biography)}
             className="blue-link"
           >
             See full bio
@@ -23,7 +25,7 @@ const Overview = (props) => {
         <div className="title-hd-sm">
           <h4>filmography</h4>
           <a
-            onClick={() => props.redirectToTab(celebrityTabs.filmography)}
+            onClick={() => props.redirectToTab(detailPageTabs.filmography)}
             className="blue-link"
             style={{ fontSize: "12px" }}
           >
@@ -39,7 +41,6 @@ const Overview = (props) => {
                   alt=""
                   style={{ marginRight: "10px", marginTop: "-10px" }}
                 />
-                {/* Replace movie.movieLogo here */}
                 <div>
                   <Link
                     to={`/movie-details/${movie.movieId}`}
