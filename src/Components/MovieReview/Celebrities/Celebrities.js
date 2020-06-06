@@ -19,6 +19,7 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import NoResultFound from "../Common/NoResultFound";
 import { getCelebritySearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
 import { countList } from "./../../../Shared/Constants";
+import Footer from "../Common/Footer";
 
 const initialData = {
   totalCelebrities: 0,
@@ -308,6 +309,7 @@ const Celebrities = () => {
             </div>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </React.Fragment>
   );

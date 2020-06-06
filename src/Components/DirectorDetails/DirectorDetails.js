@@ -18,6 +18,7 @@ import Filmography from "./../MovieReview/CelebrityDetails/Filmography";
 import { useEffect } from "react";
 import ServiceProvider from "./../../Provider/ServiceProvider";
 import { apiUrl } from "./../../Shared/Constants";
+import Footer from "../MovieReview/Common/Footer";
 
 const DirectorDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -256,6 +257,7 @@ const DirectorDetails = (props) => {
             </div>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </React.Fragment>
   );

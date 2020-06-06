@@ -23,6 +23,7 @@ import List from "./List";
 import Grid from "./Grid";
 import NoResultFound from "../Common/NoResultFound";
 import { countList } from "./../../../Shared/Constants";
+import Footer from "../Common/Footer";
 
 class Movies extends Component {
   state = {
@@ -353,6 +354,7 @@ class Movies extends Component {
               </div>
             </div>
           </div>
+          <Footer></Footer>
         </div>
       </React.Fragment>
     );

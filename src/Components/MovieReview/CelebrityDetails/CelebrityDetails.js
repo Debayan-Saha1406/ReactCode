@@ -16,6 +16,7 @@ import Filmography from "./Filmography";
 import Header from "./../Common/Header";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
+import Footer from "../Common/Footer";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -257,6 +258,7 @@ const CelebrityDetails = (props) => {
             </div>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </React.Fragment>
   );

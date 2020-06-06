@@ -26,6 +26,7 @@ import { Redirect } from "react-router-dom";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import StarRating from "../Common/StarRating";
 import Gallery from "../Common/Gallery";
+import Footer from "./../Common/Footer";
 
 let releaseYear = "",
   loginDetails = {},
@@ -509,6 +510,7 @@ class MovieDetails extends Component {
               </div>
             </div>
           </div>
+          <Footer></Footer>
         </div>
       </React.Fragment>
     );

@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import Pagination from "../Common/Pagination";
 import DirectorSearchBox from "./DirectorSearchBox";
+import Footer from "./../Common/Footer";
 
 const initialData = {
   totalDirectors: 0,
@@ -238,6 +239,7 @@ const Directors = () => {
             </div>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </React.Fragment>
   );

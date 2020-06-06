@@ -7,13 +7,7 @@ import ProfileDetails from "./ProfileDetails";
 import ChangePassword from "./ChangePassword";
 import Header from "../Common/Header";
 import "../../../css/movie-single.css";
-import {
-  page,
-  constants,
-  pageType,
-  sortColumns,
-  movieSortTypeList,
-} from "../../../Shared/Constants";
+import { page, constants } from "../../../Shared/Constants";
 import { useEffect } from "react";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { useState } from "react";
@@ -24,14 +18,9 @@ import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import { useSelector } from "react-redux";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import { userProfileSideMenuItem } from "../../../Shared/Constants";
-import UserFavoriteList from "./UserFavoriteList";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
-import UserFavoriteGrid from "./UserFavoriteGrid";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { apiUrl } from "./../../../Shared/Constants";
 import UserRatedMovies from "./UserRatedMovies";
-import { sortDirection } from "./../../../Shared/Constants";
 import UserFavorite from "./UserFavorite";
+import Footer from "../Common/Footer";
 
 const profileState = {
   firstName: "",
@@ -178,6 +167,7 @@ const UserProfile = (props) => {
                 </div>
               </div>
             </div>
+            <Footer></Footer>
           </React.Fragment>
         )}
       </div>
