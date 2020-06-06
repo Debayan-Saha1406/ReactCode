@@ -277,3 +277,9 @@ export const detailPageType = {
   celebrity: "celebrity",
   director: "director",
 };
+
+export const searchBarOptionsList = [
+  { id: 1, value: "Movie" },
+  { id: 2, value: "Celebrity" },
+  { id: 3, value: "Director" },
+]

@@ -9,6 +9,7 @@ import {
   constants,
   page,
   menuItem,
+  searchBarOptionsList,
 } from "./../../../Shared/Constants";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
@@ -19,6 +20,7 @@ import Information from "./../Popups/Information";
 import Logout from "./../Popups/Logout";
 import Login from "./../Popups/Login";
 import Register from "./../Popups/Register";
+import SearchBar from "./SearchBar";
 
 class Header extends Component {
   state = {
@@ -48,10 +50,6 @@ class Header extends Component {
     this.setState({
       display: this.state.display === "none" ? "block" : "none",
     });
-  };
-
-  openSearchBox = () => {
-    this.setState({ active: this.state.active === "" ? "active" : "" });
   };
 
   setCurrentMenuItem = (currentMenuItem) => {
@@ -97,17 +95,6 @@ class Header extends Component {
     return (
       <React.Fragment>
         {this.props.popupType === popupType.information && (
-          // <Information
-          //   loginPopupClassName={this.props.popupClassName}
-          //   title={"Reset Password"}
-          //   content={
-          //     "Your Password Reset Email Has Been Sent. Please Check Your Inbox As You Will Need To Enter The Recovery Code In The Next Screen."
-          //   }
-          //   handleClose={() =>
-          //     this.props.togglePopup("", popupType.resetPassword)
-          //   }
-          //   handleOk={() => this.props.togglePopup("", popupType.resetPassword)}
-          // ></Information>
           <Information
             loginPopupClassName={this.props.popupClassName}
             title={
@@ -312,7 +299,6 @@ class Header extends Component {
                     >
                       <Link to="/user-profile">View Profile</Link>
                       <a onClick={this.handleLogout}>Logout</a>
-                      <a href="#">Link 3</a>
                     </div>
                   </li>
                 ) : (
@@ -333,7 +319,6 @@ class Header extends Component {
                     >
                       <a href="#">Edit Profile</a>
                       <a href="#">Logout</a>
-                      <a href="#">Link 3</a>
                     </div>
                   </li>
                 )
@@ -350,17 +335,6 @@ class Header extends Component {
                 </li>
               )}
             </ul>
-
-            <form action="#" className="search-form">
-              <input
-                type="text"
-                placeholder="Search..."
-                className={`${this.state.active}`}
-              />
-              <button onClick={this.openSearchBox}>
-                <i className="fa fa-search"></i>
-              </button>
-            </form>
           </div>
 
           <div
@@ -388,6 +362,7 @@ class Header extends Component {
             </ul>
           </div>
         </div>
+        {this.props.showSearchBar && <SearchBar></SearchBar>}
         <ToastContainer autoClose={3000}></ToastContainer>
       </header>
     );

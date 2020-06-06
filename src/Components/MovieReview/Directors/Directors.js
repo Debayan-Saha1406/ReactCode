@@ -19,7 +19,6 @@ import { directorSortTypeList } from "./../../../Shared/Constants";
 import NoResultFound from "./../Common/NoResultFound";
 import DirectorList from "./DirectorList";
 import DirectorGrid from "./DirectorGrid";
-import BoxStylePagination from "../Common/BoxStylePagination";
 import { useEffect } from "react";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";

@@ -27,7 +27,7 @@ const Home = () => {
         }}
       >
         <div id="site-content">
-          <Header></Header>
+          <Header showSearchBar={true}></Header>
           <main class="main-content">
             <div className="container">
               <Main></Main>
