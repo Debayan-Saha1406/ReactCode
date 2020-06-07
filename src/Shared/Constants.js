@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -31,6 +31,7 @@ export const apiUrl = {
   directors: "/directors",
   director: "/director/",
   directorMovies: "/directorMovies",
+  search: "/search/",
 };
 
 export const constants = {
@@ -279,7 +280,27 @@ export const detailPageType = {
 };
 
 export const searchBarOptionsList = [
-  { id: 1, value: "Movie" },
-  { id: 2, value: "Celebrity" },
-  { id: 3, value: "Director" },
-]
+  { id: 1, value: "All" },
+  { id: 2, value: "Movie" },
+  { id: 3, value: "Celebrity" },
+  { id: 4, value: "Director" },
+];
+
+export const searchBarSubType = {
+  movie: "Movie",
+  celebrity: "Celebrity",
+  director: "Director",
+};
+
+export const countries = [
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Anguilla",
+  "Antigua & Barbuda",
+  "Argentina",
+  "Armenia",
+  "Aruba",
+];

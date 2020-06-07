@@ -9,6 +9,7 @@ import LoaderProvider from "./../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
 import "../../../css/login.css";
 import { ToastContainer } from "react-toastify";
+import Footer from "../Common/Footer";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -65,6 +66,7 @@ const Home = () => {
             </div>
           </main>
         </div>
+        <Footer></Footer>
       </div>
     </React.Fragment>
   );
