@@ -3024,13 +3024,13 @@ footer .flex-parent-ft .flex-child-ft img {
 .autocomplete-items div {
   padding: 10px;
   cursor: pointer;
-  background-color: #fff;
+  background-color: #1f1f1f;
   border-bottom: 1px solid #d4d4d4;
 }
 
 /*when hovering an item:*/
 .data:hover {
-  background-color: #e9e9e9;
+  background-color: #3a3a3a;
 }
 
 /*when navigating through the items using the arrow keys:*/
@@ -3041,7 +3041,6 @@ footer .flex-parent-ft .flex-child-ft img {
 
 .autocomplete-items {
   position: absolute;
-  border: 1px solid #d4d4d4;
   border-bottom: none;
   border-top: none;
   z-index: 99;
@@ -3098,8 +3097,7 @@ footer .flex-parent-ft .flex-child-ft img {
 .spinner > div {
   width: 18px;
   height: 18px;
-  background-color: #333;
-
+  background-color: white;
   border-radius: 100%;
   display: inline-block;
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -3138,4 +3136,17 @@ footer .flex-parent-ft .flex-child-ft img {
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+.search-record {
+  font-size: 20px;
+  margin-left: 20px;
+  color: white;
+}
+
+.no-record {
+  margin: 150px auto 0;
+  font-size: 20px;
+  color: white;
+  display: table;
 }

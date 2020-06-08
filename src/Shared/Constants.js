@@ -31,7 +31,7 @@ export const apiUrl = {
   directors: "/directors",
   director: "/director/",
   directorMovies: "/directorMovies",
-  search: "/search/",
+  search: "/search",
 };
 
 export const constants = {
@@ -290,6 +290,7 @@ export const searchBarSubType = {
   movie: "Movie",
   celebrity: "Celebrity",
   director: "Director",
+  all: "All",
 };
 
 export const countries = [
