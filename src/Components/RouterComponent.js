@@ -15,7 +15,8 @@ import UserProfile from "./MovieReview/UserDetails/UserProfile";
 import Celebrities from "./MovieReview/Celebrities/Celebrities";
 import CelebrityDetails from "./MovieReview/CelebrityDetails/CelebrityDetails";
 import Directors from "./MovieReview/Directors/Directors";
-import DirectorDetails from "./DirectorDetails/DirectorDetails";
+import DirectorDetails from "./MovieReview/DirectorDetails/DirectorDetails";
+import SearchList from "./MovieReview/Search/SearchList";
 
 class Router extends Component {
   render() {
@@ -41,6 +42,7 @@ class Router extends Component {
           <Route path="/directors/" component={Directors} />
           <Route path="/user-profile" component={UserProfile} />
           <Route path="/not-found" component={NotFound} />
+          <Route path="/search" component={SearchList} />
           <Redirect from="*" to="/login" />
         </Switch>
       </BrowserRouter>

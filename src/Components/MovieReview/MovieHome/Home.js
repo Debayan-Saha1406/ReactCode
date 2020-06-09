@@ -17,9 +17,7 @@ const Home = () => {
   return (
     <React.Fragment>
       <div id="loaderContainer">
-        <div id="loader">
-          {showLoader && <LoaderProvider visible={showLoader}></LoaderProvider>}
-        </div>
+        <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
       </div>
       <div
         className="background"

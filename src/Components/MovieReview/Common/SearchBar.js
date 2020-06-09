@@ -9,17 +9,42 @@ import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState(searchBarSubType.all);
   const [isSuggestionBoxOpen, toggleSuggestionBox] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useState([]);
+  const [isSearchBoxTouched, setIsSearchBoxTouched] = useState(false);
   const [noData, setNoData] = useState(false);
+  const [isSearchIconDisabled, setIsSearchIconDisabled] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    toggleSuggestionBox(false);
+    if (searchTerm !== "") {
+      dispatch(toggleLoader(true, 0));
+      history.push({
+        pathname: "/search",
+        searchTerm: searchTerm,
+        searchType: searchType,
+        fetchNoData: false,
+      });
+    } else {
+      history.push({
+        pathname: "/search",
+        searchTerm: searchTerm,
+        searchType: searchType,
+        fetchNoData: true,
+      });
+    }
+    setSearchTerm("");
+  };
 
   const handleTypeChange = (e) => {
     setSearchTerm("");
@@ -138,7 +163,11 @@ const SearchBar = () => {
                 </div>
               ))}
               {!noData && (
-                <div className="data" style={{ borderBottom: "none" }}>
+                <div
+                  className="data"
+                  style={{ borderBottom: "none" }}
+                  onClick={handleSearch}
+                >
                   <span> Show All Results For {searchTerm}</span>
                 </div>
               )}

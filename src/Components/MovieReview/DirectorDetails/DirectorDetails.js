@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import LoaderProvider from "./../../Provider/LoaderProvider";
-import Header from "./../MovieReview/Common/Header";
+import LoaderProvider from "../../../Provider/LoaderProvider";
+import Header from "../Common/Header";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -9,16 +9,16 @@ import {
   gender,
   detailPageTabs,
   detailPageType,
-} from "./../../Shared/Constants";
-import { toggleLoader } from "./../../Store/Actions/actionCreator";
-import { page } from "./../../Shared/Constants";
-import Overview from "../MovieReview/CelebrityDetails/Overview";
-import Biography from "./../MovieReview/CelebrityDetails/Biography";
-import Filmography from "./../MovieReview/CelebrityDetails/Filmography";
+} from "../../../Shared/Constants";
+import { toggleLoader } from "../../../Store/Actions/actionCreator";
+import { page } from "../../../Shared/Constants";
+import Overview from "../CelebrityDetails/Overview";
+import Biography from "../CelebrityDetails/Biography";
+import Filmography from "../CelebrityDetails/Filmography";
 import { useEffect } from "react";
-import ServiceProvider from "./../../Provider/ServiceProvider";
-import { apiUrl } from "./../../Shared/Constants";
-import Footer from "../MovieReview/Common/Footer";
+import ServiceProvider from "../../../Provider/ServiceProvider";
+import { apiUrl } from "../../../Shared/Constants";
+import Footer from "../Common/Footer";
 
 const DirectorDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
