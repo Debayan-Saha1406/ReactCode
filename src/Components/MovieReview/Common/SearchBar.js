@@ -157,7 +157,7 @@ const SearchBar = (props) => {
                     style={{ height: "70px", width: "50px" }}
                   ></img>
                   <span className="search-record">{searchDetail.name}</span>
-                  <span style={{ marginLeft: "10px" }}>
+                  <span style={{ marginLeft: "10px" }} className="search-type">
                     ({searchDetail.type})
                   </span>
                 </div>
@@ -168,7 +168,10 @@ const SearchBar = (props) => {
                   style={{ borderBottom: "none" }}
                   onClick={handleSearch}
                 >
-                  <span> Show All Results For {searchTerm}</span>
+                  <span className="search-type">
+                    {" "}
+                    Show All Results For {searchTerm}
+                  </span>
                 </div>
               )}
             </React.Fragment>

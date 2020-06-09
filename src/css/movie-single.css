@@ -3150,3 +3150,57 @@ footer .flex-parent-ft .flex-child-ft img {
   color: white;
   display: table;
 }
+
+.search-list {
+  margin-bottom: 30px;
+  overflow: hidden;
+  background-color: #071829;
+}
+
+.search-type {
+  color: #abb7c4 !important;
+}
+
+.search-record-name {
+  margin-top: 35px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .search-list .blog-it-infor {
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-record-name {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.search-record-image {
+  margin-right: 30px;
+  width: 35%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+  .search-record-image {
+    margin-top: 20px;
+    margin-right: auto !important;
+    margin-bottom: 20px !important;
+    width: auto;
+    max-width: 230px;
+    margin-left: auto !important;
+    height: auto;
+  }
+}
+
+.search-single {
+  padding-bottom: 75px;
+}

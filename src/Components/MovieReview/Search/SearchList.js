@@ -4,7 +4,7 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import Header from "./../Common/Header";
-import { searchBarSubType, apiUrl } from "./../../../Shared/Constants";
+import { searchBarSubType, apiUrl, page } from "./../../../Shared/Constants";
 import Footer from "./../Common/Footer";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 
@@ -45,41 +45,54 @@ const SearchList = (props) => {
         <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
       </div>
       <div
-        className="background"
         style={{
           opacity: screenOpacity,
+          backgroundColor: "#020d18",
         }}
       >
         <Header showSearchBar={true} searchTerm={searchTerm}></Header>
-        <div class="page-single">
+
+        <div class="search-single">
           <div class="container">
-            <div class="row ipad-width2">
+            <div className="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                <div className="row">
-                  {searchData.length === 0 || fetchNoData ? (
+                {searchData.length === 0 || fetchNoData ? (
+                  <h2
+                    style={{
+                      color: "white",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    Enter a letter or words to search in the search bar
+                  </h2>
+                ) : (
+                  <React.Fragment>
                     <h1
                       style={{
                         color: "white",
                         marginLeft: "auto",
                         marginRight: "auto",
+                        textAlign: "center",
                       }}
                     >
-                      Enter a word or phrase to search on in the search bar
+                      Results For {`"${searchTerm}"`}
                     </h1>
-                  ) : (
-                    searchData.map((searchItem, index) => (
-                      <div class="col-md-12">
-                        <div class="ceb-item-style-2">
-                          <img
-                            src={searchItem.image}
-                            alt=""
-                            style={{ height: "50px", width: "50px" }}
-                            onLoad={() => {
-                              hideLoader(searchData.length - 1 === index);
-                            }}
-                          />
-                          <div class="ceb-infor">
-                            <h2>
+                    {searchData.map((searchItem, index) => (
+                      <div class="blog-item-style-1 search-list">
+                        <img
+                          src={searchItem.image}
+                          alt=""
+                          className="search-record-image"
+                          style={{ height: "150px", width: "125px" }}
+                          onLoad={() => {
+                            hideLoader(searchData.length - 1 === index);
+                          }}
+                        />
+                        <div class="blog-it-infor">
+                          <React.Fragment>
+                            <h2 className="search-record-name" style={{}}>
                               {searchItem.type ===
                               searchBarSubType.celebrity ? (
                                 <Link
@@ -105,12 +118,15 @@ const SearchList = (props) => {
                                 </Link>
                               )}
                             </h2>
-                          </div>
+                            <span className="search-type">
+                              {searchItem.type}
+                            </span>
+                          </React.Fragment>
                         </div>
                       </div>
-                    ))
-                  )}
-                </div>
+                    ))}
+                  </React.Fragment>
+                )}
               </div>
             </div>
           </div>
