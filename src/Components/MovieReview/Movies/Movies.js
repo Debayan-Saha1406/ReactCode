@@ -24,6 +24,8 @@ import Grid from "./Grid";
 import NoResultFound from "../Common/NoResultFound";
 import { countList } from "./../../../Shared/Constants";
 import Footer from "../Common/Footer";
+import { page } from "./../../../Shared/Constants";
+import image from "../../../images/movieList.jpg";
 
 class Movies extends Component {
   state = {
@@ -280,19 +282,38 @@ class Movies extends Component {
       <React.Fragment>
         <div id="loaderContainer">
           <div id="loader">
-            {this.props.showLoader && (
-              <LoaderProvider visible={this.props.showLoader}></LoaderProvider>
-            )}
+            {this.props.showLoader && <LoaderProvider></LoaderProvider>}
           </div>
         </div>
 
         <div
-          className="background"
           style={{
             opacity: this.props.screenOpacity,
+            backgroundColor: "#020d18",
           }}
         >
-          <Header></Header>
+          <Header page={page.details}></Header>
+          <div
+            className="hero hero3"
+            style={{
+              background: `url(${image}) no-repeat`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          >
+            <div className="celeb-container">
+              <div className="row">
+                <div className="col-md-12">
+                  <div class="hero-ct">
+                    <h1>
+                      {" "}
+                      movie listing - {this.state.showGrid ? "grid" : "list"}
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="page-single movie_list">
             <div className="container">
               <div className="row ipad-width2">
