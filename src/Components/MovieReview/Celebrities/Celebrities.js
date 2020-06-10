@@ -20,6 +20,8 @@ import NoResultFound from "../Common/NoResultFound";
 import { getCelebritySearchType } from "../../../Shared/Services/SearchBoxSearchTypeService";
 import { countList } from "./../../../Shared/Constants";
 import Footer from "../Common/Footer";
+import celebsImage from "../../../images/celebs.jpg";
+import { page as celebPage } from "./../../../Shared/Constants";
 
 const initialData = {
   totalCelebrities: 0,
@@ -240,18 +242,34 @@ const Celebrities = () => {
   return (
     <React.Fragment>
       <div id="loaderContainer">
-        <div id="loader">
-          {showLoader && <LoaderProvider visible={showLoader}></LoaderProvider>}
-        </div>
+        <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
       </div>
 
       <div
-        className="background"
         style={{
           opacity: screenOpacity,
+          backgroundColor: "#020d18",
         }}
       >
-        <Header></Header>
+        <Header page={celebPage.details}></Header>
+        <div
+          className="hero hero3"
+          style={{
+            background: `url(${celebsImage}) no-repeat`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        >
+          <div className="celeb-container">
+            <div className="row">
+              <div className="col-md-12">
+                <div class="hero-ct">
+                  <h1> Celeb listing - {page.showGrid ? "grid" : "list"}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="page-single">
           <div class="container">
             <div class="row ipad-width2">

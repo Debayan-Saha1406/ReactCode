@@ -35,7 +35,13 @@ const DirectorList = (props) => {
                 ? director.biography.substring(0, 200) + "..."
                 : director.biography}{" "}
             </p>
-            <span style={{ textTransform: "none", fontSize: "14px" }}>
+            <span
+              style={{
+                textTransform: "none",
+                fontSize: "14px",
+                color: "#abb7c4",
+              }}
+            >
               Date Of Birth :{" "}
               <span
                 style={{
@@ -49,7 +55,13 @@ const DirectorList = (props) => {
             </span>
             <br></br>
             <br></br>
-            <span style={{ textTransform: "none", fontSize: "14px" }}>
+            <span
+              style={{
+                textTransform: "none",
+                fontSize: "14px",
+                color: "#abb7c4",
+              }}
+            >
               Nationality:{" "}
               <span
                 style={{

@@ -5,6 +5,7 @@ import React from "react";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
 import Header from "./../Common/Header";
+import directorImage from "../../../images/directors.jpg";
 
 import "../../../css/movie-single.css";
 import {
@@ -27,6 +28,7 @@ import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import Pagination from "../Common/Pagination";
 import DirectorSearchBox from "./DirectorSearchBox";
 import Footer from "./../Common/Footer";
+import { page as directorPage } from "./../../../Shared/Constants";
 
 const initialData = {
   totalDirectors: 0,
@@ -174,12 +176,30 @@ const Directors = () => {
         <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
       </div>
       <div
-        className="background"
         style={{
           opacity: screenOpacity,
+          backgroundColor: "#020d18",
         }}
       >
-        <Header></Header>
+        <Header page={directorPage.details}></Header>
+        <div
+          className="hero hero3"
+          style={{
+            background: `url(${directorImage}) no-repeat`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        >
+          <div className="celeb-container">
+            <div className="row">
+              <div className="col-md-12">
+                <div class="hero-ct">
+                  <h1> Director listing - {page.showGrid ? "grid" : "list"}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="page-single">
           <div class="container">
             <div class="row">
