@@ -72,7 +72,6 @@ class Header extends Component {
   };
 
   setActiveMenuItem() {
-    debugger;
     if (window.location.pathname.includes(menuItem.movies)) {
       this.setState({ currentMenuItem: menuItem.movies });
     } else if (window.location.pathname.includes(menuItem.celeb)) {

@@ -6,12 +6,7 @@ import ThreeMonthListing from "./ThreeMonthListing";
 
 const Main = () => {
   return (
-    <div className="row">
-      <div className="col-md-12">
-        <div className="slider">
-          <Carousel></Carousel>
-        </div>
-      </div>
+    <React.Fragment>
       <div className="row">
         <div className="col-sm-6 col-md-3">
           <div className="latest-movie">
@@ -55,7 +50,7 @@ const Main = () => {
         </div>
       </div>
       <ThreeMonthListing></ThreeMonthListing>
-    </div>
+    </React.Fragment>
   );
 };
 

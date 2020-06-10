@@ -10,6 +10,10 @@ import { useSelector } from "react-redux";
 import "../../../css/login.css";
 import { ToastContainer } from "react-toastify";
 import Footer from "../Common/Footer";
+import Carousel from "./../../Common/Carousel";
+import HomeSlider from "./HomeSlider";
+import { page } from "./../../../Shared/Constants";
+import homeImage from "../../../images/movieHome.jpg";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -20,16 +24,28 @@ const Home = () => {
         <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
       </div>
       <div
-        className="background"
         style={{
           opacity: screenOpacity,
+          backgroundColor: "#020d18",
         }}
       >
         <div id="site-content">
-          <Header showSearchBar={true}></Header>
+          <Header showSearchBar={true} page={page.details}></Header>
+          <div
+            className="hero slider-5"
+            style={{
+              background: `url(${homeImage}) no-repeat`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          >
+            <div className="container">
+              <HomeSlider></HomeSlider>
+            </div>
+          </div>
           <main class="main-content">
             <div className="container">
-              <Main></Main>
+              {/* <Main></Main> */}
 
               <div class="movie-items">
                 <div class="row">

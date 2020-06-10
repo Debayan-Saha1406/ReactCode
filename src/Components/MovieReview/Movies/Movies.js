@@ -109,7 +109,6 @@ class Movies extends Component {
   };
 
   changeMovieCount = (e) => {
-    debugger;
     this.props.toggleLoader(true, "15%");
     let hideLoader = true;
     if (e.target.value > this.state.pageSize) {
