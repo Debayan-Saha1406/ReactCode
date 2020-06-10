@@ -67,7 +67,7 @@ const DirectorDetails = (props) => {
           opacity: screenOpacity,
         }}
       >
-        <Header page={page.details}></Header>
+        <Header page={page.details} showSearchBar={true}></Header>
         {isDirectorDetailFetched && (
           <div
             className="hero hero3"

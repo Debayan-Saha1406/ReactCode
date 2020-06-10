@@ -236,11 +236,11 @@ class MovieDetails extends Component {
             opacity: this.props.screenOpacity,
           }}
         >
-          <Header page={page.details}></Header>
+          <Header page={page.details} showSearchBar={true}></Header>
 
           {isMovieDetailPresent && (
             <div
-              className="hero hero3"
+              className="hero details"
               style={{
                 background: `url(${this.state.movie.movie.coverPhoto}) no-repeat`,
                 backgroundPosition: "center",

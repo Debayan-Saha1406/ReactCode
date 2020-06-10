@@ -69,7 +69,7 @@ const CelebrityDetails = (props) => {
           opacity: screenOpacity,
         }}
       >
-        <Header page={page.details}></Header>
+        <Header page={page.details} showSearchBar={true}></Header>
         {isCelebrityDetailFetched && (
           <div
             className="hero hero3"

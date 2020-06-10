@@ -1603,6 +1603,10 @@ div#overlay {
   height: 538px;
 }
 
+.details {
+  height: 538px !important;
+}
+
 .hero {
   text-align: center;
   position: relative;
