@@ -52,6 +52,7 @@ const Directors = () => {
   const [page, togglePageType] = useState(directorPageType);
   const [isImageLoading, setIsImageLoading] = useState(true);
   const [directorName, setDirectorName] = useState("");
+  const [isInitialDataFetch, setIsInitialDataFetch] = useState(true);
 
   const changeCelebrityCount = (e) => {
     setPaginationData({
@@ -98,6 +99,7 @@ const Directors = () => {
   };
 
   const getSortingDetails = (e) => {
+    dispatch(toggleLoader(true, "15%"));
     let sortColumn = "",
       sortByDirection = "";
     if (e.target.value == 1) {
@@ -123,7 +125,13 @@ const Directors = () => {
   };
 
   useEffect(() => {
-    dispatch(toggleLoader(true, "15%"));
+    if (isInitialDataFetch) {
+      dispatch(toggleLoader(true, 0));
+      setIsInitialDataFetch(false);
+    } else {
+      dispatch(toggleLoader(true, "15%"));
+    }
+
     const body = {
       pageNumber: paginationData.pageNumber,
       pageSize: paginationData.pageSize,

@@ -72,8 +72,13 @@ class Header extends Component {
   };
 
   setActiveMenuItem() {
+    debugger;
     if (window.location.pathname.includes(menuItem.movies)) {
       this.setState({ currentMenuItem: menuItem.movies });
+    } else if (window.location.pathname.includes(menuItem.celeb)) {
+      this.setState({ currentMenuItem: menuItem.celeb });
+    } else if (window.location.pathname.includes(menuItem.director)) {
+      this.setState({ currentMenuItem: menuItem.director });
     } else {
       this.setState({ currentMenuItem: menuItem.home });
     }
@@ -226,13 +231,11 @@ class Header extends Component {
                   </Link>
                 </li>
               )}
-              {this.state.currentMenuItem === menuItem.celebrities ? (
+              {this.state.currentMenuItem === menuItem.celeb ? (
                 <li className="menu-item current-menu-item">
                   <Link
                     to="/celebrities"
-                    onClick={() =>
-                      this.setCurrentMenuItem(menuItem.celebrities)
-                    }
+                    onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
                   >
                     Celebs
                   </Link>
@@ -241,19 +244,17 @@ class Header extends Component {
                 <li className="menu-item">
                   <Link
                     to="/celebrities"
-                    onClick={() =>
-                      this.setCurrentMenuItem(menuItem.celebrities)
-                    }
+                    onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
                   >
                     Celebs
                   </Link>
                 </li>
               )}
-              {this.state.currentMenuItem === menuItem.directors ? (
+              {this.state.currentMenuItem === menuItem.director ? (
                 <li className="menu-item current-menu-item">
                   <Link
                     to="/directors"
-                    onClick={() => this.setCurrentMenuItem(menuItem.directors)}
+                    onClick={() => this.setCurrentMenuItem(menuItem.director)}
                   >
                     Directors
                   </Link>
@@ -262,7 +263,7 @@ class Header extends Component {
                 <li className="menu-item">
                   <Link
                     to="/directors"
-                    onClick={() => this.setCurrentMenuItem(menuItem.directors)}
+                    onClick={() => this.setCurrentMenuItem(menuItem.director)}
                   >
                     Directors
                   </Link>

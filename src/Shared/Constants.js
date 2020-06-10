@@ -162,11 +162,10 @@ export const gender = {
 
 export const menuItem = {
   home: "home",
-  movies: "movies",
-  about: "about",
+  movies: "movie",
   loggedInEmail: "loggedInEmail",
-  celebrities: "celebrities",
-  directors: "directors",
+  celeb: "celeb",
+  director: "director",
 };
 
 export const userProfileSideMenuItem = {
