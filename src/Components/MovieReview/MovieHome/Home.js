@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState } from "react";
 import "../../../css/home.css";
 import Header from "../Common/Header";
 import Main from "./Main";
@@ -10,14 +10,14 @@ import { useSelector } from "react-redux";
 import "../../../css/login.css";
 import { ToastContainer } from "react-toastify";
 import Footer from "../Common/Footer";
-import Carousel from "./../../Common/Carousel";
 import HomeSlider from "./HomeSlider";
-import { page } from "./../../../Shared/Constants";
+import { page, apiUrl } from "./../../../Shared/Constants";
 import homeImage from "../../../images/movieHome.jpg";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
+
   return (
     <React.Fragment>
       <div id="loaderContainer">

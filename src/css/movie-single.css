@@ -785,10 +785,13 @@ img {
 .cate {
   margin-bottom: 15px;
   text-align: left;
+  margin-top: 10px;
+  margin-left: 30px;
 }
 
 .cate .blue {
   background-color: #1692bb;
+  margin-left: 5px;
 }
 
 .cate span {
@@ -808,10 +811,12 @@ img {
 
 .cate .yell {
   background-color: #f5b50a;
+  margin-left: 5px;
 }
 
 .cate .orange {
   background-color: #ec5a1a;
+  margin-left: 5px;
 }
 
 .movie-details {
@@ -3233,4 +3238,33 @@ footer .flex-parent-ft .flex-child-ft img {
   width: 10px;
   border-radius: 50%;
   display: inline-block;
+}
+
+.carousel-caption {
+  left: 0;
+  right: 0;
+}
+
+@media (min-width: 1200px) {
+  .carousel-caption {
+    bottom: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-5 {
+    height: 445px !important;
+  }
+}
+
+#home-slider {
+  margin-top: 200px;
+  border-radius: 10px;
+  height: 500px;
+}
+
+@media (max-width: 768px) {
+  #home-slider {
+    height: 200px;
+  }
 }
