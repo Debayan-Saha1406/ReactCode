@@ -1,7 +1,7 @@
 export const apiUrl = {
   baseUrl:
-  //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  "https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -33,7 +33,8 @@ export const apiUrl = {
   directorMovies: "/directorMovies",
   search: "/search",
   sliderMovieDetails: "/sliderMovieDetails",
-  fanFavoriteMovies:"/topRatedMovies"
+  fanFavoriteMovies: "/topRatedMovies",
+  starsBornToday: "/starsBornToday",
 };
 
 export const constants = {
@@ -306,3 +307,21 @@ export const countries = [
   "Armenia",
   "Aruba",
 ];
+
+export const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+    paritialVisibilityGutter: 60,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    paritialVisibilityGutter: 50,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    paritialVisibilityGutter: 30,
+  },
+};

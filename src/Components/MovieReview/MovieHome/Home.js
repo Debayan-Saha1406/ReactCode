@@ -13,6 +13,7 @@ import { page, apiUrl } from "./../../../Shared/Constants";
 import homeImage from "../../../images/movieHome.jpg";
 import WhatToWatch from "./WhatToWatch";
 import BottomScrollListener from "react-bottom-scroll-listener";
+import BornToday from "./BornToday";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -57,7 +58,7 @@ const Home = () => {
               <div class="movie-items">
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
-                  {isBottomReached && <WhatToWatch></WhatToWatch>}
+                  {isBottomReached && <BornToday></BornToday>}
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>
               </div>
