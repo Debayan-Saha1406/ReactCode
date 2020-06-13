@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import "../../../css/home.css";
 import Header from "../Common/Header";
-import Main from "./Main";
-import PopularMovies from "./PopularMovies";
 import "../../../css/movie-single.css";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
@@ -14,10 +12,16 @@ import HomeSlider from "./HomeSlider";
 import { page, apiUrl } from "./../../../Shared/Constants";
 import homeImage from "../../../images/movieHome.jpg";
 import WhatToWatch from "./WhatToWatch";
+import BottomScrollListener from "react-bottom-scroll-listener";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
+  const [isBottomReached, setIsBottomReached] = useState(false);
+
+  const handleScroll = (e) => {
+    setIsBottomReached(true);
+  };
 
   return (
     <React.Fragment>
@@ -30,6 +34,8 @@ const Home = () => {
           backgroundColor: "#020d18",
         }}
       >
+        {/* When you only want to listen to the bottom of "document", you can put it anywhere */}
+        <BottomScrollListener onBottom={handleScroll} />
         <div id="site-content">
           <Header showSearchBar={true} page={page.details}></Header>
           <div
@@ -51,8 +57,7 @@ const Home = () => {
               <div class="movie-items">
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
-                  <WhatToWatch></WhatToWatch>
-                  <WhatToWatch></WhatToWatch>
+                  {isBottomReached && <WhatToWatch></WhatToWatch>}
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>
               </div>
