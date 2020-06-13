@@ -3268,3 +3268,11 @@ footer .flex-parent-ft .flex-child-ft img {
     height: 200px;
   }
 }
+
+.image-item {
+  padding: 20px 0px 20px 20px;
+}
+
+.react-multiple-carousel__arrow {
+  top: calc(35%);
+}

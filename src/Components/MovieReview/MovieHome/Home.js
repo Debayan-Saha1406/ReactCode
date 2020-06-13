@@ -13,6 +13,7 @@ import Footer from "../Common/Footer";
 import HomeSlider from "./HomeSlider";
 import { page, apiUrl } from "./../../../Shared/Constants";
 import homeImage from "../../../images/movieHome.jpg";
+import WhatToWatch from "./WhatToWatch";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -49,33 +50,11 @@ const Home = () => {
 
               <div class="movie-items">
                 <div class="row">
-                  <div class="col-md-12">
-                    <div class="title-hd">
-                      <h2>in theater</h2>
-                      <a href="#" class="viewall">
-                        View all <i class="ion-ios-arrow-right"></i>
-                      </a>
-                    </div>
-                    <div class="tabs">
-                      <ul class="tab-links">
-                        <li class="active">
-                          <a href="#tab1-h2">#Popular</a>
-                        </li>
-                        <li>
-                          <a href="#tab2-h2"> #Coming soon</a>
-                        </li>
-                        <li>
-                          <a href="#tab3-h2"> #Top rated </a>
-                        </li>
-                        <li>
-                          <a href="#tab4-h2"> #Most reviewed</a>
-                        </li>
-                      </ul>
-                      <PopularMovies></PopularMovies>
-                    </div>
-                    <ToastContainer autoClose={3000}></ToastContainer>
-                  </div>
+                  <WhatToWatch></WhatToWatch>
+                  <WhatToWatch></WhatToWatch>
+                  <WhatToWatch></WhatToWatch>
                 </div>
+                <ToastContainer autoClose={3000}></ToastContainer>
               </div>
             </div>
           </main>

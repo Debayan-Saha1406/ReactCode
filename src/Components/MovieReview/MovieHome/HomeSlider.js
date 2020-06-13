@@ -9,32 +9,40 @@ import { apiUrl } from "./../../../Shared/Constants";
 import Carousel from "react-bootstrap/Carousel";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import "../../../css/movie-single.css";
 
 const HomeSlider = () => {
   const dispatch = useDispatch();
   const [sliderItems, setSliderItems] = useState([]);
-  const [genres, setGenres] = useState([]);
   useEffect(() => {
     dispatch(toggleLoader(true, 0));
     ServiceProvider.get(apiUrl.sliderMovieDetails).then((response) => {
       if (response.status === 200) {
         setSliderItems(response.data.data);
-        dispatch(toggleLoader(false, 1));
       }
     });
   }, []);
+
+  const handleSuccessfulImageLoad = (isLastImage) => {
+    if (isLastImage) {
+      dispatch(toggleLoader(false, 1));
+    }
+  };
 
   return (
     <div className="row">
       <div className="col-md-12">
         <div className="slider" id="home-slider">
           <Carousel interval={10000}>
-            {sliderItems.map((item) => (
+            {sliderItems.map((item, index) => (
               <Carousel.Item>
                 <img
                   className="d-block w-100"
                   src={item.image}
                   alt="First slide"
+                  onLoad={() =>
+                    handleSuccessfulImageLoad(sliderItems.length - 1 === index)
+                  }
                 />
                 <Carousel.Caption>
                   <ul class="movie-information">
@@ -71,16 +79,6 @@ const HomeSlider = () => {
                             </React.Fragment>
                           )}
                         </React.Fragment>
-                        //   {/* <span class="yell">
-                        //   <a href="#" tabindex="0">
-                        //     Action
-                        //   </a>
-                        // </span>
-                        // <span class="orange">
-                        //   <a href="#" tabindex="0">
-                        //     advanture
-                        //   </a>
-                        // </span> */}
                       ))}
                     </div>
                   </div>
