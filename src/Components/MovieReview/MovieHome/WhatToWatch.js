@@ -31,7 +31,7 @@ const WhatToWatch = () => {
     <React.Fragment>
       {
         <div class="col-md-12">
-          <div class="title-hd">
+          <div class="title-hd" style={{ paddingTop: "20px" }}>
             {isComponentVisible && <h2>What To Watch</h2>}
           </div>
           <div class="tabs">

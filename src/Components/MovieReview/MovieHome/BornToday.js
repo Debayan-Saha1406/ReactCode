@@ -7,21 +7,10 @@ import {
 } from "./../../../Shared/Constants";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useEffect } from "react";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { apiUrl } from "./../../../Shared/Constants";
 import { Link } from "react-router-dom";
 
-const BornToday = () => {
-  const [starsBornToday, setStarsBornToday] = useState([]);
+const BornToday = (props) => {
   const [isComponentVisible, showComponent] = useState(false);
-  useEffect(() => {
-    ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
-      if (response.status === 200) {
-        setStarsBornToday(response.data.data);
-      }
-    });
-  }, []);
 
   const handleSuccessfulImageLoad = (isLastImage) => {
     if (isLastImage) {
@@ -55,20 +44,20 @@ const BornToday = () => {
               itemClass="image-item"
               responsive={responsive}
             >
-              {starsBornToday.map((star, index) => {
+              {props.starsBornToday.map((star, index) => {
                 return (
                   <React.Fragment>
                     <img
                       draggable={false}
                       style={{
-                        height: "200px",
-                        width: "200px",
+                        height: "150px",
+                        width: "150px",
                         borderRadius: "50%",
                       }}
                       src={star.image}
                       onLoad={() =>
                         handleSuccessfulImageLoad(
-                          starsBornToday.length - 1 === index
+                          props.starsBornToday.length - 1 === index
                         )
                       }
                     />

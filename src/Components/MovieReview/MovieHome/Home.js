@@ -14,14 +14,26 @@ import homeImage from "../../../images/movieHome.jpg";
 import WhatToWatch from "./WhatToWatch";
 import BottomScrollListener from "react-bottom-scroll-listener";
 import BornToday from "./BornToday";
+import ServiceProvider from "./../../../Provider/ServiceProvider";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
-  const [isBottomReached, setIsBottomReached] = useState(false);
+  const [starsBornToday, setStarsBornToday] = useState([]);
+  const [isStarsBornTodayDataFetched, setStarsBornTodayDataFetched] = useState(
+    false
+  );
 
   const handleScroll = (e) => {
-    setIsBottomReached(true);
+    if (!isStarsBornTodayDataFetched)
+      ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
+        if (response.status === 200) {
+          setStarsBornToday(response.data.data);
+          setStarsBornTodayDataFetched(true);
+        } else {
+          setStarsBornTodayDataFetched(true);
+        }
+      });
   };
 
   return (
@@ -35,7 +47,6 @@ const Home = () => {
           backgroundColor: "#020d18",
         }}
       >
-        {/* When you only want to listen to the bottom of "document", you can put it anywhere */}
         <BottomScrollListener onBottom={handleScroll} />
         <div id="site-content">
           <Header showSearchBar={true} page={page.details}></Header>
@@ -58,7 +69,9 @@ const Home = () => {
               <div class="movie-items">
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
-                  {isBottomReached && <BornToday></BornToday>}
+                  {starsBornToday.length > 0 && (
+                    <BornToday starsBornToday={starsBornToday}></BornToday>
+                  )}
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>
               </div>
