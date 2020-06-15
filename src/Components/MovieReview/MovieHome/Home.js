@@ -15,6 +15,8 @@ import WhatToWatch from "./WhatToWatch";
 import BottomScrollListener from "react-bottom-scroll-listener";
 import BornToday from "./BornToday";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
+import ReactPlayer from "react-player";
+import Trailers from "./Trailers";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -72,6 +74,13 @@ const Home = () => {
                   {starsBornToday.length > 0 && (
                     <BornToday starsBornToday={starsBornToday}></BornToday>
                   )}
+                  {/* <ReactPlayer
+                    url={"https://www.youtube.com/watch?v=_nBlN9yp9R8"}
+                    controls={true}
+                    style={{ backgroundColor: "black" }}
+                    light={true}
+                  /> */}
+                  <Trailers></Trailers>
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>
               </div>

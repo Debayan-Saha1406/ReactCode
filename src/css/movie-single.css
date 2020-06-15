@@ -3276,3 +3276,161 @@ footer .flex-parent-ft .flex-child-ft img {
 .react-multiple-carousel__arrow {
   top: calc(35%);
 }
+
+@media (max-width: 960px) and (min-width: 768px) {
+  .trailer-item.leading #playIcon {
+    top: 40%;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 768px) {
+  .trailer-item.leading #playIcon {
+    font-size: 100px;
+  }
+}
+
+#playIcon {
+  font-size: 80px;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  color: #fff;
+  z-index: 10;
+}
+
+.trailer-item #playIcon {
+  font-size: 50px;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (max-width: 767px) {
+  .trailer-item.leading #play-icon {
+    font-size: 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .trailer-item.leading #playIcon {
+    top: 40%;
+    font-size: 150px;
+  }
+}
+
+i#playIcon:hover {
+  color: red;
+}
+
+.trailer-item.leading .trailers-info {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  padding: 20px 40px;
+  z-index: 10;
+}
+
+.trailers-info .trailer-info-block {
+  display: inline-block;
+  float: left;
+  width: 80%;
+  text-align: left;
+  color: #fff;
+}
+
+.trailer-item .movie-title {
+  font-size: 18px;
+  margin: 15px 0 0;
+  font-weight: 600;
+}
+
+.trailers-videos .trailer-item .movie-title a {
+  color: #fff;
+  transition: 300ms;
+  -webkit-transition: 300ms;
+}
+
+.trailer-item.leading {
+  position: relative;
+}
+
+.trailer-item.leading .trailer {
+  overflow: hidden;
+  clear: both;
+  position: relative;
+}
+
+.trailer-item .trailer-image-wrap {
+  position: relative;
+}
+
+.trailer-image-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.trailer-item.subleading {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .trailers-info .trailer-info-block {
+    color: #000;
+  }
+}
+
+@media (max-width: 767px) {
+  .trailer-item.leading .trailers-info {
+    position: relative;
+    background: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+}
+
+.trailer-item.subleading {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+.trailer-item.subleading .trailer-image-wrap {
+  position: relative;
+}
+
+@media (max-width: 767px) {
+  .trailer-item.subleading .trailer-image-wrap img {
+    width: 100%;
+  }
+}
+
+.trailer-item .count-rating:before {
+  content: "\e913";
+  font-family: "moview";
+  color: #ffc000;
+  position: absolute;
+  left: 0;
+  font-size: 60px;
+}
+
+.trailer-item .count-rating {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  line-height: 64px;
+  text-align: center;
+}
+
+.pull-right {
+  float: right !important;
+}
