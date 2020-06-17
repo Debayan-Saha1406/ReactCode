@@ -25,8 +25,15 @@ const Home = () => {
   const [isStarsBornTodayDataFetched, setStarsBornTodayDataFetched] = useState(
     false
   );
+  const [movieTrailers, setMovieTrailers] = useState([]);
 
   const handleScroll = (e) => {
+    ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
+      if (response.status === 200) {
+        setMovieTrailers(response.data.data);
+      }
+    });
+
     if (!isStarsBornTodayDataFetched)
       ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
         if (response.status === 200) {
@@ -60,9 +67,9 @@ const Home = () => {
               backgroundSize: "cover",
             }}
           >
-            <div className="container">
+            {/* <div className="container">
               <HomeSlider></HomeSlider>
-            </div>
+            </div> */}
           </div>
           <main class="main-content">
             <div className="container">
@@ -71,16 +78,12 @@ const Home = () => {
               <div class="movie-items">
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
+                  {movieTrailers.length > 0 && (
+                    <Trailers movieTrailers={movieTrailers}></Trailers>
+                  )}
                   {starsBornToday.length > 0 && (
                     <BornToday starsBornToday={starsBornToday}></BornToday>
                   )}
-                  {/* <ReactPlayer
-                    url={"https://www.youtube.com/watch?v=_nBlN9yp9R8"}
-                    controls={true}
-                    style={{ backgroundColor: "black" }}
-                    light={true}
-                  /> */}
-                  <Trailers></Trailers>
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>
               </div>
