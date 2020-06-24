@@ -325,3 +325,5 @@ export const responsive = {
     paritialVisibilityGutter: 30,
   },
 };
+
+export const recentlyViewed = "RecentlyViewed";

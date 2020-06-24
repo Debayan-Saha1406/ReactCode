@@ -34,6 +34,15 @@ const Home = () => {
 
   useEffect(() => {
     if (isBottomReached) {
+      ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
+        if (response.status === 200) {
+          setStarsBornToday(response.data.data);
+          setStarsBornTodayDataFetched(true);
+        } else {
+          setStarsBornTodayDataFetched(true);
+        }
+      });
+
       ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
         if (response.status === 200) {
           setMovieTrailers(response.data.data);
@@ -41,16 +50,6 @@ const Home = () => {
           setIsBottomReached(false);
         }
       });
-
-      if (!isStarsBornTodayDataFetched)
-        ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
-          if (response.status === 200) {
-            setStarsBornToday(response.data.data);
-            setStarsBornTodayDataFetched(true);
-          } else {
-            setStarsBornTodayDataFetched(true);
-          }
-        });
     }
   }, [isBottomReached]);
 

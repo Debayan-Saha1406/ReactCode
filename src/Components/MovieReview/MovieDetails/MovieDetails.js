@@ -13,6 +13,7 @@ import {
   popupType,
   constants,
   page,
+  recentlyViewed,
 } from "../../../Shared/Constants";
 import { connect } from "react-redux";
 import {
@@ -27,6 +28,8 @@ import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import StarRating from "../Common/StarRating";
 import Gallery from "../Common/Gallery";
 import Footer from "./../Common/Footer";
+import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { searchBarSubType } from "./../../../Shared/Constants";
 
 let releaseYear = "",
   loginDetails = {},
@@ -72,6 +75,8 @@ class MovieDetails extends Component {
           index + 1,
           response.data.data.movie.releaseDate.length
         );
+        this.setRecentlyViewedItems(response);
+
         this.setState({
           movie: response.data.data,
           isMovieDetailPresent: true,
@@ -100,6 +105,35 @@ class MovieDetails extends Component {
       this.props.togglePopup("openform", popupType.login);
     }
   };
+
+  setRecentlyViewedItems(response) {
+    let recentlyViewedItems = getLocalStorageItem(recentlyViewed);
+    let isItemAdded = false;
+    if (!recentlyViewedItems) {
+      recentlyViewedItems = [];
+      recentlyViewedItems.push({
+        id: Number(movieId),
+        name: response.data.data.movie.movieName,
+        type: searchBarSubType.movie,
+      });
+      setLocalStorageItem(recentlyViewed, recentlyViewedItems);
+    } else {
+      recentlyViewedItems.forEach((recentlyViewedItem) => {
+        if (recentlyViewedItem.id === Number(movieId)) {
+          isItemAdded = true;
+        }
+      });
+      if (!isItemAdded) {
+        recentlyViewedItems.push({
+          id: Number(movieId),
+          name: response.data.data.movie.movieName,
+          type: searchBarSubType.movie,
+          logo: response.data.data.movie.movieLogo,
+        });
+      }
+      setLocalStorageItem(recentlyViewed, recentlyViewedItems);
+    }
+  }
 
   sendUserMovieDetailsRequest(movieDetail, userRating) {
     const body = {
