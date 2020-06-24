@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   searchBarOptionsList,
   apiUrl,
@@ -11,6 +12,8 @@ import { showErrorMessage } from "../../../Provider/ToastProvider";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { useEffect } from "react";
+import ThreeDotSpinner from "./ThreeDotSpinner";
 
 const SearchBar = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,12 +21,10 @@ const SearchBar = (props) => {
   const [isSuggestionBoxOpen, toggleSuggestionBox] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useState([]);
-  const [isSearchBoxTouched, setIsSearchBoxTouched] = useState(false);
   const [noData, setNoData] = useState(false);
-  const [isSearchIconDisabled, setIsSearchIconDisabled] = useState(true);
-  const [toggle, setToggle] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
   const handleSearch = () => {
     toggleSuggestionBox(false);
@@ -69,38 +70,41 @@ const SearchBar = (props) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
-    setIsLoading(true);
-    setNoData(false);
-    if (e.target.value.length > 0) {
-      const body = {
-        searchType: searchType,
-        searchTerm: e.target.value,
-      };
+  useEffect(() => {
+    setTimeout(() => {
+      if (searchTerm === inputRef.current.value) {
+        setIsLoading(true);
+        setNoData(false);
+        if (inputRef.current.value.length > 0) {
+          const body = {
+            searchType: searchType,
+            searchTerm: inputRef.current.value,
+          };
 
-      if (searchType === searchBarSubType.all) {
-        body.fetchAll = true;
-      } else {
-        body.fetchAll = false;
-      }
-
-      ServiceProvider.post(apiUrl.search, body).then((response) => {
-        if (response.status === 200) {
-          setIsLoading(false);
-          setSearchData(response.data.data);
-          if (response.data.data.length === 0) {
-            setNoData(true);
+          if (searchType === searchBarSubType.all) {
+            body.fetchAll = true;
           } else {
-            setNoData(false);
+            body.fetchAll = false;
           }
+
+          ServiceProvider.post(apiUrl.search, body).then((response) => {
+            if (response.status === 200) {
+              setIsLoading(false);
+              setSearchData(response.data.data);
+              if (response.data.data.length === 0) {
+                setNoData(true);
+              } else {
+                setNoData(false);
+              }
+            }
+          });
+          toggleSuggestionBox(true);
+        } else {
+          toggleSuggestionBox(false);
         }
-      });
-      toggleSuggestionBox(true);
-    } else {
-      toggleSuggestionBox(false);
-    }
-  };
+      }
+    }, 500);
+  }, [searchTerm]);
 
   return (
     <React.Fragment>
@@ -120,9 +124,10 @@ const SearchBar = (props) => {
         <div class="autocomplete">
           <input
             type="text"
+            ref={inputRef}
             placeholder="Search for a movie, celebrity or director that you are looking for"
             value={searchTerm}
-            onChange={(e) => handleInputChange(e)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <i className="fa fa-search" id="search-icon" onClick={handleSearch}></i>
@@ -136,11 +141,7 @@ const SearchBar = (props) => {
           )}
           {isLoading ? (
             <div class="white-box" style={{ borderBottom: "none" }}>
-              <div class="spinner" style={{ borderBottom: "none" }}>
-                <div class="bounce1"></div>
-                <div class="bounce2"></div>
-                <div class="bounce3"></div>
-              </div>
+              <ThreeDotSpinner></ThreeDotSpinner>
             </div>
           ) : (
             <React.Fragment>

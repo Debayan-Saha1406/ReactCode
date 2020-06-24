@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import "../../../css/home.css";
@@ -17,6 +18,8 @@ import BornToday from "./BornToday";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import ReactPlayer from "react-player";
 import Trailers from "./Trailers";
+import { useEffect } from "react";
+import ThreeDotSpinner from "./../Common/ThreeDotSpinner";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -26,23 +29,34 @@ const Home = () => {
     false
   );
   const [movieTrailers, setMovieTrailers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isBottomReached, setIsBottomReached] = useState();
 
-  const handleScroll = (e) => {
-    ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
-      if (response.status === 200) {
-        setMovieTrailers(response.data.data);
-      }
-    });
-
-    if (!isStarsBornTodayDataFetched)
-      ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
+  useEffect(() => {
+    if (isBottomReached) {
+      ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
         if (response.status === 200) {
-          setStarsBornToday(response.data.data);
-          setStarsBornTodayDataFetched(true);
-        } else {
-          setStarsBornTodayDataFetched(true);
+          setMovieTrailers(response.data.data);
+          setIsLoading(false);
+          setIsBottomReached(false);
         }
       });
+
+      if (!isStarsBornTodayDataFetched)
+        ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
+          if (response.status === 200) {
+            setStarsBornToday(response.data.data);
+            setStarsBornTodayDataFetched(true);
+          } else {
+            setStarsBornTodayDataFetched(true);
+          }
+        });
+    }
+  }, [isBottomReached]);
+
+  const handleScroll = (e) => {
+    setIsLoading(true);
+    setIsBottomReached(true);
   };
 
   return (
@@ -78,11 +92,12 @@ const Home = () => {
               <div class="movie-items">
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
-                  {movieTrailers.length > 0 && (
-                    <Trailers movieTrailers={movieTrailers}></Trailers>
-                  )}
+                  {isLoading && <ThreeDotSpinner></ThreeDotSpinner>}
                   {starsBornToday.length > 0 && (
                     <BornToday starsBornToday={starsBornToday}></BornToday>
+                  )}
+                  {movieTrailers.length > 0 && (
+                    <Trailers movieTrailers={movieTrailers}></Trailers>
                   )}
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>

@@ -26,7 +26,7 @@ const BornToday = (props) => {
             {isComponentVisible && <h2>Born Today</h2>}
           </div>
           <div class="tabs">
-            <ul class="tab-links">
+            <ul class="tab-links" style={{ marginBottom: "10px" }}>
               <li class="active">
                 {isComponentVisible && (
                   <a>
@@ -50,8 +50,8 @@ const BornToday = (props) => {
                     <img
                       draggable={false}
                       style={{
-                        height: "150px",
-                        width: "150px",
+                        height: "350px",
+                        width: "300px",
                         borderRadius: "50%",
                       }}
                       src={star.image}
@@ -62,7 +62,13 @@ const BornToday = (props) => {
                       }
                     />
                     <div class="mv-item-infor">
-                      <h6 style={{ marginTop: "20px", marginBottom: "0px" }}>
+                      <h6
+                        style={{
+                          marginTop: "20px",
+                          marginBottom: "0px",
+                          textAlign: "center",
+                        }}
+                      >
                         {star.type === searchBarSubType.director ? (
                           <Link
                             className="heading"
@@ -79,7 +85,7 @@ const BornToday = (props) => {
                           </Link>
                         )}
                       </h6>
-                      <p class="rate">
+                      <p class="rate" style={{ textAlign: "center" }}>
                         <span>{star.age}</span>
                       </p>
                     </div>

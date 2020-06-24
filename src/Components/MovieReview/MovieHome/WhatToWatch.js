@@ -40,6 +40,7 @@ const WhatToWatch = () => {
                 {isComponentVisible && <a>Fan Favorites </a>}
               </li>
             </ul>
+
             <Carousel
               ssr
               partialVisbile
@@ -52,7 +53,7 @@ const WhatToWatch = () => {
                   <React.Fragment>
                     <img
                       draggable={false}
-                      style={{ height: "280px", width: "220px" }}
+                      style={{ height: "380px", width: "300px" }}
                       src={movie.movieLogo}
                       onLoad={() =>
                         handleSuccessfulImageLoad(

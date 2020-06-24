@@ -3099,11 +3099,11 @@ footer .flex-parent-ft .flex-child-ft img {
 }
 
 .white-box {
-  height: 400px;
+  height: 200px;
 }
 
 .spinner {
-  margin: 150px auto 0;
+  margin: 80px auto 0;
   width: 90px;
   text-align: center;
 }
@@ -3159,7 +3159,7 @@ footer .flex-parent-ft .flex-child-ft img {
 }
 
 .no-record {
-  margin: 150px auto 0;
+  margin: 80px auto 0;
   font-size: 20px;
   color: white;
   display: table;
