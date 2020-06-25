@@ -115,16 +115,20 @@ class MovieDetails extends Component {
         id: Number(movieId),
         name: response.data.data.movie.movieName,
         type: searchBarSubType.movie,
+        logo: response.data.data.movie.movieLogo,
       });
       setLocalStorageItem(recentlyViewed, recentlyViewedItems);
     } else {
       recentlyViewedItems.forEach((recentlyViewedItem) => {
-        if (recentlyViewedItem.id === Number(movieId)) {
+        if (
+          recentlyViewedItem.id === Number(movieId) &&
+          recentlyViewedItem.type === searchBarSubType.movie
+        ) {
           isItemAdded = true;
         }
       });
       if (!isItemAdded) {
-        recentlyViewedItems.push({
+        recentlyViewedItems.unshift({
           id: Number(movieId),
           name: response.data.data.movie.movieName,
           type: searchBarSubType.movie,

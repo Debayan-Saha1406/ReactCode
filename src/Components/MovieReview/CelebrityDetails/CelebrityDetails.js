@@ -7,6 +7,7 @@ import {
   apiUrl,
   gender,
   detailPageType,
+  recentlyViewed,
 } from "../../../Shared/Constants";
 import Biography from "./Biography";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,9 @@ import Header from "./../Common/Header";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import Footer from "../Common/Footer";
+import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { searchBarSubType } from "./../../../Shared/Constants";
+import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -37,11 +41,46 @@ const CelebrityDetails = (props) => {
         if (response.status === 200) {
           setCelebrityResponse(response.data.data.celebrityResponse);
           setMovies(response.data.data.movieResponse);
+          setRecentlyViewedItems(response);
           setIsCelebrityDetailFetched(true);
         }
       }
     );
   }, [props.match.params.id, dispatch]);
+
+  const setRecentlyViewedItems = (response) => {
+    const celebrityResponse = response.data.data.celebrityResponse;
+    let recentlyViewedItems = getLocalStorageItem(recentlyViewed);
+    let isItemAdded = false;
+    if (!recentlyViewedItems) {
+      recentlyViewedItems = [];
+      recentlyViewedItems.push({
+        id: Number(celebrityResponse.id),
+        name: celebrityResponse.celebrityName,
+        type: searchBarSubType.celebrity,
+        logo: celebrityResponse.photo,
+      });
+      setLocalStorageItem(recentlyViewed, recentlyViewedItems);
+    } else {
+      recentlyViewedItems.forEach((recentlyViewedItem) => {
+        if (
+          recentlyViewedItem.id === Number(celebrityResponse.id) &&
+          recentlyViewedItem.type === searchBarSubType.celebrity
+        ) {
+          isItemAdded = true;
+        }
+      });
+      if (!isItemAdded) {
+        recentlyViewedItems.unshift({
+          id: Number(celebrityResponse.id),
+          name: celebrityResponse.celebrityName,
+          type: searchBarSubType.celebrity,
+          logo: celebrityResponse.photo,
+        });
+      }
+      setLocalStorageItem(recentlyViewed, recentlyViewedItems);
+    }
+  };
 
   const redirectToTab = (tabType) => {
     if (tabType === detailPageTabs.biography) {

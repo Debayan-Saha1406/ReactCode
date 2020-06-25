@@ -72,7 +72,7 @@ const SearchBar = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (searchTerm === inputRef.current.value) {
+      if (searchTerm !== "" && searchTerm === inputRef.current.value) {
         setIsLoading(true);
         setNoData(false);
         if (inputRef.current.value.length > 0) {

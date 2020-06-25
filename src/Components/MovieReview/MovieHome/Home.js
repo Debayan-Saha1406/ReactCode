@@ -20,6 +20,12 @@ import ReactPlayer from "react-player";
 import Trailers from "./Trailers";
 import { useEffect } from "react";
 import ThreeDotSpinner from "./../Common/ThreeDotSpinner";
+import RecentlyViewedItem from "./RecentlyViewedItems";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+} from "./../../../Provider/LocalStorageProvider";
+import { recentlyViewed } from "./../../../Shared/Constants";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -31,6 +37,11 @@ const Home = () => {
   const [movieTrailers, setMovieTrailers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomReached, setIsBottomReached] = useState();
+  const [recentlyViewedItems, setRecentlyViewedItems] = useState([]);
+  const [
+    isRecentlyViewedItemVisible,
+    setIsRecentlyViewedItemVisible,
+  ] = useState(false);
 
   useEffect(() => {
     if (isBottomReached) {
@@ -38,24 +49,34 @@ const Home = () => {
         if (response.status === 200) {
           setStarsBornToday(response.data.data);
           setStarsBornTodayDataFetched(true);
+          setIsLoading(false);
         } else {
           setStarsBornTodayDataFetched(true);
+          setIsLoading(false);
         }
       });
 
       ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
         if (response.status === 200) {
           setMovieTrailers(response.data.data);
-          setIsLoading(false);
           setIsBottomReached(false);
+          setIsLoading(false);
+          setIsRecentlyViewedItemVisible(true);
         }
       });
+      const recentlyViewedItems = getLocalStorageItem(recentlyViewed);
+      setRecentlyViewedItems(recentlyViewedItems ? recentlyViewedItems : []);
     }
   }, [isBottomReached]);
 
   const handleScroll = (e) => {
     setIsLoading(true);
     setIsBottomReached(true);
+  };
+
+  const clearRecentlyViewedItems = () => {
+    removeLocalStorageItem(recentlyViewed);
+    setRecentlyViewedItems([]);
   };
 
   return (
@@ -97,6 +118,12 @@ const Home = () => {
                   )}
                   {movieTrailers.length > 0 && (
                     <Trailers movieTrailers={movieTrailers}></Trailers>
+                  )}
+                  {isRecentlyViewedItemVisible && (
+                    <RecentlyViewedItem
+                      recentlyViewedItems={recentlyViewedItems}
+                      clearRecentlyViewedItems={clearRecentlyViewedItems}
+                    ></RecentlyViewedItem>
                   )}
                 </div>
                 <ToastContainer autoClose={3000}></ToastContainer>

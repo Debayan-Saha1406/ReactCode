@@ -3379,11 +3379,6 @@ i#playIcon:hover {
   height: auto;
 }
 
-.trailer-item.subleading {
-  margin-top: 30px;
-  margin-bottom: 0;
-}
-
 @media (max-width: 767px) {
   .trailers-info .trailer-info-block {
     color: #000;
@@ -3401,7 +3396,7 @@ i#playIcon:hover {
 
 .trailer-item.subleading {
   margin-top: 30px;
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 
 .trailer-item.subleading .trailer-image-wrap {
@@ -3433,4 +3428,15 @@ i#playIcon:hover {
 
 .pull-right {
   float: right !important;
+}
+
+.clear-recently-viewed-items {
+  float: right;
+  text-transform: none;
+  cursor: pointer;
+  color: #4280bf;
+}
+
+.clear-recently-viewed-items:hover {
+  color: #ffaa3c !important;
 }

@@ -9,6 +9,7 @@ import {
   gender,
   detailPageTabs,
   detailPageType,
+  recentlyViewed,
 } from "../../../Shared/Constants";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import { page } from "../../../Shared/Constants";
@@ -19,6 +20,9 @@ import { useEffect } from "react";
 import ServiceProvider from "../../../Provider/ServiceProvider";
 import { apiUrl } from "../../../Shared/Constants";
 import Footer from "../Common/Footer";
+import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { searchBarSubType } from "./../../../Shared/Constants";
+import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 
 const DirectorDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -37,11 +41,46 @@ const DirectorDetails = (props) => {
         if (response.status === 200) {
           setDirectorResponse(response.data.data.directorResponse);
           setMovies(response.data.data.directorMovieResponse);
+          setRecentlyViewedItems(response);
           setIsDirectorDetailFetched(true);
         }
       }
     );
   }, [props.match.params.id, dispatch]);
+
+  const setRecentlyViewedItems = (response) => {
+    const directorResponse = response.data.data.directorResponse;
+    let recentlyViewedItems = getLocalStorageItem(recentlyViewed);
+    let isItemAdded = false;
+    if (!recentlyViewedItems) {
+      recentlyViewedItems = [];
+      recentlyViewedItems.push({
+        id: Number(directorResponse.id),
+        name: directorResponse.directorName,
+        type: searchBarSubType.director,
+        logo: directorResponse.photo,
+      });
+      setLocalStorageItem(recentlyViewed, recentlyViewedItems);
+    } else {
+      recentlyViewedItems.forEach((recentlyViewedItem) => {
+        if (
+          recentlyViewedItem.id === Number(directorResponse.id) &&
+          recentlyViewedItem.type === searchBarSubType.director
+        ) {
+          isItemAdded = true;
+        }
+      });
+      if (!isItemAdded) {
+        recentlyViewedItems.unshift({
+          id: Number(directorResponse.id),
+          name: directorResponse.directorName,
+          type: searchBarSubType.director,
+          logo: directorResponse.photo,
+        });
+      }
+      setLocalStorageItem(recentlyViewed, recentlyViewedItems);
+    }
+  };
 
   const redirectToTab = (tabType) => {
     if (tabType === detailPageTabs.biography) {
