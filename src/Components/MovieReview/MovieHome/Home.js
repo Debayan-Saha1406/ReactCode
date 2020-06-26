@@ -44,26 +44,28 @@ const Home = () => {
   ] = useState(false);
 
   useEffect(() => {
+    ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
+      if (response.status === 200) {
+        setMovieTrailers(response.data.data);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (isBottomReached) {
       ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
         if (response.status === 200) {
           setStarsBornToday(response.data.data);
           setStarsBornTodayDataFetched(true);
+          setIsRecentlyViewedItemVisible(true);
           setIsLoading(false);
         } else {
           setStarsBornTodayDataFetched(true);
+          setIsRecentlyViewedItemVisible(true);
           setIsLoading(false);
         }
       });
 
-      ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
-        if (response.status === 200) {
-          setMovieTrailers(response.data.data);
-          setIsBottomReached(false);
-          setIsLoading(false);
-          setIsRecentlyViewedItemVisible(true);
-        }
-      });
       const recentlyViewedItems = getLocalStorageItem(recentlyViewed);
       setRecentlyViewedItems(recentlyViewedItems ? recentlyViewedItems : []);
     }
@@ -102,9 +104,7 @@ const Home = () => {
             }}
           >
             <div className="container">
-              {movieTrailers.length > 0 && (
-                <HomeSlider sliderItems={movieTrailers}></HomeSlider>
-              )}
+              <HomeSlider></HomeSlider>
             </div>
           </div>
           <main class="main-content">
@@ -114,13 +114,14 @@ const Home = () => {
               <div class="movie-items">
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
+                  {movieTrailers.length > 0 && (
+                    <Trailers movieTrailers={movieTrailers}></Trailers>
+                  )}
                   {isLoading && <ThreeDotSpinner></ThreeDotSpinner>}
                   {starsBornToday.length > 0 && (
                     <BornToday starsBornToday={starsBornToday}></BornToday>
                   )}
-                  {movieTrailers.length > 0 && (
-                    <Trailers movieTrailers={movieTrailers}></Trailers>
-                  )}
+
                   {isRecentlyViewedItemVisible && (
                     <RecentlyViewedItem
                       recentlyViewedItems={recentlyViewedItems}

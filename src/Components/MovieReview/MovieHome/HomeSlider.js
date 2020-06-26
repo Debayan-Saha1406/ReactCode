@@ -2,15 +2,12 @@
 import React from "react";
 import Slider from "react-animated-slider";
 import "react-animated-slider/build/horizontal.css";
-import { useEffect } from "react";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { useState } from "react";
-import { apiUrl } from "./../../../Shared/Constants";
 import Carousel from "react-bootstrap/Carousel";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import "../../../css/movie-single.css";
 import { useHistory } from "react-router-dom";
+import { sliderItems } from "./../../../Shared/Constants";
 
 const HomeSlider = (props) => {
   const dispatch = useDispatch();
@@ -22,9 +19,14 @@ const HomeSlider = (props) => {
   };
 
   const sliderImageClick = (index) => {
-    if (index === 0) {
+    if (index === 1) {
       history.push({
         pathname: "/movies",
+        isFromSlider: true,
+      });
+    } else if (index === 2) {
+      history.push({
+        pathname: "/celebrities",
         isFromSlider: true,
       });
     }
@@ -34,20 +36,18 @@ const HomeSlider = (props) => {
     <div className="row">
       <div className="col-md-12">
         <div className="slider" id="home-slider">
-          <Carousel interval={10000}>
-            {props.sliderItems.map((item, index) => (
+          <Carousel interval={3000}>
+            {sliderItems.map((item, index) => (
               <Carousel.Item>
                 <img
                   className="d-block w-100"
                   src={item.image}
                   alt="First slide"
                   onLoad={() =>
-                    handleSuccessfulImageLoad(
-                      props.sliderItems.length - 1 === index
-                    )
+                    handleSuccessfulImageLoad(sliderItems.length - 1 === index)
                   }
                   style={{ cursor: "pointer" }}
-                  onClick={() => sliderImageClick(index)}
+                  onClick={() => sliderImageClick(item.id)}
                 />
                 {/* <Carousel.Caption>
                   <ul class="movie-information">

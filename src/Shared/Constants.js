@@ -1,7 +1,11 @@
+import slider1 from "../images/slider1.jpg";
+import slider2 from "../images/slider2.jpg";
+import slider3 from "../images/slider3.jpg";
+
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    // "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -122,6 +126,7 @@ export const sortColumns = {
   releaseDate: "ReleaseDate",
   birthDate: "BirthDate",
   directorName: "DirectorName",
+  netWorth: "NetWorth",
 };
 
 export const sortDirection = {
@@ -182,6 +187,8 @@ export const celebritySortTypeList = [
   { id: 2, value: "Celeb Name Descending" },
   { id: 3, value: "Birth Date Ascending" },
   { id: 4, value: "Birth Date Descending" },
+  { id: 5, value: "Net Worth Ascending" },
+  { id: 6, value: "Net Worth Descending" },
 ];
 
 export const movieSortTypeList = [
@@ -327,3 +334,9 @@ export const responsive = {
 };
 
 export const recentlyViewed = "RecentlyViewed";
+
+export const sliderItems = [
+  { id: 1, image: slider1 },
+  { id: 2, image: slider2 },
+  { id: 3, image: slider3 },
+];

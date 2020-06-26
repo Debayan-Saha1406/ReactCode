@@ -4,7 +4,7 @@ import { detailPageTabs } from "../../../Shared/Constants";
 import { Link } from "react-router-dom";
 
 const Overview = (props) => {
-  const { biography, dateOfBirth, nationality } = props.star;
+  const { biography, dateOfBirth, nationality, netWorth } = props.star;
   return (
     <React.Fragment>
       <div className="col-md-8 col-sm-12 col-xs-12">
@@ -67,6 +67,10 @@ const Overview = (props) => {
         <div className="sb-it">
           <h6 className="side-heading">Country: </h6>
           <p>{nationality}</p>
+        </div>
+        <div className="sb-it">
+          <h6 className="side-heading">Net Worth: </h6>
+          <p>${netWorth} million</p>
         </div>
         {/* <div className="ads">
           <img src="images/uploads/ads1.png" alt="" />

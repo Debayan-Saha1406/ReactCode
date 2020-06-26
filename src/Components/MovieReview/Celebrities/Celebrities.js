@@ -8,7 +8,7 @@ import LoaderProvider from "../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
 import "../../../css/movie-single.css";
 import Pagination from "../Common/Pagination";
-import { pageType, celebCountList } from "../../../Shared/Constants";
+import { pageType } from "../../../Shared/Constants";
 import CelebritySearchBox from "./CelebritySearchBox";
 import { celebritySortTypeList } from "./../../../Shared/Constants";
 import CelebrityGrid from "./CelebrityGrid";
@@ -46,7 +46,7 @@ const celebrityPageType = {
   showGrid: false,
 };
 
-const Celebrities = () => {
+const Celebrities = (props) => {
   const dispatch = useDispatch();
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
@@ -74,7 +74,7 @@ const Celebrities = () => {
       gender: celebrityDetailsSearchBoxData.category,
       searchType: searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData);
+    fetchCelebsData(body, setCelebrityData, celebrityData, true);
   };
 
   const changeCelebrityCount = (e) => {
@@ -163,15 +163,22 @@ const Celebrities = () => {
     } else if (e.target.value == 3) {
       body.sortColumn = sortColumns.birthDate;
       body.sortDirection = sortDirection.asc;
-    } else {
+    } else if (e.target.value == 4) {
       body.sortColumn = sortColumns.birthDate;
       body.sortDirection = sortDirection.desc;
+    } else if (e.target.value == 5) {
+      body.sortColumn = sortColumns.netWorth;
+      body.sortDirection = sortDirection.asc;
+    } else {
+      body.sortColumn = sortColumns.netWorth;
+      body.sortDirection = sortDirection.desc;
     }
-    fetchCelebsData(body, setCelebrityData, celebrityData);
+    fetchCelebsData(body, setCelebrityData, celebrityData, true);
   };
 
   useEffect(() => {
     dispatch(toggleLoader(true, 0));
+
     const body = {
       pageNumber: celebrityData.pageNumber,
       pageSize: celebrityData.pageSize,
@@ -184,7 +191,13 @@ const Celebrities = () => {
       gender: celebrityDetailsSearchBoxData.category,
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData, false);
+
+    if (props.location.isFromSlider) {
+      body.sortDirection = sortDirection.desc;
+      body.sortColumn = sortColumns.netWorth;
+    }
+
+    fetchCelebsData(body, setCelebrityData, celebrityData, true);
   }, []);
 
   const fetchCelebsData = (
@@ -193,6 +206,7 @@ const Celebrities = () => {
     celebrityData,
     hideloader
   ) => {
+    debugger;
     ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
       if (response.status === 200) {
         setCelebrityData({
@@ -280,6 +294,7 @@ const Celebrities = () => {
                   fetchSortedData={fetchSortedData}
                   setPageType={setPageType}
                   sortBylist={celebritySortTypeList}
+                  isFromSlider={props.location.isFromSlider}
                 ></Topbar>
                 {celebrityData.celebrityList.length === 0 ? (
                   <NoResultFound></NoResultFound>

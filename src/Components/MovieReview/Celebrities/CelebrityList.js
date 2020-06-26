@@ -55,6 +55,18 @@ const CelebrityList = (props) => {
                 </span>
               </span>
               <br></br>
+              <span style={{ textTransform: "none", fontSize: "14px" }}>
+                Net worth:{" "}
+                <span
+                  style={{
+                    color: "white",
+                    textTransform: "none",
+                    fontSize: "14px",
+                  }}
+                >
+                  ${celeb.netWorth} million
+                </span>
+              </span>
               <br></br>
               <span style={{ textTransform: "none", fontSize: "14px" }}>
                 Nationality:{" "}
