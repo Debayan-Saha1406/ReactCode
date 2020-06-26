@@ -10,22 +10,23 @@ import Carousel from "react-bootstrap/Carousel";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import "../../../css/movie-single.css";
+import { useHistory } from "react-router-dom";
 
-const HomeSlider = () => {
+const HomeSlider = (props) => {
   const dispatch = useDispatch();
-  const [sliderItems, setSliderItems] = useState([]);
-  useEffect(() => {
-    dispatch(toggleLoader(true, 0));
-    ServiceProvider.get(apiUrl.sliderMovieDetails).then((response) => {
-      if (response.status === 200) {
-        setSliderItems(response.data.data);
-      }
-    });
-  }, []);
-
+  const history = useHistory();
   const handleSuccessfulImageLoad = (isLastImage) => {
     if (isLastImage) {
       dispatch(toggleLoader(false, 1));
+    }
+  };
+
+  const sliderImageClick = (index) => {
+    if (index === 0) {
+      history.push({
+        pathname: "/movies",
+        isFromSlider: true,
+      });
     }
   };
 
@@ -34,17 +35,21 @@ const HomeSlider = () => {
       <div className="col-md-12">
         <div className="slider" id="home-slider">
           <Carousel interval={10000}>
-            {sliderItems.map((item, index) => (
+            {props.sliderItems.map((item, index) => (
               <Carousel.Item>
                 <img
                   className="d-block w-100"
                   src={item.image}
                   alt="First slide"
                   onLoad={() =>
-                    handleSuccessfulImageLoad(sliderItems.length - 1 === index)
+                    handleSuccessfulImageLoad(
+                      props.sliderItems.length - 1 === index
+                    )
                   }
+                  style={{ cursor: "pointer" }}
+                  onClick={() => sliderImageClick(index)}
                 />
-                <Carousel.Caption>
+                {/* <Carousel.Caption>
                   <ul class="movie-information">
                     <li class="list-item"> Run Time: {item.runTime}’ </li>
                     <li class="list-item"> Release: {item.releaseDate}</li>
@@ -82,7 +87,7 @@ const HomeSlider = () => {
                       ))}
                     </div>
                   </div>
-                </Carousel.Caption>
+                </Carousel.Caption> */}
               </Carousel.Item>
             ))}
           </Carousel>

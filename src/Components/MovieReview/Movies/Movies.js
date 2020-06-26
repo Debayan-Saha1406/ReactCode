@@ -11,6 +11,7 @@ import {
   sortDirection,
   movieSortTypeList,
   movieCountList,
+  movieSearchType,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import { toggleLoader } from "../../../Store/Actions/actionCreator";
@@ -26,6 +27,7 @@ import { countList } from "./../../../Shared/Constants";
 import Footer from "../Common/Footer";
 import { page } from "./../../../Shared/Constants";
 import image from "../../../images/movieList.jpg";
+import { years } from "./../../../Shared/Constants";
 
 class Movies extends Component {
   state = {
@@ -62,12 +64,22 @@ class Movies extends Component {
       searchType: this.state.searchData.searchType,
       movieName: this.state.searchData.movieName,
       selectedRating: this.state.searchData.selectedRating,
-      fromYear: this.state.searchData.fromYear,
-      toYear: this.state.searchData.toYear,
+      fromYear: Number(this.state.searchData.fromYear),
+      toYear: Number(this.state.searchData.toYear),
       languageId: this.state.searchData.languageId,
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
     };
+    if (this.props.location.isFromSlider) {
+      const searchData = { ...this.state.searchData };
+      searchData.fromYear = years[0];
+      searchData.toYear = years[3];
+      searchData.searchType = movieSearchType.releaseYear;
+      this.setState({ searchData });
+      body.fromYear = searchData.fromYear;
+      body.toYear = searchData.toYear;
+      body.searchType = searchData.searchType;
+    }
     this.fetchMovies(body, true);
   }
 
@@ -120,8 +132,8 @@ class Movies extends Component {
       searchType: this.state.searchData.searchType,
       movieName: this.state.searchData.movieName,
       selectedRating: this.state.searchData.selectedRating,
-      fromYear: this.state.searchData.fromYear,
-      toYear: this.state.searchData.toYear,
+      fromYear: Number(this.state.searchData.fromYear),
+      toYear: Number(this.state.searchData.toYear),
       languageId: this.state.searchData.languageId,
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
@@ -138,8 +150,8 @@ class Movies extends Component {
       searchType: this.state.searchData.searchType,
       movieName: this.state.searchData.movieName,
       selectedRating: this.state.searchData.selectedRating,
-      fromYear: this.state.searchData.fromYear,
-      toYear: this.state.searchData.toYear,
+      fromYear: Number(this.state.searchData.fromYear),
+      toYear: Number(this.state.searchData.toYear),
       languageId: this.state.searchData.languageId,
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
@@ -157,8 +169,8 @@ class Movies extends Component {
       searchType: this.state.searchData.searchType,
       movieName: this.state.searchData.movieName,
       selectedRating: this.state.searchData.selectedRating,
-      fromYear: this.state.searchData.fromYear,
-      toYear: this.state.searchData.toYear,
+      fromYear: Number(this.state.searchData.fromYear),
+      toYear: Number(this.state.searchData.toYear),
       languageId: this.state.searchData.languageId,
       sortColumn: sortColumn,
       sortDirection: sortByDirection,
@@ -183,14 +195,14 @@ class Movies extends Component {
       searchType: searchType,
       movieName: movieDetails.movieName,
       selectedRating: movieDetails.selectedRating,
-      fromYear: movieDetails.fromYear,
-      toYear: movieDetails.toYear,
+      fromYear: Number(movieDetails.fromYear),
+      toYear: Number(movieDetails.toYear),
       languageId: movieDetails.languageId,
       sortColumn: this.state.sortColumn,
       sortDirection: this.state.sortDirection,
     };
 
-    this.fetchMovies(body);
+    this.fetchMovies(body, true);
   };
 
   getSortingDetails(e) {

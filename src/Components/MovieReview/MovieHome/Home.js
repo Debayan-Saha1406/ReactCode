@@ -101,9 +101,11 @@ const Home = () => {
               backgroundSize: "cover",
             }}
           >
-            {/* <div className="container">
-              <HomeSlider></HomeSlider>
-            </div> */}
+            <div className="container">
+              {movieTrailers.length > 0 && (
+                <HomeSlider sliderItems={movieTrailers}></HomeSlider>
+              )}
+            </div>
           </div>
           <main class="main-content">
             <div className="container">
