@@ -8,7 +8,11 @@ import LoaderProvider from "../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
 import "../../../css/movie-single.css";
 import Pagination from "../Common/Pagination";
-import { pageType } from "../../../Shared/Constants";
+import {
+  pageType,
+  searchBarSubType,
+  celebritySearchType,
+} from "../../../Shared/Constants";
 import CelebritySearchBox from "./CelebritySearchBox";
 import { celebritySortTypeList } from "./../../../Shared/Constants";
 import CelebrityGrid from "./CelebrityGrid";
@@ -22,6 +26,7 @@ import { countList } from "./../../../Shared/Constants";
 import Footer from "../Common/Footer";
 import celebsImage from "../../../images/celebs.jpg";
 import { page as celebPage } from "./../../../Shared/Constants";
+import { gender } from "./../../../Shared/Constants";
 
 const initialData = {
   totalCelebrities: 0,
@@ -195,6 +200,8 @@ const Celebrities = (props) => {
     if (props.location.isFromSlider) {
       body.sortDirection = sortDirection.desc;
       body.sortColumn = sortColumns.netWorth;
+      body.gender = props.location.category;
+      body.searchType = celebritySearchType.gender;
     }
 
     fetchCelebsData(body, setCelebrityData, celebrityData, true);

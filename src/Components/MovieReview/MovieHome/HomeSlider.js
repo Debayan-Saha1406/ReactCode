@@ -7,28 +7,41 @@ import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import "../../../css/movie-single.css";
 import { useHistory } from "react-router-dom";
-import { sliderItems } from "./../../../Shared/Constants";
+import { sliderItems, sliderXCoordinate } from "./../../../Shared/Constants";
+import { gender } from "./../../../Shared/Constants";
 
 const HomeSlider = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
+
   const handleSuccessfulImageLoad = (isLastImage) => {
     if (isLastImage) {
       dispatch(toggleLoader(false, 1));
     }
   };
 
-  const sliderImageClick = (index) => {
+  const sliderImageClick = (e, index) => {
     if (index === 1) {
       history.push({
         pathname: "/movies",
         isFromSlider: true,
       });
     } else if (index === 2) {
-      history.push({
-        pathname: "/celebrities",
-        isFromSlider: true,
-      });
+      if (e.nativeEvent.offsetX < sliderXCoordinate) {
+        history.push({
+          pathname: "/celebrities",
+          isFromSlider: true,
+          category: gender.male,
+        });
+      } else {
+        history.push({
+          pathname: "/celebrities",
+          isFromSlider: true,
+          category: gender.female,
+        });
+      }
+    } else if (index === 3) {
+      props.navigateToTrailers();
     }
   };
 
@@ -47,7 +60,7 @@ const HomeSlider = (props) => {
                     handleSuccessfulImageLoad(sliderItems.length - 1 === index)
                   }
                   style={{ cursor: "pointer" }}
-                  onClick={() => sliderImageClick(item.id)}
+                  onClick={(e) => sliderImageClick(e, item.id)}
                 />
                 {/* <Carousel.Caption>
                   <ul class="movie-information">

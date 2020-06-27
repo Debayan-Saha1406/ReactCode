@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../../../css/home.css";
 import Header from "../Common/Header";
 import "../../../css/movie-single.css";
@@ -16,7 +16,6 @@ import WhatToWatch from "./WhatToWatch";
 import BottomScrollListener from "react-bottom-scroll-listener";
 import BornToday from "./BornToday";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
-import ReactPlayer from "react-player";
 import Trailers from "./Trailers";
 import { useEffect } from "react";
 import ThreeDotSpinner from "./../Common/ThreeDotSpinner";
@@ -31,9 +30,6 @@ const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
   const [starsBornToday, setStarsBornToday] = useState([]);
-  const [isStarsBornTodayDataFetched, setStarsBornTodayDataFetched] = useState(
-    false
-  );
   const [movieTrailers, setMovieTrailers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isBottomReached, setIsBottomReached] = useState();
@@ -42,6 +38,14 @@ const Home = () => {
     isRecentlyViewedItemVisible,
     setIsRecentlyViewedItemVisible,
   ] = useState(false);
+  const scrollToTrailers = (ref) => {
+    window.scrollTo({
+      top: ref.current.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+  const trailerRef = useRef(null);
 
   useEffect(() => {
     ServiceProvider.get(apiUrl.latestMovieTrailers).then((response) => {
@@ -56,11 +60,9 @@ const Home = () => {
       ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
         if (response.status === 200) {
           setStarsBornToday(response.data.data);
-          setStarsBornTodayDataFetched(true);
           setIsRecentlyViewedItemVisible(true);
           setIsLoading(false);
         } else {
-          setStarsBornTodayDataFetched(true);
           setIsRecentlyViewedItemVisible(true);
           setIsLoading(false);
         }
@@ -79,6 +81,10 @@ const Home = () => {
   const clearRecentlyViewedItems = () => {
     removeLocalStorageItem(recentlyViewed);
     setRecentlyViewedItems([]);
+  };
+
+  const navigateToTrailers = () => {
+    scrollToTrailers(trailerRef);
   };
 
   return (
@@ -104,7 +110,7 @@ const Home = () => {
             }}
           >
             <div className="container">
-              <HomeSlider></HomeSlider>
+              <HomeSlider navigateToTrailers={navigateToTrailers}></HomeSlider>
             </div>
           </div>
           <main class="main-content">
@@ -115,7 +121,9 @@ const Home = () => {
                 <div class="row">
                   <WhatToWatch></WhatToWatch>
                   {movieTrailers.length > 0 && (
-                    <Trailers movieTrailers={movieTrailers}></Trailers>
+                    <div ref={trailerRef}>
+                      <Trailers movieTrailers={movieTrailers}></Trailers>
+                    </div>
                   )}
                   {isLoading && <ThreeDotSpinner></ThreeDotSpinner>}
                   {starsBornToday.length > 0 && (
