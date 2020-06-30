@@ -13,7 +13,7 @@ const Trailers = (props) => {
         class="title-hd"
         style={{ paddingTop: "20px", paddingBottom: "20px" }}
       >
-        <h2>Trailers</h2>
+        <h2>Latest Trailers</h2>
       </div>
       {isVideoVisible && (
         <div className="overlay openform">

@@ -102,6 +102,8 @@ const SearchBar = (props) => {
         } else {
           toggleSuggestionBox(false);
         }
+      } else {
+        toggleSuggestionBox(false);
       }
     }, 500);
   }, [searchTerm]);
