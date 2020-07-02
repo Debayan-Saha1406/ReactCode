@@ -342,23 +342,148 @@ class Header extends Component {
             style={{ display: this.state.display }}
           >
             <ul className="menu">
-              <li className="menu-item current-menu-item">
-                <Link to="/home">Home</Link>
-              </li>
-              <li className="menu-item">
-                <a href="about.html">About</a>
-              </li>
-              <li className="menu-item">
-                <Link to="/movies">Movies</Link>
-              </li>
-              <li className="menu-item">
-                <a onClick={this.openLoginPopup} style={{ cursor: "pointer" }}>
-                  Login
-                </a>
-              </li>
-              <li className="menu-item">
-                <a href="contact.html">Register</a>
-              </li>
+              {this.state.currentMenuItem === menuItem.home ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/home"
+                    onClick={() => this.setCurrentMenuItem(menuItem.home)}
+                  >
+                    Home
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/home"
+                    onClick={() => this.setCurrentMenuItem(menuItem.home)}
+                  >
+                    Home
+                  </Link>
+                </li>
+              )}
+              {this.state.currentMenuItem === menuItem.movies ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/movies"
+                    onClick={() => this.setCurrentMenuItem(menuItem.movies)}
+                  >
+                    Movies
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/movies"
+                    onClick={() => this.setCurrentMenuItem(menuItem.movies)}
+                  >
+                    Movies
+                  </Link>
+                </li>
+              )}
+              {this.state.currentMenuItem === menuItem.celeb ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/celebrities"
+                    onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
+                  >
+                    Celebs
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/celebrities"
+                    onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
+                  >
+                    Celebs
+                  </Link>
+                </li>
+              )}
+              {this.state.currentMenuItem === menuItem.director ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/directors"
+                    onClick={() => this.setCurrentMenuItem(menuItem.director)}
+                  >
+                    Directors
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/directors"
+                    onClick={() => this.setCurrentMenuItem(menuItem.director)}
+                  >
+                    Directors
+                  </Link>
+                </li>
+              )}
+              {this.props.isUserLoggedIn ? null : (
+                <li className="menu-item">
+                  <a
+                    onClick={() => {
+                      this.props.togglePopup("openform", popupType.login);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Login
+                  </a>
+                </li>
+              )}
+              {this.props.isUserLoggedIn ? (
+                this.state.currentMenuItem === menuItem.loggedInEmail ? (
+                  <li
+                    className="menu-item current-menu-item"
+                    id="dropbtn"
+                    onClick={this.handleDropdownClick}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {this.props.loggedInEmail}{" "}
+                    <i
+                      className="fa fa-caret-down"
+                      style={{ marginRight: "10px" }}
+                    ></i>
+                    <div
+                      className="dropdown-content"
+                      style={{ display: this.state.headerDropdownClass }}
+                    >
+                      <Link to="/user-profile">View Profile</Link>
+                      <a onClick={this.handleLogout}>Logout</a>
+                    </div>
+                  </li>
+                ) : (
+                  <li
+                    className="menu-item"
+                    id="dropbtn"
+                    onClick={this.handleDropdownClick}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {this.props.loggedInEmail}{" "}
+                    <i
+                      className="fa fa-caret-down"
+                      style={{ marginRight: "10px" }}
+                    ></i>
+                    <div
+                      className="dropdown-content"
+                      style={{ display: this.state.headerDropdownClass }}
+                    >
+                      <a href="#">Edit Profile</a>
+                      <a href="#">Logout</a>
+                    </div>
+                  </li>
+                )
+              ) : (
+                <li className="menu-item">
+                  <a
+                    onClick={() => {
+                      this.props.togglePopup("openform", popupType.register);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Register
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

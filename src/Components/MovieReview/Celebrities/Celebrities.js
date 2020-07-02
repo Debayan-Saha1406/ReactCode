@@ -197,7 +197,7 @@ const Celebrities = (props) => {
       searchType: celebrityDetailsSearchBoxData.searchType,
     };
 
-    if (props.location.isFromSlider) {
+    if (props.location.isFromCelebSlide) {
       body.sortDirection = sortDirection.desc;
       body.sortColumn = sortColumns.netWorth;
       body.gender = props.location.category;
@@ -301,7 +301,7 @@ const Celebrities = (props) => {
                   fetchSortedData={fetchSortedData}
                   setPageType={setPageType}
                   sortBylist={celebritySortTypeList}
-                  isFromSlider={props.location.isFromSlider}
+                  isFromCelebSlide={props.location.isFromCelebSlide}
                 ></Topbar>
                 {celebrityData.celebrityList.length === 0 ? (
                   <NoResultFound></NoResultFound>

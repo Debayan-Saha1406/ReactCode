@@ -128,6 +128,7 @@ export const sortColumns = {
   birthDate: "BirthDate",
   directorName: "DirectorName",
   netWorth: "NetWorth",
+  topDirectors: "TopDirectors",
 };
 
 export const sortDirection = {
@@ -227,6 +228,7 @@ export const directorSortTypeList = [
   { id: 2, value: "Director Name Descending" },
   { id: 3, value: "Birth Date Ascending" },
   { id: 4, value: "Birth Date Descending" },
+  { id: 5, value: "Top Directors" },
 ];
 
 export const celebritySearchType = {

@@ -43,7 +43,7 @@ const directorPageType = {
   showGrid: false,
 };
 
-const Directors = () => {
+const Directors = (props) => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
   const [paginationData, setPaginationData] = useState(initialData);
@@ -111,8 +111,11 @@ const Directors = () => {
     } else if (e.target.value == 3) {
       sortColumn = sortColumns.birthDate;
       sortByDirection = sortDirection.asc;
-    } else {
+    } else if (e.target.value == 4) {
       sortColumn = sortColumns.birthDate;
+      sortByDirection = sortDirection.desc;
+    } else {
+      sortColumn = sortColumns.topDirectors;
       sortByDirection = sortDirection.desc;
     }
     return { sortColumn, sortByDirection };
@@ -139,6 +142,12 @@ const Directors = () => {
       sortDirection: paginationData.sortDirection,
       directorName: directorName,
     };
+
+    if (props.location.isFromDirectorSlide) {
+      body.sortDirection = sortDirection.desc;
+      body.sortColumn = sortColumns.topDirectors;
+    }
+
     ServiceProvider.post(apiUrl.directors, body).then((response) => {
       if (response.status === 200) {
         setDirectorList(response.data.data.details);
@@ -218,6 +227,7 @@ const Directors = () => {
                   fetchSortedData={fetchSortedData}
                   setPageType={setPageType}
                   sortBylist={directorSortTypeList}
+                  isFromDirectorSlide={props.location.isFromDirectorSlide}
                 ></Topbar>
                 {directorList.length === 0 ? (
                   <NoResultFound></NoResultFound>

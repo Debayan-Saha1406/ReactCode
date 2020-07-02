@@ -12,7 +12,11 @@ const Topbar = (props) => {
       <select
         onChange={(e) => props.fetchSortedData(e)}
         className="dropdown-padding"
-        value={props.isFromSlider && props.sortBylist[5].id} //To Show the networth descending when we come from slider
+        value={
+          props.isFromCelebSlide
+            ? props.sortBylist[5].id
+            : props.isFromDirectorSlide && props.sortBylist[4].id
+        } //To Show the networth descending when we come from slider
       >
         {props.sortBylist.map((sortByItem) => (
           <option value={sortByItem.id}>{sortByItem.value}</option>

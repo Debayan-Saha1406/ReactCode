@@ -30,18 +30,23 @@ const HomeSlider = (props) => {
       if (e.nativeEvent.offsetX < sliderXCoordinate) {
         history.push({
           pathname: "/celebrities",
-          isFromSlider: true,
+          isFromCelebSlide: true,
           category: gender.male,
         });
       } else {
         history.push({
           pathname: "/celebrities",
-          isFromSlider: true,
+          isFromCelebSlide: true,
           category: gender.female,
         });
       }
     } else if (index === 3) {
       props.navigateToTrailers();
+    } else {
+      history.push({
+        pathname: "/directors",
+        isFromDirectorSlide: true,
+      });
     }
   };
 
