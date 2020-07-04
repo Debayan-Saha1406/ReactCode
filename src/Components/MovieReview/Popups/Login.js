@@ -105,7 +105,10 @@ const Login = (props) => {
   }, []);
 
   return (
-    <div className={`overlay ${props.loginPopupClassName}`}>
+    <div
+      className={`show-overlay ${props.loginPopupClassName}`}
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.75 !important" }}
+    >
       <div className="login-wrapper" id="login-content">
         <div className="login-content">
           <a

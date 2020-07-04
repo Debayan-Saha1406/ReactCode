@@ -3,7 +3,7 @@ import React from "react";
 
 const UserContentPopup = (props) => {
   return (
-    <div className={`overlay ${props.loginPopupClassName}`}>
+    <div className={`show-overlay ${props.loginPopupClassName}`}>
       <div className="login-wrapper" id="login-content">
         <div className="login-content">
           <a

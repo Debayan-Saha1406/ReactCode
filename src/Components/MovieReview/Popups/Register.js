@@ -164,7 +164,7 @@ const Register = (props) => {
   };
 
   return (
-    <div className={`overlay ${props.registerPopupClassName}`}>
+    <div className={`show-overlay ${props.registerPopupClassName}`}>
       <div className="login-wrapper" id="signup-content">
         <div className="login-content">
           <a

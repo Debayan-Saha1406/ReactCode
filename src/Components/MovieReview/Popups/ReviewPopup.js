@@ -5,7 +5,7 @@ import { popupType } from "../../../Shared/Constants";
 
 const ReviewPopup = (props) => {
   return (
-    <div className={`overlay ${props.openPopupClassName}`}>
+    <div className={`show-overlay ${props.openPopupClassName}`}>
       <div className="login-wrapper" id="login-content">
         <div className="login-content">
           <a
