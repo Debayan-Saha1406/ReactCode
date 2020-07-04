@@ -28,6 +28,9 @@ import Footer from "../Common/Footer";
 import { page } from "./../../../Shared/Constants";
 import image from "../../../images/movieList.jpg";
 import { years } from "./../../../Shared/Constants";
+import NetworkDetector from "../Common/NetworkDetector";
+// import NetworkDetector from './../MovieHome/Home';
+import { compose } from "redux";
 
 class Movies extends Component {
   state = {
@@ -408,4 +411,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Movies);
+const hoc = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  NetworkDetector
+);
+
+export default hoc(Movies);

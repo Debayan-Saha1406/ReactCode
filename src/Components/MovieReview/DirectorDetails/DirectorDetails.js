@@ -23,6 +23,7 @@ import Footer from "../Common/Footer";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
 import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const DirectorDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -302,4 +303,4 @@ const DirectorDetails = (props) => {
   );
 };
 
-export default DirectorDetails;
+export default NetworkDetector(DirectorDetails);

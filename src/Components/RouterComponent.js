@@ -43,7 +43,7 @@ class Router extends Component {
           <Route path="/user-profile" component={UserProfile} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/search" component={SearchList} />
-          <Redirect from="*" to="/login" />
+          <Redirect from="*" to="/home" />
         </Switch>
       </BrowserRouter>
     );

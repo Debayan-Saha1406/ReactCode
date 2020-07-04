@@ -8,11 +8,7 @@ import LoaderProvider from "../../../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
 import "../../../css/movie-single.css";
 import Pagination from "../Common/Pagination";
-import {
-  pageType,
-  searchBarSubType,
-  celebritySearchType,
-} from "../../../Shared/Constants";
+import { pageType, celebritySearchType } from "../../../Shared/Constants";
 import CelebritySearchBox from "./CelebritySearchBox";
 import { celebritySortTypeList } from "./../../../Shared/Constants";
 import CelebrityGrid from "./CelebrityGrid";
@@ -26,7 +22,7 @@ import { countList } from "./../../../Shared/Constants";
 import Footer from "../Common/Footer";
 import celebsImage from "../../../images/celebs.jpg";
 import { page as celebPage } from "./../../../Shared/Constants";
-import { gender } from "./../../../Shared/Constants";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const initialData = {
   totalCelebrities: 0,
@@ -354,4 +350,4 @@ const Celebrities = (props) => {
   );
 };
 
-export default Celebrities;
+export default NetworkDetector(Celebrities);

@@ -21,6 +21,7 @@ import { userProfileSideMenuItem } from "../../../Shared/Constants";
 import UserRatedMovies from "./UserRatedMovies";
 import UserFavorite from "./UserFavorite";
 import Footer from "../Common/Footer";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const profileState = {
   firstName: "",
@@ -176,4 +177,4 @@ const UserProfile = (props) => {
   );
 };
 
-export default UserProfile;
+export default NetworkDetector(UserProfile);

@@ -30,6 +30,8 @@ import Gallery from "../Common/Gallery";
 import Footer from "./../Common/Footer";
 import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
+import NetworkDetector from "../Common/NetworkDetector";
+import { compose } from "redux";
 
 let releaseYear = "",
   loginDetails = {},
@@ -575,4 +577,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieDetails);
+const hoc = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  NetworkDetector
+);
+
+export default hoc(MovieDetails);

@@ -21,6 +21,7 @@ import Footer from "../Common/Footer";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
 import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -303,4 +304,4 @@ const CelebrityDetails = (props) => {
   );
 };
 
-export default CelebrityDetails;
+export default NetworkDetector(CelebrityDetails);

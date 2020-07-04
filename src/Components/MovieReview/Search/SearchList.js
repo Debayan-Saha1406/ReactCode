@@ -7,6 +7,7 @@ import Header from "./../Common/Header";
 import { searchBarSubType, apiUrl, page } from "./../../../Shared/Constants";
 import Footer from "./../Common/Footer";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const SearchList = (props) => {
   const { searchTerm, searchType, fetchNoData } = props.location;
@@ -137,4 +138,4 @@ const SearchList = (props) => {
   );
 };
 
-export default SearchList;
+export default NetworkDetector(SearchList);

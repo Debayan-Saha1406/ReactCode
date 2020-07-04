@@ -29,6 +29,7 @@ import Pagination from "../Common/Pagination";
 import DirectorSearchBox from "./DirectorSearchBox";
 import Footer from "./../Common/Footer";
 import { page as directorPage } from "./../../../Shared/Constants";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const initialData = {
   totalDirectors: 0,
@@ -282,4 +283,4 @@ const Directors = (props) => {
   );
 };
 
-export default Directors;
+export default NetworkDetector(Directors);

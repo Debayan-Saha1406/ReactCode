@@ -85,13 +85,6 @@ export default function (ComposedComponent) {
     }
   }
 
-  const mapStateToProps = (state) => {
-    return {
-      showLoader: state.uiDetails.showLoader,
-      screenOpacity: state.uiDetails.screenOpacity,
-    };
-  };
-
   const mapDispatchToProps = (dispatch) => {
     return {
       toggleLoader: (showLoader, screenOpacity) => {
@@ -100,7 +93,5 @@ export default function (ComposedComponent) {
     };
   };
 
-  // const composeNetworkDetector = compose( ))
-
-  return connect(mapStateToProps, mapDispatchToProps)(NetworkDetector);
+  return connect(null, mapDispatchToProps)(NetworkDetector);
 }
