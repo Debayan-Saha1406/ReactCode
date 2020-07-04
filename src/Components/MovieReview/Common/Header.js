@@ -33,6 +33,7 @@ class Header extends Component {
     informationTitle: "",
     informationContent: "",
     isForgotPasswordPopupContent: false,
+    isMobileNavBarOpen: false,
   };
 
   componentDidMount() {
@@ -49,6 +50,7 @@ class Header extends Component {
   toggleNavigation = () => {
     this.setState({
       display: this.state.display === "none" ? "block" : "none",
+      isMobileNavBarOpen: this.state.display === "none" ? true : false,
     });
   };
 
@@ -100,7 +102,7 @@ class Header extends Component {
       <React.Fragment>
         {this.props.popupType === popupType.information && (
           <Information
-            loginPopupClassName={this.props.popupClassName}
+            popupClassName={this.props.popupClassName}
             title={
               this.props.informationTitle
                 ? this.props.informationTitle
@@ -111,6 +113,7 @@ class Header extends Component {
                 ? this.props.informationContent
                 : this.state.informationContent
             }
+            btnText="Ok"
             closePopup={(e) => {
               if (this.state.isForgotPasswordPopupContent) {
                 this.props.togglePopup("openform", popupType.resetPassword);
@@ -189,7 +192,15 @@ class Header extends Component {
               className="menu-toggle"
               onClick={this.toggleNavigation}
             >
-              <i className="fa fa-bars"></i>
+              {this.state.isMobileNavBarOpen ? (
+                <i
+                  class="fa fa-close"
+                  aria-hidden="true"
+                  style={{ fontSize: "larger" }}
+                ></i>
+              ) : (
+                <i className="fa fa-bars"></i>
+              )}
             </button>
             <ul className="menu">
               {this.state.currentMenuItem === menuItem.home ? (
@@ -341,153 +352,169 @@ class Header extends Component {
             className="mobile-navigation"
             style={{ display: this.state.display }}
           >
-            <ul className="menu">
-              {this.state.currentMenuItem === menuItem.home ? (
-                <li className="menu-item current-menu-item">
-                  <Link
-                    to="/home"
-                    onClick={() => this.setCurrentMenuItem(menuItem.home)}
-                  >
-                    Home
-                  </Link>
-                </li>
-              ) : (
-                <li className="menu-item">
-                  <Link
-                    to="/home"
-                    onClick={() => this.setCurrentMenuItem(menuItem.home)}
-                  >
-                    Home
-                  </Link>
-                </li>
-              )}
-              {this.state.currentMenuItem === menuItem.movies ? (
-                <li className="menu-item current-menu-item">
-                  <Link
-                    to="/movies"
-                    onClick={() => this.setCurrentMenuItem(menuItem.movies)}
-                  >
-                    Movies
-                  </Link>
-                </li>
-              ) : (
-                <li className="menu-item">
-                  <Link
-                    to="/movies"
-                    onClick={() => this.setCurrentMenuItem(menuItem.movies)}
-                  >
-                    Movies
-                  </Link>
-                </li>
-              )}
-              {this.state.currentMenuItem === menuItem.celeb ? (
-                <li className="menu-item current-menu-item">
-                  <Link
-                    to="/celebrities"
-                    onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
-                  >
-                    Celebs
-                  </Link>
-                </li>
-              ) : (
-                <li className="menu-item">
-                  <Link
-                    to="/celebrities"
-                    onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
-                  >
-                    Celebs
-                  </Link>
-                </li>
-              )}
-              {this.state.currentMenuItem === menuItem.director ? (
-                <li className="menu-item current-menu-item">
-                  <Link
-                    to="/directors"
-                    onClick={() => this.setCurrentMenuItem(menuItem.director)}
-                  >
-                    Directors
-                  </Link>
-                </li>
-              ) : (
-                <li className="menu-item">
-                  <Link
-                    to="/directors"
-                    onClick={() => this.setCurrentMenuItem(menuItem.director)}
-                  >
-                    Directors
-                  </Link>
-                </li>
-              )}
-              {this.props.isUserLoggedIn ? null : (
-                <li className="menu-item">
-                  <a
-                    onClick={() => {
-                      this.props.togglePopup("openform", popupType.login);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Login
-                  </a>
-                </li>
-              )}
-              {this.props.isUserLoggedIn ? (
-                this.state.currentMenuItem === menuItem.loggedInEmail ? (
-                  <li
-                    className="menu-item current-menu-item"
-                    id="dropbtn"
-                    onClick={this.handleDropdownClick}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {this.props.loggedInEmail}{" "}
-                    <i
-                      className="fa fa-caret-down"
-                      style={{ marginRight: "10px" }}
-                    ></i>
-                    <div
-                      className="dropdown-content"
-                      style={{ display: this.state.headerDropdownClass }}
-                    >
-                      <Link to="/user-profile">View Profile</Link>
-                      <a onClick={this.handleLogout}>Logout</a>
-                    </div>
-                  </li>
-                ) : (
-                  <li
-                    className="menu-item"
-                    id="dropbtn"
-                    onClick={this.handleDropdownClick}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {this.props.loggedInEmail}{" "}
-                    <i
-                      className="fa fa-caret-down"
-                      style={{ marginRight: "10px" }}
-                    ></i>
-                    <div
-                      className="dropdown-content"
-                      style={{ display: this.state.headerDropdownClass }}
-                    >
-                      <a href="#">Edit Profile</a>
-                      <a href="#">Logout</a>
-                    </div>
-                  </li>
-                )
-              ) : (
-                <li className="menu-item">
-                  <a
-                    onClick={() => {
-                      this.props.togglePopup("openform", popupType.register);
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Register
-                  </a>
-                </li>
-              )}
-            </ul>
+            <nav class="navbar navbar-default navbar-custom">
+              <div
+                class="collapse navbar-collapse flex-parent"
+                id="bs-example-navbar-collapse-1"
+              >
+                <ul class="nav navbar-nav flex-child-menu menu-left">
+                  {this.state.currentMenuItem === menuItem.home ? (
+                    <li className="menu-item current-menu-item">
+                      <Link
+                        to="/home"
+                        onClick={() => this.setCurrentMenuItem(menuItem.home)}
+                      >
+                        Home
+                      </Link>
+                    </li>
+                  ) : (
+                    <li className="menu-item">
+                      <Link
+                        to="/home"
+                        onClick={() => this.setCurrentMenuItem(menuItem.home)}
+                      >
+                        Home
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.currentMenuItem === menuItem.movies ? (
+                    <li className="menu-item current-menu-item">
+                      <Link
+                        to="/movies"
+                        onClick={() => this.setCurrentMenuItem(menuItem.movies)}
+                      >
+                        Movies
+                      </Link>
+                    </li>
+                  ) : (
+                    <li className="menu-item">
+                      <Link
+                        to="/movies"
+                        onClick={() => this.setCurrentMenuItem(menuItem.movies)}
+                      >
+                        Movies
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.currentMenuItem === menuItem.celeb ? (
+                    <li className="menu-item current-menu-item">
+                      <Link
+                        to="/celebrities"
+                        onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
+                      >
+                        Celebs
+                      </Link>
+                    </li>
+                  ) : (
+                    <li className="menu-item">
+                      <Link
+                        to="/celebrities"
+                        onClick={() => this.setCurrentMenuItem(menuItem.celeb)}
+                      >
+                        Celebs
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.currentMenuItem === menuItem.director ? (
+                    <li className="menu-item current-menu-item">
+                      <Link
+                        to="/directors"
+                        onClick={() =>
+                          this.setCurrentMenuItem(menuItem.director)
+                        }
+                      >
+                        Directors
+                      </Link>
+                    </li>
+                  ) : (
+                    <li className="menu-item">
+                      <Link
+                        to="/directors"
+                        onClick={() =>
+                          this.setCurrentMenuItem(menuItem.director)
+                        }
+                      >
+                        Directors
+                      </Link>
+                    </li>
+                  )}
+                  {this.props.isUserLoggedIn ? null : (
+                    <li className="menu-item">
+                      <a
+                        onClick={() => {
+                          this.props.togglePopup("openform", popupType.login);
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Login
+                      </a>
+                    </li>
+                  )}
+                  {this.props.isUserLoggedIn ? (
+                    this.state.currentMenuItem === menuItem.loggedInEmail ? (
+                      <li
+                        className="menu-item current-menu-item"
+                        id="dropbtn"
+                        onClick={this.handleDropdownClick}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {this.props.loggedInEmail}{" "}
+                        <i
+                          className="fa fa-caret-down"
+                          style={{ marginRight: "10px" }}
+                        ></i>
+                        <div
+                          className="dropdown-content"
+                          style={{ display: this.state.headerDropdownClass }}
+                        >
+                          <Link to="/user-profile">View Profile</Link>
+                          <a onClick={this.handleLogout}>Logout</a>
+                        </div>
+                      </li>
+                    ) : (
+                      <li
+                        className="menu-item"
+                        id="dropbtn"
+                        onClick={this.handleDropdownClick}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {this.props.loggedInEmail}{" "}
+                        <i
+                          className="fa fa-caret-down"
+                          style={{ marginRight: "10px" }}
+                        ></i>
+                        <div
+                          className="dropdown-content"
+                          style={{ display: this.state.headerDropdownClass }}
+                        >
+                          <a href="#">Edit Profile</a>
+                          <a href="#">Logout</a>
+                        </div>
+                      </li>
+                    )
+                  ) : (
+                    <li className="menu-item">
+                      <a
+                        onClick={() => {
+                          this.props.togglePopup(
+                            "openform",
+                            popupType.register
+                          );
+                        }}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Register
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            </nav>
           </div>
         </div>
-        {this.props.showSearchBar && <SearchBar></SearchBar>}
+        {this.props.showSearchBar && !this.state.isMobileNavBarOpen && (
+          <SearchBar></SearchBar>
+        )}
         <ToastContainer autoClose={3000}></ToastContainer>
       </header>
     );

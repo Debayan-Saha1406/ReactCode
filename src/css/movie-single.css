@@ -1147,7 +1147,7 @@ img {
 }
 
 .overlay {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgb(2, 13, 24);
   bottom: 0;
   left: 0;
   position: fixed;
@@ -3439,4 +3439,94 @@ i#playIcon:hover {
 
 .clear-recently-viewed-items:hover {
   color: #ffaa3c !important;
+}
+
+@media (max-width: 767px) {
+  header .navbar-default {
+    padding: 10px 0;
+  }
+}
+
+header .navbar-default {
+  margin-bottom: 0;
+  border: none;
+  position: relative;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  border-radius: 2px;
+}
+
+header .navbar-default .flex-parent .menu-left {
+  flex-grow: 2;
+  margin-left: 30px;
+}
+
+@media (max-width: 991px) {
+  header .navbar-default .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: inherit !important;
+    margin: 0;
+    width: 100%;
+  }
+}
+
+header .navbar-default .navbar-nav {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  list-style: none;
+}
+
+@media (max-width: 991px) {
+  header .menu-left {
+    margin-left: 0 !important;
+  }
+}
+
+.nav > li {
+  position: relative;
+  display: block;
+}
+
+.collapse {
+  display: block !important;
+}
+
+@media (max-width: 991px) {
+  header .navbar-default .navbar-nav .dropdown a {
+    cursor: pointer;
+  }
+}
+
+header .navbar-default .navbar-nav li a {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: #84878d;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.navbar-nav > li > a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+}
+
+.nav > li > a {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+
+@media (max-width: 991px) {
+  .site-header-celebrity {
+    padding: 25px 0;
+  }
 }

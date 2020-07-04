@@ -213,7 +213,6 @@ const Celebrities = (props) => {
     celebrityData,
     hideloader
   ) => {
-    debugger;
     ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
       if (response.status === 200) {
         setCelebrityData({

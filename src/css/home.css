@@ -2095,7 +2095,6 @@ ul.arrow li a:hover {
 
 .mobile-navigation {
   clear: both;
-  padding-top: 20px;
   display: none;
 }
 @media screen and (min-width: 991px) {

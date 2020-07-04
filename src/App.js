@@ -4,9 +4,9 @@ import Login from "./Components/LoginComponent";
 
 function App() {
   return (
-      <div className="App">
-        <Login></Login>
-      </div>
+    <div className="App">
+      <Login></Login>
+    </div>
   );
 }
 

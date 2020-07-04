@@ -102,8 +102,9 @@ const UserProfile = (props) => {
           <Information
             title={"Log In"}
             content={"Please Login To Continue"}
-            loginPopupClassName={"openform"}
+            popupClassName={"openform"}
             closePopup={handleOk}
+            btnText="Ok"
           ></Information>
         ) : (
           <React.Fragment>

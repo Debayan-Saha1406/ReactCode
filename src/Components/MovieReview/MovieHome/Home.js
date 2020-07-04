@@ -25,6 +25,7 @@ import {
   removeLocalStorageItem,
 } from "./../../../Provider/LocalStorageProvider";
 import { recentlyViewed } from "./../../../Shared/Constants";
+import NetworkDetector from "../Common/NetworkDetector";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -148,4 +149,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default NetworkDetector(Home);
