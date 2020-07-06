@@ -159,14 +159,19 @@ const SearchBar = (props) => {
                     handleOptionClick(searchDetail.id, searchDetail.type)
                   }
                 >
-                  <img
-                    src={searchDetail.image}
-                    alt=""
-                    style={{ height: "70px", width: "50px" }}
-                  ></img>
-                  <span className="search-record">{searchDetail.name}</span>
-                  <span style={{ marginLeft: "10px" }} className="search-type">
-                    ({searchDetail.type})
+                  <span className="row">
+                    <span className="span-col-4">
+                      <img
+                        src={searchDetail.image}
+                        alt=""
+                        style={{ height: "70px", width: "50px" }}
+                      ></img>
+                    </span>
+                    <span className="span-col-8">
+                      <span className="search-record">{searchDetail.name}</span>
+                      <br></br>
+                      <span className="search-type">({searchDetail.type})</span>
+                    </span>
                   </span>
                 </div>
               ))}

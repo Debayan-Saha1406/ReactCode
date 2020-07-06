@@ -3273,7 +3273,6 @@ footer .flex-parent-ft .flex-child-ft img {
 
 .search-record {
   font-size: 20px;
-  margin-left: 20px;
   color: white;
 }
 
@@ -3694,4 +3693,43 @@ header .navbar-default .navbar-nav li a {
 .disabled-arrow-btn {
   color: #abb7c4 !important;
   cursor: not-allowed;
+}
+
+@media (max-width: 991px) {
+  .slider img {
+    height: 210px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .search-record {
+    font-size: 15px;
+  }
+}
+
+.span-col-4 {
+  flex: 0 0 10%;
+  margin-left: 20px;
+  max-width: 33.333333%;
+}
+
+.span-col-8 {
+  flex: 0 0 66.666667%;
+  max-width: 66.666667%;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .span-col-4 {
+    flex: 0 0 12%;
+    margin-left: 20px;
+    max-width: 33.333333%;
+  }
+}
+
+@media (max-width: 768px) {
+  .span-col-4 {
+    flex: 0 0 25%;
+    margin-left: 20px;
+    max-width: 33.333333%;
+  }
 }

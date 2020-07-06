@@ -58,14 +58,17 @@ const Home = () => {
 
   useEffect(() => {
     if (isBottomReached) {
+      debugger;
       ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
         if (response.status === 200) {
           setStarsBornToday(response.data.data);
           setIsRecentlyViewedItemVisible(true);
           setIsLoading(false);
+          setIsBottomReached(false);
         } else {
           setIsRecentlyViewedItemVisible(true);
           setIsLoading(false);
+          setIsBottomReached(false);
         }
       });
 
@@ -75,8 +78,10 @@ const Home = () => {
   }, [isBottomReached]);
 
   const handleScroll = (e) => {
-    setIsLoading(true);
-    setIsBottomReached(true);
+    if (isBottomReached !== false) {
+      setIsLoading(true);
+      setIsBottomReached(true);
+    }
   };
 
   const clearRecentlyViewedItems = () => {

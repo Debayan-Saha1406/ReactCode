@@ -234,6 +234,7 @@ const CelebrityDetails = (props) => {
                                   redirectToTab={redirectToTab}
                                   star={celebrity}
                                   movies={movies}
+                                  showNetWorth={true}
                                 ></Overview>
                               </div>
                             )}

@@ -68,10 +68,12 @@ const Overview = (props) => {
           <h6 className="side-heading">Country: </h6>
           <p>{nationality}</p>
         </div>
-        <div className="sb-it">
-          <h6 className="side-heading">Net Worth: </h6>
-          <p>${netWorth} million</p>
-        </div>
+        {props.showNetWorth && (
+          <div className="sb-it">
+            <h6 className="side-heading">Net Worth: </h6>
+            <p>${netWorth} million</p>
+          </div>
+        )}
         {/* <div className="ads">
           <img src="images/uploads/ads1.png" alt="" />
         </div> */}
