@@ -3649,3 +3649,49 @@ header .navbar-default .navbar-nav li a {
     padding: 25px 0;
   }
 }
+
+.box-pagination {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.box-pagination li {
+  margin-right: 15px;
+}
+
+.box-pagination li a {
+  font-family: "Nunito", sans-serif;
+  font-size: 14px;
+  color: #abb7c4;
+  font-weight: 300;
+  text-transform: none;
+  height: 33px;
+  width: 33px;
+  border: 1px solid #405266;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-pagination li.active a {
+  color: #dcf836;
+  border: 1px solid #dcf836;
+}
+
+.arrow-btn {
+  color: #abb7c4 !important;
+  cursor: pointer;
+}
+
+.disabled-arrow-btn {
+  color: #abb7c4 !important;
+  cursor: not-allowed;
+}

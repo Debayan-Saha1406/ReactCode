@@ -23,7 +23,6 @@ export default function (ComposedComponent) {
     }
 
     handleConnectionChange = () => {
-      debugger;
       const condition = navigator.onLine ? "online" : "offline";
       if (condition === "online") {
         const webPing = setInterval(() => {

@@ -30,13 +30,13 @@ const WhatToWatch = () => {
   return (
     <React.Fragment>
       {
-        <div class="col-md-12">
-          <div class="title-hd" style={{ paddingTop: "20px" }}>
+        <div className="col-md-12">
+          <div className="title-hd" style={{ paddingTop: "20px" }}>
             {isComponentVisible && <h2>What To Watch</h2>}
           </div>
-          <div class="tabs">
-            <ul class="tab-links">
-              <li class="active">
+          <div className="tabs">
+            <ul className="tab-links">
+              <li className="active">
                 {isComponentVisible && <a>Fan Favorites </a>}
               </li>
             </ul>
@@ -50,7 +50,7 @@ const WhatToWatch = () => {
             >
               {fanFavoriteMovies.map((movie, index) => {
                 return (
-                  <React.Fragment>
+                  <React.Fragment key={index}>
                     <img
                       draggable={false}
                       style={{ height: "380px", width: "300px" }}
@@ -61,7 +61,7 @@ const WhatToWatch = () => {
                         )
                       }
                     />
-                    <div class="mv-item-infor">
+                    <div className="mv-item-infor">
                       <h6 style={{ marginTop: "20px", marginBottom: "0px" }}>
                         <Link
                           className="heading"
@@ -70,9 +70,9 @@ const WhatToWatch = () => {
                           {movie.movieName}
                         </Link>
                       </h6>
-                      <p class="rate">
+                      <p className="rate">
                         <i
-                          class="fa fa-star"
+                          className="fa fa-star"
                           style={{
                             fontSize: "20px",
                             color: "yellow",

@@ -114,12 +114,12 @@ const Home = () => {
               <HomeSlider navigateToTrailers={navigateToTrailers}></HomeSlider>
             </div>
           </div>
-          <main class="main-content">
+          <main className="main-content">
             <div className="container">
               {/* <Main></Main> */}
 
-              <div class="movie-items">
-                <div class="row">
+              <div className="movie-items">
+                <div className="row">
                   <WhatToWatch></WhatToWatch>
                   {movieTrailers.length > 0 && (
                     <div ref={trailerRef}>

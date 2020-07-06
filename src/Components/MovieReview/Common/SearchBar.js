@@ -1,14 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useState, useRef } from "react";
-import {
-  searchBarOptionsList,
-  apiUrl,
-  countries,
-} from "../../../Shared/Constants";
+import { searchBarOptionsList, apiUrl } from "../../../Shared/Constants";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
-import { showErrorMessage } from "../../../Provider/ToastProvider";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
@@ -17,6 +12,7 @@ import ThreeDotSpinner from "./ThreeDotSpinner";
 
 const SearchBar = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [toggle, setToggle] = useState(false); //just to run the effect again on SearchList with the same searchTerm
   const [searchType, setSearchType] = useState(searchBarSubType.all);
   const [isSuggestionBoxOpen, toggleSuggestionBox] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +23,10 @@ const SearchBar = (props) => {
   const inputRef = useRef();
 
   const handleSearch = () => {
+    debugger;
     toggleSuggestionBox(false);
+    setToggle(!toggle);
+    setSearchTerm("");
     if (searchTerm !== "") {
       dispatch(toggleLoader(true, 0));
       history.push({
@@ -35,6 +34,7 @@ const SearchBar = (props) => {
         searchTerm: searchTerm,
         searchType: searchType,
         fetchNoData: false,
+        toggle: toggle,
       });
     } else {
       history.push({
@@ -42,9 +42,9 @@ const SearchBar = (props) => {
         searchTerm: searchTerm,
         searchType: searchType,
         fetchNoData: true,
+        toggle: toggle,
       });
     }
-    setSearchTerm("");
   };
 
   const handleTypeChange = (e) => {
@@ -79,6 +79,8 @@ const SearchBar = (props) => {
           const body = {
             searchType: searchType,
             searchTerm: inputRef.current.value,
+            pageNumber: 1,
+            pageSize: 10,
           };
 
           if (searchType === searchBarSubType.all) {
@@ -90,7 +92,7 @@ const SearchBar = (props) => {
           ServiceProvider.post(apiUrl.search, body).then((response) => {
             if (response.status === 200) {
               setIsLoading(false);
-              setSearchData(response.data.data);
+              setSearchData(response.data.data.details);
               if (response.data.data.length === 0) {
                 setNoData(true);
               } else {
@@ -110,7 +112,7 @@ const SearchBar = (props) => {
 
   return (
     <React.Fragment>
-      <div class="top-search">
+      <div className="top-search">
         <select
           onChange={(e) => {
             handleTypeChange(e);
@@ -120,10 +122,12 @@ const SearchBar = (props) => {
           }}
         >
           {searchBarOptionsList.map((option) => (
-            <option value={option.id}>{option.value}</option>
+            <option key={option.id} value={option.id}>
+              {option.value}
+            </option>
           ))}
         </select>
-        <div class="autocomplete">
+        <div className="autocomplete">
           <input
             type="text"
             ref={inputRef}
@@ -135,20 +139,21 @@ const SearchBar = (props) => {
         <i className="fa fa-search" id="search-icon" onClick={handleSearch}></i>
       </div>
       {isSuggestionBoxOpen && (
-        <div id="myInputautocomplete-list" class="autocomplete-items">
+        <div id="myInputautocomplete-list" className="autocomplete-items">
           {noData && (
-            <div class="white-box" style={{ borderBottom: "none" }}>
+            <div className="white-box" style={{ borderBottom: "none" }}>
               <span className="no-record">No Result Found...</span>
             </div>
           )}
           {isLoading ? (
-            <div class="white-box" style={{ borderBottom: "none" }}>
+            <div className="white-box" style={{ borderBottom: "none" }}>
               <ThreeDotSpinner></ThreeDotSpinner>
             </div>
           ) : (
             <React.Fragment>
-              {searchData.map((searchDetail) => (
+              {searchData.map((searchDetail, index) => (
                 <div
+                  key={index}
                   className="data"
                   onClick={() =>
                     handleOptionClick(searchDetail.id, searchDetail.type)

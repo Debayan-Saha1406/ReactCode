@@ -56,7 +56,7 @@ const HomeSlider = (props) => {
         <div className="slider" id="home-slider">
           <Carousel interval={3000}>
             {sliderItems.map((item, index) => (
-              <Carousel.Item>
+              <Carousel.Item key={index}>
                 <img
                   className="d-block w-100"
                   src={item.image}

@@ -22,13 +22,13 @@ const RecentlyViewedItem = (props) => {
   return (
     <React.Fragment>
       {
-        <div class="col-md-12">
-          <div class="title-hd" style={{ paddingTop: "20px" }}>
+        <div className="col-md-12">
+          <div className="title-hd" style={{ paddingTop: "20px" }}>
             <h2>
               Recently Viewed Items{" "}
               {props.recentlyViewedItems.length > 0 && (
                 <span
-                  class="clear-recently-viewed-items"
+                  className="clear-recently-viewed-items"
                   onClick={props.clearRecentlyViewedItems}
                 >
                   Clear
@@ -36,7 +36,7 @@ const RecentlyViewedItem = (props) => {
               )}
             </h2>
           </div>
-          <div class="tabs">
+          <div className="tabs">
             {props.recentlyViewedItems.length === 0 ? (
               <h3 style={{ color: "#abb7c4" }}>
                 You Have not viewed anything recently
@@ -51,7 +51,7 @@ const RecentlyViewedItem = (props) => {
               >
                 {props.recentlyViewedItems.map((recentlyViewedItem, index) => {
                   return (
-                    <React.Fragment>
+                    <React.Fragment key={index}>
                       <img
                         draggable={false}
                         style={{ height: "380px", width: "300px" }}
@@ -62,7 +62,7 @@ const RecentlyViewedItem = (props) => {
                           )
                         }
                       />
-                      <div class="mv-item-infor">
+                      <div className="mv-item-infor">
                         <h6 style={{ marginTop: "20px", marginBottom: "0px" }}>
                           {recentlyViewedItem.type ===
                           searchBarSubType.movie ? (

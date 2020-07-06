@@ -8,9 +8,9 @@ const Trailers = (props) => {
   const [youtubeUrl, setYoutubeUrl] = useState(leadingMovie.youtubeUrl);
   //props.movieTrailers.shift();
   return (
-    <div class="col-md-12">
+    <div className="col-md-12">
       <div
-        class="title-hd"
+        className="title-hd"
         style={{ paddingTop: "20px", paddingBottom: "20px" }}
       >
         <h2>Latest Trailers</h2>
@@ -23,7 +23,7 @@ const Trailers = (props) => {
               onClick={() => showVideo(false)}
               style={{ cursor: "pointer" }}
             >
-              <i class="fa fa-times-circle"></i>
+              <i className="fa fa-times-circle"></i>
             </div>
             <ReactPlayer
               url={youtubeUrl}
@@ -33,19 +33,19 @@ const Trailers = (props) => {
           </div>
         </div>
       )}
-      <div class="trailers-videos">
-        <div class="row">
-          <div class="trailer-item leading col-sm-12">
-            <div class="trailer">
-              <div class="trailer-image-wrap">
+      <div className="trailers-videos">
+        <div className="row">
+          <div className="trailer-item leading col-sm-12">
+            <div className="trailer">
+              <div className="trailer-image-wrap">
                 <img
-                  class="img-responsive"
+                  className="img-responsive"
                   src={leadingMovie.image}
                   alt="trailers"
                   style={{ width: "inherit" }}
                 />
                 <a
-                  class="play-video"
+                  className="play-video"
                   data-type="youtube"
                   data-ol-has-click-handler=""
                   onClick={() => {
@@ -55,22 +55,22 @@ const Trailers = (props) => {
                   style={{ cursor: "pointer" }}
                 >
                   <i
-                    class="fa fa-play-circle"
+                    className="fa fa-play-circle"
                     aria-hidden="true"
                     id="playIcon"
                   ></i>
                 </a>
-                <div class="content-wrap">
-                  <div class="video-container">
-                    <span class="video-close" data-ol-has-click-handler="">
+                <div className="content-wrap">
+                  <div className="video-container">
+                    <span className="video-close" data-ol-has-click-handler="">
                       x
                     </span>
                   </div>
                 </div>
               </div>
-              <div class="trailer-info trailers-info">
-                <div class="trailer-info-block">
-                  <h3 class="movie-title">
+              <div className="trailer-info trailers-info">
+                <div className="trailer-info-block">
+                  <h3 className="movie-title">
                     {leadingMovie.movieName}(
                     {leadingMovie.releaseDate.substring(
                       leadingMovie.releaseDate.indexOf(",") + 2,
@@ -78,24 +78,24 @@ const Trailers = (props) => {
                     )}
                     )
                   </h3>
-                  <p class="genry">{leadingMovie.genre} </p>
+                  <p className="genry">{leadingMovie.genre} </p>
                 </div>
               </div>
             </div>
           </div>
           {props.movieTrailers.map((movie, index) => (
-            <React.Fragment>
+            <React.Fragment key={index}>
               {index !== 0 && (
-                <div class="trailer-item subleading col-sm-3">
-                  <div class="trailer">
-                    <div class="trailer-image-wrap">
+                <div className="trailer-item subleading col-sm-3">
+                  <div className="trailer">
+                    <div className="trailer-image-wrap">
                       <img
-                        class="img-responsive"
+                        className="img-responsive"
                         src={movie.image}
                         alt="trailers"
                       />
                       <a
-                        class="play-video"
+                        className="play-video"
                         onClick={() => {
                           showVideo(true);
                           setYoutubeUrl(movie.youtubeUrl);
@@ -105,15 +105,15 @@ const Trailers = (props) => {
                         data-ol-has-click-handler=""
                       >
                         <i
-                          class="fa fa-play-circle"
+                          className="fa fa-play-circle"
                           aria-hidden="true"
                           id="playIcon"
                         ></i>
                       </a>
-                      <div class="content-wrap">
-                        <div class="video-container">
+                      <div className="content-wrap">
+                        <div className="video-container">
                           <span
-                            class="video-close"
+                            className="video-close"
                             data-ol-has-click-handler=""
                           >
                             x
@@ -121,9 +121,9 @@ const Trailers = (props) => {
                         </div>
                       </div>
                     </div>
-                    <div class="trailer-info trailers-info">
-                      <div class="trailer-info-block">
-                        <h3 class="movie-title">
+                    <div className="trailer-info trailers-info">
+                      <div className="trailer-info-block">
+                        <h3 className="movie-title">
                           {movie.movieName}(
                           {movie.releaseDate.substring(
                             movie.releaseDate.indexOf(",") + 2,
@@ -131,7 +131,7 @@ const Trailers = (props) => {
                           )}
                           )
                         </h3>
-                        <p class="genry">{movie.genre} </p>
+                        <p className="genry">{movie.genre} </p>
                       </div>
                     </div>
                   </div>

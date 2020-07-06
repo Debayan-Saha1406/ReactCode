@@ -9,7 +9,6 @@ import {
   constants,
   page,
   menuItem,
-  searchBarOptionsList,
 } from "./../../../Shared/Constants";
 import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
@@ -194,7 +193,7 @@ class Header extends Component {
             >
               {this.state.isMobileNavBarOpen ? (
                 <i
-                  class="fa fa-close"
+                  className="fa fa-close"
                   aria-hidden="true"
                   style={{ fontSize: "larger" }}
                 ></i>
@@ -352,12 +351,12 @@ class Header extends Component {
             className="mobile-navigation"
             style={{ display: this.state.display }}
           >
-            <nav class="navbar navbar-default navbar-custom">
+            <nav className="navbar navbar-default navbar-custom">
               <div
-                class="collapse navbar-collapse flex-parent"
+                className="collapse navbar-collapse flex-parent"
                 id="bs-example-navbar-collapse-1"
               >
-                <ul class="nav navbar-nav flex-child-menu menu-left">
+                <ul className="nav navbar-nav flex-child-menu menu-left">
                   {this.state.currentMenuItem === menuItem.home ? (
                     <li className="menu-item current-menu-item">
                       <Link
