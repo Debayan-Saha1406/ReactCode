@@ -1,16 +1,22 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
 
-const QuickInfo = (props) => {
+const QuickInfo = ({
+  count,
+  description,
+  overview,
+  overview_inner,
+  options,
+  data,
+}) => {
   return (
     <div className="col-sm-6 col-lg-3">
-      <div className={props.overview}>
-        <div className={props.overview_inner}>
+      <div className={overview}>
+        <div className={overview_inner}>
           <div className="overview-box clearfix">
             <div className="icon"></div>
             <div className="text">
-              <h2>1</h2>
-              <span>movies</span>
+              <h2>{count}</h2>
+              <span>{description}</span>
             </div>
           </div>
           <div className="overview-chart">
@@ -19,9 +25,7 @@ const QuickInfo = (props) => {
                 width: "300px",
                 height: "100px",
               }}
-            >
-              <Line options={props.options} data={props.data} />
-            </div>
+            ></div>
           </div>
         </div>
       </div>

@@ -3733,3 +3733,9 @@ header .navbar-default .navbar-nav li a {
     max-width: 33.333333%;
   }
 }
+
+@media (max-width: 768px) {
+  .show-overlay .login-content {
+    width: 350px;
+  }
+}

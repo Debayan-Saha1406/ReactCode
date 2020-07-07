@@ -5,8 +5,8 @@ import slider3 from "../images/slider3.jpg";
 
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -40,6 +40,7 @@ export const apiUrl = {
   latestMovieTrailers: "/latestMovieTrailers",
   fanFavoriteMovies: "/topRatedMovies",
   starsBornToday: "/starsBornToday",
+  moviesDirectorsCelebsCount: "/moviesDirectorsCelebsCount",
 };
 
 export const constants = {
@@ -346,3 +347,36 @@ export const sliderItems = [
 ];
 
 export const sliderXCoordinate = 471;
+
+export const doughnutLabels = ["Movies", "Celebs", "Directors"];
+export const doughnutData = {
+  datasets: [
+    {
+      label: "My First dataset",
+      backgroundColor: ["#00b5e9", "#fa4251", "#008000"],
+      hoverBackgroundColor: ["#00b5e9", "#fa4251", "#008000"],
+      borderWidth: [0, 0, 0],
+      hoverBorderColor: ["transparent", "transparent", "transparent"],
+    },
+  ],
+  labels: ["Movies", "Celebs", "Directors"],
+};
+export const doughnutOptions = {
+  maintainAspectRatio: false,
+  responsive: true,
+  cutoutPercentage: 55,
+  animation: {
+    animateScale: true,
+    animateRotate: true,
+  },
+  legend: {
+    display: false,
+  },
+  tooltips: {
+    titleFontFamily: "Poppins",
+    xPadding: 15,
+    yPadding: 10,
+    caretPadding: 0,
+    bodyFontSize: 16,
+  },
+};

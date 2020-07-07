@@ -1,7 +1,8 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 
-const DoughnutChart = (props) => {
+const DoughnutChart = ({ labels, data, options }) => {
+  debugger;
   return (
     <div className="card">
       <div className="au-card-inner">
@@ -11,11 +12,15 @@ const DoughnutChart = (props) => {
             <div className="chart-note-wrap">
               <div className="chart-note mr-0 d-block">
                 <span className="dot dot--blue"></span>
-                <span>products</span>
+                <span>{labels[0]}</span>
               </div>
               <div className="chart-note mr-0 d-block">
                 <span className="dot dot--red"></span>
-                <span>services</span>
+                <span>{labels[1]}</span>
+              </div>
+              <div className="chart-note mr-0 d-block">
+                <span className="dot dot--red"></span>
+                <span>{labels[2]}</span>
               </div>
             </div>
           </div>
@@ -27,7 +32,7 @@ const DoughnutChart = (props) => {
                   height: "200px",
                 }}
               >
-                <Doughnut data={props.data} options={props.options}></Doughnut>
+                <Doughnut data={data} options={options}></Doughnut>
               </div>
             </div>
           </div>
