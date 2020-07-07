@@ -16,13 +16,14 @@ import { showErrorMessage } from "../../Provider/ToastProvider";
 import { ToastContainer } from "react-toastify";
 import { ImagePickerProvider } from "../../Provider/ImagePickerProvider";
 import ServiceProvider from "./../../Provider/ServiceProvider";
-import { apiUrl, constants } from "../../Shared/Constants";
+import { apiUrl, constants, route } from "../../Shared/Constants";
 import {
   getLocalStorageItem,
   setLocalStorageItem,
 } from "./../../Provider/LocalStorageProvider";
 import avatar from "../../images/avatar.jpg";
 import { toggleLoader } from "./../../Store/Actions/actionCreator";
+import CelebritySearchBox from "./../MovieReview/Celebrities/CelebritySearchBox";
 
 class SideBar extends Component {
   state = {
@@ -228,26 +229,52 @@ class SideBar extends Component {
           </div>
 
           <ul className="list-unstyled components mb-5">
-            {this.state.activeLink === "Dashboard" ? (
+            {this.state.activeLink === route.dashboard ? (
               <li className="active">
-                <Link to={"/admin"}>Dashboard</Link>
+                <Link
+                  to={"/admin"}
+                  onClick={() => this.handleSideMenuClick(route.dashboard)}
+                >
+                  Dashboard
+                </Link>
               </li>
             ) : (
               <li>
-                <Link to={"/admin"}>Dashboard</Link>
+                <Link
+                  to={"/admin"}
+                  onClick={() => this.handleSideMenuClick(route.dashboard)}
+                >
+                  Dashboard
+                </Link>
               </li>
             )}
             <li>
               <Link to={"/admin"}>Movies</Link>
             </li>
-            <li>
-              <Link to={"/admin"}>Celebrities</Link>
-            </li>
-            {this.state.activeLink === "Users" ? (
+            {this.state.activeLink === route.celebrity ? (
+              <li className="active">
+                <Link
+                  to={"/admin/Celebrities"}
+                  onClick={() => this.handleSideMenuClick(route.celebrity)}
+                >
+                  Celebrities
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to={"/admin/Celebrities"}
+                  onClick={() => this.handleSideMenuClick(route.celebrity)}
+                >
+                  Celebrities
+                </Link>
+              </li>
+            )}
+            {this.state.activeLink === route.users ? (
               <li className="active">
                 <Link
                   to={"/admin/Users"}
-                  onClick={() => this.handleSideMenuClick("Users")}
+                  onClick={() => this.handleSideMenuClick(route.users)}
                 >
                   Users
                 </Link>
@@ -256,7 +283,7 @@ class SideBar extends Component {
               <li>
                 <Link
                   to={"/admin/Users"}
-                  onClick={() => this.handleSideMenuClick("Users")}
+                  onClick={() => this.handleSideMenuClick(route.users)}
                 >
                   Users
                 </Link>

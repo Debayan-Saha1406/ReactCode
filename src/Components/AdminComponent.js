@@ -9,6 +9,8 @@ import Main from "./MainComponent";
 import LoaderProvider from "./../Provider/LoaderProvider";
 import { connect } from "react-redux";
 import UsersList from "./UsersList.js";
+import AddCelebrities from "./AddCelebritiesComponent";
+import { route } from "../Shared/Constants";
 
 class Admin extends Component {
   state = {
@@ -57,8 +59,10 @@ class Admin extends Component {
             <SideBar></SideBar>
             <div id="content" className="p-4 p-md-5">
               <Navbar></Navbar>
-              {this.props.subRoute === "Users" ? (
+              {this.props.subRoute === route.users ? (
                 <UsersList></UsersList>
+              ) : this.props.subRoute === route.celebrity ? (
+                <AddCelebrities></AddCelebrities>
               ) : (
                 <Main></Main>
               )}

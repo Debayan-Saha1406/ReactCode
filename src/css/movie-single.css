@@ -3739,3 +3739,10 @@ header .navbar-default .navbar-nav li a {
     width: 350px;
   }
 }
+
+.react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100%;
+}

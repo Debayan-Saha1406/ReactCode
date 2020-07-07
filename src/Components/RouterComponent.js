@@ -17,6 +17,7 @@ import CelebrityDetails from "./MovieReview/CelebrityDetails/CelebrityDetails";
 import Directors from "./MovieReview/Directors/Directors";
 import DirectorDetails from "./MovieReview/DirectorDetails/DirectorDetails";
 import SearchList from "./MovieReview/Search/SearchList";
+import { route } from "../Shared/Constants";
 
 class Router extends Component {
   render() {
@@ -26,7 +27,11 @@ class Router extends Component {
           <Route exact path="/login" component={Login} />
           <Route
             path="/admin/Users"
-            render={() => <Admin subRoute={"Users"} />}
+            render={() => <Admin subRoute={route.users} />}
+          />
+          <Route
+            path="/admin/Celebrities"
+            render={() => <Admin subRoute={route.celebrity} />}
           />
           <Route path="/admin" component={Admin} />
           <Route path="/user" component={User} />

@@ -380,3 +380,10 @@ export const doughnutOptions = {
     bodyFontSize: 16,
   },
 };
+
+export const route = {
+  admin: "admin",
+  celebrity: "celebrity",
+  dashboard: "dashboard",
+  users: "users",
+};

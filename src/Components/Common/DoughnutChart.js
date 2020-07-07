@@ -2,7 +2,6 @@ import React from "react";
 import { Doughnut } from "react-chartjs-2";
 
 const DoughnutChart = ({ labels, data, options }) => {
-  debugger;
   return (
     <div className="card">
       <div className="au-card-inner">
