@@ -41,6 +41,7 @@ export const apiUrl = {
   fanFavoriteMovies: "/topRatedMovies",
   starsBornToday: "/starsBornToday",
   moviesDirectorsCelebsCount: "/moviesDirectorsCelebsCount",
+  addCelebrity: "/celebrity",
 };
 
 export const constants = {
