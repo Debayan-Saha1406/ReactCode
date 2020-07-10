@@ -3746,3 +3746,18 @@ header .navbar-default .navbar-nav li a {
   border: 0;
   width: 100%;
 }
+
+.required-label {
+  float: left;
+  position: relative;
+  text-align: right;
+  vertical-align: middle;
+}
+.required-label:after {
+  content: "*";
+  color: red;
+}
+
+.error-class {
+  border: 1px solid red;
+}
