@@ -3761,3 +3761,30 @@ header .navbar-default .navbar-nav li a {
 .error-class {
   border: 1px solid red;
 }
+
+.tooltip-info {
+  position: relative;
+  display: inline-block;
+  margin-left : 5px;
+}
+
+.tooltip-info .tooltiptext-info {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip-info:hover .tooltiptext-info {
+  visibility: visible;
+}

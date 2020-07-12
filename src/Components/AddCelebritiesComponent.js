@@ -8,6 +8,11 @@ import ServiceProvider from "./../Provider/ServiceProvider";
 import { apiUrl, monthNames } from "./../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../Store/Actions/actionCreator";
+import { useRef } from "react";
+import { showErrorMessage } from "../Provider/ToastProvider";
+import { ToastContainer } from "react-toastify";
+import LoaderProvider from "./../Provider/LoaderProvider";
+import { useSelector } from "react-redux";
 
 const initialState = {
   value: "",
@@ -26,12 +31,13 @@ const AddCelebrities = () => {
   const [coverPhoto, setCoverPhoto] = useState(initialState);
   const [coverPhotoS3, setCoverPhotoS3] = useState("");
   const dispatch = useDispatch();
-  // const showLoader = useSelector((state) => state.uiDetails.showLoader);
-  // const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
+  const photoInputRef = useRef();
+  const coverPhotoInputRef = useRef();
+  const showLoader = useSelector((state) => state.uiDetails.showLoader);
+  const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    debugger;
     const isValid = validateInputFields(
       name.value,
       nationality.value,
@@ -42,31 +48,53 @@ const AddCelebrities = () => {
       gender.value,
       dateOfBirth.value
     );
-    if (!isValid) {
-    } else {
+    if (isValid) {
       const formattedDate = formatDate(dateOfBirth.value);
       const formattedS3Photo = handleFileData(photoS3);
       const formattedCoverS3Photo = handleFileData(coverPhotoS3);
       const body = {
-        name: name,
-        gender: gender,
-        photo: photo,
+        name: name.value.trim(),
+        gender: gender.value.trim(),
+        photo: photo.value.trim(),
         photoS3: formattedS3Photo,
-        coverPhoto: coverPhoto,
+        coverPhoto: coverPhoto.value.trim(),
         coverPhotoS3: formattedCoverS3Photo,
-        nationality: nationality,
-        biography: biography,
-        netWorth: netWorth,
+        nationality: nationality.value.trim(),
+        biography: biography.value.trim(),
+        netWorth: netWorth.value.trim(),
         dateOfBirth: formattedDate,
       };
-      dispatch(toggleLoader(true, "15%"));
-
-      // ServiceProvider.post(apiUrl.addCelebrity, body).then((response) => {
-      //   if (response.status === 200) {
-      //     alert("Successful");
-      //   }
-      // });
+      dispatch(toggleLoader(true, 0));
+      sendAddCelebrityRequest(body);
     }
+  };
+
+  const sendAddCelebrityRequest = (body) => {
+    ServiceProvider.post(apiUrl.addCelebrity, body).then((response) => {
+      if (response.status === 200) {
+        dispatch(toggleLoader(false, 1));
+        resetState();
+        alert("Successfully Added Celeb");
+      } else if (response.status === 409) {
+        dispatch(toggleLoader(false, 1));
+        showErrorMessage(response.data.errorMessage);
+      }
+    });
+  };
+
+  const resetState = () => {
+    setName(initialState);
+    setDateOfBirth(initialState);
+    setNationality(initialState);
+    setBiography(initialState);
+    setPhoto(initialState);
+    setCoverPhoto(initialState);
+    setPhotoS3("");
+    setCoverPhotoS3("");
+    setGender({ value: "NA", isErrorExist: false });
+    setNetWorth({ value: 0, isErrorExist: false });
+    photoInputRef.current.value = "";
+    coverPhotoInputRef.current.value = "";
   };
 
   const validateInputFields = (
@@ -182,8 +210,12 @@ const AddCelebrities = () => {
 
   return (
     <React.Fragment>
-      <h1>Add Celebrities</h1>
-      <form>
+      <form
+        style={{
+          opacity: screenOpacity,
+        }}
+      >
+        <h1>Add Celebrities</h1>
         <div className="row">
           <div className="col-6">
             <div class="form-group">
@@ -203,6 +235,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={name.value}
                   style={{ border: "1px solid red" }}
                 />
               ) : (
@@ -218,6 +251,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={name.value}
                 />
               )}
             </div>
@@ -238,6 +272,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={gender.value}
                   style={{ border: "1px solid red" }}
                 >
                   <option value="NA">Select Gender</option>
@@ -255,6 +290,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={gender.value}
                 >
                   <option value="NA">Select Gender</option>
                   <option value="Male">Male</option>
@@ -279,6 +315,7 @@ const AddCelebrities = () => {
                   name="photo"
                   onChange={(e) => readFileDataAsBase64(e, e.target.name)}
                   style={{ border: "1px solid red" }}
+                  ref={photoInputRef}
                 />
               ) : (
                 <input
@@ -287,6 +324,7 @@ const AddCelebrities = () => {
                   id="exampleFormControlFile1"
                   name="photo"
                   onChange={(e) => readFileDataAsBase64(e, e.target.name)}
+                  ref={photoInputRef}
                 />
               )}
             </div>
@@ -304,6 +342,7 @@ const AddCelebrities = () => {
                   name="coverphoto"
                   onChange={(e) => readFileDataAsBase64(e, e.target.name)}
                   style={{ border: "1px solid red" }}
+                  ref={coverPhotoInputRef}
                 />
               ) : (
                 <input
@@ -312,6 +351,7 @@ const AddCelebrities = () => {
                   id="exampleFormControlFile1"
                   name="coverphoto"
                   onChange={(e) => readFileDataAsBase64(e, e.target.name)}
+                  ref={coverPhotoInputRef}
                 />
               )}
             </div>
@@ -336,6 +376,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={nationality.value}
                   style={{ border: "1px solid red" }}
                 />
               ) : (
@@ -350,6 +391,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={nationality.value}
                 />
               )}
             </div>
@@ -359,6 +401,10 @@ const AddCelebrities = () => {
               <label for="dateOfBirth" class="required-label">
                 Date Of Birth
               </label>
+              <div class="tooltip-info">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                <span class="tooltiptext-info">No Future Dates</span>
+              </div>
               {dateOfBirth.isErrorExist ? (
                 <DatePicker
                   selected={dateOfBirth.value}
@@ -369,6 +415,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={dateOfBirth.value}
                   className="error-class"
                 />
               ) : (
@@ -381,6 +428,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={dateOfBirth.value}
                 />
               )}
             </div>
@@ -403,6 +451,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={netWorth.value}
                   style={{ border: "1px solid red" }}
                 />
               ) : (
@@ -418,6 +467,7 @@ const AddCelebrities = () => {
                       isErrorExist: false,
                     })
                   }
+                  value={netWorth.value}
                 />
               )}
             </div>
@@ -428,6 +478,11 @@ const AddCelebrities = () => {
           <label for="exampleFormControlTextarea2" class="required-label">
             Biography
           </label>
+          <div class="tooltip-info">
+            <i class="fa fa-question-circle" aria-hidden="true"></i>
+            <span class="tooltiptext-info">Min 150 characters</span>
+          </div>
+
           {biography.isErrorExist ? (
             <textarea
               class="form-control rounded-0"
@@ -440,6 +495,7 @@ const AddCelebrities = () => {
                   isErrorExist: false,
                 })
               }
+              value={biography.value}
               style={{ border: "1px solid red" }}
             ></textarea>
           ) : (
@@ -454,6 +510,7 @@ const AddCelebrities = () => {
                   isErrorExist: false,
                 })
               }
+              value={biography.value}
             ></textarea>
           )}
         </div>
@@ -468,6 +525,7 @@ const AddCelebrities = () => {
           </button>
         </div>
       </form>
+      <ToastContainer autoClose={8000}></ToastContainer>
     </React.Fragment>
   );
 };
