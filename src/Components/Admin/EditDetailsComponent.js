@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { handleInputChange } from "../Store/Actions/actionCreator";
-import "../css/sideBar.css";
+import { handleInputChange } from "../../Store/Actions/actionCreator";
+import "../../css/sideBar.css";
 
 class EditDetailsComponent extends Component {
   state = {

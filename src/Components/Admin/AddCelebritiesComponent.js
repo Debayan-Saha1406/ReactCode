@@ -4,16 +4,15 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
-import ServiceProvider from "./../Provider/ServiceProvider";
-import { apiUrl, monthNames } from "./../Shared/Constants";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import { apiUrl, monthNames } from "../../Shared/Constants";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../Store/Actions/actionCreator";
+import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { useRef } from "react";
-import { showErrorMessage } from "../Provider/ToastProvider";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 import { ToastContainer } from "react-toastify";
-import LoaderProvider from "./../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
-import Information from "./MovieReview/Popups/Information";
+import Information from "../MovieReview/Popups/Information";
 
 const initialState = {
   value: "",

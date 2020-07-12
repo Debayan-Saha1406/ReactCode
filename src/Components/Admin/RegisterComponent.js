@@ -1,38 +1,37 @@
 import React, { Component } from "react";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
-import image from "../images/RegisterButton.jpg";
+import image from "../../images/RegisterButton.jpg";
 import {
   validateEmail,
   validatePassword,
   validateName,
   handleLastName,
-} from "../Shared/Services/ValidationService";
+} from "../../Shared/Services/ValidationService";
 import { Link, Redirect } from "react-router-dom";
-import "../css/register.css";
-import "../css/main.css";
-import "../css/util.css";
-import "../css/login.css";
-import "../css/passwordChecker.css";
-import "../css/forgotPassword.css";
-import "../../src/vendor/bootstrap/css/bootstrap.min.css";
+import "../../css/register.css";
+import "../../css/main.css";
+import "../../css/util.css";
+import "../../css/login.css";
+import "../../css/passwordChecker.css";
+import "../../css/forgotPassword.css";
+import "../../../src/vendor/bootstrap/css/bootstrap.min.css";
 import {
   handleEyeIconChange,
   handleDataTypeChange,
   handlePasswordMatchIcon,
   handlePasswordMatchIconColor,
-} from "../Shared/Services/PasswordService";
+} from "../../Shared/Services/PasswordService";
 
-import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
-import { apiUrl, constants } from "./../Shared/Constants";
-import ServiceProvider from "./../Provider/ServiceProvider";
-import PopupComponent from "./Common/PopupComponent";
+import { handleErrorClassName } from "../../Shared/Services/ErrorClassNameService";
+import { apiUrl, constants } from "../../Shared/Constants";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import PopupComponent from "../Common/PopupComponent";
 import { ToastContainer } from "react-toastify";
-import { showErrorMessage } from "../Provider/ToastProvider";
-import { toggleLoader, saveUserData } from "../Store/Actions/actionCreator";
+import { showErrorMessage } from "../../Provider/ToastProvider";
+import { toggleLoader, saveUserData } from "../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
-import LoaderProvider from "./../Provider/LoaderProvider";
-import { setLocalStorageItem } from "../Provider/LocalStorageProvider";
-import avatar from "../images/avatar.jpg";
+import LoaderProvider from "../../Provider/LoaderProvider";
+import { setLocalStorageItem } from "../../Provider/LocalStorageProvider";
 
 const style = {
   backgroundImage: `url(${image})`,

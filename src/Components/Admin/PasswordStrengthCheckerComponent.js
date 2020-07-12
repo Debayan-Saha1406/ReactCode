@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import '../css/passwordChecker.css';
-import { constants } from "../Shared/Constants";
+import "../../css/passwordChecker.css";
+import { constants } from "../../Shared/Constants";
 
 let strengthIndicator;
 class PasswordStrengthChecker extends Component {
@@ -10,12 +10,12 @@ class PasswordStrengthChecker extends Component {
       length: false,
       special: false,
       numbers: false,
-      small: false
+      small: false,
     },
     passwordMeter: {
-      width: "0%"
+      width: "0%",
     },
-    progressBarColor: "progress-bar-danger"
+    progressBarColor: "progress-bar-danger",
   };
 
   componentDidUpdate(prevProps) {
@@ -24,7 +24,7 @@ class PasswordStrengthChecker extends Component {
     }
   }
 
-  checkPassword = password => {
+  checkPassword = (password) => {
     let passwordStrengthValue = {};
     let passwordMeter = { ...this.state.passwordMeter };
 
@@ -52,18 +52,16 @@ class PasswordStrengthChecker extends Component {
       let char = password.charCodeAt(index);
       if (!passwordStrengthValue.caps && char >= 65 && char <= 90) {
         passwordStrengthValue.caps = true;
-      }
-      else if (!passwordStrengthValue.numbers && char >= 48 && char <= 57) {
+      } else if (!passwordStrengthValue.numbers && char >= 48 && char <= 57) {
         passwordStrengthValue.numbers = true;
-      }
-      else if (!passwordStrengthValue.small && char >= 97 && char <= 122) {
+      } else if (!passwordStrengthValue.small && char >= 97 && char <= 122) {
         passwordStrengthValue.small = true;
-      }
-      else if (!passwordStrengthValue.numbers && char >= 48 && char <= 57) {
+      } else if (!passwordStrengthValue.numbers && char >= 48 && char <= 57) {
         passwordStrengthValue.numbers = true;
-      }
-      else if ((!passwordStrengthValue.special && char >= 33 && char <= 47) ||
-        (char >= 58 && char <= 64)) {
+      } else if (
+        (!passwordStrengthValue.special && char >= 33 && char <= 47) ||
+        (char >= 58 && char <= 64)
+      ) {
         passwordStrengthValue.special = true;
       }
     }
@@ -73,24 +71,19 @@ class PasswordStrengthChecker extends Component {
     if (strengthIndicator === 0) {
       passwordMeter.width = "0%";
       this.setState({ progressBarColor: "progress-bar-danger" });
-    }
-    else if (strengthIndicator === 1) {
+    } else if (strengthIndicator === 1) {
       passwordMeter.width = "20%";
       this.setState({ progressBarColor: "progress-bar-danger" });
-    }
-    else if (strengthIndicator === 2) {
+    } else if (strengthIndicator === 2) {
       passwordMeter.width = "40%";
       this.setState({ progressBarColor: "progress-bar-danger-warning" });
-    }
-    else if (strengthIndicator === 3) {
+    } else if (strengthIndicator === 3) {
       passwordMeter.width = "60%";
       this.setState({ progressBarColor: "progress-bar-warning" });
-    }
-    else if (strengthIndicator === 4) {
+    } else if (strengthIndicator === 4) {
       passwordMeter.width = "80%";
       this.setState({ progressBarColor: "progress-bar-info" });
-    }
-    else {
+    } else {
       passwordMeter.width = "100%";
       this.setState({ progressBarColor: "progress-bar-success" });
     }
@@ -108,11 +101,10 @@ class PasswordStrengthChecker extends Component {
             aria-valuemax="100"
             style={this.state.passwordMeter}
           >
-              {constants.passwordStrength[strengthIndicator]}
+            {constants.passwordStrength[strengthIndicator]}
           </div>
         )}
       </div>
-     
     );
   }
 }

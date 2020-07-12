@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import "../css/usersList.css";
-import ServiceProvider from "./../Provider/ServiceProvider";
-import { apiUrl } from "../Shared/Constants";
-import PopupComponent from "./Common/PopupComponent";
-import LoaderProvider from "./../Provider/LoaderProvider";
+import "../../css/usersList.css";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import { apiUrl } from "../../Shared/Constants";
+import PopupComponent from "../Common/PopupComponent";
+import LoaderProvider from "../../Provider/LoaderProvider";
 
 import { connect } from "react-redux";
-import { toggleLoader } from "../Store/Actions/actionCreator";
+import { toggleLoader } from "../../Store/Actions/actionCreator";
 import ToggleUserStatus from "./ToggleUserStatus";
-import Pagination from "./Common/Pagination";
-import SearchBar from "./Common/SearchBar";
+import Pagination from "../Common/Pagination";
+import SearchBar from "../Common/SearchBar";
 
 let reasonForStatusChange = "";
 

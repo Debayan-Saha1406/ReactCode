@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import QuickInfo from "./Common/QuickInfo";
-import "../css/quickInfo.css";
-import "../css/report.css";
-import "../css/Doughnut.css";
-import Report from "./Common/Report";
-import DoughnutChart from "./Common/DoughnutChart";
-import ServiceProvider from "./../Provider/ServiceProvider";
+import QuickInfo from "../Common/QuickInfo";
+import "../../css/quickInfo.css";
+import "../../css/report.css";
+import "../../css/Doughnut.css";
+import Report from "../Common/Report";
+import DoughnutChart from "../Common/DoughnutChart";
+import ServiceProvider from "../../Provider/ServiceProvider";
 import {
   apiUrl,
   doughnutData,
   doughnutOptions,
   doughnutLabels,
-} from "./../Shared/Constants";
+} from "../../Shared/Constants";
 
 const brandProduct = "rgba(0,181,233,0.8)";
 const brandService = "rgba(0,173,95,0.8)";

@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import image from "../images/forgotPassword.png";
-import { validateEmail } from "../Shared/Services/ValidationService";
+import image from "../../images/forgotPassword.png";
+import { validateEmail } from "../../Shared/Services/ValidationService";
 import { Link, Redirect } from "react-router-dom";
-import "../css/forgotPassword.css";
-import ServiceProvider from "./../Provider/ServiceProvider";
-import { apiUrl } from "./../Shared/Constants";
+import "../../css/forgotPassword.css";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import { apiUrl } from "../../Shared/Constants";
 import { ToastContainer } from "react-toastify";
-import { showErrorMessage } from "../Provider/ToastProvider";
-import { showSuccessMessage } from "./../Provider/ToastProvider";
-import PopupComponent from "./Common/PopupComponent";
-import { toggleLoader } from "../Store/Actions/actionCreator";
+import { showErrorMessage } from "../../Provider/ToastProvider";
+import PopupComponent from "../Common/PopupComponent";
+import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
-import LoaderProvider from "./../Provider/LoaderProvider";
+import LoaderProvider from "../../Provider/LoaderProvider";
 
 const style = {
   backgroundImage: `url(${image})`,

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import image from "../images/resetPassword.jpg";
+import image from "../../images/resetPassword.jpg";
 import {
   validatePassword,
   validateToken,
   validateEmail,
-} from "../Shared/Services/ValidationService";
+} from "../../Shared/Services/ValidationService";
 import PasswordStrengthChecker from "./PasswordStrengthCheckerComponent";
 import { Redirect } from "react-router-dom";
 import {
@@ -12,17 +12,17 @@ import {
   handleDataTypeChange,
   handlePasswordMatchIcon,
   handlePasswordMatchIconColor,
-} from "../Shared/Services/PasswordService";
-import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
-import ServiceProvider from "./../Provider/ServiceProvider";
-import "../css/forgotPassword.css";
-import { apiUrl } from "./../Shared/Constants";
+} from "../../Shared/Services/PasswordService";
+import { handleErrorClassName } from "../../Shared/Services/ErrorClassNameService";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import "../../css/forgotPassword.css";
+import { apiUrl } from "../../Shared/Constants";
 import { ToastContainer } from "react-toastify";
-import PopupComponent from "./Common/PopupComponent";
-import { toggleLoader } from "../Store/Actions/actionCreator";
+import PopupComponent from "../Common/PopupComponent";
+import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
-import LoaderProvider from "./../Provider/LoaderProvider";
-import { showErrorMessage } from "../Provider/ToastProvider";
+import LoaderProvider from "../../Provider/LoaderProvider";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 
 const style = {
   backgroundImage: `url(${image})`,

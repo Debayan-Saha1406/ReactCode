@@ -1,30 +1,30 @@
 import React, { Component } from "react";
-import image from "../images/Login.png";
+import image from "../../images/Login.png";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import {
   validateEmail,
   validatePassword,
-} from "../Shared/Services/ValidationService";
-import { constants } from "../Shared/Constants";
-import "../css/login.css";
-import { handleErrorClassName } from "../Shared/Services/ErrorClassNameService";
-import ServiceProvider from "../Provider/ServiceProvider";
-import { apiUrl } from "./../Shared/Constants";
+} from "../../Shared/Services/ValidationService";
+import { constants } from "../../Shared/Constants";
+import "../../css/login.css";
+import { handleErrorClassName } from "../../Shared/Services/ErrorClassNameService";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import { apiUrl } from "../../Shared/Constants";
 import { ToastContainer } from "react-toastify";
 import {
   getLocalStorageItem,
   setLocalStorageItem,
-} from "../Provider/LocalStorageProvider";
-import { showErrorMessage } from "../Provider/ToastProvider";
+} from "../../Provider/LocalStorageProvider";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 import { connect } from "react-redux";
-import { saveUserData, toggleLoader } from "../Store/Actions/actionCreator";
-import avatar from "../images/avatar.jpg";
+import { saveUserData, toggleLoader } from "../../Store/Actions/actionCreator";
+import avatar from "../../images/avatar.jpg";
 
-import LoaderProvider from "./../Provider/LoaderProvider";
-import GoogleLoginProvider from "./../Provider/GoogleLoginProvider";
-import PopupComponent from "./Common/PopupComponent";
+import LoaderProvider from "../../Provider/LoaderProvider";
+import GoogleLoginProvider from "../../Provider/GoogleLoginProvider";
+import PopupComponent from "../Common/PopupComponent";
 
 const style = {
   backgroundImage: `url(${image})`,

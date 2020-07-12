@@ -7,17 +7,17 @@ import User from "./UserComponent";
 import ForgotPassword from "./ForgotPassword";
 import Register from "./RegisterComponent";
 import ResetPassword from "./ResetPasswordComponent";
-import Movies from "./MovieReview/Movies/Movies";
-import MovieDetails from "./MovieReview/MovieDetails/MovieDetails";
-import NotFound from "./MovieReview/Common/NotFound";
-import Home from "./MovieReview/MovieHome/Home";
-import UserProfile from "./MovieReview/UserDetails/UserProfile";
-import Celebrities from "./MovieReview/Celebrities/Celebrities";
-import CelebrityDetails from "./MovieReview/CelebrityDetails/CelebrityDetails";
-import Directors from "./MovieReview/Directors/Directors";
-import DirectorDetails from "./MovieReview/DirectorDetails/DirectorDetails";
-import SearchList from "./MovieReview/Search/SearchList";
-import { route } from "../Shared/Constants";
+import Movies from "../MovieReview/Movies/Movies";
+import MovieDetails from "../MovieReview/MovieDetails/MovieDetails";
+import NotFound from "../MovieReview/Common/NotFound";
+import Home from "../MovieReview/MovieHome/Home";
+import UserProfile from "../MovieReview/UserDetails/UserProfile";
+import Celebrities from "../MovieReview/Celebrities/Celebrities";
+import CelebrityDetails from "../MovieReview/CelebrityDetails/CelebrityDetails";
+import Directors from "../MovieReview/Directors/Directors";
+import DirectorDetails from "../MovieReview/DirectorDetails/DirectorDetails";
+import SearchList from "../MovieReview/Search/SearchList";
+import { route } from "../../Shared/Constants";
 
 class Router extends Component {
   render() {

@@ -5,7 +5,6 @@ import "../../css/sideBar.css";
 import { connect } from "react-redux";
 import "../../css/style.css";
 import PopupComponent from "./PopupComponent";
-import EditDetailsComponent from "../EditDetailsComponent";
 import {
   updateUserDetails,
   handleProfileImage,
@@ -23,7 +22,7 @@ import {
 } from "./../../Provider/LocalStorageProvider";
 import avatar from "../../images/avatar.jpg";
 import { toggleLoader } from "./../../Store/Actions/actionCreator";
-import CelebritySearchBox from "./../MovieReview/Celebrities/CelebritySearchBox";
+import EditDetailsComponent from "../Admin/EditDetailsComponent";
 
 class SideBar extends Component {
   state = {
