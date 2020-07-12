@@ -25,13 +25,13 @@ import {
 import { handleErrorClassName } from "../../Shared/Services/ErrorClassNameService";
 import { apiUrl, constants } from "../../Shared/Constants";
 import ServiceProvider from "../../Provider/ServiceProvider";
-import PopupComponent from "../Common/PopupComponent";
 import { ToastContainer } from "react-toastify";
 import { showErrorMessage } from "../../Provider/ToastProvider";
 import { toggleLoader, saveUserData } from "../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import LoaderProvider from "../../Provider/LoaderProvider";
 import { setLocalStorageItem } from "../../Provider/LocalStorageProvider";
+import PopupComponent from "../Admin/Common/PopupComponent";
 
 const style = {
   backgroundImage: `url(${image})`,

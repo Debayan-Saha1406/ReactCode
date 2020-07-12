@@ -1,19 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import { Redirect } from "react-router";
-import "../../css/navBar.css";
+import "../../../css/navBar.css";
 import { connect } from "react-redux";
-import {
-  toggleNavBarDropDown,
-  toggleSideBar,
-} from "../../Store/Actions/actionCreator";
-import PopupComponent from "./PopupComponent";
+import { toggleSideBar } from "../../../Store/Actions/actionCreator";
+import PopupComponent from "../Common/PopupComponent";
 import {
   removeLocalStorageItem,
   clearLocalStorage,
-} from "../../Provider/LocalStorageProvider";
-import { getLocalStorageItem } from "./../../Provider/LocalStorageProvider";
-import { constants } from "../../Shared/Constants";
+} from "../../../Provider/LocalStorageProvider";
+import { getLocalStorageItem } from "../../../Provider/LocalStorageProvider";
+import { constants } from "../../../Shared/Constants";
 
 const cursorStyle = {
   cursor: "pointer",

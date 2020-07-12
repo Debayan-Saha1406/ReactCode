@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import "../../css/usersList.css";
 import ServiceProvider from "../../Provider/ServiceProvider";
 import { apiUrl } from "../../Shared/Constants";
-import PopupComponent from "../Common/PopupComponent";
+import PopupComponent from "./Common/PopupComponent";
 import LoaderProvider from "../../Provider/LoaderProvider";
 
 import { connect } from "react-redux";

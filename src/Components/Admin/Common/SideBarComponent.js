@@ -1,28 +1,28 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import "../../css/sideBar.css";
+import "../../../css/sideBar.css";
 import { connect } from "react-redux";
-import "../../css/style.css";
-import PopupComponent from "./PopupComponent";
+import "../../../css/style.css";
+import PopupComponent from "../Common/PopupComponent";
 import {
   updateUserDetails,
   handleProfileImage,
   deleteProfileImage,
-} from "./../../Store/Actions/actionCreator";
+} from "../../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
-import { showErrorMessage } from "../../Provider/ToastProvider";
+import { showErrorMessage } from "../../../Provider/ToastProvider";
 import { ToastContainer } from "react-toastify";
-import { ImagePickerProvider } from "../../Provider/ImagePickerProvider";
-import ServiceProvider from "./../../Provider/ServiceProvider";
-import { apiUrl, constants, route } from "../../Shared/Constants";
+import { ImagePickerProvider } from "../../../Provider/ImagePickerProvider";
+import ServiceProvider from "../../../Provider/ServiceProvider";
+import { apiUrl, constants, route } from "../../../Shared/Constants";
 import {
   getLocalStorageItem,
   setLocalStorageItem,
-} from "./../../Provider/LocalStorageProvider";
-import avatar from "../../images/avatar.jpg";
-import { toggleLoader } from "./../../Store/Actions/actionCreator";
-import EditDetailsComponent from "../Admin/EditDetailsComponent";
+} from "../../../Provider/LocalStorageProvider";
+import avatar from "../../../images/avatar.jpg";
+import { toggleLoader } from "../../../Store/Actions/actionCreator";
+import EditDetailsComponent from "../../Admin/EditDetailsComponent";
 
 class SideBar extends Component {
   state = {
@@ -253,7 +253,7 @@ class SideBar extends Component {
             {this.state.activeLink === route.celebrity ? (
               <li className="active">
                 <Link
-                  to={"/admin/Celebrities"}
+                  to={"/admin/celebrities"}
                   onClick={() => this.handleSideMenuClick(route.celebrity)}
                 >
                   Celebrities
@@ -262,7 +262,7 @@ class SideBar extends Component {
             ) : (
               <li>
                 <Link
-                  to={"/admin/Celebrities"}
+                  to={"/admin/celebrities"}
                   onClick={() => this.handleSideMenuClick(route.celebrity)}
                 >
                   Celebrities

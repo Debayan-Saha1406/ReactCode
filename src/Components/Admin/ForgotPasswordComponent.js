@@ -7,7 +7,7 @@ import ServiceProvider from "../../Provider/ServiceProvider";
 import { apiUrl } from "../../Shared/Constants";
 import { ToastContainer } from "react-toastify";
 import { showErrorMessage } from "../../Provider/ToastProvider";
-import PopupComponent from "./Common/PopupComponent";
+import PopupComponent from "../Admin/Common/PopupComponent";
 import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
 import LoaderProvider from "../../Provider/LoaderProvider";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import "../../css/navBar.css";
+import "../../../css/navBar.css";
 
 const PopupComponent = (props) => {
   return (

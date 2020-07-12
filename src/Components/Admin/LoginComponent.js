@@ -24,7 +24,7 @@ import avatar from "../../images/avatar.jpg";
 
 import LoaderProvider from "../../Provider/LoaderProvider";
 import GoogleLoginProvider from "../../Provider/GoogleLoginProvider";
-import PopupComponent from "../Common/PopupComponent";
+import PopupComponent from "./Common/PopupComponent";
 
 const style = {
   backgroundImage: `url(${image})`,

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Navbar from "../Common/NavBarComponent";
-import SideBar from "../Common/SideBarComponent";
-import PopupComponent from "../Common/PopupComponent";
+import Navbar from "../Admin/Common/NavBarComponent";
+// import SideBar from "./Common/SideBarComponent";
+import PopupComponent from "../Admin/Common/PopupComponent";
 import { getLocalStorageItem } from "../../Provider/LocalStorageProvider";
 import { Redirect } from "react-router-dom";
 import "../../css/style.css";
@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import UsersList from "./UsersList";
 import AddCelebrities from "./AddCelebritiesComponent";
 import { route } from "../../Shared/Constants";
+import SideBar from "../Admin/Common/SideBarComponent";
 
 class Admin extends Component {
   state = {

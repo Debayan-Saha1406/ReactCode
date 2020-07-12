@@ -387,4 +387,5 @@ export const route = {
   celebrity: "celebrity",
   dashboard: "dashboard",
   users: "users",
+  directors: "directors",
 };
