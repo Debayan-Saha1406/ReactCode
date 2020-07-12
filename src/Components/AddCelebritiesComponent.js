@@ -13,6 +13,7 @@ import { showErrorMessage } from "../Provider/ToastProvider";
 import { ToastContainer } from "react-toastify";
 import LoaderProvider from "./../Provider/LoaderProvider";
 import { useSelector } from "react-redux";
+import Information from "./MovieReview/Popups/Information";
 
 const initialState = {
   value: "",
@@ -33,7 +34,8 @@ const AddCelebrities = () => {
   const dispatch = useDispatch();
   const photoInputRef = useRef();
   const coverPhotoInputRef = useRef();
-  const showLoader = useSelector((state) => state.uiDetails.showLoader);
+  const [popupClassName, setPopupClassName] = useState("openform");
+  const [showPopup, setShowPopup] = useState(false);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
 
   const handleSubmit = (e) => {
@@ -74,7 +76,7 @@ const AddCelebrities = () => {
       if (response.status === 200) {
         dispatch(toggleLoader(false, 1));
         resetState();
-        alert("Successfully Added Celeb");
+        setShowPopup(true);
       } else if (response.status === 409) {
         dispatch(toggleLoader(false, 1));
         showErrorMessage(response.data.errorMessage);
@@ -161,6 +163,10 @@ const AddCelebrities = () => {
     return true;
   };
 
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
   const handleFileData = (image) => {
     let updatedImage;
     if (image[image.indexOf("/") + 1] === "j")
@@ -210,6 +216,15 @@ const AddCelebrities = () => {
 
   return (
     <React.Fragment>
+      {showPopup && (
+        <Information
+          title="Celebrity Added"
+          popupClassName={"openform"}
+          btnText="Ok"
+          closePopup={closePopup}
+          content="You have successfully added the celebrity"
+        ></Information>
+      )}
       <form
         style={{
           opacity: screenOpacity,
