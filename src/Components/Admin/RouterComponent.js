@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Login from "./LoginComponent";
 import Admin from "./AdminComponent";
 import User from "./UserComponent";
-import ForgotPassword from "./ForgotPassword";
 import Register from "./RegisterComponent";
 import ResetPassword from "./ResetPasswordComponent";
 import Movies from "../MovieReview/Movies/Movies";
@@ -18,6 +17,7 @@ import Directors from "../MovieReview/Directors/Directors";
 import DirectorDetails from "../MovieReview/DirectorDetails/DirectorDetails";
 import SearchList from "../MovieReview/Search/SearchList";
 import { route } from "../../Shared/Constants";
+import ForgotPassword from "./ForgotPasswordComponent";
 
 class Router extends Component {
   render() {
