@@ -269,6 +269,25 @@ class SideBar extends Component {
                 </Link>
               </li>
             )}
+            {this.state.activeLink === route.directors ? (
+              <li className="active">
+                <Link
+                  to={"/admin/directors"}
+                  onClick={() => this.handleSideMenuClick(route.directors)}
+                >
+                  Directors
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to={"/admin/directors"}
+                  onClick={() => this.handleSideMenuClick(route.directors)}
+                >
+                  Directors
+                </Link>
+              </li>
+            )}
             {this.state.activeLink === route.users ? (
               <li className="active">
                 <Link

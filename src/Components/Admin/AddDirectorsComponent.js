@@ -1,30 +1,22 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
-import ServiceProvider from "../../Provider/ServiceProvider";
-import { apiUrl, monthNames } from "../../Shared/Constants";
-import { useDispatch } from "react-redux";
-import { toggleLoader } from "../../Store/Actions/actionCreator";
-import { useRef } from "react";
-import { showErrorMessage } from "../../Provider/ToastProvider";
+import React, { useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { useSelector } from "react-redux";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Information from "../MovieReview/Popups/Information";
+import { toggleLoader } from "../../Store/Actions/actionCreator";
+import { monthNames } from "../../Shared/Constants";
 
 const initialState = {
   value: "",
   isErrorExist: false,
 };
 
-const AddCelebrities = () => {
+const AddDirectors = () => {
   const [dateOfBirth, setDateOfBirth] = useState(initialState);
   const [name, setName] = useState(initialState);
   const [gender, setGender] = useState({ value: "NA", isErrorExist: false });
   const [nationality, setNationality] = useState(initialState);
-  const [netWorth, setNetWorth] = useState({ value: 0, isErrorExist: false });
   const [biography, setBiography] = useState(initialState);
   const [photo, setPhoto] = useState(initialState);
   const [photoS3, setPhotoS3] = useState("");
@@ -44,7 +36,6 @@ const AddCelebrities = () => {
       biography.value,
       photo.value,
       coverPhoto.value,
-      netWorth.value,
       gender.value,
       dateOfBirth.value
     );
@@ -61,25 +52,11 @@ const AddCelebrities = () => {
         coverPhotoS3: formattedCoverS3Photo,
         nationality: nationality.value.trim(),
         biography: biography.value.trim(),
-        netWorth: netWorth.value.trim(),
         dateOfBirth: formattedDate,
       };
       dispatch(toggleLoader(true, 0));
-      sendAddCelebrityRequest(body);
+      //sendAddCelebrityRequest(body);
     }
-  };
-
-  const sendAddCelebrityRequest = (body) => {
-    ServiceProvider.post(apiUrl.addCelebrity, body).then((response) => {
-      if (response.status === 200) {
-        dispatch(toggleLoader(false, 1));
-        resetState();
-        setShowPopup(true);
-      } else if (response.status === 409) {
-        dispatch(toggleLoader(false, 1));
-        showErrorMessage(response.data.errorMessage);
-      }
-    });
   };
 
   const resetState = () => {
@@ -92,7 +69,6 @@ const AddCelebrities = () => {
     setPhotoS3("");
     setCoverPhotoS3("");
     setGender({ value: "NA", isErrorExist: false });
-    setNetWorth({ value: 0, isErrorExist: false });
     photoInputRef.current.value = "";
     coverPhotoInputRef.current.value = "";
   };
@@ -103,7 +79,6 @@ const AddCelebrities = () => {
     biography,
     photo,
     coverPhoto,
-    netWorth,
     gender,
     dateOfBirth
   ) => {
@@ -133,11 +108,6 @@ const AddCelebrities = () => {
 
     if (coverPhoto.length <= 0) {
       setCoverPhoto({ ...coverPhoto, value: coverPhoto, isErrorExist: true });
-      isErrorExist = true;
-    }
-
-    if (netWorth <= 0) {
-      setNetWorth({ ...netWorth, value: netWorth, isErrorExist: true });
       isErrorExist = true;
     }
 
@@ -216,11 +186,11 @@ const AddCelebrities = () => {
     <React.Fragment>
       {showPopup && (
         <Information
-          title="Celebrity Added"
+          title="Director Added"
           popupClassName={"openform"}
           btnText="Ok"
           closePopup={closePopup}
-          content="You have successfully added the celebrity"
+          content="You have successfully added the director"
         ></Information>
       )}
       <form
@@ -228,7 +198,7 @@ const AddCelebrities = () => {
           opacity: screenOpacity,
         }}
       >
-        <h1>Add Celebrities</h1>
+        <h1>Add Directors</h1>
         <div className="row">
           <div className="col-6">
             <div class="form-group">
@@ -446,45 +416,6 @@ const AddCelebrities = () => {
               )}
             </div>
           </div>
-          <div className="col-3">
-            <div class="form-group">
-              <label for="dateOfBirth" class="required-label">
-                Net Worth (in millions)
-              </label>
-              {netWorth.isErrorExist ? (
-                <input
-                  type="number"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  onChange={(e) =>
-                    setNetWorth({
-                      ...netWorth,
-                      value: e.target.value,
-                      isErrorExist: false,
-                    })
-                  }
-                  value={netWorth.value}
-                  style={{ border: "1px solid red" }}
-                />
-              ) : (
-                <input
-                  type="number"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  onChange={(e) =>
-                    setNetWorth({
-                      ...netWorth,
-                      value: e.target.value,
-                      isErrorExist: false,
-                    })
-                  }
-                  value={netWorth.value}
-                />
-              )}
-            </div>
-          </div>
         </div>
 
         <div class="form-group">
@@ -543,4 +474,4 @@ const AddCelebrities = () => {
   );
 };
 
-export default AddCelebrities;
+export default AddDirectors;
