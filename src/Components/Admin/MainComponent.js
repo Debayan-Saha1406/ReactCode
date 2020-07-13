@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import QuickInfo from "../Common/QuickInfo";
+import QuickInfo from "./Common/QuickInfo";
 import "../../css/quickInfo.css";
 import "../../css/report.css";
 import "../../css/Doughnut.css";
-import Report from "../Common/Report";
-import DoughnutChart from "../Common/DoughnutChart";
+import Report from "./Common/Report";
+import DoughnutChart from "./Common/DoughnutChart";
 import ServiceProvider from "../../Provider/ServiceProvider";
 import {
   apiUrl,

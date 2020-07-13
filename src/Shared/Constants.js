@@ -5,8 +5,8 @@ import slider3 from "../images/slider3.jpg";
 
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -42,6 +42,7 @@ export const apiUrl = {
   starsBornToday: "/starsBornToday",
   moviesDirectorsCelebsCount: "/moviesDirectorsCelebsCount",
   addCelebrity: "/celebrity",
+  addDirector: "/director",
 };
 
 export const constants = {

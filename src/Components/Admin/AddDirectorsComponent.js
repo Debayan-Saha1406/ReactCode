@@ -6,6 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import Information from "../MovieReview/Popups/Information";
 import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { monthNames } from "../../Shared/Constants";
+import ServiceProvider from "./../../Provider/ServiceProvider";
+import { apiUrl } from "./../../Shared/Constants";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 
 const initialState = {
   value: "",
@@ -55,8 +58,21 @@ const AddDirectors = () => {
         dateOfBirth: formattedDate,
       };
       dispatch(toggleLoader(true, 0));
-      //sendAddCelebrityRequest(body);
+      sendAddDirectorRequest(body);
     }
+  };
+
+  const sendAddDirectorRequest = (body) => {
+    ServiceProvider.post(apiUrl.addDirector, body).then((response) => {
+      if (response.status === 200) {
+        dispatch(toggleLoader(false, 1));
+        resetState();
+        setShowPopup(true);
+      } else if (response.status === 409) {
+        dispatch(toggleLoader(false, 1));
+        showErrorMessage(response.data.errorMessage);
+      }
+    });
   };
 
   const resetState = () => {

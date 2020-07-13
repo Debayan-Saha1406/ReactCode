@@ -9,8 +9,8 @@ import LoaderProvider from "../../Provider/LoaderProvider";
 import { connect } from "react-redux";
 import { toggleLoader } from "../../Store/Actions/actionCreator";
 import ToggleUserStatus from "./ToggleUserStatus";
-import Pagination from "../Common/Pagination";
-import SearchBar from "../Common/SearchBar";
+import Pagination from "./Common/Pagination";
+import SearchBar from "./Common/SearchBar";
 
 let reasonForStatusChange = "";
 
