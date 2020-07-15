@@ -247,9 +247,25 @@ class SideBar extends Component {
                 </Link>
               </li>
             )}
-            <li>
-              <Link to={"/admin"}>Movies</Link>
-            </li>
+            {this.state.activeLink === route.movie ? (
+              <li className="active">
+                <Link
+                  to={"/admin/movies"}
+                  onClick={() => this.handleSideMenuClick(route.movie)}
+                >
+                  Movies
+                </Link>
+              </li>
+            ) : (
+              <li> 
+                <Link
+                  to={"/admin/movies"}
+                  onClick={() => this.handleSideMenuClick(route.movie)}
+                >
+                  Movies
+                </Link>
+              </li>
+            )}
             {this.state.activeLink === route.celebrity ? (
               <li className="active">
                 <Link

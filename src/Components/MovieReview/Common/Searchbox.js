@@ -15,12 +15,7 @@ const Searchbox = ({
   handleSubmit,
   clearState,
 }) => {
-  // const [movieName, setMovieName] = useState("");
-  // const [selectedRating, setRating] = useState(0);
-  // const [fromYear, setFromYear] = useState(0);
-  // const [toYear, setToYear] = useState(0);
   const [languages, setLanguage] = useState([]);
-  // const [languageId, setSelectedLanguageId] = useState(0);
   const [isFormDirty, setIsFormDirty] = useState(false);
 
   useEffect(() => {

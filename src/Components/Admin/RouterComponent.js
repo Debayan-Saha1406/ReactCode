@@ -37,6 +37,10 @@ class Router extends Component {
             path="/admin/directors"
             render={() => <Admin subRoute={route.directors} />}
           />
+          <Route
+            path="/admin/movies"
+            render={() => <Admin subRoute={route.movie} />}
+          />
           <Route path="/admin" component={Admin} />
           <Route path="/user" component={User} />
           <Route path="/forgotPassword" component={ForgotPassword} />
