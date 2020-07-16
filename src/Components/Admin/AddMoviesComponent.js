@@ -1,9 +1,10 @@
 /* eslint-disable array-callback-return */
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import ServiceProvider from "./../../Provider/ServiceProvider";
 import { apiUrl } from "./../../Shared/Constants";
+import Autocomplete from "react-autocomplete";
 
 const initialState = {
   value: "",
@@ -38,6 +39,13 @@ const AddMovies = () => {
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [description, setDescription] = useState(initialState);
+  const [celebList, setCelebList] = useState([]);
+  const [currentlySelectedCeleb, setCurrentlySelectedCeleb] = useState("");
+  const [selectedCelebs, setSelectedCelebs] = useState([]); //To be Sent in The Payload of celeb
+  const [isSuggestionBoxOpen, setIsSuggestionBoxOpen] = useState(false);
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
   const photoInputRef = useRef();
   const coverPhotoInputRef = useRef();
 
@@ -102,6 +110,58 @@ const AddMovies = () => {
   const deleteChip = (id) => {
     const remainingGenres = selectedGenres.filter((x) => x.id !== id);
     setSelectedGenres(remainingGenres);
+  };
+
+  const deleteCelebChip = (id) => {
+    const remainingCelebs = selectedCelebs.filter((x) => x.id !== id);
+    setSelectedCelebs(remainingCelebs);
+    setCurrentlySelectedCeleb("");
+  };
+
+  const handleCelebChange = (value) => {
+    setCurrentlySelectedCeleb(value);
+    if (value.length > 2) {
+      ServiceProvider.getWithParam(apiUrl.allCelebs, value).then((response) => {
+        if (response.status === 200) {
+          setCelebList(response.data.data);
+          setIsSuggestionBoxOpen(true);
+        } else if (response.status === 404) {
+          setCelebList([]);
+        }
+      });
+    } else {
+      setCelebList([]);
+    }
+  };
+
+  const handleCelebSelect = (value) => {
+    let celebId = 0;
+    let isCelebPresent = false;
+    celebList.forEach((celeb) => {
+      if (celeb.celebrityName === value) {
+        celebId = celeb.id;
+      }
+    });
+    selectedCelebs.forEach((selectedCeleb) => {
+      if (selectedCeleb.id === celebId) {
+        isCelebPresent = true;
+      }
+    });
+
+    if (!isCelebPresent) {
+      selectedCelebs.push({ id: celebId, name: value, characterName: "" });
+    }
+    setCurrentlySelectedCeleb("");
+    setSelectedCelebs(selectedCelebs);
+    setIsSuggestionBoxOpen(false);
+  };
+
+  const handleCharacterNameChange = (celeb, e) => {
+    const selectedCeleb = selectedCelebs.find((x) => x.id === celeb.id);
+    selectedCeleb.characterName = e.target.value;
+    debugger;
+    setSelectedCelebs(selectedCelebs);
+    forceUpdate();
   };
 
   return (
@@ -501,6 +561,71 @@ const AddMovies = () => {
         )}
       </div>
       <h4>Celebrity Details</h4>
+      <div className="row">
+        <div className="col-6">
+          <div class="form-group">
+            <label
+              for="exampleFormControlSelect1"
+              class="required-label"
+              style={{ width: "100%", textAlign: "left" }}
+            >
+              Actors/Actress
+            </label>
+            <Autocomplete
+              getItemValue={(item) => item.celebrityName}
+              items={celebList}
+              open={isSuggestionBoxOpen}
+              renderItem={(item, isHighlighted) => (
+                <div
+                  style={{ background: isHighlighted ? "lightgray" : "white" }}
+                >
+                  {item.celebrityName}
+                </div>
+              )}
+              value={currentlySelectedCeleb}
+              onSelect={(val) => handleCelebSelect(val)}
+              onChange={(e) => handleCelebChange(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-6">
+          {selectedCelebs.length > 0 &&
+            selectedCelebs.map((celeb, index) => (
+              <React.Fragment>
+                <div className="first">
+                  <div class="chip" style={{ marginTop: "25px" }}>
+                    {celeb.name}
+                    <span
+                      class="closebtn"
+                      onClick={() => deleteCelebChip(celeb.id)}
+                    >
+                      &times;
+                    </span>
+                  </div>
+                </div>
+                <div className="second">
+                  <div class="form-group">
+                    <label
+                      for="exampleFormControlSelect1"
+                      class="required-label"
+                    >
+                      Character Name
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                      onChange={(e) => handleCharacterNameChange(celeb, e)}
+                      value={celeb.characterName}
+                    />
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
+        </div>
+      </div>
+      <h4>Director Details</h4>
     </form>
   );
 };

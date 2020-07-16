@@ -13,6 +13,7 @@
     "jquery": "^3.4.1",
     "react": "^16.12.0",
     "react-animated-slider": "^2.0.0",
+    "react-autocomplete": "^1.8.1",
     "react-autosuggest": "^10.0.2",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-bottom-scroll-listener": "^4.0.0",

@@ -3812,3 +3812,13 @@ header .navbar-default .navbar-nav li a {
 .closebtn:hover {
   color: #000;
 }
+
+.first {
+  width: 50%;
+  float: left;
+}
+
+.second {
+  width: 50%;
+  float: left;
+}
