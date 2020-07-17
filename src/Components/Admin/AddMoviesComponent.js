@@ -43,6 +43,11 @@ const AddMovies = () => {
   const [currentlySelectedCeleb, setCurrentlySelectedCeleb] = useState("");
   const [selectedCelebs, setSelectedCelebs] = useState([]); //To be Sent in The Payload of celeb
   const [isSuggestionBoxOpen, setIsSuggestionBoxOpen] = useState(false);
+  const [directorList, setDirectorList] = useState([]);
+  const [currentlySelectedDirector, setCurrentlySelectedDirector] = useState(
+    ""
+  );
+  const [selectedDirectors, setSelectedDirectors] = useState([]);
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
 
@@ -118,6 +123,12 @@ const AddMovies = () => {
     setCurrentlySelectedCeleb("");
   };
 
+  const deleteDirectorChip = (id) => {
+    const remainingDirectors = selectedDirectors.filter((x) => x.id !== id);
+    setSelectedDirectors(remainingDirectors);
+    setCurrentlySelectedDirector("");
+  };
+
   const handleCelebChange = (value) => {
     setCurrentlySelectedCeleb(value);
     if (value.length > 2) {
@@ -134,6 +145,24 @@ const AddMovies = () => {
     }
   };
 
+  const handleDirectorChange = (value) => {
+    setCurrentlySelectedDirector(value);
+    if (value.length > 2) {
+      ServiceProvider.getWithParam(apiUrl.allDirectors, value).then(
+        (response) => {
+          if (response.status === 200) {
+            setDirectorList(response.data.data);
+            setIsSuggestionBoxOpen(true);
+          } else if (response.status === 404) {
+            setDirectorList([]);
+          }
+        }
+      );
+    } else {
+      setDirectorList([]);
+    }
+  };
+
   const handleCelebSelect = (value) => {
     let celebId = 0;
     let isCelebPresent = false;
@@ -147,7 +176,6 @@ const AddMovies = () => {
         isCelebPresent = true;
       }
     });
-
     if (!isCelebPresent) {
       selectedCelebs.push({ id: celebId, name: value, characterName: "" });
     }
@@ -156,12 +184,37 @@ const AddMovies = () => {
     setIsSuggestionBoxOpen(false);
   };
 
+  const handleDirectorSelect = (value) => {
+    let directorId = 0;
+    let isDirectorPresent = false;
+    directorList.forEach((director) => {
+      if (director.directorName === value) {
+        directorId = director.id;
+      }
+    });
+    selectedDirectors.forEach((selectedDirector) => {
+      if (selectedDirector.id === directorId) {
+        isDirectorPresent = true;
+      }
+    });
+
+    if (!isDirectorPresent) {
+      selectedDirectors.push({ id: directorId, name: value });
+    }
+    setCurrentlySelectedDirector("");
+    setSelectedDirectors(selectedDirectors);
+    setIsSuggestionBoxOpen(false);
+  };
+
   const handleCharacterNameChange = (celeb, e) => {
     const selectedCeleb = selectedCelebs.find((x) => x.id === celeb.id);
     selectedCeleb.characterName = e.target.value;
-    debugger;
     setSelectedCelebs(selectedCelebs);
     forceUpdate();
+  };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -570,6 +623,13 @@ const AddMovies = () => {
               style={{ width: "100%", textAlign: "left" }}
             >
               Actors/Actress
+              <div class="tooltip-info">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                <span class="tooltiptext-info" style={{ width: "250px" }}>
+                  Start Typing in and you will see the list in which u have to
+                  select at least 1{" "}
+                </span>
+              </div>
             </label>
             <Autocomplete
               getItemValue={(item) => item.celebrityName}
@@ -591,7 +651,7 @@ const AddMovies = () => {
         <div className="col-6">
           {selectedCelebs.length > 0 &&
             selectedCelebs.map((celeb, index) => (
-              <React.Fragment>
+              <React.Fragment key={index}>
                 <div className="first">
                   <div class="chip" style={{ marginTop: "25px" }}>
                     {celeb.name}
@@ -626,6 +686,68 @@ const AddMovies = () => {
         </div>
       </div>
       <h4>Director Details</h4>
+      <div className="row">
+        <div className="col-6">
+          <div class="form-group">
+            <label
+              for="exampleFormControlSelect1"
+              class="required-label"
+              style={{ width: "100%", textAlign: "left" }}
+            >
+              Directors
+              <div class="tooltip-info">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                <span class="tooltiptext-info" style={{ width: "250px" }}>
+                  Start Typing in and you will see the list in which u have to
+                  select at least 1{" "}
+                </span>
+              </div>
+            </label>
+
+            <Autocomplete
+              getItemValue={(item) => item.directorName}
+              items={directorList}
+              open={isSuggestionBoxOpen}
+              renderItem={(item, isHighlighted) => (
+                <div
+                  style={{ background: isHighlighted ? "lightgray" : "white" }}
+                >
+                  {item.directorName}
+                </div>
+              )}
+              value={currentlySelectedDirector}
+              onSelect={(val) => handleDirectorSelect(val)}
+              onChange={(e) => handleDirectorChange(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="col-6">
+          {selectedDirectors.length > 0 &&
+            selectedDirectors.map((director, index) => (
+              <React.Fragment key={index}>
+                <div class="chip" style={{ marginTop: "25px" }}>
+                  {director.name}
+                  <span
+                    class="closebtn"
+                    onClick={() => deleteDirectorChip(director.id)}
+                  >
+                    &times;
+                  </span>
+                </div>
+              </React.Fragment>
+            ))}
+        </div>
+      </div>
+      <div class="form-group" style={{ textAlign: "center" }}>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style={{ width: "25%" }}
+          onClick={handleAdd}
+        >
+          Add
+        </button>
+      </div>
     </form>
   );
 };
