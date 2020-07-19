@@ -25,7 +25,7 @@ const AddMovies = () => {
   const [photoS3, setPhotoS3] = useState("");
   const [coverPhoto, setCoverPhoto] = useState(initialState);
   const [coverPhotoS3, setCoverPhotoS3] = useState("");
-  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState(initialState);
   const [releaseDate, setReleaseDate] = useState(initialState);
   const [languages, setLanguages] = useState([]);
   const [currentlySelectedLanguage, setCurrentlySelectedLanguage] = useState({
@@ -40,12 +40,14 @@ const AddMovies = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [description, setDescription] = useState(initialState);
   const [celebList, setCelebList] = useState([]);
-  const [currentlySelectedCeleb, setCurrentlySelectedCeleb] = useState("");
+  const [currentlySelectedCeleb, setCurrentlySelectedCeleb] = useState(
+    initialState
+  );
   const [selectedCelebs, setSelectedCelebs] = useState([]); //To be Sent in The Payload of celeb
   const [isSuggestionBoxOpen, setIsSuggestionBoxOpen] = useState(false);
   const [directorList, setDirectorList] = useState([]);
   const [currentlySelectedDirector, setCurrentlySelectedDirector] = useState(
-    ""
+    initialState
   );
   const [selectedDirectors, setSelectedDirectors] = useState([]);
   const [, updateState] = useState();
@@ -120,17 +122,21 @@ const AddMovies = () => {
   const deleteCelebChip = (id) => {
     const remainingCelebs = selectedCelebs.filter((x) => x.id !== id);
     setSelectedCelebs(remainingCelebs);
-    setCurrentlySelectedCeleb("");
+    setCurrentlySelectedCeleb({ ...currentlySelectedCeleb, value: "" });
   };
 
   const deleteDirectorChip = (id) => {
     const remainingDirectors = selectedDirectors.filter((x) => x.id !== id);
     setSelectedDirectors(remainingDirectors);
-    setCurrentlySelectedDirector("");
+    setCurrentlySelectedDirector({ ...currentlySelectedDirector, value: "" });
   };
 
   const handleCelebChange = (value) => {
-    setCurrentlySelectedCeleb(value);
+    setCurrentlySelectedCeleb({
+      ...currentlySelectedCeleb,
+      value: value,
+      isErrorExist: false,
+    });
     if (value.length > 2) {
       ServiceProvider.getWithParam(apiUrl.allCelebs, value).then((response) => {
         if (response.status === 200) {
@@ -146,7 +152,11 @@ const AddMovies = () => {
   };
 
   const handleDirectorChange = (value) => {
-    setCurrentlySelectedDirector(value);
+    setCurrentlySelectedDirector({
+      ...currentlySelectedDirector,
+      value: value,
+      isErrorExist: false,
+    });
     if (value.length > 2) {
       ServiceProvider.getWithParam(apiUrl.allDirectors, value).then(
         (response) => {
@@ -177,9 +187,18 @@ const AddMovies = () => {
       }
     });
     if (!isCelebPresent) {
-      selectedCelebs.push({ id: celebId, name: value, characterName: "" });
+      selectedCelebs.push({
+        id: celebId,
+        name: value,
+        characterName: "",
+        isErrorExist: false,
+      });
     }
-    setCurrentlySelectedCeleb("");
+    setCurrentlySelectedCeleb({
+      ...currentlySelectedCeleb,
+      value: "",
+      isErrorExist: false,
+    });
     setSelectedCelebs(selectedCelebs);
     setIsSuggestionBoxOpen(false);
   };
@@ -201,7 +220,11 @@ const AddMovies = () => {
     if (!isDirectorPresent) {
       selectedDirectors.push({ id: directorId, name: value });
     }
-    setCurrentlySelectedDirector("");
+    setCurrentlySelectedDirector({
+      ...currentlySelectedDirector,
+      value: "",
+      isErrorExist: false,
+    });
     setSelectedDirectors(selectedDirectors);
     setIsSuggestionBoxOpen(false);
   };
@@ -209,13 +232,133 @@ const AddMovies = () => {
   const handleCharacterNameChange = (celeb, e) => {
     const selectedCeleb = selectedCelebs.find((x) => x.id === celeb.id);
     selectedCeleb.characterName = e.target.value;
+    selectedCeleb.isErrorExist = false;
     setSelectedCelebs(selectedCelebs);
     forceUpdate();
   };
 
   const handleAdd = (e) => {
     e.preventDefault();
+    const isValid = validateInputFields();
+    // name.value,
+    // runTimeHrs.value,
+    // runTimeMins.value,
+    // photo.value,
+    // coverPhoto.value,
+    // youtubeUrl.value,
+    // currentlySelectedLanguage.value,
+    // releaseDate.value,
+    // selectedGenres,
+    // description.value,
+    // currentlySelectedCeleb.value
   };
+
+  const validateInputFields = () =>
+    // name,
+    // runTimeHrs,
+    // runTimeMins,
+    // photo,
+    // coverPhoto,
+    // youtubeUrl,
+    // currentlySelectedLanguage,
+    // releaseDate,
+    // selectedGenres,
+    // description
+    {
+      let isErrorExist = false;
+      if (name.value.length <= 0) {
+        setName({ ...name, isErrorExist: true });
+        isErrorExist = true;
+      }
+      if (runTimeHrs.value <= 0) {
+        setRunTimeHrs({
+          ...runTimeHrs,
+          isErrorExist: true,
+        });
+        isErrorExist = true; //the local variable
+      }
+
+      if (runTimeMins.value <= 0) {
+        setRunTimeMins({
+          ...runTimeMins,
+          isErrorExist: true,
+        });
+        isErrorExist = true;
+      }
+
+      if (photo.value.length <= 0) {
+        setPhoto({ ...photo, isErrorExist: true });
+        isErrorExist = true;
+      }
+
+      if (coverPhoto.value.length <= 0) {
+        setCoverPhoto({ ...coverPhoto, isErrorExist: true });
+        isErrorExist = true;
+      }
+
+      if (youtubeUrl.value.length <= 0) {
+        setYoutubeUrl({ ...youtubeUrl, isErrorExist: true });
+        isErrorExist = true;
+      }
+
+      if (currentlySelectedLanguage.value === 0) {
+        setCurrentlySelectedLanguage({
+          ...currentlySelectedLanguage,
+          isErrorExist: true,
+        });
+        isErrorExist = true;
+      }
+
+      if (releaseDate.value === "") {
+        setReleaseDate({
+          ...releaseDate,
+          isErrorExist: true,
+        });
+        isErrorExist = true;
+      }
+
+      if (selectedGenres.length === 0) {
+        setCurrentlySelectedGenre({
+          ...currentlySelectedGenre,
+          isErrorExist: true,
+        });
+        isErrorExist = true;
+      }
+
+      if (description.value.length <= 150) {
+        setDescription({
+          ...description,
+          isErrorExist: true,
+        });
+        isErrorExist = true;
+      }
+
+      if (selectedCelebs.length === 0) {
+        setCurrentlySelectedCeleb({
+          ...currentlySelectedCeleb,
+          isErrorExist: true,
+        });
+      }
+
+      if (selectedDirectors.length === 0) {
+        setCurrentlySelectedDirector({
+          ...currentlySelectedDirector,
+          isErrorExist: true,
+        });
+      }
+
+      selectedCelebs.forEach((selectedCeleb) => {
+        if (selectedCeleb.characterName.length === 0) {
+          selectedCeleb.isErrorExist = true;
+          isErrorExist = true;
+        }
+      });
+
+      if (isErrorExist) {
+        return false;
+      }
+      return true;
+    };
 
   return (
     <form>
@@ -631,21 +774,46 @@ const AddMovies = () => {
                 </span>
               </div>
             </label>
-            <Autocomplete
-              getItemValue={(item) => item.celebrityName}
-              items={celebList}
-              open={isSuggestionBoxOpen}
-              renderItem={(item, isHighlighted) => (
-                <div
-                  style={{ background: isHighlighted ? "lightgray" : "white" }}
-                >
-                  {item.celebrityName}
-                </div>
-              )}
-              value={currentlySelectedCeleb}
-              onSelect={(val) => handleCelebSelect(val)}
-              onChange={(e) => handleCelebChange(e.target.value)}
-            />
+            {currentlySelectedCeleb.isErrorExist ? (
+              <span style={{ borderLeft: "5px solid red" }}>
+                <Autocomplete
+                  className="hello"
+                  getItemValue={(item) => item.celebrityName}
+                  items={celebList}
+                  open={isSuggestionBoxOpen}
+                  renderItem={(item, isHighlighted) => (
+                    <div
+                      style={{
+                        background: isHighlighted ? "lightgray" : "white",
+                      }}
+                    >
+                      {item.celebrityName}
+                    </div>
+                  )}
+                  value={currentlySelectedCeleb.value}
+                  onSelect={(val) => handleCelebSelect(val)}
+                  onChange={(e) => handleCelebChange(e.target.value)}
+                />
+              </span>
+            ) : (
+              <Autocomplete
+                getItemValue={(item) => item.celebrityName}
+                items={celebList}
+                open={isSuggestionBoxOpen}
+                renderItem={(item, isHighlighted) => (
+                  <div
+                    style={{
+                      background: isHighlighted ? "lightgray" : "white",
+                    }}
+                  >
+                    {item.celebrityName}
+                  </div>
+                )}
+                value={currentlySelectedCeleb.value}
+                onSelect={(val) => handleCelebSelect(val)}
+                onChange={(e) => handleCelebChange(e.target.value)}
+              />
+            )}
           </div>
         </div>
         <div className="col-6">
@@ -671,14 +839,26 @@ const AddMovies = () => {
                     >
                       Character Name
                     </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      onChange={(e) => handleCharacterNameChange(celeb, e)}
-                      value={celeb.characterName}
-                    />
+                    {celeb.isErrorExist ? (
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        onChange={(e) => handleCharacterNameChange(celeb, e)}
+                        value={celeb.characterName}
+                        style={{ border: "1px solid red" }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                        onChange={(e) => handleCharacterNameChange(celeb, e)}
+                        value={celeb.characterName}
+                      />
+                    )}
                   </div>
                 </div>
               </React.Fragment>
@@ -704,21 +884,45 @@ const AddMovies = () => {
               </div>
             </label>
 
-            <Autocomplete
-              getItemValue={(item) => item.directorName}
-              items={directorList}
-              open={isSuggestionBoxOpen}
-              renderItem={(item, isHighlighted) => (
-                <div
-                  style={{ background: isHighlighted ? "lightgray" : "white" }}
-                >
-                  {item.directorName}
-                </div>
-              )}
-              value={currentlySelectedDirector}
-              onSelect={(val) => handleDirectorSelect(val)}
-              onChange={(e) => handleDirectorChange(e.target.value)}
-            />
+            {currentlySelectedDirector.isErrorExist ? (
+              <span style={{ borderLeft: "5px solid red" }}>
+                <Autocomplete
+                  getItemValue={(item) => item.directorName}
+                  items={directorList}
+                  open={isSuggestionBoxOpen}
+                  renderItem={(item, isHighlighted) => (
+                    <div
+                      style={{
+                        background: isHighlighted ? "lightgray" : "white",
+                      }}
+                    >
+                      {item.directorName}
+                    </div>
+                  )}
+                  value={currentlySelectedDirector.value}
+                  onSelect={(val) => handleDirectorSelect(val)}
+                  onChange={(e) => handleDirectorChange(e.target.value)}
+                />
+              </span>
+            ) : (
+              <Autocomplete
+                getItemValue={(item) => item.directorName}
+                items={directorList}
+                open={isSuggestionBoxOpen}
+                renderItem={(item, isHighlighted) => (
+                  <div
+                    style={{
+                      background: isHighlighted ? "lightgray" : "white",
+                    }}
+                  >
+                    {item.directorName}
+                  </div>
+                )}
+                value={currentlySelectedDirector.value}
+                onSelect={(val) => handleDirectorSelect(val)}
+                onChange={(e) => handleDirectorChange(e.target.value)}
+              />
+            )}
           </div>
         </div>
         <div className="col-6">
