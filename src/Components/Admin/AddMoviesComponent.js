@@ -50,6 +50,8 @@ const AddMovies = () => {
     initialState
   );
   const [selectedDirectors, setSelectedDirectors] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [isGalleryErrorExist, setIsGalleryErrorExist] = useState(false);
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
 
@@ -68,6 +70,28 @@ const AddMovies = () => {
       }
     });
   }, []);
+
+  const readGalleryImages = (e) => {
+    const galleryArray = [];
+    Array.from(e.target.files).forEach((file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          resolve(event.target.result);
+          setIsGalleryErrorExist(false);
+          galleryArray.push({ name: file.name, base64: event.target.result });
+          setGalleryImages(galleryArray);
+        };
+
+        reader.onerror = (err) => {
+          reject(err);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+  };
 
   const readFileDataAsBase64 = (e, type) => {
     const file = e.target.files[0];
@@ -240,125 +264,111 @@ const AddMovies = () => {
   const handleAdd = (e) => {
     e.preventDefault();
     const isValid = validateInputFields();
-    // name.value,
-    // runTimeHrs.value,
-    // runTimeMins.value,
-    // photo.value,
-    // coverPhoto.value,
-    // youtubeUrl.value,
-    // currentlySelectedLanguage.value,
-    // releaseDate.value,
-    // selectedGenres,
-    // description.value,
-    // currentlySelectedCeleb.value
+    if (isValid) {
+      const body = {};
+    }
   };
 
-  const validateInputFields = () =>
-    // name,
-    // runTimeHrs,
-    // runTimeMins,
-    // photo,
-    // coverPhoto,
-    // youtubeUrl,
-    // currentlySelectedLanguage,
-    // releaseDate,
-    // selectedGenres,
-    // description
-    {
-      let isErrorExist = false;
-      if (name.value.length <= 0) {
-        setName({ ...name, isErrorExist: true });
-        isErrorExist = true;
-      }
-      if (runTimeHrs.value <= 0) {
-        setRunTimeHrs({
-          ...runTimeHrs,
-          isErrorExist: true,
-        });
-        isErrorExist = true; //the local variable
-      }
-
-      if (runTimeMins.value <= 0) {
-        setRunTimeMins({
-          ...runTimeMins,
-          isErrorExist: true,
-        });
-        isErrorExist = true;
-      }
-
-      if (photo.value.length <= 0) {
-        setPhoto({ ...photo, isErrorExist: true });
-        isErrorExist = true;
-      }
-
-      if (coverPhoto.value.length <= 0) {
-        setCoverPhoto({ ...coverPhoto, isErrorExist: true });
-        isErrorExist = true;
-      }
-
-      if (youtubeUrl.value.length <= 0) {
-        setYoutubeUrl({ ...youtubeUrl, isErrorExist: true });
-        isErrorExist = true;
-      }
-
-      if (currentlySelectedLanguage.value === 0) {
-        setCurrentlySelectedLanguage({
-          ...currentlySelectedLanguage,
-          isErrorExist: true,
-        });
-        isErrorExist = true;
-      }
-
-      if (releaseDate.value === "") {
-        setReleaseDate({
-          ...releaseDate,
-          isErrorExist: true,
-        });
-        isErrorExist = true;
-      }
-
-      if (selectedGenres.length === 0) {
-        setCurrentlySelectedGenre({
-          ...currentlySelectedGenre,
-          isErrorExist: true,
-        });
-        isErrorExist = true;
-      }
-
-      if (description.value.length <= 150) {
-        setDescription({
-          ...description,
-          isErrorExist: true,
-        });
-        isErrorExist = true;
-      }
-
-      if (selectedCelebs.length === 0) {
-        setCurrentlySelectedCeleb({
-          ...currentlySelectedCeleb,
-          isErrorExist: true,
-        });
-      }
-
-      if (selectedDirectors.length === 0) {
-        setCurrentlySelectedDirector({
-          ...currentlySelectedDirector,
-          isErrorExist: true,
-        });
-      }
-
-      selectedCelebs.forEach((selectedCeleb) => {
-        if (selectedCeleb.characterName.length === 0) {
-          selectedCeleb.isErrorExist = true;
-          isErrorExist = true;
-        }
+  const validateInputFields = () => {
+    let isErrorExist = false;
+    if (name.value.length <= 0) {
+      setName({ ...name, isErrorExist: true });
+      isErrorExist = true;
+    }
+    if (runTimeHrs.value <= 0) {
+      setRunTimeHrs({
+        ...runTimeHrs,
+        isErrorExist: true,
       });
+      isErrorExist = true; //the local variable
+    }
 
-      if (isErrorExist) {
-        return false;
+    if (runTimeMins.value <= 0) {
+      setRunTimeMins({
+        ...runTimeMins,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (photo.value.length <= 0) {
+      setPhoto({ ...photo, isErrorExist: true });
+      isErrorExist = true;
+    }
+
+    if (coverPhoto.value.length <= 0) {
+      setCoverPhoto({ ...coverPhoto, isErrorExist: true });
+      isErrorExist = true;
+    }
+
+    if (youtubeUrl.value.length <= 0) {
+      setYoutubeUrl({ ...youtubeUrl, isErrorExist: true });
+      isErrorExist = true;
+    }
+
+    if (currentlySelectedLanguage.value === 0) {
+      setCurrentlySelectedLanguage({
+        ...currentlySelectedLanguage,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (releaseDate.value === "") {
+      setReleaseDate({
+        ...releaseDate,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (galleryImages.length === 0) {
+      setIsGalleryErrorExist(true);
+      isErrorExist = true;
+    }
+
+    if (selectedGenres.length === 0) {
+      setCurrentlySelectedGenre({
+        ...currentlySelectedGenre,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (description.value.length <= 150) {
+      setDescription({
+        ...description,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (selectedCelebs.length === 0) {
+      setCurrentlySelectedCeleb({
+        ...currentlySelectedCeleb,
+        isErrorExist: true,
+      });
+    }
+
+    if (selectedDirectors.length === 0) {
+      setCurrentlySelectedDirector({
+        ...currentlySelectedDirector,
+        isErrorExist: true,
+      });
+    }
+
+    selectedCelebs.forEach((selectedCeleb) => {
+      if (selectedCeleb.characterName.length === 0) {
+        selectedCeleb.isErrorExist = true;
+        isErrorExist = true;
       }
-      return true;
-    };
+    });
+
+    if (isErrorExist) {
+      return false;
+    }
+    return true;
+  };
 
   return (
     <form>
@@ -578,7 +588,7 @@ const AddMovies = () => {
             )}
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-3">
           <div class="form-group">
             <label for="dateOfBirth" class="required-label">
               Release Date
@@ -607,6 +617,35 @@ const AddMovies = () => {
                   })
                 }
                 value={releaseDate.value}
+              />
+            )}
+          </div>
+        </div>
+        <div className="col-3">
+          <div class="form-group">
+            <label for="exampleFormControlFile1" class="required-label">
+              Upload Gallery Images
+            </label>
+            {isGalleryErrorExist ? (
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="photo"
+                onChange={(e) => readGalleryImages(e, e.target.name)}
+                style={{ border: "1px solid red" }}
+                ref={photoInputRef}
+                multiple
+              />
+            ) : (
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="photo"
+                onChange={(e) => readGalleryImages(e, e.target.name)}
+                ref={photoInputRef}
+                multiple
               />
             )}
           </div>

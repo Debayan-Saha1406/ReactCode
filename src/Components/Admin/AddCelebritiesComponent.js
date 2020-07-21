@@ -106,6 +106,7 @@ const AddCelebrities = () => {
     netWorth,
     gender,
     dateOfBirth
+    //Refactor this
   ) => {
     let isErrorExist = false;
     if (name.length <= 0) {
