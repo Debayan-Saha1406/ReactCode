@@ -257,7 +257,7 @@ class SideBar extends Component {
                 </Link>
               </li>
             ) : (
-              <li> 
+              <li>
                 <Link
                   to={"/admin/movies"}
                   onClick={() => this.handleSideMenuClick(route.movie)}
@@ -323,9 +323,6 @@ class SideBar extends Component {
                 </Link>
               </li>
             )}
-            <li>
-              <a href="#">Contact</a>
-            </li>
           </ul>
         </div>
         {this.state.showDeleteProfileImagePopup && (

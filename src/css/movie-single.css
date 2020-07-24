@@ -3822,3 +3822,7 @@ header .navbar-default .navbar-nav li a {
   width: 50%;
   float: left;
 }
+
+.role.pending {
+  background: orange;
+}

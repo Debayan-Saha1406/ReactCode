@@ -308,16 +308,16 @@ const AddMovies = () => {
       };
 
       dispatch(toggleLoader(true, 0));
-      // ServiceProvider.post(apiUrl.addMovie, body).then((response) => {
-      //   if (response.status === 200) {
-      //     dispatch(toggleLoader(false, 1));
-      //     resetState();
-      //     setShowPopup(true);
-      //   } else if (response.status === 409) {
-      //     dispatch(toggleLoader(false, 1));
-      //     showErrorMessage(response.data.errorMessage);
-      //   }
-      // });
+      ServiceProvider.post(apiUrl.addMovie, body).then((response) => {
+        if (response.status === 200) {
+          dispatch(toggleLoader(false, 1));
+          resetState();
+          setShowPopup(true);
+        } else if (response.status === 409) {
+          dispatch(toggleLoader(false, 1));
+          showErrorMessage(response.data.errorMessage);
+        }
+      });
     }
   };
 

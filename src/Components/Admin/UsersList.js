@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import "../../css/usersList.css";
 import ServiceProvider from "../../Provider/ServiceProvider";
-import { apiUrl } from "../../Shared/Constants";
+import { apiUrl, userStatus } from "../../Shared/Constants";
 import PopupComponent from "./Common/PopupComponent";
 import LoaderProvider from "../../Provider/LoaderProvider";
 
@@ -19,7 +19,7 @@ class UsersList extends Component {
     users: [],
     isDropdownOpen: false,
     indexClicked: -1,
-    showBlockPopup: false,
+    showPopup: false,
     currentPage: 1,
     usersPerPage: 5,
     totalUsersCount: 0,
@@ -36,7 +36,7 @@ class UsersList extends Component {
     ServiceProvider.post(apiUrl.users, body).then((response) => {
       if (response.status === 200) {
         this.setState({
-          users: response.data.data.userDetails,
+          users: response.data.data.details,
           totalUsersCount: response.data.data.totalCount,
         });
         this.props.toggleLoader(false, 1);
@@ -58,13 +58,17 @@ class UsersList extends Component {
   }
 
   handleBlockAction = () => {
-    this.setState({ showBlockPopup: true });
+    this.setState({ showPopup: true });
   };
 
   handlePopupButtonClick = (event, user) => {
     if (event.target.name === "Yes") {
+      const userStatusId =
+        user.userStatusId === userStatus.active
+          ? userStatus.blocked
+          : userStatus.active;
       const body = {
-        userStatus: !user.isActive,
+        userStatus: userStatusId,
         reason:
           reasonForStatusChange.trim() === "" ? null : reasonForStatusChange,
       };
@@ -72,14 +76,14 @@ class UsersList extends Component {
         (response) => {
           if (response.status === 200) {
             const users = [...this.state.users];
-            user.isActive = !user.isActive;
+            user.userStatusId = userStatusId;
             users[this.state.indexClicked] = user;
             this.setState({ users });
           }
         }
       );
     }
-    this.setState({ showBlockPopup: false, isDropdownOpen: false });
+    this.setState({ showPopup: false, isDropdownOpen: false });
   };
 
   handleReason = (reason) => {
@@ -96,7 +100,7 @@ class UsersList extends Component {
       if (response.status === 200) {
         if (searchData.trim() === "") {
           this.setState({
-            users: response.data.data.userDetails,
+            users: response.data.data.details,
             totalUsersCount: response.data.data.totalCount,
             currentPage: 1,
             isFilteredDataPresent: true,
@@ -104,8 +108,8 @@ class UsersList extends Component {
           });
         } else {
           this.setState({
-            users: response.data.data.userDetails,
-            totalUsersCount: response.data.data.userDetails.length,
+            users: response.data.data.details,
+            totalUsersCount: response.data.data.details.length,
             currentPage: 1,
             isFilteredDataPresent: false,
             isDropdownOpen: false,
@@ -123,7 +127,7 @@ class UsersList extends Component {
     };
     ServiceProvider.post(apiUrl.users, body).then((response) => {
       if (response.status === 200) {
-        this.setState({ users: response.data.data.userDetails });
+        this.setState({ users: response.data.data.details });
       }
     });
   }
@@ -223,14 +227,19 @@ class UsersList extends Component {
                         )}
                       </td>
                       <td>
-                        {user.isActive ? (
+                        {user.userStatusId === userStatus.active ? (
                           <span className="role member">Active</span>
+                        ) : user.userStatusId === userStatus.pending ? (
+                          <span className="role pending">Pending Approval</span>
                         ) : (
                           <span className="role admin">Blocked</span>
                         )}
                       </td>
                       <td>
-                        <div className="dropdown">
+                        <div
+                          className="dropdown"
+                          style={{ color: "black", overflow: "inherit" }}
+                        >
                           <i
                             className="fa fa-ellipsis-v"
                             onClick={() => this.handleThreeDotMenu(index)}
@@ -245,22 +254,14 @@ class UsersList extends Component {
                             >
                               <a
                                 className="dropdown-item"
-                                style={{ cursor: "pointer" }}
-                              >
-                                Manage Access
-                              </a>
-                              <a
-                                className="dropdown-item"
                                 onClick={this.handleBlockAction}
                                 style={{ cursor: "pointer" }}
                               >
-                                {user.isActive ? "Block" : "Unblock"}
-                              </a>
-                              <a
-                                className="dropdown-item"
-                                style={{ cursor: "pointer" }}
-                              >
-                                Something else here
+                                {user.userStatusId === userStatus.active
+                                  ? "Block"
+                                  : user.userStatusId === userStatus.pending
+                                  ? "Approve"
+                                  : "Unblock"}
                               </a>
                             </div>
                           ) : (
@@ -280,9 +281,9 @@ class UsersList extends Component {
               </tbody>
             </table>
           </div>
-          {this.state.showBlockPopup && (
+          {this.state.showPopup && (
             <PopupComponent
-              showPopup={this.state.showBlockPopup}
+              showPopup={this.state.showPopup}
               togglePopUp={(event) =>
                 this.handlePopupButtonClick(
                   event,
@@ -290,8 +291,12 @@ class UsersList extends Component {
                 )
               }
               modalTitle={`${
-                this.state.users[this.state.indexClicked].isActive === true
+                this.state.users[this.state.indexClicked].userStatusId ===
+                userStatus.active
                   ? "Block User"
+                  : this.state.users[this.state.indexClicked].userStatusId ===
+                    userStatus.pending
+                  ? "Approve User As Admin"
                   : "Unblock User"
               }`}
               component={
