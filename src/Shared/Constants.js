@@ -46,6 +46,7 @@ export const apiUrl = {
   genres: "/genres",
   allCelebs: "/allCelebs/",
   allDirectors: "/allDirectors/",
+  addMovie: "/movie",
 };
 
 export const constants = {
