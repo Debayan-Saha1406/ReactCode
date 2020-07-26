@@ -11,6 +11,8 @@ import { toggleLoader } from "../../Store/Actions/actionCreator";
 import ToggleUserStatus from "./ToggleUserStatus";
 import Pagination from "./Common/Pagination";
 import SearchBar from "./Common/SearchBar";
+import { showErrorMessage } from "../../Provider/ToastProvider";
+import { ToastContainer } from "react-toastify";
 
 let reasonForStatusChange = "";
 
@@ -79,6 +81,8 @@ class UsersList extends Component {
             user.userStatusId = userStatusId;
             users[this.state.indexClicked] = user;
             this.setState({ users });
+          } else if (response.status === 500) {
+            showErrorMessage(response.data);
           }
         }
       );
@@ -316,6 +320,7 @@ class UsersList extends Component {
               )}
             </div>
           </div>
+          {<ToastContainer autoClose={8000}></ToastContainer>}
         </div>
       </React.Fragment>
     );

@@ -156,6 +156,9 @@ class Login extends Component {
         } else if (response.status === 401) {
           this.props.toggleLoader(false, 1);
           showErrorMessage("You are not authorized to Login");
+        } else if (response.status === 800) {
+          this.props.toggleLoader(false, 1);
+          showErrorMessage(response.data);
         } else {
           this.props.toggleLoader(false, 1);
           showErrorMessage(response.data.errors);

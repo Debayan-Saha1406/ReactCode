@@ -23,7 +23,12 @@ import {
 } from "../../Shared/Services/PasswordService";
 
 import { handleErrorClassName } from "../../Shared/Services/ErrorClassNameService";
-import { apiUrl, constants } from "../../Shared/Constants";
+import {
+  apiUrl,
+  constants,
+  userStatus,
+  userRole,
+} from "../../Shared/Constants";
 import ServiceProvider from "../../Provider/ServiceProvider";
 import { ToastContainer } from "react-toastify";
 import { showErrorMessage } from "../../Provider/ToastProvider";
@@ -75,7 +80,7 @@ class Register extends Component {
     iconColor: "red",
     hasPasswordError: true,
     showRedirectPopup: false,
-    redirectToLogin: false,
+    redirectToHome: false,
     redirectToAdmin: false,
   };
 
@@ -134,6 +139,8 @@ class Register extends Component {
         profileImageUrl: this.props.location.state
           ? this.props.location.state.response.imageUrl
           : null,
+        userStatusId: userStatus.pending,
+        roleId: userRole.admin,
       };
       this.props.toggleLoader(true, "15%");
       ServiceProvider.post(apiUrl.register, body).then((response) => {
@@ -263,7 +270,7 @@ class Register extends Component {
   };
 
   handleRedirect = () => {
-    this.setState({ redirectToLogin: true });
+    this.setState({ redirectToHome: true });
   };
 
   componentDidMount() {
@@ -291,8 +298,8 @@ class Register extends Component {
   }
 
   render() {
-    if (this.state.redirectToLogin) {
-      return <Redirect to="/login"></Redirect>;
+    if (this.state.redirectToHome) {
+      return <Redirect to="/home"></Redirect>;
     }
 
     if (this.state.redirectToAdmin) {
@@ -444,8 +451,8 @@ class Register extends Component {
         </div>
         {this.state.showRedirectPopup && (
           <PopupComponent
-            modalTitle="Registration Successful"
-            modalBody="You will now be navigated to login page"
+            modalTitle="Registration Pending Approval"
+            modalBody="You will now be navigated to home page of the website. You can login once admin approves ur registration as an admin."
             modalOKButtonText="OK"
             showCancelButton={false}
             showPopup={this.state.showRedirectPopup}

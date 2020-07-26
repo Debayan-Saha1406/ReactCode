@@ -401,3 +401,8 @@ export const userStatus = {
   active: 2,
   pending: 3,
 };
+
+export const userRole = {
+  admin: 1,
+  user: 2,
+};

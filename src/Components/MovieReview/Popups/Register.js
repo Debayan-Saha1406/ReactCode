@@ -4,7 +4,12 @@ import React from "react";
 import { useState } from "react";
 import "../../../css/movie-single.css";
 import ServiceProvider from "../../../Provider/ServiceProvider";
-import { apiUrl, constants } from "../../../Shared/Constants";
+import {
+  apiUrl,
+  constants,
+  userStatus,
+  userRole,
+} from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import {
   toggleLoader,
@@ -61,6 +66,8 @@ const Register = (props) => {
         lastName: lastName,
         email: email.value,
         password: password.value,
+        userStatusId: userStatus.active,
+        roleId: userRole.user,
       };
       dispatch(toggleLoader(true, "15%"));
       ServiceProvider.post(apiUrl.register, body).then((response) => {
