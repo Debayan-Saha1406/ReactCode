@@ -112,12 +112,12 @@ const ChangePassword = (props) => {
       <h4>02. Change password</h4>
       <div class="row">
         <div class="col-md-6 form-it" id="spacing-below">
-          <label>Old Password</label>
+          <label class="required-label">Old Password</label>
           <input
             type="text"
             name="oldPassword"
             value={oldPassword.value}
-            placeholder="**********"
+            placeholder="Enter Old Password"
             onChange={(e) => handleInputChange(e, setOldPassword)}
           />
           {oldPassword.errorClassName === "input-error" && (
@@ -127,11 +127,11 @@ const ChangePassword = (props) => {
       </div>
       <div class="row">
         <div class="col-md-6 form-it" id="spacing-below">
-          <label>New Password</label>
+          <label class="required-label">New Password</label>
           <input
             type="text"
             name="newPassword"
-            placeholder="***************"
+            placeholder="Enter New Password"
             value={newPassword.value}
             onChange={(e) => handleInputChange(e, setNewPassword)}
           />
@@ -142,12 +142,12 @@ const ChangePassword = (props) => {
       </div>
       <div class="row">
         <div class="col-md-6 form-it" id="spacing-below">
-          <label>Confirm New Password</label>
+          <label class="required-label">Confirm New Password</label>
           <input
             type="text"
             name="confirmPassword"
             value={confirmPassword.value}
-            placeholder="*************** "
+            placeholder="Confirm Your Password"
             onChange={(e) => handleInputChange(e, setConfirmPassword)}
           />
           {confirmPassword.errorClassName === "input-error" && (
@@ -160,7 +160,7 @@ const ChangePassword = (props) => {
           <input
             class="submit"
             id="black-hover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", paddingLeft: "20px" }}
             value="change"
             onClick={changePassword}
           />

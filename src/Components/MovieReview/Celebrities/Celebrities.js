@@ -115,7 +115,7 @@ const Celebrities = (props) => {
       gender: state.category,
       searchType: state.searchType,
     };
-    fetchCelebsData(body, setCelebrityData, celebrityData);
+    fetchCelebsData(body, setCelebrityData, celebrityData, true);
   };
 
   const setCelebrityDetails = (e) => {

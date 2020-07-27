@@ -340,7 +340,7 @@ class ResetPassword extends Component {
             showCancelButton={false}
           ></PopupComponent>
         )}
-        {<ToastContainer autoClose={3000}></ToastContainer>}
+        {<ToastContainer autoClose={8000}></ToastContainer>}
       </div>
     );
   }

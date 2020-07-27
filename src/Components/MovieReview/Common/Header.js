@@ -62,7 +62,7 @@ class Header extends Component {
     if (this.state.headerDropdownClass === "block") {
       this.setState({
         headerDropdownClass: "none",
-        currentMenuItem: menuItem.home,
+        currentMenuItem: menuItem.loggedInEmail,
       });
     } else {
       this.setState({
@@ -79,6 +79,8 @@ class Header extends Component {
       this.setState({ currentMenuItem: menuItem.celeb });
     } else if (window.location.pathname.includes(menuItem.director)) {
       this.setState({ currentMenuItem: menuItem.director });
+    } else if (window.location.pathname.includes(menuItem.user)) {
+      this.setState({ currentMenuItem: menuItem.loggedInEmail });
     } else {
       this.setState({ currentMenuItem: menuItem.home });
     }
@@ -291,47 +293,25 @@ class Header extends Component {
                 </li>
               )}
               {this.props.isUserLoggedIn ? (
-                this.state.currentMenuItem === menuItem.loggedInEmail ? (
-                  <li
-                    className="menu-item current-menu-item"
-                    id="dropbtn"
-                    onClick={this.handleDropdownClick}
-                    style={{ cursor: "pointer" }}
+                <li
+                  className="menu-item current-menu-item"
+                  id="dropbtn"
+                  onClick={this.handleDropdownClick}
+                  style={{ cursor: "pointer" }}
+                >
+                  {this.props.loggedInEmail}{" "}
+                  <i
+                    className="fa fa-caret-down"
+                    style={{ marginRight: "10px" }}
+                  ></i>
+                  <div
+                    className="dropdown-content"
+                    style={{ display: this.state.headerDropdownClass }}
                   >
-                    {this.props.loggedInEmail}{" "}
-                    <i
-                      className="fa fa-caret-down"
-                      style={{ marginRight: "10px" }}
-                    ></i>
-                    <div
-                      className="dropdown-content"
-                      style={{ display: this.state.headerDropdownClass }}
-                    >
-                      <Link to="/user-profile">View Profile</Link>
-                      <a onClick={this.handleLogout}>Logout</a>
-                    </div>
-                  </li>
-                ) : (
-                  <li
-                    className="menu-item"
-                    id="dropbtn"
-                    onClick={this.handleDropdownClick}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {this.props.loggedInEmail}{" "}
-                    <i
-                      className="fa fa-caret-down"
-                      style={{ marginRight: "10px" }}
-                    ></i>
-                    <div
-                      className="dropdown-content"
-                      style={{ display: this.state.headerDropdownClass }}
-                    >
-                      <a href="#">Edit Profile</a>
-                      <a href="#">Logout</a>
-                    </div>
-                  </li>
-                )
+                    <Link to="/user-profile">View Profile</Link>
+                    <a onClick={this.handleLogout}>Logout</a>
+                  </div>
+                </li>
               ) : (
                 <li className="menu-item">
                   <a
@@ -514,7 +494,7 @@ class Header extends Component {
         {this.props.showSearchBar && !this.state.isMobileNavBarOpen && (
           <SearchBar></SearchBar>
         )}
-        <ToastContainer autoClose={3000}></ToastContainer>
+        <ToastContainer autoClose={8000}></ToastContainer>
       </header>
     );
   }

@@ -228,6 +228,9 @@ function sendLoginRequest(
           rememberMe: rememberMe,
         });
         dispatch(saveUserInfo(email.value, true));
+      } else if (response.status === 801) {
+        dispatch(toggleLoader(false, 1));
+        showErrorMessage(response.data.errors);
       }
     });
   }

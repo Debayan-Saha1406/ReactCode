@@ -78,7 +78,7 @@ const SearchBar = (props) => {
         if (inputRef.current.value.length > 0) {
           const body = {
             searchType: searchType,
-            searchTerm: inputRef.current.value,
+            searchTerm: inputRef.current.value.trim(),
             pageNumber: 1,
             pageSize: 10,
           };
@@ -93,7 +93,7 @@ const SearchBar = (props) => {
             if (response.status === 200) {
               setIsLoading(false);
               setSearchData(response.data.data.details);
-              if (response.data.data.length === 0) {
+              if (response.data.data.details.length === 0) {
                 setNoData(true);
               } else {
                 setNoData(false);

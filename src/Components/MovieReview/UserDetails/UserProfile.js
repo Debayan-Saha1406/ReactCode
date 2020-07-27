@@ -22,6 +22,11 @@ import UserRatedMovies from "./UserRatedMovies";
 import UserFavorite from "./UserFavorite";
 import Footer from "../Common/Footer";
 import NetworkDetector from "../Common/NetworkDetector";
+import ServiceProvider from "./../../../Provider/ServiceProvider";
+import { apiUrl } from "./../../../Shared/Constants";
+import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import { showErrorMessage } from "../../../Provider/ToastProvider";
 
 const profileState = {
   firstName: "",
@@ -91,6 +96,37 @@ const UserProfile = (props) => {
     setActiveSideMenuItem(activeSideMenuItem);
   };
 
+  const sendUpdateRequest = (firstName, lastName) => {
+    debugger;
+    if (!firstName.isErrorExist) {
+      dispatch(toggleLoader(true, "15%"));
+      const body = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+      };
+      ServiceProvider.put(apiUrl.userInfo, profileData.userId, body).then(
+        (response) => {
+          if (response.status === 200) {
+            dispatch(toggleLoader(false, 1));
+            const userDetails = getLocalStorageItem(constants.userDetails);
+            userDetails.firstName = firstName.value;
+            userDetails.lastName = lastName.value;
+
+            setLocalStorageItem(constants.userDetails, userDetails);
+            setProfileData({
+              ...profileData,
+              firstName: userDetails.firstName,
+              lastName: userDetails.lastName,
+            });
+          } else {
+            showErrorMessage(response.data.errors);
+            dispatch(toggleLoader(false, 1));
+          }
+        }
+      );
+    }
+  };
+
   return (
     <React.Fragment>
       <div id="loaderContainer">
@@ -148,6 +184,7 @@ const UserProfile = (props) => {
                           email={profileData.email}
                           createdOn={profileData.createdOn}
                           userId={profileData.userId}
+                          sendUpdateRequest={sendUpdateRequest}
                         ></ProfileDetails>
                         <ChangePassword
                           email={profileData.email}

@@ -130,7 +130,7 @@ class ForgotPassword extends Component {
             <div className="login100-more" style={style}></div>
           </div>
         </div>
-        {<ToastContainer autoClose={3000}></ToastContainer>}
+        {<ToastContainer autoClose={8000}></ToastContainer>}
         {this.state.showRedirectPopup && (
           <PopupComponent
             showPopup={this.state.showRedirectPopup}

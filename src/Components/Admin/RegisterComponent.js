@@ -460,7 +460,7 @@ class Register extends Component {
           ></PopupComponent>
         )}
 
-        {<ToastContainer autoClose={3000} />}
+        {<ToastContainer autoClose={8000} />}
       </div>
     );
   }

@@ -5,7 +5,7 @@ import slider3 from "../images/slider3.jpg";
 
 export const apiUrl = {
   baseUrl:
-    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    //"http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
     "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
@@ -183,6 +183,7 @@ export const menuItem = {
   loggedInEmail: "loggedInEmail",
   celeb: "celeb",
   director: "director",
+  user: "user",
 };
 
 export const userProfileSideMenuItem = {

@@ -22,8 +22,10 @@ const ProfileDetails = (props) => {
   const dispatch = useDispatch();
 
   const handleInputChange = (e, setData) => {
-    let isErrorExist = validateInputField(e.target.value);
-
+    let isErrorExist;
+    if (e.target.name === "firstName") {
+      isErrorExist = validateInputField(e.target.value);
+    }
     setUiState(e, isErrorExist, setData);
   };
 
@@ -32,11 +34,7 @@ const ProfileDetails = (props) => {
     if (firstName.value === "") {
       setInputFieldError(firstName, setFirstName);
     }
-    if (lastName.value === "") {
-      setInputFieldError(lastName, setLastName);
-    }
-
-    sendUpdateRequest(firstName, lastName, dispatch, props);
+    props.sendUpdateRequest(firstName, lastName);
   };
 
   const setInputFieldError = (inputField, setData) => {
@@ -82,7 +80,7 @@ const ProfileDetails = (props) => {
           <label>Joined On</label>
           <input
             type="text"
-            value={props.createdOn}
+            value={props.createdOn.substring(0, props.createdOn.indexOf("T"))}
             disabled={true}
             id="cursor-not-allowed"
           />
@@ -90,12 +88,12 @@ const ProfileDetails = (props) => {
       </div>
       <div class="row">
         <div class="col-md-6 form-it" id="spacing-below">
-          <label>First Name</label>
+          <label class="required-label">First Name</label>
           <input
             type="text"
             name="firstName"
             value={firstName.value}
-            placeholder={props.firstName}
+            placeholder="Enter updated First Name"
             onChange={(e) => handleInputChange(e, setFirstName)}
           />
           {firstName.errorClassName === "input-error" && (
@@ -108,7 +106,7 @@ const ProfileDetails = (props) => {
             type="text"
             name="lastName"
             value={lastName.value}
-            placeholder={props.lastName}
+            placeholder="Enter updated Last Name"
             onChange={(e) => handleInputChange(e, setLastName)}
           />
           {lastName.errorClassName === "input-error" && (
@@ -123,7 +121,7 @@ const ProfileDetails = (props) => {
             value="Update"
             onClick={handleUpdate}
             id="black-hover"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", paddingLeft: "20px" }}
           />
         </div>
       </div>
@@ -132,27 +130,3 @@ const ProfileDetails = (props) => {
 };
 
 export default ProfileDetails;
-
-function sendUpdateRequest(firstName, lastName, dispatch, props) {
-  if (!firstName.isErrorExist && !lastName.isErrorExist) {
-    dispatch(toggleLoader(true, "15%"));
-    const body = {
-      firstName: firstName.value,
-      lastName: lastName.value,
-    };
-    ServiceProvider.put(apiUrl.userInfo, props.userId, body).then(
-      (response) => {
-        if (response.status === 200) {
-          dispatch(toggleLoader(false, 1));
-          const userDetails = getLocalStorageItem(constants.userDetails);
-          userDetails.firstName = firstName.value;
-          userDetails.lastName = lastName.value;
-          setLocalStorageItem(constants.userDetails, userDetails);
-        } else {
-          showErrorMessage(response.data.errors);
-          dispatch(toggleLoader(false, 1));
-        }
-      }
-    );
-  }
-}

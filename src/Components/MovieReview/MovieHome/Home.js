@@ -143,7 +143,7 @@ const Home = () => {
                     ></RecentlyViewedItem>
                   )}
                 </div>
-                <ToastContainer autoClose={3000}></ToastContainer>
+                <ToastContainer autoClose={8000}></ToastContainer>
               </div>
             </div>
           </main>
