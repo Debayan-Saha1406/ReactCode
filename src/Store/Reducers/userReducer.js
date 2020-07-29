@@ -2,6 +2,7 @@ import { SAVE_USERINFO } from "./../Actions/actions";
 const initialState = {
   isUserLoggedIn: false,
   loggedInEmail: "",
+  hasSessionTimedOut: false,
 };
 
 export const UserReducer = (state = initialState, action) => {
@@ -11,6 +12,7 @@ export const UserReducer = (state = initialState, action) => {
         ...state,
         isUserLoggedIn: action.isUserLoggedIn,
         loggedInEmail: action.loggedInEmail,
+        hasSessionTimedOut: action.hasSessionTimedOut,
       };
     default:
       return state;

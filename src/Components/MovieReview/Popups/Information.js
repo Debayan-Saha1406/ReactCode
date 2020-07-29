@@ -3,7 +3,10 @@ import React from "react";
 
 const Information = (props) => {
   return (
-    <div className={`overlay ${props.popupClassName}`}>
+    <div
+      className={`show-overlay ${props.popupClassName}`}
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.75 !important" }}
+    >
       <div className="login-wrapper" id="login-content">
         <div className="login-content">
           <h3 style={{ fontSize: "25px" }}>{props.title}</h3>

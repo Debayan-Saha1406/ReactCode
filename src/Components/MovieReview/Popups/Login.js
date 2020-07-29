@@ -28,8 +28,16 @@ const Login = (props) => {
   const dispatch = useDispatch();
 
   const clearValues = () => {
-    setEmail(initialState);
-    setPassword(initialState);
+    const loginDetails = getLocalStorageItem(constants.loginDetails);
+    if (loginDetails) {
+      if (!loginDetails.rememberMe) {
+        setEmail(initialState);
+        setPassword(initialState);
+      }
+    } else {
+      setEmail(initialState);
+      setPassword(initialState);
+    }
     props.closeLoginPopup();
   };
 

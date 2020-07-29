@@ -109,11 +109,16 @@ export const togglePopup = (popupClassName, popupType) => {
   };
 };
 
-export const saveUserInfo = (loggedInEmail, isUserLoggedIn) => {
+export const saveUserInfo = (
+  loggedInEmail,
+  isUserLoggedIn,
+  hasSessionTimedOut
+) => {
   return {
     type: actionTypes.SAVE_USERINFO,
     loggedInEmail: loggedInEmail,
     isUserLoggedIn: isUserLoggedIn,
+    hasSessionTimedOut: hasSessionTimedOut,
   };
 };
 

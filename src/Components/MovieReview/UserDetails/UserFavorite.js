@@ -11,6 +11,7 @@ import {
   movieSortTypeList,
   sortColumns,
   sortDirection,
+  constants,
 } from "../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
@@ -19,6 +20,9 @@ import { apiUrl } from "./../../../Shared/Constants";
 import { countList } from "./../../../Shared/Constants";
 import { useEffect } from "react";
 import UserFavoriteGrid from "./UserFavoriteGrid";
+import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
+import { useSelector } from "react-redux";
+import { removeLocalStorageItem } from "../../../Provider/LocalStorageProvider";
 
 const initialData = {
   pageNumber: 1,
@@ -35,11 +39,17 @@ const UserFavorite = (props) => {
   const [pageViewType, setPageViewType] = useState(pageType.list);
   const [isImageLoaded, setIsImageLoading] = useState(false);
   const dispatch = useDispatch();
+  let isUserLoggedIn = useSelector(
+    (state) => state.loggedInUserInfo.isUserLoggedIn
+  );
 
   useEffect(() => {
-    dispatch(toggleLoader(true, "15%"));
-    fetchData(true);
-  }, []);
+    debugger;
+    if (isUserLoggedIn) {
+      dispatch(toggleLoader(true, "15%"));
+      fetchData(true);
+    }
+  }, [isUserLoggedIn]);
 
   const fetchSortedData = (e) => {
     dispatch(toggleLoader(true, "15%"));
@@ -84,6 +94,10 @@ const UserFavorite = (props) => {
           setIsImageLoading(false);
           dispatch(toggleLoader(false, 1));
         }
+      } else if (response.status === 401) {
+        dispatch(toggleLoader(false, 1));
+        dispatch(saveUserInfo("", false, true));
+        removeLocalStorageItem(constants.userDetails);
       }
     });
   };

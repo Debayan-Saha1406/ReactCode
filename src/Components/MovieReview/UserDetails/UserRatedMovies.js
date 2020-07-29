@@ -12,11 +12,13 @@ import {
   movieSortTypeList,
   sortColumns,
   userMovieRatingReviewSortTypeList,
+  constants,
 } from "./../../../Shared/Constants";
 import { useDispatch } from "react-redux";
 import {
   toggleLoader,
   togglePopup,
+  saveUserInfo,
 } from "./../../../Store/Actions/actionCreator";
 import { Link } from "react-router-dom";
 import { popupType } from "./../../../Shared/Constants";
@@ -25,6 +27,7 @@ import UserContentPopup from "../Popups/UserContentPopup";
 import NoResultFound from "./../Common/NoResultFound";
 import { countList } from "./../../../Shared/Constants";
 import { sortDirection } from "./../../../Shared/Constants";
+import { removeLocalStorageItem } from "../../../Provider/LocalStorageProvider";
 
 const initialData = {
   pageNumber: 1,
@@ -402,8 +405,11 @@ function fetchReviewRatingData(
         setReviewRatingList([]);
         setReviewRatingData({ ...reviewRatingData, totalReviewRatings: 0 });
       }
-
       dispatch(toggleLoader(false, 1));
+    } else if (response.status === 401) {
+      dispatch(toggleLoader(false, 1));
+      dispatch(saveUserInfo("", false, true));
+      removeLocalStorageItem(constants.userDetails);
     }
   });
 }

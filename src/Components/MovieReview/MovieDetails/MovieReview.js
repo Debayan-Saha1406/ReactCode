@@ -10,6 +10,7 @@ import {
   reviewSortTypeList,
   sortColumns,
   sortDirection,
+  constants,
 } from "../../../Shared/Constants";
 import Pagination from "../Common/Pagination";
 import {
@@ -22,6 +23,9 @@ import ServiceProvider from "../../../Provider/ServiceProvider";
 import DetailTopBar from "../Common/DetailTopBar";
 import ReviewPopup from "./../Popups/ReviewPopup";
 import { countList } from "./../../../Shared/Constants";
+import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
+import Information from "../Popups/Information";
+import { removeLocalStorageItem } from "../../../Provider/LocalStorageProvider";
 
 class MovieReview extends Component {
   state = {
@@ -38,6 +42,7 @@ class MovieReview extends Component {
     isReviewGiven: false,
     sortColumn: sortColumns.reviewDate,
     sortByDirection: sortDirection.asc,
+    showInformationPopup: false,
   };
 
   openReviewPopup = (
@@ -110,6 +115,12 @@ class MovieReview extends Component {
           if (response.status === 200) {
             this.fetchReviews();
             this.closeReviewPopup();
+          } else if (response.status === 401) {
+            this.props.toggleLoader(false, 1);
+            this.props.saveUserInfo("", false, true);
+            this.closeReviewPopup();
+            this.showInformationPopup();
+            removeLocalStorageItem(constants.userDetails);
           }
         }
       );
@@ -119,9 +130,19 @@ class MovieReview extends Component {
         if (response.status === 200) {
           this.fetchReviews();
           this.closeReviewPopup();
+        } else if (response.status === 401) {
+          this.props.toggleLoader(false, 1);
+          this.props.saveUserInfo("", false, true);
+          this.closeReviewPopup();
+          this.showInformationPopup();
+          removeLocalStorageItem(constants.userDetails);
         }
       });
     }
+  };
+
+  showInformationPopup = () => {
+    this.setState({ showInformationPopup: true });
   };
 
   pageNumberClicked = (page) => {
@@ -254,97 +275,120 @@ class MovieReview extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleOk = () => {
+    this.setState({ showInformationPopup: false });
+    this.props.togglePopup("openform", popupType.login);
+  };
+
   render() {
     return (
-      <div
-        id="reviews"
-        className="tab review "
-        style={
-          this.props.selectedTab === movieDetailTabs.review
-            ? { display: "block" }
-            : { display: "none" }
-        }
-      >
-        {
-          <ReviewPopup
-            openPopupClassName={this.state.openPopupClassName}
-            closeReviewPopup={this.closeReviewPopup}
-            postReview={this.postReview}
-            reviewPopupType={this.state.reviewPopupType}
-            reviewTitle={this.state.reviewTitle}
-            reviewDescription={this.state.reviewDescription}
-            reviewId={this.state.reviewId}
-            handleChange={this.handleChange}
-          ></ReviewPopup>
-        }
-        <div className="row">
-          <div className="rv-hd">
-            <div className="div">
-              <br></br>
-              <br></br>
-              <h3>Reviews Related To</h3>
-              <h2 style={{ color: "white" }}>{this.props.movieName}</h2>
+      <React.Fragment>
+        {this.state.showInformationPopup && !this.props.isUserLoggedIn ? (
+          <Information
+            title={"Log In"}
+            content={
+              this.props.hasSessionTimedOut
+                ? "Your session has timed out. Please Login To Continue"
+                : "Please Login To Continue"
+            }
+            popupClassName={"openform"}
+            closePopup={this.handleOk}
+            btnText="Ok"
+          ></Information>
+        ) : (
+          <div
+            id="reviews"
+            className="tab review "
+            style={
+              this.props.selectedTab === movieDetailTabs.review
+                ? { display: "block" }
+                : { display: "none" }
+            }
+          >
+            {
+              <ReviewPopup
+                openPopupClassName={this.state.openPopupClassName}
+                closeReviewPopup={this.closeReviewPopup}
+                postReview={this.postReview}
+                reviewPopupType={this.state.reviewPopupType}
+                reviewTitle={this.state.reviewTitle}
+                reviewDescription={this.state.reviewDescription}
+                reviewId={this.state.reviewId}
+                handleChange={this.handleChange}
+              ></ReviewPopup>
+            }
+            <div className="row">
+              <div className="rv-hd">
+                <div className="div">
+                  <br></br>
+                  <br></br>
+                  <h3>Reviews Related To</h3>
+                  <h2 style={{ color: "white" }}>{this.props.movieName}</h2>
+                </div>
+                {this.state.isReviewGiven ? (
+                  <a
+                    className="redbtn"
+                    id="black-hover"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      this.openReviewPopup(
+                        popupType.editReview,
+                        this.state.reviewTitle,
+                        this.state.reviewDescription,
+                        this.state.reviewId
+                      )
+                    }
+                  >
+                    Edit Review
+                  </a>
+                ) : (
+                  <a
+                    className="redbtn"
+                    id="black-hover"
+                    style={{ cursor: "pointer" }}
+                    onClick={this.openReviewPopup}
+                  >
+                    Write Review
+                  </a>
+                )}
+              </div>
+              <DetailTopBar
+                totalCount={this.state.totalReviews}
+                sortBylist={reviewSortTypeList}
+                fetchSortedData={this.fetchSortedData}
+              ></DetailTopBar>
+              <div className="mv-user-review-item">
+                <ul>
+                  {this.state.reviews &&
+                    this.state.reviews.map((review, index) => (
+                      <li key={index}>
+                        <h3 style={{ color: "yellow" }}>
+                          {review.reviewTitle}
+                        </h3>
+                        <p className="time">
+                          {review.reviewDate} by{" "}
+                          <a style={{ color: "white" }}> {review.userEmail}</a>
+                        </p>
+                        <p>{review.reviewDescription}</p>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              {this.state.totalReviews > 0 && (
+                <Pagination
+                  pageSize={this.state.pageSize}
+                  totalCount={this.state.totalReviews}
+                  currentPage={this.state.pageNumber}
+                  countList={countList}
+                  changeCount={this.changeReviewCount}
+                  pageNumberClicked={this.pageNumberClicked}
+                  description="Reviews"
+                ></Pagination>
+              )}
             </div>
-            {this.state.isReviewGiven ? (
-              <a
-                className="redbtn"
-                id="black-hover"
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                  this.openReviewPopup(
-                    popupType.editReview,
-                    this.state.reviewTitle,
-                    this.state.reviewDescription,
-                    this.state.reviewId
-                  )
-                }
-              >
-                Edit Review
-              </a>
-            ) : (
-              <a
-                className="redbtn"
-                id="black-hover"
-                style={{ cursor: "pointer" }}
-                onClick={this.openReviewPopup}
-              >
-                Write Review
-              </a>
-            )}
           </div>
-          <DetailTopBar
-            totalCount={this.state.totalReviews}
-            sortBylist={reviewSortTypeList}
-            fetchSortedData={this.fetchSortedData}
-          ></DetailTopBar>
-          <div className="mv-user-review-item">
-            <ul>
-              {this.state.reviews &&
-                this.state.reviews.map((review, index) => (
-                  <li key={index}>
-                    <h3 style={{ color: "yellow" }}>{review.reviewTitle}</h3>
-                    <p className="time">
-                      {review.reviewDate} by{" "}
-                      <a style={{ color: "white" }}> {review.userEmail}</a>
-                    </p>
-                    <p>{review.reviewDescription}</p>
-                  </li>
-                ))}
-            </ul>
-          </div>
-          {this.state.totalReviews > 0 && (
-            <Pagination
-              pageSize={this.state.pageSize}
-              totalCount={this.state.totalReviews}
-              currentPage={this.state.pageNumber}
-              countList={countList}
-              changeCount={this.changeReviewCount}
-              pageNumberClicked={this.pageNumberClicked}
-              description="Reviews"
-            ></Pagination>
-          )}
-        </div>
-      </div>
+        )}
+      </React.Fragment>
     );
   }
 }
@@ -353,6 +397,7 @@ const mapStateToProps = (state) => {
   return {
     loggedInEmail: state.loggedInUserInfo.loggedInEmail,
     isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
+    hasSessionTimedOut: state.loggedInUserInfo.hasSessionTimedOut,
   };
 };
 
@@ -360,6 +405,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleLoader: (showLoader, screenOpacity) => {
       dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+    saveUserInfo: (loggedInEmail, isUserLoggedIn, hasSessionTimedOut) => {
+      dispatch(saveUserInfo(loggedInEmail, isUserLoggedIn, hasSessionTimedOut));
     },
     togglePopup: (popupClassName, popupType) => {
       dispatch(togglePopup(popupClassName, popupType));

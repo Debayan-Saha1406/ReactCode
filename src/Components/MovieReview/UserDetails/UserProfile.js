@@ -9,7 +9,10 @@ import Header from "../Common/Header";
 import "../../../css/movie-single.css";
 import { page, constants } from "../../../Shared/Constants";
 import { useEffect } from "react";
-import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+} from "./../../../Provider/LocalStorageProvider";
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Information from "./../Popups/Information";
@@ -46,16 +49,20 @@ const UserProfile = (props) => {
     userProfileSideMenuItem.profile
   );
   const dispatch = useDispatch();
-  let isUserLoggedIn = useSelector(
+  const isUserLoggedIn = useSelector(
     (state) => state.loggedInUserInfo.isUserLoggedIn
+  );
+
+  const hasSessionTimedOut = useSelector(
+    (state) => state.loggedInUserInfo.hasSessionTimedOut
   );
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
 
   useEffect(() => {
     const userDetails = getLocalStorageItem(constants.userDetails);
-    if (userDetails) {
-      dispatch(saveUserInfo(userDetails.email, true));
+    if (userDetails && isUserLoggedIn) {
+      dispatch(saveUserInfo(userDetails.email, true, false));
       setProfileData({
         ...profileData,
         firstName: userDetails.firstName,
@@ -66,7 +73,11 @@ const UserProfile = (props) => {
         userId: userDetails.userId,
       });
     } else {
-      dispatch(saveUserInfo("", false));
+      if (hasSessionTimedOut) {
+        dispatch(saveUserInfo("", false, true));
+      } else {
+        dispatch(saveUserInfo("", false));
+      }
     }
     setIsLoading(false);
   }, [isUserLoggedIn]);
@@ -97,7 +108,6 @@ const UserProfile = (props) => {
   };
 
   const sendUpdateRequest = (firstName, lastName) => {
-    debugger;
     if (!firstName.isErrorExist) {
       dispatch(toggleLoader(true, "15%"));
       const body = {
@@ -118,6 +128,10 @@ const UserProfile = (props) => {
               firstName: userDetails.firstName,
               lastName: userDetails.lastName,
             });
+          } else if (response.status === 401) {
+            dispatch(toggleLoader(false, 1));
+            dispatch(saveUserInfo("", false, true));
+            //removeLocalStorageItem(constants.userDetails);
           } else {
             showErrorMessage(response.data.errors);
             dispatch(toggleLoader(false, 1));
@@ -129,87 +143,96 @@ const UserProfile = (props) => {
 
   return (
     <React.Fragment>
-      <div id="loaderContainer">
-        <div id="loader">
-          {showLoader && <LoaderProvider visible={showLoader}></LoaderProvider>}
-        </div>
-      </div>
-      <div className="background" style={{ opacity: screenOpacity }}>
-        {!isUserLoggedIn && !isLoading ? (
-          <Information
-            title={"Log In"}
-            content={"Please Login To Continue"}
-            popupClassName={"openform"}
-            closePopup={handleOk}
-            btnText="Ok"
-          ></Information>
-        ) : (
-          <React.Fragment>
-            <Header
-              page={page.details}
-              handleOk={handleOk}
-              informationTitle={title}
-              informationContent={content}
-            ></Header>
-            <div class="hero user-hero">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="hero-ct">
-                      <h1>
-                        {profileData.firstName} {""} {profileData.lastName}’s
-                        profile
-                      </h1>
+      {!isUserLoggedIn && !isLoading ? (
+        <Information
+          title={"Log In"}
+          content={
+            hasSessionTimedOut
+              ? "Your session has timed out. Please Login To Continue"
+              : "Please Login To Continue"
+          }
+          popupClassName={"openform"}
+          closePopup={handleOk}
+          btnText="Ok"
+        ></Information>
+      ) : (
+        <React.Fragment>
+          <div id="loaderContainer">
+            <div id="loader">
+              {showLoader && (
+                <LoaderProvider visible={showLoader}></LoaderProvider>
+              )}
+            </div>
+          </div>
+          <div className="background" style={{ opacity: screenOpacity }}>
+            <React.Fragment>
+              <Header
+                page={page.details}
+                handleOk={handleOk}
+                informationTitle={title}
+                informationContent={content}
+              ></Header>
+              <div class="hero user-hero">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="hero-ct">
+                        <h1>
+                          {profileData.firstName} {""} {profileData.lastName}’s
+                          profile
+                        </h1>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="profile-single">
-              <div class="container">
-                <div class="row ipad-width">
-                  <SideMenu
-                    profileImageUrl={profileData.profileImageUrl}
-                    changeProfileImageUrl={changeProfileImageUrl}
-                    userId={profileData.userId}
-                    toggleSideMenuItem={toggleSideMenuItem}
-                    activeSideMenuItem={activeSideMenuItem}
-                  ></SideMenu>
-                  <div class="col-md-9 col-sm-12 col-xs-12">
-                    {activeSideMenuItem === userProfileSideMenuItem.profile && (
-                      <div class="form-style-1 user-pro" action="">
-                        <ProfileDetails
-                          firstName={profileData.firstName}
-                          lastName={profileData.lastName}
+              <div class="profile-single">
+                <div class="container">
+                  <div class="row ipad-width">
+                    <SideMenu
+                      profileImageUrl={profileData.profileImageUrl}
+                      changeProfileImageUrl={changeProfileImageUrl}
+                      userId={profileData.userId}
+                      toggleSideMenuItem={toggleSideMenuItem}
+                      activeSideMenuItem={activeSideMenuItem}
+                    ></SideMenu>
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                      {activeSideMenuItem ===
+                        userProfileSideMenuItem.profile && (
+                        <div class="form-style-1 user-pro" action="">
+                          <ProfileDetails
+                            firstName={profileData.firstName}
+                            lastName={profileData.lastName}
+                            email={profileData.email}
+                            createdOn={profileData.createdOn}
+                            userId={profileData.userId}
+                            sendUpdateRequest={sendUpdateRequest}
+                          ></ProfileDetails>
+                          <ChangePassword
+                            email={profileData.email}
+                            showInformation={showInformation}
+                          ></ChangePassword>
+                        </div>
+                      )}
+                      {activeSideMenuItem ===
+                        userProfileSideMenuItem.favoriteMovies && (
+                        <UserFavorite email={profileData.email}></UserFavorite>
+                      )}
+                      {activeSideMenuItem ===
+                        userProfileSideMenuItem.ratedMovies && (
+                        <UserRatedMovies
                           email={profileData.email}
-                          createdOn={profileData.createdOn}
-                          userId={profileData.userId}
-                          sendUpdateRequest={sendUpdateRequest}
-                        ></ProfileDetails>
-                        <ChangePassword
-                          email={profileData.email}
-                          showInformation={showInformation}
-                        ></ChangePassword>
-                      </div>
-                    )}
-                    {activeSideMenuItem ===
-                      userProfileSideMenuItem.favoriteMovies && (
-                      <UserFavorite email={profileData.email}></UserFavorite>
-                    )}
-                    {activeSideMenuItem ===
-                      userProfileSideMenuItem.ratedMovies && (
-                      <UserRatedMovies
-                        email={profileData.email}
-                      ></UserRatedMovies>
-                    )}
+                        ></UserRatedMovies>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <Footer></Footer>
-          </React.Fragment>
-        )}
-      </div>
+              <Footer></Footer>
+            </React.Fragment>
+          </div>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };
