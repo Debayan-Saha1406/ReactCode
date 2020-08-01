@@ -44,8 +44,8 @@ class Movies extends Component {
     totalMovies: 0,
     movieIdClicked: 0,
     movieName: "",
-    sortColumn: "Id",
-    sortDirection: "asc",
+    sortColumn: sortColumns.movieName,
+    sortDirection: sortDirection.asc,
     searchData: {
       movieName: "",
       selectedRating: 0,
@@ -178,7 +178,7 @@ class Movies extends Component {
       sortColumn: sortColumn,
       sortDirection: sortByDirection,
     };
-    this.fetchMovies(body);
+    this.fetchMovies(body, true);
   };
 
   handleSubmit = (e, movieDetails) => {
@@ -244,16 +244,21 @@ class Movies extends Component {
         searchData.fromYear = body.fromYear;
         searchData.toYear = body.toYear;
         if (!hideLoader) {
-          this.setState({
-            isImageLoading: true,
-            moviesList: response.data.data.details,
-            totalMovies: response.data.data.totalCount,
-            pageSize: body.pageSize,
-            pageNumber: body.pageNumber,
-            sortColumn: body.sortColumn,
-            sortDirection: body.sortDirection,
-            searchData,
-          });
+          this.setState(
+            {
+              isImageLoading: true,
+              moviesList: response.data.data.details,
+              totalMovies: response.data.data.totalCount,
+              pageSize: body.pageSize,
+              pageNumber: body.pageNumber,
+              sortColumn: body.sortColumn,
+              sortDirection: body.sortDirection,
+              searchData,
+            },
+            () => {
+              this.props.toggleLoader(false, 1);
+            }
+          );
         } else {
           this.setState(
             {

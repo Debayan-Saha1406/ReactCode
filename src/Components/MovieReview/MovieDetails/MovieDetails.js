@@ -24,7 +24,10 @@ import LoaderProvider from "../../../Provider/LoaderProvider";
 import ReactPlayer from "react-player";
 import "../../../css/movie-single.css";
 import { Redirect } from "react-router-dom";
-import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+} from "./../../../Provider/LocalStorageProvider";
 import StarRating from "../Common/StarRating";
 import Gallery from "../Common/Gallery";
 import Footer from "./../Common/Footer";
@@ -32,6 +35,8 @@ import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
 import NetworkDetector from "../Common/NetworkDetector";
 import { compose } from "redux";
+import Information from "../Popups/Information";
+import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 
 let releaseYear = "",
   loginDetails = {},
@@ -49,6 +54,7 @@ class MovieDetails extends Component {
     isRatingDataFetched: false,
     showGallery: false,
     galleryImages: [],
+    showInformationPopup: false,
   };
 
   toggleTab = (destTab) => {
@@ -166,6 +172,11 @@ class MovieDetails extends Component {
             this.props.toggleLoader(false, 1);
           }
         );
+      } else if (response.status === 401) {
+        this.setState({ showInformationPopup: true });
+        this.props.saveUserInfo("", false, true);
+        this.props.toggleLoader(false, 1);
+        removeLocalStorageItem(constants.userDetails);
       }
     });
   }
@@ -248,6 +259,12 @@ class MovieDetails extends Component {
   closeGallery = () => {
     this.setState({ showGallery: false });
   };
+
+  handleOk = () => {
+    this.setState({ showInformationPopup: false });
+    this.props.togglePopup("openform", popupType.login);
+  };
+
   render() {
     const { isMovieDetailPresent } = this.state;
     if (this.state.redirectToNotFound) {
@@ -260,7 +277,21 @@ class MovieDetails extends Component {
             {this.props.showLoader && <LoaderProvider></LoaderProvider>}
           </div>
         </div>
-        {this.renderMovieDetails(isMovieDetailPresent)}
+        {this.state.showInformationPopup && !this.props.isUserLoggedIn ? (
+          <Information
+            title={"Log In"}
+            content={
+              this.props.hasSessionTimedOut
+                ? "Your session has timed out. Please Login To Continue"
+                : "Please Login To Continue"
+            }
+            popupClassName={"openform"}
+            closePopup={this.handleOk}
+            btnText="Ok"
+          ></Information>
+        ) : (
+          this.renderMovieDetails(isMovieDetailPresent)
+        )}
       </React.Fragment>
     );
   }
@@ -563,6 +594,7 @@ const mapStateToProps = (state) => {
     screenOpacity: state.uiDetails.screenOpacity,
     isUserLoggedIn: state.loggedInUserInfo.isUserLoggedIn,
     loggedInEmail: state.loggedInUserInfo.loggedInEmail,
+    hasSessionTimedOut: state.loggedInUserInfo.hasSessionTimedOut,
   };
 };
 
@@ -573,6 +605,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     togglePopup: (popupClassName, popupType) => {
       dispatch(togglePopup(popupClassName, popupType));
+    },
+    saveUserInfo: (loggedInEmail, isUserLoggedIn, hasSessionTimedOut) => {
+      dispatch(saveUserInfo(loggedInEmail, isUserLoggedIn, hasSessionTimedOut));
     },
   };
 };

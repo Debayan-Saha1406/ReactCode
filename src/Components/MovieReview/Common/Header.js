@@ -80,7 +80,7 @@ class Header extends Component {
     } else if (window.location.pathname.includes(menuItem.director)) {
       this.setState({ currentMenuItem: menuItem.director });
     } else if (window.location.pathname.includes(menuItem.user)) {
-      this.setState({ currentMenuItem: menuItem.loggedInEmail });
+      this.setState({ currentMenuItem: menuItem.user });
     } else {
       this.setState({ currentMenuItem: menuItem.home });
     }
@@ -293,25 +293,49 @@ class Header extends Component {
                 </li>
               )}
               {this.props.isUserLoggedIn ? (
-                <li
-                  className="menu-item current-menu-item"
-                  id="dropbtn"
-                  onClick={this.handleDropdownClick}
-                  style={{ cursor: "pointer" }}
-                >
-                  {this.props.loggedInEmail}{" "}
-                  <i
-                    className="fa fa-caret-down"
-                    style={{ marginRight: "10px" }}
-                  ></i>
-                  <div
-                    className="dropdown-content"
-                    style={{ display: this.state.headerDropdownClass }}
-                  >
-                    <Link to="/user-profile">View Profile</Link>
-                    <a onClick={this.handleLogout}>Logout</a>
-                  </div>
-                </li>
+                <React.Fragment>
+                  {this.state.currentMenuItem === menuItem.user ? (
+                    <li
+                      className="menu-item current-menu-item"
+                      id="dropbtn"
+                      onClick={this.handleDropdownClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {this.props.loggedInEmail}{" "}
+                      <i
+                        className="fa fa-caret-down"
+                        style={{ marginRight: "10px" }}
+                      ></i>
+                      <div
+                        className="dropdown-content"
+                        style={{ display: this.state.headerDropdownClass }}
+                      >
+                        <Link to="/user-profile">View Profile</Link>
+                        <a onClick={this.handleLogout}>Logout</a>
+                      </div>
+                    </li>
+                  ) : (
+                    <li
+                      className="menu-item"
+                      id="dropbtn"
+                      onClick={this.handleDropdownClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {this.props.loggedInEmail}{" "}
+                      <i
+                        className="fa fa-caret-down"
+                        style={{ marginRight: "10px" }}
+                      ></i>
+                      <div
+                        className="dropdown-content"
+                        style={{ display: this.state.headerDropdownClass }}
+                      >
+                        <Link to="/user-profile">View Profile</Link>
+                        <a onClick={this.handleLogout}>Logout</a>
+                      </div>
+                    </li>
+                  )}
+                </React.Fragment>
               ) : (
                 <li className="menu-item">
                   <a

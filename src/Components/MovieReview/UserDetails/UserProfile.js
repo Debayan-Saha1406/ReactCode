@@ -73,6 +73,7 @@ const UserProfile = (props) => {
         userId: userDetails.userId,
       });
     } else {
+      removeLocalStorageItem(constants.userDetails);
       if (hasSessionTimedOut) {
         dispatch(saveUserInfo("", false, true));
       } else {
@@ -131,7 +132,6 @@ const UserProfile = (props) => {
           } else if (response.status === 401) {
             dispatch(toggleLoader(false, 1));
             dispatch(saveUserInfo("", false, true));
-            //removeLocalStorageItem(constants.userDetails);
           } else {
             showErrorMessage(response.data.errors);
             dispatch(toggleLoader(false, 1));
