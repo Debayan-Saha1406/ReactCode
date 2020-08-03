@@ -5,7 +5,7 @@ import slider3 from "../images/slider3.jpg";
 
 export const apiUrl = {
   baseUrl:
-    //"http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
     "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
@@ -47,6 +47,7 @@ export const apiUrl = {
   allCelebs: "/allCelebs/",
   allDirectors: "/allDirectors/",
   addMovie: "/movie",
+  userReviewedMovies: "/userReviewedMovies",
 };
 
 export const constants = {
@@ -190,6 +191,7 @@ export const userProfileSideMenuItem = {
   profile: "profile",
   favoriteMovies: "favoriteMovies",
   ratedMovies: "ratedMovies",
+  reviewedMovies: "reviewedMovies",
 };
 
 export const celebritySortTypeList = [
@@ -217,13 +219,18 @@ export const filmographySortTypeList = [
   { id: 4, value: "Release Date Descending" },
 ];
 
-export const userMovieRatingReviewSortTypeList = [
+export const userMovieRatingSortTypeList = [
   { id: 1, value: "Movie Name Ascending" },
   { id: 2, value: "Movie Name Descending" },
   { id: 3, value: "Rating Ascending" },
   { id: 4, value: "Rating Descending" },
-  { id: 5, value: "Review Date Ascending" },
-  { id: 6, value: "Review Date Descending" },
+];
+
+export const userMovieReviewSortTypeList = [
+  { id: 1, value: "Movie Name Ascending" },
+  { id: 2, value: "Movie Name Descending" },
+  { id: 3, value: "Review Date Ascending" },
+  { id: 4, value: "Review Date Descending" },
 ];
 
 export const reviewSortTypeList = [

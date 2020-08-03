@@ -154,6 +154,28 @@ const SideMenu = (props) => {
                 </a>
               </li>
             )}
+            {activeSideMenuItem === userProfileSideMenuItem.reviewedMovies ? (
+              <li className="active">
+                <a
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.reviewedMovies)
+                  }
+                >
+                  Reviewed movies
+                </a>
+              </li>
+            ) : (
+              <li>
+                <a
+                  className="white-pointer"
+                  onClick={() =>
+                    toggleSideMenuItem(userProfileSideMenuItem.reviewedMovies)
+                  }
+                >
+                  Reviewed movies
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <div class="user-fav">

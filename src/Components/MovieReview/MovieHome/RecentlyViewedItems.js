@@ -42,57 +42,67 @@ const RecentlyViewedItem = (props) => {
                 You Have not viewed anything recently
               </h3>
             ) : (
-              <Carousel
-                ssr
-                partialVisbile
-                // deviceType={deviceType}
-                itemClass="image-item"
-                responsive={responsive}
+              <div
+                className={
+                  props.recentlyViewedItems.length === 3 &&
+                  "carousel-left-shift"
+                }
               >
-                {props.recentlyViewedItems.map((recentlyViewedItem, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <img
-                        draggable={false}
-                        style={{ height: "380px", width: "300px" }}
-                        src={recentlyViewedItem.logo}
-                        onLoad={() =>
-                          handleSuccessfulImageLoad(
-                            props.recentlyViewedItems.length - 1 === index
-                          )
-                        }
-                      />
-                      <div className="mv-item-infor">
-                        <h6 style={{ marginTop: "20px", marginBottom: "0px" }}>
-                          {recentlyViewedItem.type ===
-                          searchBarSubType.movie ? (
-                            <Link
-                              className="heading"
-                              to={`/movie-details/${recentlyViewedItem.id}`}
+                <Carousel
+                  ssr
+                  partialVisbile
+                  itemClass="image-item"
+                  responsive={responsive}
+                >
+                  {props.recentlyViewedItems.map(
+                    (recentlyViewedItem, index) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <img
+                            draggable={false}
+                            style={{ height: "380px", width: "300px" }}
+                            src={recentlyViewedItem.logo}
+                            onLoad={() =>
+                              handleSuccessfulImageLoad(
+                                props.recentlyViewedItems.length - 1 === index
+                              )
+                            }
+                          />
+                          <div className="mv-item-infor">
+                            <h6
+                              style={{ marginTop: "20px", marginBottom: "0px" }}
                             >
-                              {recentlyViewedItem.name}
-                            </Link>
-                          ) : searchBarSubType.director ? (
-                            <Link
-                              className="heading"
-                              to={`/director-details/${recentlyViewedItem.id}`}
-                            >
-                              {recentlyViewedItem.name}
-                            </Link>
-                          ) : (
-                            <Link
-                              className="heading"
-                              to={`/celebrity-details/${recentlyViewedItem.id}`}
-                            >
-                              {recentlyViewedItem.name}
-                            </Link>
-                          )}
-                        </h6>
-                      </div>
-                    </React.Fragment>
-                  );
-                })}
-              </Carousel>
+                              {recentlyViewedItem.type ===
+                              searchBarSubType.movie ? (
+                                <Link
+                                  className="heading"
+                                  to={`/movie-details/${recentlyViewedItem.id}`}
+                                >
+                                  {recentlyViewedItem.name}
+                                </Link>
+                              ) : searchBarSubType.director ? (
+                                <Link
+                                  className="heading"
+                                  to={`/director-details/${recentlyViewedItem.id}`}
+                                >
+                                  {recentlyViewedItem.name}
+                                </Link>
+                              ) : (
+                                <Link
+                                  className="heading"
+                                  to={`/celebrity-details/${recentlyViewedItem.id}`}
+                                >
+                                  {recentlyViewedItem.name}
+                                </Link>
+                              )}
+                            </h6>
+                          </div>
+                        </React.Fragment>
+                      );
+                    }
+                  )}
+                </Carousel>
+              </div>
             )}
           </div>
         </div>

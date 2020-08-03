@@ -40,52 +40,57 @@ const WhatToWatch = () => {
                 {isComponentVisible && <a>Fan Favorites </a>}
               </li>
             </ul>
-
-            <Carousel
-              ssr
-              partialVisbile
-              // deviceType={deviceType}
-              itemClass="image-item"
-              responsive={responsive}
+            <div
+              className={
+                fanFavoriteMovies.length === 3 && "carousel-left-shift"
+              }
             >
-              {fanFavoriteMovies.map((movie, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    <img
-                      draggable={false}
-                      style={{ height: "380px", width: "300px" }}
-                      src={movie.movieLogo}
-                      onLoad={() =>
-                        handleSuccessfulImageLoad(
-                          fanFavoriteMovies.length - 1 === index
-                        )
-                      }
-                    />
-                    <div className="mv-item-infor">
-                      <h6 style={{ marginTop: "20px", marginBottom: "0px" }}>
-                        <Link
-                          className="heading"
-                          to={`/movie-details/${movie.movieId}`}
-                        >
-                          {movie.movieName}
-                        </Link>
-                      </h6>
-                      <p className="rate">
-                        <i
-                          className="fa fa-star"
-                          style={{
-                            fontSize: "20px",
-                            color: "yellow",
-                            marginRight: "5px",
-                          }}
-                        ></i>
-                        <span>{movie.avgRating}</span> /10
-                      </p>
-                    </div>
-                  </React.Fragment>
-                );
-              })}
-            </Carousel>
+              <Carousel
+                ssr
+                partialVisbile
+                // deviceType={deviceType}
+                itemClass="image-item"
+                responsive={responsive}
+              >
+                {fanFavoriteMovies.map((movie, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <img
+                        draggable={false}
+                        style={{ height: "380px", width: "300px" }}
+                        src={movie.movieLogo}
+                        onLoad={() =>
+                          handleSuccessfulImageLoad(
+                            fanFavoriteMovies.length - 1 === index
+                          )
+                        }
+                      />
+                      <div className="mv-item-infor">
+                        <h6 style={{ marginTop: "20px", marginBottom: "0px" }}>
+                          <Link
+                            className="heading"
+                            to={`/movie-details/${movie.movieId}`}
+                          >
+                            {movie.movieName}
+                          </Link>
+                        </h6>
+                        <p className="rate">
+                          <i
+                            className="fa fa-star"
+                            style={{
+                              fontSize: "20px",
+                              color: "yellow",
+                              marginRight: "5px",
+                            }}
+                          ></i>
+                          <span>{movie.avgRating}</span> /10
+                        </p>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+              </Carousel>
+            </div>
           </div>
         </div>
       }

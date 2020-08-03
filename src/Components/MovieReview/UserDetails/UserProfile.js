@@ -30,6 +30,7 @@ import { apiUrl } from "./../../../Shared/Constants";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { showErrorMessage } from "../../../Provider/ToastProvider";
+import UserReviewedMovies from "./UserReviewedMovies";
 
 const profileState = {
   firstName: "",
@@ -172,11 +173,11 @@ const UserProfile = (props) => {
                 informationTitle={title}
                 informationContent={content}
               ></Header>
-              <div class="hero user-hero">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="hero-ct">
+              <div className="hero user-hero">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="hero-ct">
                         <h1>
                           {profileData.firstName} {""} {profileData.lastName}’s
                           profile
@@ -186,9 +187,9 @@ const UserProfile = (props) => {
                   </div>
                 </div>
               </div>
-              <div class="profile-single">
-                <div class="container">
-                  <div class="row ipad-width">
+              <div className="profile-single">
+                <div className="container">
+                  <div className="row ipad-width">
                     <SideMenu
                       profileImageUrl={profileData.profileImageUrl}
                       changeProfileImageUrl={changeProfileImageUrl}
@@ -196,10 +197,10 @@ const UserProfile = (props) => {
                       toggleSideMenuItem={toggleSideMenuItem}
                       activeSideMenuItem={activeSideMenuItem}
                     ></SideMenu>
-                    <div class="col-md-9 col-sm-12 col-xs-12">
+                    <div className="col-md-9 col-sm-12 col-xs-12">
                       {activeSideMenuItem ===
                         userProfileSideMenuItem.profile && (
-                        <div class="form-style-1 user-pro" action="">
+                        <div className="form-style-1 user-pro" action="">
                           <ProfileDetails
                             firstName={profileData.firstName}
                             lastName={profileData.lastName}
@@ -223,6 +224,13 @@ const UserProfile = (props) => {
                         <UserRatedMovies
                           email={profileData.email}
                         ></UserRatedMovies>
+                      )}
+
+                      {activeSideMenuItem ===
+                        userProfileSideMenuItem.reviewedMovies && (
+                        <UserReviewedMovies
+                          email={profileData.email}
+                        ></UserReviewedMovies>
                       )}
                     </div>
                   </div>

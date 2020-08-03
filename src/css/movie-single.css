@@ -3826,3 +3826,9 @@ header .navbar-default .navbar-nav li a {
 .role.pending {
   background: orange;
 }
+
+@media (min-width: 1024px) {
+  .carousel-left-shift {
+    transform: translate3d(-180px, 0px, 0px);
+  }
+}

@@ -23,7 +23,6 @@ const SearchBar = (props) => {
   const inputRef = useRef();
 
   const handleSearch = () => {
-    debugger;
     toggleSuggestionBox(false);
     setToggle(!toggle);
     setSearchTerm("");
@@ -61,6 +60,8 @@ const SearchBar = (props) => {
   };
 
   const handleOptionClick = (id, type) => {
+    toggleSuggestionBox(false);
+    setSearchTerm("");
     if (type === searchBarSubType.director) {
       history.push(`/director-details/${id}`);
     } else if (type === searchBarSubType.celebrity) {

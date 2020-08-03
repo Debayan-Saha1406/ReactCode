@@ -58,7 +58,6 @@ const Home = () => {
 
   useEffect(() => {
     if (isBottomReached) {
-      debugger;
       ServiceProvider.get(apiUrl.starsBornToday).then((response) => {
         if (response.status === 200) {
           setStarsBornToday(response.data.data);
