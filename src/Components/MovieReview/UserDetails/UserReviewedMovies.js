@@ -204,9 +204,9 @@ const UserReviewedMovies = (props) => {
         <NoResultFound></NoResultFound>
       ) : (
         reviewedList.map((reviewedData, index) => (
-          <div key={index} class="movie-item-style-2 userrate">
+          <div key={index} className="movie-item-style-2 userrate">
             <img src={reviewedData.movieLogo} alt="" />
-            <div class="mv-item-infor" style={{ width: "100%" }}>
+            <div className="mv-item-infor" style={{ width: "100%" }}>
               <h6>
                 <Link
                   className="heading"
@@ -236,10 +236,10 @@ const UserReviewedMovies = (props) => {
                   >
                     Delete
                   </p>
-                  <p class="time sm-text">your reviews:</p>
+                  <p className="time sm-text">your reviews:</p>
 
                   <h6 className="review-heading">{reviewedData.reviewTitle}</h6>
-                  <p class="time sm">{reviewedData.reviewDate}</p>
+                  <p className="time sm">{reviewedData.reviewDate}</p>
                   <p>{reviewedData.reviewDescription}</p>
                 </React.Fragment>
               )}

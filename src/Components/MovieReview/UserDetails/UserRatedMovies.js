@@ -38,10 +38,20 @@ const initialData = {
   sortDirection: sortDirection.asc,
 };
 
+const initialDeleteRatingData = {
+  ratingId: 0,
+  avgRating: 0,
+  totalRating: 0,
+  userRating: 0,
+  movieId: 0,
+};
+
 const UserRatedMovies = (props) => {
   const [ratingData, setratingData] = useState(initialData);
   const [ratingList, setRatingList] = useState(initialData.ratingList);
-  const [ratingIdToDelete, setRatingIdToDelete] = useState(0);
+  const [ratingDatatoDelete, setRatingDataToDelete] = useState(
+    initialDeleteRatingData
+  );
   const [popupClassName, setPopupClassName] = useState("");
   const [isPopupVisible, setPopupVisibility] = useState(false);
 
@@ -114,9 +124,22 @@ const UserRatedMovies = (props) => {
     fetchRatingData(setRatingList, setratingData, body);
   }, []);
 
-  const openDeleteRatingPopup = (ratingId) => {
+  const openDeleteRatingPopup = (
+    ratingId,
+    avgRating,
+    totalRating,
+    userRating,
+    movieId
+  ) => {
     setPopupVisibility(true);
-    setRatingIdToDelete(ratingId);
+    setRatingDataToDelete({
+      ...ratingDatatoDelete,
+      ratingId,
+      avgRating,
+      totalRating,
+      userRating,
+      movieId,
+    });
     setPopupClassName("openform");
   };
 
@@ -130,7 +153,13 @@ const UserRatedMovies = (props) => {
       email: props.email,
     };
 
-    ServiceProvider.deleteItem(apiUrl.deleteUserRating, ratingIdToDelete).then(
+    ratingDatatoDelete.avgRating =
+      (ratingDatatoDelete.avgRating * ratingDatatoDelete.totalRating -
+        ratingDatatoDelete.userRating) /
+      (ratingDatatoDelete.totalRating - 1);
+    ratingDatatoDelete.totalRating = ratingDatatoDelete.totalRating - 1;
+
+    ServiceProvider.post(apiUrl.deleteUserRating, ratingDatatoDelete).then(
       (response) => {
         if (response.status === 200) {
           body.pageNumber = 1;
@@ -212,9 +241,9 @@ const UserRatedMovies = (props) => {
         <NoResultFound></NoResultFound>
       ) : (
         ratingList.map((ratingData, index) => (
-          <div key={index} class="movie-item-style-2 userrate">
+          <div key={index} className="movie-item-style-2 userrate">
             <img src={ratingData.movieLogo} alt="" />
-            <div class="mv-item-infor" style={{ width: "100%" }}>
+            <div className="mv-item-infor" style={{ width: "100%" }}>
               <h6>
                 <Link
                   className="heading"
@@ -239,14 +268,22 @@ const UserRatedMovies = (props) => {
                     marginTop: "15px",
                     cursor: "pointer",
                   }}
-                  onClick={() => openDeleteRatingPopup(ratingData.ratingId)}
+                  onClick={() =>
+                    openDeleteRatingPopup(
+                      ratingData.ratingId,
+                      ratingData.avgRating,
+                      ratingData.totalRatings,
+                      ratingData.userRating,
+                      ratingData.movieId
+                    )
+                  }
                 >
                   Delete
                 </p>
-                <p class="time sm-text">your rate:</p>
-                <p class="rate">
+                <p className="time sm-text">your rate:</p>
+                <p className="rate">
                   <i
-                    class="fa fa-star"
+                    className="fa fa-star"
                     style={{
                       fontSize: "20px",
                       color: "yellow",

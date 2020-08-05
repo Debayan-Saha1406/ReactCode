@@ -44,7 +44,6 @@ const UserFavorite = (props) => {
   );
 
   useEffect(() => {
-    debugger;
     if (isUserLoggedIn) {
       dispatch(toggleLoader(true, "15%"));
       fetchData(true);

@@ -64,10 +64,10 @@ const ProfileDetails = (props) => {
   };
 
   return (
-    <form action="" class="user">
+    <form action="" className="user">
       <h4>01. Profile details</h4>
-      <div class="row">
-        <div class="col-md-6 form-it" id="spacing-below">
+      <div className="row">
+        <div className="col-md-6 form-it" id="spacing-below">
           <label>Email Address</label>
           <input
             type="text"
@@ -76,7 +76,7 @@ const ProfileDetails = (props) => {
             id="cursor-not-allowed"
           />
         </div>
-        <div class="col-md-6 form-it" id="spacing-below">
+        <div className="col-md-6 form-it" id="spacing-below">
           <label>Joined On</label>
           <input
             type="text"
@@ -86,9 +86,9 @@ const ProfileDetails = (props) => {
           />
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6 form-it" id="spacing-below">
-          <label class="required-label">First Name</label>
+      <div className="row">
+        <div className="col-md-6 form-it" id="spacing-below">
+          <label className="required-label">First Name</label>
           <input
             type="text"
             name="firstName"
@@ -97,10 +97,13 @@ const ProfileDetails = (props) => {
             onChange={(e) => handleInputChange(e, setFirstName)}
           />
           {firstName.errorClassName === "input-error" && (
-            <i class="fa fa-exclamation-circle" id="warning-exclamation"></i>
+            <i
+              className="fa fa-exclamation-circle"
+              id="warning-exclamation"
+            ></i>
           )}
         </div>
-        <div class="col-md-6 form-it" id="spacing-below">
+        <div className="col-md-6 form-it" id="spacing-below">
           <label>Last Name</label>
           <input
             type="text"
@@ -110,15 +113,17 @@ const ProfileDetails = (props) => {
             onChange={(e) => handleInputChange(e, setLastName)}
           />
           {lastName.errorClassName === "input-error" && (
-            <i class="fa fa-exclamation-circle" id="warning-exclamation"></i>
+            <i
+              className="fa fa-exclamation-circle"
+              id="warning-exclamation"
+            ></i>
           )}
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2">
+      <div className="row">
+        <div className="col-md-2">
           <input
-            class="submit"
-            value="Update"
+            className="submit"
             onClick={handleUpdate}
             id="black-hover"
             style={{ cursor: "pointer", paddingLeft: "20px" }}

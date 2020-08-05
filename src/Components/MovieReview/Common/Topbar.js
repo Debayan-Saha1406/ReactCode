@@ -18,8 +18,10 @@ const Topbar = (props) => {
             : props.isFromDirectorSlide && props.sortBylist[4].id
         } //To Show the networth descending when we come from slider
       >
-        {props.sortBylist.map((sortByItem) => (
-          <option value={sortByItem.id}>{sortByItem.value}</option>
+        {props.sortBylist.map((sortByItem, index) => (
+          <option key={index} value={sortByItem.id}>
+            {sortByItem.value}
+          </option>
         ))}
       </select>
       {props.pageType === pageType.grid ? (

@@ -66,9 +66,9 @@ const SideMenu = (props) => {
   };
 
   return (
-    <div class="col-md-3 col-sm-12 col-xs-12">
-      <div class="user-information">
-        <div class="user-img">
+    <div className="col-md-3 col-sm-12 col-xs-12">
+      <div className="user-information">
+        <div className="user-img">
           <a>
             <img src={props.profileImageUrl} alt="" />
             <br />
@@ -79,13 +79,17 @@ const SideMenu = (props) => {
               handleIncorrectFileFormat(errMsg)
             }
             fileComponent={
-              <a class="redbtn" id="black-hover" style={{ cursor: "pointer" }}>
+              <a
+                className="redbtn"
+                id="black-hover"
+                style={{ cursor: "pointer" }}
+              >
                 Change avatar
               </a>
             }
           ></ImagePickerProvider>
         </div>
-        <div class="user-fav">
+        <div className="user-fav">
           <p>Account Details</p>
           <ul>
             {activeSideMenuItem === userProfileSideMenuItem.profile ? (
@@ -178,7 +182,7 @@ const SideMenu = (props) => {
             )}
           </ul>
         </div>
-        <div class="user-fav">
+        <div className="user-fav">
           <p>Others</p>
           <ul>
             <li>

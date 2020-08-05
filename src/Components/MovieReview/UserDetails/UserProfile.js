@@ -62,7 +62,7 @@ const UserProfile = (props) => {
 
   useEffect(() => {
     const userDetails = getLocalStorageItem(constants.userDetails);
-    if (userDetails && isUserLoggedIn) {
+    if (userDetails) {
       dispatch(saveUserInfo(userDetails.email, true, false));
       setProfileData({
         ...profileData,
@@ -74,7 +74,6 @@ const UserProfile = (props) => {
         userId: userDetails.userId,
       });
     } else {
-      removeLocalStorageItem(constants.userDetails);
       if (hasSessionTimedOut) {
         dispatch(saveUserInfo("", false, true));
       } else {
@@ -131,6 +130,7 @@ const UserProfile = (props) => {
               lastName: userDetails.lastName,
             });
           } else if (response.status === 401) {
+            removeLocalStorageItem(constants.userDetails);
             dispatch(toggleLoader(false, 1));
             dispatch(saveUserInfo("", false, true));
           } else {

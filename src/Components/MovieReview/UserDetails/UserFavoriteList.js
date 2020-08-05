@@ -14,9 +14,9 @@ const UserFavoriteList = (props) => {
   };
 
   return (
-    <div class="flex-wrap-movielist user-fav-list">
+    <div className="flex-wrap-movielist user-fav-list">
       {props.moviesList.map((movie, index) => (
-        <div class="movie-item-style-2">
+        <div key={index} className="movie-item-style-2">
           <img
             src={movie.movieLogo}
             style={{ height: "260px", width: "170px" }}
@@ -25,7 +25,7 @@ const UserFavoriteList = (props) => {
               handleSuccessulImageLoad(props.moviesList.length - 1 === index)
             }
           />
-          <div class="mv-item-infor">
+          <div className="mv-item-infor">
             <h6>
               <Link className="heading" to={`/movie-details/${movie.movieId}`}>
                 {movie.movieName}{" "}
@@ -39,7 +39,7 @@ const UserFavoriteList = (props) => {
                 </span>
               </Link>
             </h6>
-            <p class="rate">
+            <p className="rate">
               <i
                 className="fa fa-star"
                 style={{
@@ -50,12 +50,12 @@ const UserFavoriteList = (props) => {
               ></i>
               <span>{movie.avgRating}</span> /10
             </p>
-            <p class="describe" style={{ marginTop: "20px" }}>
+            <p className="describe" style={{ marginTop: "20px" }}>
               {movie.description.length > 200
                 ? movie.description.substring(0, 200) + "..."
                 : movie.description}
             </p>
-            <p class="run-time" style={{ marginTop: "20px" }}>
+            <p className="run-time" style={{ marginTop: "20px" }}>
               {" "}
               Run Time:{" "}
               <span style={{ color: "white", marginLeft: "5px" }}>

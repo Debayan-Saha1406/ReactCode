@@ -108,11 +108,11 @@ const ChangePassword = (props) => {
   };
 
   return (
-    <form action="" class="password">
+    <form action="" className="password">
       <h4>02. Change password</h4>
-      <div class="row">
-        <div class="col-md-6 form-it" id="spacing-below">
-          <label class="required-label">Old Password</label>
+      <div className="row">
+        <div className="col-md-6 form-it" id="spacing-below">
+          <label className="required-label">Old Password</label>
           <input
             type="text"
             name="oldPassword"
@@ -121,13 +121,16 @@ const ChangePassword = (props) => {
             onChange={(e) => handleInputChange(e, setOldPassword)}
           />
           {oldPassword.errorClassName === "input-error" && (
-            <i class="fa fa-exclamation-circle" id="warning-exclamation"></i>
+            <i
+              className="fa fa-exclamation-circle"
+              id="warning-exclamation"
+            ></i>
           )}
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6 form-it" id="spacing-below">
-          <label class="required-label">New Password</label>
+      <div className="row">
+        <div className="col-md-6 form-it" id="spacing-below">
+          <label className="required-label">New Password</label>
           <input
             type="text"
             name="newPassword"
@@ -136,13 +139,16 @@ const ChangePassword = (props) => {
             onChange={(e) => handleInputChange(e, setNewPassword)}
           />
           {newPassword.errorClassName === "input-error" && (
-            <i class="fa fa-exclamation-circle" id="warning-exclamation"></i>
+            <i
+              className="fa fa-exclamation-circle"
+              id="warning-exclamation"
+            ></i>
           )}
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6 form-it" id="spacing-below">
-          <label class="required-label">Confirm New Password</label>
+      <div className="row">
+        <div className="col-md-6 form-it" id="spacing-below">
+          <label className="required-label">Confirm New Password</label>
           <input
             type="text"
             name="confirmPassword"
@@ -151,17 +157,19 @@ const ChangePassword = (props) => {
             onChange={(e) => handleInputChange(e, setConfirmPassword)}
           />
           {confirmPassword.errorClassName === "input-error" && (
-            <i class="fa fa-exclamation-circle" id="warning-exclamation"></i>
+            <i
+              className="fa fa-exclamation-circle"
+              id="warning-exclamation"
+            ></i>
           )}
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2">
+      <div className="row">
+        <div className="col-md-2">
           <input
-            class="submit"
+            className="submit"
             id="black-hover"
             style={{ cursor: "pointer", paddingLeft: "20px" }}
-            value="change"
             onClick={changePassword}
           />
         </div>
