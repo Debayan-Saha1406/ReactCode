@@ -17,40 +17,60 @@ const Footer = () => {
           <div className="flex-child-ft item1">
             <a>
               <img className="logo" src={image} alt="" />
+              <p
+                style={{
+                  marginBottom: "40px",
+                  color: "white",
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                The Movie Database
+              </p>
             </a>
+
             <p>
-              5th Avenue st, manhattan
+              Block-A, Second Floor
               <br />
-              New York, NY 10001
+              Bestech Business Tower Sohna Road
             </p>
+            <p>Sector-48 Gurgaon, 122018</p>
             <p>
-              Call us: <a id="back-to-top">(+01) 202 342 6789</a>
+              Call us: <a id="back-to-top">0124 464 7684</a>
             </p>
           </div>
           <div className="flex-child-ft item2">
             <h4>Resources</h4>
             <ul>
+              <li style={{ color: "#abb7c4" }}>About</li>
+              <li style={{ color: "#abb7c4" }}>Help Center</li>
+            </ul>
+          </div>
+
+          <div className="flex-child-ft item3">
+            <h4>Contact Us</h4>
+            <ul>
               <li>
-                <a href="#">About</a>
+                <i
+                  className="fa fa-facebook-official"
+                  style={{ fontSize: "36px", color: "white" }}
+                ></i>
               </li>
               <li>
-                <a href="#">Contact Us</a>
+                <i
+                  class="fa fa-instagram"
+                  style={{ fontSize: "36px", color: "white" }}
+                ></i>
               </li>
             </ul>
           </div>
 
           <div className="flex-child-ft item5">
-            <h4>Newsletter</h4>
-            <p>
-              Subscribe to our newsletter system now <br /> to get latest news
-              from us.
-            </p>
-            <form action="#">
-              <input type="text" placeholder="Enter your email..." />
-            </form>
-            <a href="#" className="btn">
-              Subscribe now <i className="ion-ios-arrow-forward"></i>
-            </a>
+            <h4>Legal</h4>
+            <ul>
+              <li style={{ color: "#abb7c4" }}>Privacy Policy</li>
+              <li style={{ color: "#abb7c4" }}>Terms Of Use</li>
+            </ul>
           </div>
         </div>
       </div>

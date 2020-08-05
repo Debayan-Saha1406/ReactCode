@@ -182,8 +182,10 @@ class Header extends Component {
           <a href="index.html" id="branding">
             <img src={image} alt="" className="logo" />
             <div className="logo-copy">
-              <h1 className="site-title">Company Name</h1>
-              <small className="site-description">Tagline goes here</small>
+              <h1 className="site-title">The Movie Database</h1>
+              <small className="site-description">
+                Everything from the entertainment industry
+              </small>
             </div>
           </a>
 

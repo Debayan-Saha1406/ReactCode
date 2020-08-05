@@ -168,9 +168,11 @@ const ChangePassword = (props) => {
         <div className="col-md-2">
           <input
             className="submit"
+            type="submit"
             id="black-hover"
-            style={{ cursor: "pointer", paddingLeft: "20px" }}
+            style={{ cursor: "pointer" }}
             onClick={changePassword}
+            value="Change"
           />
         </div>
       </div>

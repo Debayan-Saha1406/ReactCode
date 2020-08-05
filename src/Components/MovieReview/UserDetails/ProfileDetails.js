@@ -124,9 +124,11 @@ const ProfileDetails = (props) => {
         <div className="col-md-2">
           <input
             className="submit"
+            type="button"
             onClick={handleUpdate}
             id="black-hover"
-            style={{ cursor: "pointer", paddingLeft: "20px" }}
+            style={{ cursor: "pointer" }}
+            value="Update"
           />
         </div>
       </div>

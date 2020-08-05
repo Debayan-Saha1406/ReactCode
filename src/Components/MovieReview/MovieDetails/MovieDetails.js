@@ -326,7 +326,7 @@ class MovieDetails extends Component {
             </div>
           )}
           {this.state.showVideo && (
-            <div className="overlay openform">
+            <div className="show-overlay openform">
               <div className="login-wrapper" id="login-content">
                 <div
                   className="close-cross"
