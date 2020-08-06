@@ -2,6 +2,9 @@
 import React from "react";
 
 import image from "../../../images/logo.png";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { menuItem } from "../../../Shared/Constants";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -10,6 +13,8 @@ const Footer = () => {
       behavior: "smooth",
     });
   };
+
+  const history = useHistory();
   return (
     <footer className="ht-footer">
       <div className="container">
@@ -42,8 +47,32 @@ const Footer = () => {
           <div className="flex-child-ft item2">
             <h4>Resources</h4>
             <ul>
-              <li style={{ color: "#abb7c4" }}>About</li>
-              <li style={{ color: "#abb7c4" }}>Help Center</li>
+              <li>
+                {window.location.pathname.includes(menuItem.about) ? (
+                  <Link
+                    style={{ color: "#dcf836", cursor: "pointer" }}
+                    to="/about"
+                  >
+                    About
+                  </Link>
+                ) : (
+                  <Link
+                    style={{ color: "#abb7c4", cursor: "pointer" }}
+                    to="/about"
+                  >
+                    About
+                  </Link>
+                )}
+              </li>
+              <li>
+                {" "}
+                <Link
+                  style={{ color: "#abb7c4", cursor: "pointer" }}
+                  to="/about"
+                >
+                  Help Center
+                </Link>
+              </li>
             </ul>
           </div>
 

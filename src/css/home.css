@@ -455,45 +455,15 @@ form input[type="reset"]:focus,
   font-size: 0.8em;
 }
 
-.social-links {
-  margin: 20px 0;
-}
-.social-links a {
-  color: white;
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  border-radius: 50%;
-  line-height: 1.9;
-  -webkit-transition: 0.3s ease;
-  transition: 0.3s ease;
-}
-.social-links .facebook {
-  background-color: #204385;
-}
 .social-links .facebook:hover {
   background-color: #2a58ae;
-}
-.social-links .twitter {
-  background-color: #2aa9e0;
 }
 .social-links .twitter:hover {
   background-color: #57bbe6;
 }
-.social-links .google-plus {
-  background-color: #d3492c;
-}
 .social-links .google-plus:hover {
   background-color: #dc6d56;
 }
-.social-links .pinterest {
-  background-color: #ca2128;
-}
-.social-links .pinterest:hover {
-  background-color: #e03e45;
-}
-
 .breadcrumbs {
   padding-bottom: 20px;
   margin-bottom: 30px;

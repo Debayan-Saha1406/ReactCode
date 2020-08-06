@@ -18,6 +18,7 @@ import DirectorDetails from "../MovieReview/DirectorDetails/DirectorDetails";
 import SearchList from "../MovieReview/Search/SearchList";
 import { route } from "../../Shared/Constants";
 import ForgotPassword from "./ForgotPasswordComponent";
+import About from "../MovieReview/Footer/About";
 
 class Router extends Component {
   render() {
@@ -56,6 +57,7 @@ class Router extends Component {
           <Route path="/user-profile" component={UserProfile} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/search" component={SearchList} />
+          <Route path="/about" component={About} />
           <Redirect from="*" to="/home" />
         </Switch>
       </BrowserRouter>

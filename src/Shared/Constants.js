@@ -185,6 +185,8 @@ export const menuItem = {
   celeb: "celeb",
   director: "director",
   user: "user",
+  about: "about",
+  none: "none",
 };
 
 export const userProfileSideMenuItem = {
