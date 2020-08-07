@@ -81,10 +81,8 @@ class Header extends Component {
       this.setState({ currentMenuItem: menuItem.director });
     } else if (window.location.pathname.includes(menuItem.user)) {
       this.setState({ currentMenuItem: menuItem.user });
-    } else if (window.location.pathname.includes(menuItem.about)) {
-      this.setState({ currentMenuItem: menuItem.none });
     } else {
-      this.setState({ currentMenuItem: menuItem.home });
+      this.setState({ currentMenuItem: menuItem.none });
     }
   }
 

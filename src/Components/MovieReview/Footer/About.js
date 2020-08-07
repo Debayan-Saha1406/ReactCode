@@ -56,83 +56,68 @@ const About = () => {
                   </figure>
                 </div>
                 <div class="col-md-8">
-                  <p class="leading">
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium totam.
+                  <p class="leading" style={{ color: "black" }}>
+                    <b>The Movie Database</b>
                   </p>
                   <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam, eaque ipsa quae ab illo inventore veritatis et
-                    quasi architecto beatae vitae dicta sunt explicabo. Nemo
-                    enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-                    aut fugit, sed quia consequuntur magni dolores eos qui
-                    ratione voluptatem sequi nesciunt. Neque porro quisquam est,
-                    qui dolorem ipsum quia dolor sit consectetur adipisci velit,
-                    sed quia non numquam eius modi tempora incidunt ut labore et
-                    dolore magnam aliquam quaerat voluptatem. Ut enim ad minima
-                    veniam, quis nostrum exercitationem ullam corporis suscipit
-                    laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis
-                    autem vel eum iure reprehenderit qui in ea voluptate velit
-                    esse quam.
+                    Founded in April of 2020 and based in Delhi, India, The
+                    Movie Database is a trusted place for people to search for
+                    any movie, celebrity or director, post their ratings and
+                    also review or favourite any movie.
+                  </p>
+                  <p>
+                    Whether looking for any latest trailers, or the release date
+                    of their favorite movies, it connects different users to
+                    unique searching experience. Discover movies, celebs by
+                    different types of data like average rating, genres, net
+                    worth. And with increasing movies and celebs count, The
+                    Movie Database is the only place where user can find any
+                    detail without much hassle.
                   </p>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-9">
-                  <h2 class="section-title">Vision &amp; Misssion</h2>
+                  <h2 class="section-title" style={{ fontWeight: "bold" }}>
+                    Vision &amp; Mission
+                  </h2>
                   <p>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam eaque ipsa quae ab illo inventore veritatis et quasi
-                    architecto beatae vitae dicta sunt explicabo. Nemo enim
-                    ipsam voluptatem quia voluptas sit aspernatur aut odit aut
-                    fugit, sed quia consequuntur magni dolores eos qui ratione
-                    voluptatem sequi nesciunt.{" "}
+                    To be a world-class movie database committed to bring new
+                    content daily for our users from movie and television
+                    industry. We harness the strength of the world's diversity
+                    to transform our website and deliver a flourishing
+                    audio-visual experience to the benefit of all.
                   </p>
 
-                  <p>
-                    Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-                    consectetur adipisci velit, sed quia non numquam eius modi
-                    tempora incidunt ut labore et dolore magnam aliquam quaerat
-                    voluptatem. Ut enim ad minima veniam, quis nostrum
-                    exercitationem ullam corporis suscipit laboriosam, nisi ut
-                    aliquid ex ea commodi consequatur? Quis autem vel eum iure
-                    reprehenderit qui in ea voluptate velit esse quam
-                    dignissimos ducimus qui blanditiis praesentium voluptatum
-                    atque.
+                  <p style={{ marginBottom: "40px" }}>
+                    To collaborate with all admins to enable the fast addition
+                    of the content on a regular basis, bring back users with
+                    exciting and new content and promotion of this thriving
+                    audiovisual movie database.
                   </p>
                 </div>
                 <div class="col-md-3">
-                  <h2 class="section-title">Useful Links</h2>
+                  <h2 class="section-title" style={{ fontWeight: "bold" }}>
+                    Useful Links
+                  </h2>
                   <ul class="arrow">
                     <li>
-                      <a href="#">Eiusmod tempor incididunt</a>
+                      <Link to="/home">Home</Link>
                     </li>
                     <li>
-                      <a href="#">Tenim ad minim venia</a>
+                      <Link to="/celebrities">Celebs</Link>
                     </li>
                     <li>
-                      <a href="#">Quis nostrud exercitation</a>
-                    </li>
-                    <li>
-                      <a href="#">Ullamco laboris reprehenderit</a>
-                    </li>
-                    <li>
-                      <a href="#">Duis aute dolor voluptat</a>
-                    </li>
-                    <li>
-                      <a href="#">Velit esse cillum dolore</a>
-                    </li>
-                    <li>
-                      <a href="#">Excepteur sint occaeca</a>
+                      <Link to="/directors">Directors</Link>
                     </li>
                   </ul>
                 </div>
               </div>
 
-              <h2 class="section-title">Our Team</h2>
+              <h2 class="section-title" style={{ fontWeight: "bold" }}>
+                Our Team
+              </h2>
               <div class="row">
                 <div class="col-md-12">
                   <div class="team">
