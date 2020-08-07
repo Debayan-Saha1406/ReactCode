@@ -272,11 +272,13 @@ class MovieDetails extends Component {
     }
     return (
       <React.Fragment>
-        <div id="loaderContainer">
-          <div id="loader">
-            {this.props.showLoader && <LoaderProvider></LoaderProvider>}
+        {this.props.showLoader && (
+          <div id="loaderContainer">
+            <div id="loader">
+              <LoaderProvider></LoaderProvider>
+            </div>
           </div>
-        </div>
+        )}
         {this.state.showInformationPopup && !this.props.isUserLoggedIn ? (
           <Information
             title={"Log In"}

@@ -51,6 +51,7 @@ const Footer = () => {
                 {window.location.pathname.includes(menuItem.about) ? (
                   <Link
                     style={{ color: "#dcf836", cursor: "pointer" }}
+                    className="footer-content"
                     to="/about"
                   >
                     About
@@ -59,6 +60,7 @@ const Footer = () => {
                   <Link
                     style={{ color: "#abb7c4", cursor: "pointer" }}
                     to="/about"
+                    className="footer-content"
                   >
                     About
                   </Link>
@@ -67,30 +69,34 @@ const Footer = () => {
               <li>
                 {" "}
                 <Link
-                  style={{ color: "#abb7c4", cursor: "pointer" }}
+                  style={{ color: "#abb7c4" }}
                   to="/about"
+                  // className="footer-content"
                 >
                   Help Center
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          <div className="flex-child-ft item3">
-            <h4>Contact Us</h4>
-            <ul>
-              <li>
-                <i
-                  className="fa fa-facebook-official"
-                  style={{ fontSize: "36px", color: "white" }}
-                ></i>
-              </li>
-              <li>
-                <i
-                  class="fa fa-instagram"
-                  style={{ fontSize: "36px", color: "white" }}
-                ></i>
-              </li>
+              {window.location.pathname.includes(menuItem.contactUs) ? (
+                <li>
+                  <Link
+                    style={{ color: "#dcf836", cursor: "pointer" }}
+                    to="/contactUs"
+                    className="footer-content"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    style={{ color: "#abb7c4", cursor: "pointer" }}
+                    to="/contactUs"
+                    className="footer-content"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 

@@ -19,6 +19,7 @@ import SearchList from "../MovieReview/Search/SearchList";
 import { route } from "../../Shared/Constants";
 import ForgotPassword from "./ForgotPasswordComponent";
 import About from "../MovieReview/Footer/About";
+import ContactUs from "../MovieReview/Footer/ContactUs";
 
 class Router extends Component {
   render() {
@@ -58,6 +59,7 @@ class Router extends Component {
           <Route path="/not-found" component={NotFound} />
           <Route path="/search" component={SearchList} />
           <Route path="/about" component={About} />
+          <Route path="/contactUs" component={ContactUs} />
           <Redirect from="*" to="/home" />
         </Switch>
       </BrowserRouter>

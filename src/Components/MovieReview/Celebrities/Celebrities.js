@@ -257,9 +257,13 @@ const Celebrities = (props) => {
 
   return (
     <React.Fragment>
-      <div id="loaderContainer">
-        <div id="loader">{showLoader && <LoaderProvider></LoaderProvider>}</div>
-      </div>
+      {showLoader && (
+        <div id="loaderContainer">
+          <div id="loader">
+            <LoaderProvider></LoaderProvider>
+          </div>
+        </div>
+      )}
 
       <div
         style={{

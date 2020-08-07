@@ -26,6 +26,7 @@ const About = () => {
       dispatch(toggleLoader(false, 1));
     }, 2000);
   }, []);
+
   return (
     <React.Fragment>
       {showLoader && (

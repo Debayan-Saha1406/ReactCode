@@ -158,13 +158,13 @@ const UserProfile = (props) => {
         ></Information>
       ) : (
         <React.Fragment>
-          <div id="loaderContainer">
-            <div id="loader">
-              {showLoader && (
-                <LoaderProvider visible={showLoader}></LoaderProvider>
-              )}
+          {showLoader && (
+            <div id="loaderContainer">
+              <div id="loader">
+                <LoaderProvider></LoaderProvider>
+              </div>
             </div>
-          </div>
+          )}
           <div className="background" style={{ opacity: screenOpacity }}>
             <React.Fragment>
               <Header

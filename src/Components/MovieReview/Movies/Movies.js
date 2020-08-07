@@ -299,12 +299,13 @@ class Movies extends Component {
   render() {
     return (
       <React.Fragment>
-        <div id="loaderContainer">
-          <div id="loader">
-            {this.props.showLoader && <LoaderProvider></LoaderProvider>}
+        {this.props.showLoader && (
+          <div id="loaderContainer">
+            <div id="loader">
+              <LoaderProvider></LoaderProvider>
+            </div>
           </div>
-        </div>
-
+        )}
         <div
           style={{
             opacity: this.props.screenOpacity,

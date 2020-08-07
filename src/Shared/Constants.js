@@ -187,6 +187,7 @@ export const menuItem = {
   user: "user",
   about: "about",
   none: "none",
+  contactUs: "contactUs",
 };
 
 export const userProfileSideMenuItem = {
