@@ -13,6 +13,12 @@ import Footer from "../Common/Footer";
 import { useState } from "react";
 import { validateInputField } from "../../../Shared/Services/ValidationService";
 import { validateUserEmail } from "./../../../Shared/Services/ValidationService";
+import ServiceProvider from "./../../../Provider/ServiceProvider";
+import { apiUrl } from "./../../../Shared/Constants";
+import {
+  showSuccessMessage,
+  showErrorMessage,
+} from "./../../../Provider/ToastProvider";
 
 const initialState = {
   value: "",
@@ -96,8 +102,25 @@ const ContactUs = () => {
         message: message.value,
       };
 
-      console.log(body);
+      dispatch(toggleLoader(true, "15%"));
+      ServiceProvider.post(apiUrl.contactUs, body).then((response) => {
+        if (response.status === 200) {
+          dispatch(toggleLoader(false, 1));
+          showSuccessMessage("Your Mail Has Been Sent Successfully");
+          clearValues();
+        } else {
+          dispatch(toggleLoader(false, 1));
+          showErrorMessage(response.data.errors);
+        }
+      });
     }
+  };
+
+  const clearValues = () => {
+    setEmail(initialState);
+    setName(initialState);
+    setSubject(initialState);
+    setMessage(initialState);
   };
 
   const setInputFieldError = (inputField, setData) => {
@@ -233,10 +256,12 @@ const ContactUs = () => {
 
                   <div class="col-12">
                     <p class="section__text">
-                      It is a long fact that a reader will be distracted by the
-                      readable content of a page when looking at its layout. The
-                      point of using Lorem Ipsum is that it has a more-or-less
-                      normal distribution of letters, as opposed to using.
+                      Don't be a stranger. Just say Hello.
+                    </p>
+                    <p>
+                      Feel free to get in touch with us. I am always open to
+                      discussing creative ideas or opportunities to be part of
+                      your visions.
                     </p>
 
                     <div class="social-links">
