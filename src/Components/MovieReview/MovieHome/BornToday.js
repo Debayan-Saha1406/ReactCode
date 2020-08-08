@@ -22,7 +22,7 @@ const BornToday = (props) => {
     <React.Fragment>
       {
         <div class="col-md-12">
-          <div class="title-hd">
+          <div class="title-hd" style={{ marginTop: "20px" }}>
             {isComponentVisible && <h2>Born Today</h2>}
           </div>
           <div class="tabs">
@@ -37,62 +37,68 @@ const BornToday = (props) => {
                 )}
               </li>
             </ul>
-            <Carousel
-              ssr
-              partialVisbile
-              // deviceType={deviceType}
-              itemClass="image-item"
-              responsive={responsive}
+            <div
+              className={
+                props.starsBornToday.length === 3 && "carousel-left-shift"
+              }
             >
-              {props.starsBornToday.map((star, index) => {
-                return (
-                  <React.Fragment>
-                    <img
-                      draggable={false}
-                      style={{
-                        height: "350px",
-                        width: "300px",
-                        borderRadius: "50%",
-                      }}
-                      src={star.image}
-                      onLoad={() =>
-                        handleSuccessfulImageLoad(
-                          props.starsBornToday.length - 1 === index
-                        )
-                      }
-                    />
-                    <div class="mv-item-infor">
-                      <h6
+              <Carousel
+                ssr
+                partialVisbile
+                // deviceType={deviceType}
+                itemClass="image-item"
+                responsive={responsive}
+              >
+                {props.starsBornToday.map((star, index) => {
+                  return (
+                    <React.Fragment>
+                      <img
+                        draggable={false}
                         style={{
-                          marginTop: "20px",
-                          marginBottom: "0px",
-                          textAlign: "center",
+                          height: "300px",
+                          width: "300px",
+                          borderRadius: "50%",
                         }}
-                      >
-                        {star.type === searchBarSubType.director ? (
-                          <Link
-                            className="heading"
-                            to={`/director-details/${star.id}`}
-                          >
-                            {star.name}
-                          </Link>
-                        ) : (
-                          <Link
-                            className="heading"
-                            to={`/celebrity-details/${star.id}`}
-                          >
-                            {star.name}
-                          </Link>
-                        )}
-                      </h6>
-                      <p class="rate" style={{ textAlign: "center" }}>
-                        <span>{star.age}</span>
-                      </p>
-                    </div>
-                  </React.Fragment>
-                );
-              })}
-            </Carousel>
+                        src={star.image}
+                        onLoad={() =>
+                          handleSuccessfulImageLoad(
+                            props.starsBornToday.length - 1 === index
+                          )
+                        }
+                      />
+                      <div class="mv-item-infor">
+                        <h6
+                          style={{
+                            marginTop: "20px",
+                            marginBottom: "0px",
+                            textAlign: "center",
+                          }}
+                        >
+                          {star.type === searchBarSubType.director ? (
+                            <Link
+                              className="heading"
+                              to={`/director-details/${star.id}`}
+                            >
+                              {star.name}
+                            </Link>
+                          ) : (
+                            <Link
+                              className="heading"
+                              to={`/celebrity-details/${star.id}`}
+                            >
+                              {star.name}
+                            </Link>
+                          )}
+                        </h6>
+                        <p class="rate" style={{ textAlign: "center" }}>
+                          <span>{star.age}</span>
+                        </p>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+              </Carousel>
+            </div>
           </div>
         </div>
       }
