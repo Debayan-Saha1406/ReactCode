@@ -16,7 +16,9 @@ const Overview = (props) => {
         <div className="row">
           <div className="col-md-8 col-sm-12 col-xs-12">
             <br></br>
-            <p>{props.movieOverview.description}</p>
+            <pre>
+              <p>{props.movieOverview.description}</p>
+            </pre>
             {props.reviews.length > 0 && (
               <div className="title-hd-sm">
                 <h4>User reviews</h4>

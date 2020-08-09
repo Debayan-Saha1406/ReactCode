@@ -8,7 +8,9 @@ const Biography = (props) => {
         <h3>Biography of</h3>
         <h2 style={{ color: "white" }}>{name}</h2>
       </div>
-      <p>{biography}</p>
+      <pre>
+        <p>{biography} </p>
+      </pre>
     </div>
   );
 };

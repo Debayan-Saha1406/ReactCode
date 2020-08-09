@@ -5,8 +5,8 @@ import slider3 from "../images/slider3.jpg";
 
 export const apiUrl = {
   baseUrl:
-    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-  //"https://localhost:44357/api",
+    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+    "https://localhost:44357/api",
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -38,7 +38,7 @@ export const apiUrl = {
   directorMovies: "/directorMovies",
   search: "/search",
   latestMovieTrailers: "/latestMovieTrailers",
-  fanFavoriteMovies: "/topRatedMovies",
+  whatToWatchMovies: "/whatToWatchMovies/",
   starsBornToday: "/starsBornToday",
   moviesDirectorsCelebsCount: "/moviesDirectorsCelebsCount",
   addCelebrity: "/celebrity",
@@ -417,4 +417,10 @@ export const userStatus = {
 export const userRole = {
   admin: 1,
   user: 2,
+};
+
+export const WhatToWatchType = {
+  HighestRated: 1,
+  MostReviewed: 2,
+  ComingSoon: 3,
 };

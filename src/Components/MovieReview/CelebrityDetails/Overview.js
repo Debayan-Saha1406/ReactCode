@@ -8,11 +8,13 @@ const Overview = (props) => {
   return (
     <React.Fragment>
       <div className="col-md-8 col-sm-12 col-xs-12">
-        <p>
-          {biography.length > 400
-            ? biography.substring(0, 400) + "..."
-            : biography}{" "}
-        </p>
+        <pre>
+          <p>
+            {biography.length > 400
+              ? biography.substring(0, 400) + "..."
+              : biography}{" "}
+          </p>
+        </pre>
         <p className="time">
           <a
             onClick={() => props.redirectToTab(detailPageTabs.biography)}
