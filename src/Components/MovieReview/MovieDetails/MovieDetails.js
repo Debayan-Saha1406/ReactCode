@@ -74,25 +74,7 @@ class MovieDetails extends Component {
 
   componentDidMount() {
     movieId = this.props.match.params.id;
-
-    this.props.toggleLoader(true, 0);
-    ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
-      if (response.status === 200) {
-        let index = response.data.data.movie.releaseDate.indexOf(",");
-        releaseYear = response.data.data.movie.releaseDate.substring(
-          index + 1,
-          response.data.data.movie.releaseDate.length
-        );
-        this.setRecentlyViewedItems(response);
-
-        this.setState({
-          movie: response.data.data,
-          isMovieDetailPresent: true,
-        });
-      } else if (response.status === 404) {
-        this.setState({ redirectToNotFound: true });
-      }
-    });
+    this.fetchMovies();
   }
 
   showTrailer = (showVideo) => {
@@ -113,6 +95,27 @@ class MovieDetails extends Component {
       this.props.togglePopup("openform", popupType.login);
     }
   };
+
+  fetchMovies() {
+    this.props.toggleLoader(true, 0);
+    ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
+      if (response.status === 200) {
+        let index = response.data.data.movie.releaseDate.indexOf(",");
+        releaseYear = response.data.data.movie.releaseDate.substring(
+          index + 1,
+          response.data.data.movie.releaseDate.length
+        );
+        this.setRecentlyViewedItems(response);
+
+        this.setState({
+          movie: response.data.data,
+          isMovieDetailPresent: true,
+        });
+      } else if (response.status === 404) {
+        this.setState({ redirectToNotFound: true });
+      }
+    });
+  }
 
   setRecentlyViewedItems(response) {
     let recentlyViewedItems = getLocalStorageItem(recentlyViewed);
@@ -233,7 +236,11 @@ class MovieDetails extends Component {
     }, 2000);
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      movieId = this.props.match.params.id;
+      this.fetchMovies();
+    }
     //Need To Check For Extra Api Calls
     if (!this.props.isUserLoggedIn && this.state.userRating !== -1) {
       this.setState({
@@ -315,9 +322,7 @@ class MovieDetails extends Component {
             <div
               className="hero details"
               style={{
-                background: `url(${this.state.movie.movie.coverPhoto}) no-repeat`,
-                backgroundPosition: "center",
-                backgroundSize: "cover",
+                background: `url(${this.state.movie.movie.coverPhoto}) center center / cover no-repeat`,
               }}
             >
               <div className="celeb-container">
