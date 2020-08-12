@@ -3991,3 +3991,26 @@ figure {
 .footer-content:hover {
   color: #dcf836 !important;
 }
+
+.read-more {
+  position: absolute;
+  top: 0;
+  background-color: #dd003f;
+  padding: 8px 15px;
+  text-align: center;
+  margin-left: 22%;
+  margin-top: 60%;
+  border-radius: 30px;
+  cursor: pointer;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+  filter: alpha(opacity=0);
+  transition: all 0.5s ease-out;
+}
+
+.description {
+  font-family: "Dosis", sans-serif;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+}

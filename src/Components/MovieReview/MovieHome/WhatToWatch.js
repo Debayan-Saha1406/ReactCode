@@ -4,6 +4,7 @@ import React from "react";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import "../../../css/movie-single.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -13,12 +14,17 @@ import { responsive } from "./../../../Shared/Constants";
 import NoResultFound from "./../Common/NoResultFound";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { useHistory } from "react-router-dom";
 
 const WhatToWatch = () => {
   const [whatToWatchMovies, setWhatToWatchMovies] = useState([]);
   const [type, setType] = useState(WhatToWatchType.HighestRated);
   const [isComponentVisible, showComponent] = useState(false);
+  const [imageOpacity, setImageOpacity] = useState(1);
+  const [readMoreOpacity, setReadMoreOpacity] = useState(0);
+  const [indexHovered, setIndexHovered] = useState(-1);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
@@ -37,6 +43,18 @@ const WhatToWatch = () => {
       showComponent(true);
     }
   };
+
+  const toggleOpacity = (opacity, indexHovered) => {
+    if (opacity === 1) {
+      setImageOpacity(0.2);
+      setIndexHovered(indexHovered);
+    } else {
+      setImageOpacity(1);
+      setIndexHovered(-1);
+    }
+    setReadMoreOpacity(opacity);
+  };
+
   return (
     <React.Fragment>
       {
@@ -121,26 +139,77 @@ const WhatToWatch = () => {
                   {whatToWatchMovies.map((movie, index) => {
                     return (
                       <React.Fragment key={index}>
-                        <img
-                          draggable={false}
-                          style={{ height: "380px", width: "300px" }}
-                          src={movie.movieLogo}
-                          onLoad={() =>
-                            handleSuccessfulImageLoad(
-                              whatToWatchMovies.length - 1 === index
-                            )
-                          }
-                        />
+                        {indexHovered === index ? (
+                          <img
+                            draggable={false}
+                            style={{
+                              height: "380px",
+                              width: "300px",
+                              opacity: imageOpacity,
+                            }}
+                            src={movie.movieLogo}
+                            onLoad={() =>
+                              handleSuccessfulImageLoad(
+                                whatToWatchMovies.length - 1 === index
+                              )
+                            }
+                            onMouseOver={() => toggleOpacity(1, index)}
+                            onMouseOut={() => toggleOpacity(0, index)}
+                          />
+                        ) : (
+                          <img
+                            draggable={false}
+                            style={{
+                              height: "380px",
+                              width: "300px",
+                            }}
+                            src={movie.movieLogo}
+                            onLoad={() =>
+                              handleSuccessfulImageLoad(
+                                whatToWatchMovies.length - 1 === index
+                              )
+                            }
+                            onMouseOver={() => toggleOpacity(1, index)}
+                            onMouseOut={() => toggleOpacity(0, index)}
+                          />
+                        )}
+                        {indexHovered === index ? (
+                          <div
+                            className="read-more"
+                            style={{ opacity: readMoreOpacity }}
+                            onMouseOver={() => toggleOpacity(1, index)}
+                          >
+                            <Link
+                              to={`/movie-details/${movie.movieId}`}
+                              style={{ fontSize: "20px" }}
+                              id="black-hover"
+                            >
+                              {" "}
+                              <b>Read more</b>
+                            </Link>
+                          </div>
+                        ) : (
+                          <div
+                            className="read-more"
+                            style={{ opacity: 0 }}
+                            onMouseOver={() => toggleOpacity(1, index)}
+                          >
+                            <Link
+                              to={`/movie-details/${movie.movieId}`}
+                              style={{ fontSize: "20px" }}
+                            >
+                              {" "}
+                              Read more{" "}
+                            </Link>
+                          </div>
+                        )}
+
                         <div className="mv-item-infor">
                           <h6
                             style={{ marginTop: "20px", marginBottom: "0px" }}
+                            className="description"
                           >
-                            <Link
-                              className="heading"
-                              to={`/movie-details/${movie.movieId}`}
-                            >
-                              {movie.movieName}
-                            </Link>
+                            {movie.movieName}
                           </h6>
                           <p className="rate">
                             {type === WhatToWatchType.HighestRated ? (
