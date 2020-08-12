@@ -24,7 +24,6 @@ const WhatToWatch = () => {
   const [readMoreOpacity, setReadMoreOpacity] = useState(0);
   const [indexHovered, setIndexHovered] = useState(-1);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));

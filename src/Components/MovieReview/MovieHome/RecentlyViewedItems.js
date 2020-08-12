@@ -12,11 +12,25 @@ import { searchBarSubType } from "./../../../Shared/Constants";
 
 const RecentlyViewedItem = (props) => {
   const [isComponentVisible, showComponent] = useState(false);
+  const [imageOpacity, setImageOpacity] = useState(1);
+  const [readMoreOpacity, setReadMoreOpacity] = useState(0);
+  const [indexHovered, setIndexHovered] = useState(-1);
 
   const handleSuccessfulImageLoad = (isLastImage) => {
     if (isLastImage) {
       showComponent(true);
     }
+  };
+
+  const toggleOpacity = (opacity, indexHovered) => {
+    if (opacity === 1) {
+      setImageOpacity(0.2);
+      setIndexHovered(indexHovered);
+    } else {
+      setImageOpacity(1);
+      setIndexHovered(-1);
+    }
+    setReadMoreOpacity(opacity);
   };
 
   return (
@@ -58,43 +72,113 @@ const RecentlyViewedItem = (props) => {
                     (recentlyViewedItem, index) => {
                       return (
                         <React.Fragment key={index}>
-                          <img
-                            draggable={false}
-                            style={{ height: "380px", width: "300px" }}
-                            src={recentlyViewedItem.logo}
-                            onLoad={() =>
-                              handleSuccessfulImageLoad(
-                                props.recentlyViewedItems.length - 1 === index
-                              )
-                            }
-                          />
-                          <div className="mv-item-infor">
-                            <h6
-                              style={{ marginTop: "20px", marginBottom: "0px" }}
+                          {indexHovered === index ? (
+                            <img
+                              draggable={false}
+                              style={{
+                                height: "380px",
+                                width: "300px",
+                                opacity: imageOpacity,
+                              }}
+                              src={recentlyViewedItem.logo}
+                              onLoad={() =>
+                                handleSuccessfulImageLoad(
+                                  props.recentlyViewedItems.length - 1 === index
+                                )
+                              }
+                              onMouseOver={() => toggleOpacity(1, index)}
+                              onMouseOut={() => toggleOpacity(0, index)}
+                            />
+                          ) : (
+                            <img
+                              draggable={false}
+                              style={{
+                                height: "380px",
+                                width: "300px",
+                              }}
+                              src={recentlyViewedItem.logo}
+                              onLoad={() =>
+                                handleSuccessfulImageLoad(
+                                  props.recentlyViewedItems.length - 1 === index
+                                )
+                              }
+                              onMouseOver={() => toggleOpacity(1, index)}
+                              onMouseOut={() => toggleOpacity(0, index)}
+                            />
+                          )}
+
+                          {indexHovered === index ? (
+                            <div
+                              className="read-more"
+                              style={{ opacity: readMoreOpacity }}
+                              onMouseOver={() => toggleOpacity(1, index)}
                             >
                               {recentlyViewedItem.type ===
                               searchBarSubType.movie ? (
                                 <Link
-                                  className="heading"
                                   to={`/movie-details/${recentlyViewedItem.id}`}
+                                  style={{ fontSize: "20px" }}
+                                  id="black-hover"
                                 >
-                                  {recentlyViewedItem.name}
+                                  {" "}
+                                  <b>Read more </b>
                                 </Link>
                               ) : searchBarSubType.director ? (
                                 <Link
-                                  className="heading"
                                   to={`/director-details/${recentlyViewedItem.id}`}
+                                  style={{ fontSize: "20px" }}
+                                  id="black-hover"
                                 >
-                                  {recentlyViewedItem.name}
+                                  <b>Read more </b>
                                 </Link>
                               ) : (
                                 <Link
-                                  className="heading"
                                   to={`/celebrity-details/${recentlyViewedItem.id}`}
+                                  style={{ fontSize: "20px" }}
+                                  id="black-hover"
                                 >
-                                  {recentlyViewedItem.name}
+                                  <b>Read more </b>
                                 </Link>
                               )}
+                            </div>
+                          ) : (
+                            <div
+                              className="read-more"
+                              style={{ opacity: 0 }}
+                              onMouseOver={() => toggleOpacity(1, index)}
+                            >
+                              {recentlyViewedItem.type ===
+                              searchBarSubType.movie ? (
+                                <Link
+                                  to={`/movie-details/${recentlyViewedItem.id}`}
+                                  style={{ fontSize: "20px" }}
+                                >
+                                  {" "}
+                                  <b>Read more </b>
+                                </Link>
+                              ) : searchBarSubType.director ? (
+                                <Link
+                                  to={`/director-details/${recentlyViewedItem.id}`}
+                                  style={{ fontSize: "20px" }}
+                                >
+                                  <b>Read more </b>
+                                </Link>
+                              ) : (
+                                <Link
+                                  to={`/celebrity-details/${recentlyViewedItem.id}`}
+                                  style={{ fontSize: "20px" }}
+                                >
+                                  <b>Read more </b>
+                                </Link>
+                              )}
+                            </div>
+                          )}
+                          <div className="mv-item-infor">
+                            <h6
+                              style={{ marginTop: "20px", marginBottom: "0px" }}
+                              className="description"
+                            >
+                              {recentlyViewedItem.name}
                             </h6>
                           </div>
                         </React.Fragment>
