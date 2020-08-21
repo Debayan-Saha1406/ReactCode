@@ -20,6 +20,7 @@ import { route } from "../../Shared/Constants";
 import ForgotPassword from "./ForgotPasswordComponent";
 import About from "../MovieReview/Footer/About";
 import ContactUs from "../MovieReview/Footer/ContactUs";
+import NewsList from "./../MovieReview/News/NewsList";
 
 class Router extends Component {
   render() {
@@ -60,6 +61,7 @@ class Router extends Component {
           <Route path="/search" component={SearchList} />
           <Route path="/about" component={About} />
           <Route path="/contactUs" component={ContactUs} />
+          <Route path="/currentNews" component={NewsList} />
           <Redirect from="*" to="/home" />
         </Switch>
       </BrowserRouter>

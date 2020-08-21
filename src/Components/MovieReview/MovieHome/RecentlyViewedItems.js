@@ -123,7 +123,8 @@ const RecentlyViewedItem = (props) => {
                                   {" "}
                                   <b>Read more </b>
                                 </Link>
-                              ) : searchBarSubType.director ? (
+                              ) : recentlyViewedItem.type ===
+                                searchBarSubType.director ? (
                                 <Link
                                   to={`/director-details/${recentlyViewedItem.id}`}
                                   style={{ fontSize: "20px" }}
@@ -156,7 +157,8 @@ const RecentlyViewedItem = (props) => {
                                   {" "}
                                   <b>Read more </b>
                                 </Link>
-                              ) : searchBarSubType.director ? (
+                              ) : recentlyViewedItem.type ===
+                                searchBarSubType.director ? (
                                 <Link
                                   to={`/director-details/${recentlyViewedItem.id}`}
                                   style={{ fontSize: "20px" }}

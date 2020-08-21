@@ -45,6 +45,13 @@ function deleteItem(url, id) {
   });
 }
 
+function newsApiUrlGet(url, currentPage, country) {
+  return request({
+    url: url + "&page=" + currentPage + "&country=" + country,
+    method: httpVerbs.Get,
+  });
+}
+
 const ServiceProvider = {
   get,
   post,
@@ -52,6 +59,7 @@ const ServiceProvider = {
   deleteItem,
   getWithParam,
   getWithTwoParams,
+  newsApiUrlGet,
 };
 
 export default ServiceProvider;

@@ -81,6 +81,8 @@ class Header extends Component {
       this.setState({ currentMenuItem: menuItem.director });
     } else if (window.location.pathname.includes(menuItem.user)) {
       this.setState({ currentMenuItem: menuItem.user });
+    } else if (window.location.pathname.includes(menuItem.news)) {
+      this.setState({ currentMenuItem: menuItem.news });
     } else {
       this.setState({ currentMenuItem: menuItem.none });
     }
@@ -282,6 +284,25 @@ class Header extends Component {
                   </Link>
                 </li>
               )}
+              {this.state.currentMenuItem === menuItem.news ? (
+                <li className="menu-item current-menu-item">
+                  <Link
+                    to="/currentNews"
+                    onClick={() => this.setCurrentMenuItem(menuItem.news)}
+                  >
+                    News
+                  </Link>
+                </li>
+              ) : (
+                <li className="menu-item">
+                  <Link
+                    to="/currentNews"
+                    onClick={() => this.setCurrentMenuItem(menuItem.news)}
+                  >
+                    News
+                  </Link>
+                </li>
+              )}
               {this.props.isUserLoggedIn ? null : (
                 <li className="menu-item">
                   <a
@@ -440,6 +461,25 @@ class Header extends Component {
                         }
                       >
                         Directors
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.currentMenuItem === menuItem.news ? (
+                    <li className="menu-item current-menu-item">
+                      <Link
+                        to="/currentNews"
+                        onClick={() => this.setCurrentMenuItem(menuItem.news)}
+                      >
+                        News
+                      </Link>
+                    </li>
+                  ) : (
+                    <li className="menu-item">
+                      <Link
+                        to="/currentNews"
+                        onClick={() => this.setCurrentMenuItem(menuItem.news)}
+                      >
+                        News
                       </Link>
                     </li>
                   )}

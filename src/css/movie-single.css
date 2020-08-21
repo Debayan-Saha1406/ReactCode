@@ -4014,3 +4014,20 @@ figure {
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.news-title {
+  font-family: "Dosis", sans-serif;
+  font-size: 18px;
+  color: #4280bf;
+  font-weight: bold;
+  text-transform: none;
+  margin-top: 25px;
+}
+
+.news-description {
+  margin-top: 10px;
+}
+
+h4.news-title:hover {
+  color: #ffaa3c !important;
+}
