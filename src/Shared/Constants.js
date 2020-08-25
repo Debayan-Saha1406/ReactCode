@@ -427,14 +427,3 @@ export const WhatToWatchType = {
   MostReviewed: 2,
   ComingSoon: 3,
 };
-
-export const countryList = [
-  {
-    id: "us",
-    value: "USA",
-  },
-  {
-    id: "in",
-    value: "India",
-  },
-];

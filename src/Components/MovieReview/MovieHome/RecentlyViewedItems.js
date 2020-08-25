@@ -1,26 +1,17 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 
-import { responsive, recentlyViewed } from "./../../../Shared/Constants";
+import { responsive } from "./../../../Shared/Constants";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { useState } from "react";
 import { searchBarSubType } from "./../../../Shared/Constants";
 
 const RecentlyViewedItem = (props) => {
-  const [isComponentVisible, showComponent] = useState(false);
   const [imageOpacity, setImageOpacity] = useState(1);
   const [readMoreOpacity, setReadMoreOpacity] = useState(0);
   const [indexHovered, setIndexHovered] = useState(-1);
-
-  const handleSuccessfulImageLoad = (isLastImage) => {
-    if (isLastImage) {
-      showComponent(true);
-    }
-  };
 
   const toggleOpacity = (opacity, indexHovered) => {
     if (opacity === 1) {
@@ -81,11 +72,6 @@ const RecentlyViewedItem = (props) => {
                                 opacity: imageOpacity,
                               }}
                               src={recentlyViewedItem.logo}
-                              onLoad={() =>
-                                handleSuccessfulImageLoad(
-                                  props.recentlyViewedItems.length - 1 === index
-                                )
-                              }
                               onMouseOver={() => toggleOpacity(1, index)}
                               onMouseOut={() => toggleOpacity(0, index)}
                             />
@@ -97,11 +83,6 @@ const RecentlyViewedItem = (props) => {
                                 width: "300px",
                               }}
                               src={recentlyViewedItem.logo}
-                              onLoad={() =>
-                                handleSuccessfulImageLoad(
-                                  props.recentlyViewedItems.length - 1 === index
-                                )
-                              }
                               onMouseOver={() => toggleOpacity(1, index)}
                               onMouseOut={() => toggleOpacity(0, index)}
                             />

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import "../../../css/login.css";
 import { ToastContainer } from "react-toastify";
 import Footer from "../Common/Footer";
-import HomeSlider from "./HomeSlider";
+import Slider from "./Slider";
 import { page, apiUrl } from "./../../../Shared/Constants";
 import homeImage from "../../../images/movieHome.jpg";
 import WhatToWatch from "./WhatToWatch";
@@ -26,6 +26,7 @@ import {
 } from "./../../../Provider/LocalStorageProvider";
 import { recentlyViewed } from "./../../../Shared/Constants";
 import NetworkDetector from "../Common/NetworkDetector";
+import TopNews from "./TopNews";
 
 const Home = () => {
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
@@ -39,6 +40,7 @@ const Home = () => {
     isRecentlyViewedItemVisible,
     setIsRecentlyViewedItemVisible,
   ] = useState(false);
+  const [isTopNewsVisible, setTopNewsVisibility] = useState(false);
   const scrollToTrailers = (ref) => {
     window.scrollTo({
       top: ref.current.offsetTop,
@@ -62,10 +64,12 @@ const Home = () => {
         if (response.status === 200) {
           setStarsBornToday(response.data.data);
           setIsRecentlyViewedItemVisible(true);
+          setTopNewsVisibility(true);
           setIsLoading(false);
           setIsBottomReached(false);
         } else {
           setIsRecentlyViewedItemVisible(true);
+          setTopNewsVisibility(true);
           setIsLoading(false);
           setIsBottomReached(false);
         }
@@ -119,7 +123,7 @@ const Home = () => {
             }}
           >
             <div className="container">
-              <HomeSlider navigateToTrailers={navigateToTrailers}></HomeSlider>
+              <Slider navigateToTrailers={navigateToTrailers}></Slider>
             </div>
           </div>
           <main className="main-content">
@@ -138,6 +142,8 @@ const Home = () => {
                   {starsBornToday.length > 0 && (
                     <BornToday starsBornToday={starsBornToday}></BornToday>
                   )}
+
+                  {isTopNewsVisible && <TopNews></TopNews>}
 
                   {isRecentlyViewedItemVisible && (
                     <RecentlyViewedItem

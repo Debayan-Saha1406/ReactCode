@@ -35,6 +35,9 @@ const NewsList = () => {
         setNewsData(response.data.articles);
         setTotalNews(response.data.totalResults);
         dispatch(toggleLoader(false, 1));
+        window.scrollTo({
+          top: 0,
+        });
       }
     );
   }, [currentPage, country]);

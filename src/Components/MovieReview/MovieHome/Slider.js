@@ -1,16 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import Slider from "react-animated-slider";
 import "react-animated-slider/build/horizontal.css";
 import Carousel from "react-bootstrap/Carousel";
 import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
+import { toggleLoader } from "../../../Store/Actions/actionCreator";
 import "../../../css/movie-single.css";
 import { useHistory } from "react-router-dom";
-import { sliderItems, sliderXCoordinate } from "./../../../Shared/Constants";
-import { gender } from "./../../../Shared/Constants";
+import { sliderItems, sliderXCoordinate } from "../../../Shared/Constants";
+import { gender } from "../../../Shared/Constants";
 
-const HomeSlider = (props) => {
+const Slider = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -67,45 +66,6 @@ const HomeSlider = (props) => {
                   style={{ cursor: "pointer" }}
                   onClick={(e) => sliderImageClick(e, item.id)}
                 />
-                {/* <Carousel.Caption>
-                  <ul class="movie-information">
-                    <li class="list-item"> Run Time: {item.runTime}’ </li>
-                    <li class="list-item"> Release: {item.releaseDate}</li>
-                  </ul>
-                  <div className="inner">
-                    <div class="cate">
-                      {item.genre.split(",").map((genre, index) => (
-                        <React.Fragment>
-                          {index % 3 === 0 ? (
-                            <span class="blue">
-                              <a href="#" tabindex="0">
-                                {genre}
-                              </a>
-                            </span>
-                          ) : index % 3 === 1 ? (
-                            <span class="yell">
-                              <a href="#" tabindex="0">
-                                {genre}
-                              </a>
-                            </span>
-                          ) : (
-                            <span class="orange">
-                              <a href="#" tabindex="0">
-                                {genre}
-                              </a>
-                            </span>
-                          )}
-                          {index !== 0 && index % 4 === 0 && (
-                            <React.Fragment>
-                              <br />
-                              <br />
-                            </React.Fragment>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  </div>
-                </Carousel.Caption> */}
               </Carousel.Item>
             ))}
           </Carousel>
@@ -115,4 +75,4 @@ const HomeSlider = (props) => {
   );
 };
 
-export default HomeSlider;
+export default Slider;
