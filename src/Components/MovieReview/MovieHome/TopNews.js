@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import NoResultFound from "./../Common/NoResultFound";
@@ -81,7 +82,7 @@ const TopNews = () => {
                   return (
                     <React.Fragment key={index}>
                       {indexHovered === index ? (
-                        <a href={newsItem.url}>
+                        <a href={newsItem.url} target="_blank">
                           <img
                             draggable={false}
                             style={{

@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-target-blank */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import LoaderProvider from "./../../../Provider/LoaderProvider";
 import Header from "./../Common/Header";
@@ -138,7 +140,7 @@ const NewsList = () => {
                         />
                         <div className="blog-it-infor">
                           <React.Fragment>
-                            <a href={newsItem.url}>
+                            <a href={newsItem.url} target="_blank">
                               <h4 className="news-title">{newsItem.title}</h4>
                             </a>
 

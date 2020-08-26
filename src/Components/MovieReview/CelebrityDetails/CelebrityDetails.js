@@ -22,6 +22,7 @@ import { getLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import { searchBarSubType } from "./../../../Shared/Constants";
 import { setLocalStorageItem } from "./../../../Provider/LocalStorageProvider";
 import NetworkDetector from "../Common/NetworkDetector";
+import CoverPhoto from "../Common/CoverPhoto";
 
 const CelebrityDetails = (props) => {
   const [selectedTab, setSelectedTab] = useState(detailPageTabs.overview);
@@ -30,6 +31,7 @@ const CelebrityDetails = (props) => {
   const [isCelebrityDetailFetched, setIsCelebrityDetailFetched] = useState(
     false
   );
+  const [isCoverPhotoVisible, setCoverPhotoVisibility] = useState(false);
   const dispatch = useDispatch();
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
@@ -99,6 +101,12 @@ const CelebrityDetails = (props) => {
 
   return (
     <React.Fragment>
+      {isCoverPhotoVisible && (
+        <CoverPhoto
+          closePhoto={() => setCoverPhotoVisibility(false)}
+          coverPhoto={celebrity.coverPhoto}
+        ></CoverPhoto>
+      )}
       {showLoader && (
         <div id="loaderContainer">
           <div id="loader">
@@ -119,6 +127,10 @@ const CelebrityDetails = (props) => {
               background: `url(${celebrity.coverPhoto})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setCoverPhotoVisibility(true);
             }}
           ></div>
         )}

@@ -7,8 +7,7 @@ export const apiUrl = {
   baseUrl:
     "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
   // "https://localhost:44357/api",
-  newsApiUrl:
-    "https://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10",
+  newsApiUrl: `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10`,
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",

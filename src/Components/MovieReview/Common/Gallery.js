@@ -2,10 +2,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { toggleLoader } from "./../../../Store/Actions/actionCreator";
-import LoaderProvider from "./../../../Provider/LoaderProvider";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";

@@ -37,6 +37,7 @@ import NetworkDetector from "../Common/NetworkDetector";
 import { compose } from "redux";
 import Information from "../Popups/Information";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
+import CoverPhoto from "../Common/CoverPhoto";
 
 let releaseYear = "",
   loginDetails = {},
@@ -55,6 +56,7 @@ class MovieDetails extends Component {
     showGallery: false,
     galleryImages: [],
     showInformationPopup: false,
+    isCoverPhotoVisible: false,
   };
 
   toggleTab = (destTab) => {
@@ -279,6 +281,12 @@ class MovieDetails extends Component {
     }
     return (
       <React.Fragment>
+        {this.state.isCoverPhotoVisible && (
+          <CoverPhoto
+            closePhoto={() => this.setState({ isCoverPhotoVisible: false })}
+            coverPhoto={this.state.movie.movie.coverPhoto}
+          ></CoverPhoto>
+        )}
         {this.props.showLoader && (
           <div id="loaderContainer">
             <div id="loader">
@@ -323,6 +331,10 @@ class MovieDetails extends Component {
               className="hero details"
               style={{
                 background: `url(${this.state.movie.movie.coverPhoto}) center center / cover no-repeat`,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                this.setState({ isCoverPhotoVisible: true });
               }}
             >
               <div className="celeb-container">

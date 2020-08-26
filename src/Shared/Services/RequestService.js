@@ -17,6 +17,17 @@ const client = axios.create({
   },
 });
 
+axios.interceptors.response.use(
+  function (response) {
+    debugger;
+    response.headers["Access-Control-Allow-Origin:"] = "*";
+    return response;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
 const request = async function (options) {
   const onSuccess = function (response) {
     return response;
@@ -31,6 +42,7 @@ const request = async function (options) {
       getLocalStorageItem(constants.userDetails) !== null
         ? getLocalStorageItem(constants.userDetails).accessToken
         : null;
+    debugger;
     const response = await client(options);
     return onSuccess(response);
   } catch (error) {
