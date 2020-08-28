@@ -9,6 +9,7 @@ import { monthNames } from "../../Shared/Constants";
 import ServiceProvider from "./../../Provider/ServiceProvider";
 import { apiUrl } from "./../../Shared/Constants";
 import { showErrorMessage } from "../../Provider/ToastProvider";
+import nationalities from "../../Shared/Nationality.json";
 
 const initialState = {
   value: "",
@@ -364,34 +365,46 @@ const AddDirectors = () => {
                 Nationality
               </label>
               {nationality.isErrorExist ? (
-                <input
-                  type="text"
+                <select
                   class="form-control"
-                  id="exampleInputPassword1"
+                  id="exampleFormControlSelect1"
                   onChange={(e) =>
                     setNationality({
-                      ...name,
+                      ...nationality,
                       value: e.target.value,
                       isErrorExist: false,
                     })
                   }
                   value={nationality.value}
                   style={{ border: "1px solid red" }}
-                />
+                >
+                  <option value="">Select Nationality</option>
+                  {nationalities.map((nationality, index) => (
+                    <option key={index} value={nationality}>
+                      {nationality}
+                    </option>
+                  ))}
+                </select>
               ) : (
-                <input
-                  type="text"
+                <select
                   class="form-control"
-                  id="exampleInputPassword1"
+                  id="exampleFormControlSelect1"
                   onChange={(e) =>
                     setNationality({
-                      ...name,
+                      ...nationality,
                       value: e.target.value,
                       isErrorExist: false,
                     })
                   }
                   value={nationality.value}
-                />
+                >
+                  <option value="">Select Nationality</option>
+                  {nationalities.map((nationality, index) => (
+                    <option key={index} value={nationality}>
+                      {nationality}
+                    </option>
+                  ))}
+                </select>
               )}
             </div>
           </div>

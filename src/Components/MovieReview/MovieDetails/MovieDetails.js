@@ -22,7 +22,6 @@ import {
 } from "../../../Store/Actions/actionCreator";
 import LoaderProvider from "../../../Provider/LoaderProvider";
 import ReactPlayer from "react-player";
-import "../../../css/movie-single.css";
 import { Redirect } from "react-router-dom";
 import {
   getLocalStorageItem,

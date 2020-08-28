@@ -150,10 +150,21 @@ const DirectorDetails = (props) => {
               </div>
               <div className="col-md-8 col-sm-12 col-xs-12">
                 <div className="movie-single-ct">
-                  <h1 className="bd-hd">
+                  <h1
+                    className="bd-hd"
+                    onClick={() => {
+                      setCoverPhotoVisibility(true);
+                    }}
+                  >
                     {isDirectorDetailFetched && director.directorName}
                   </h1>
-                  <p className="ceb-single">
+                  <p
+                    className="ceb-single"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setCoverPhotoVisibility(true);
+                    }}
+                  >
                     {isDirectorDetailFetched &&
                     director.gender.toLowerCase() === gender.male.toLowerCase()
                       ? "Director"

@@ -1808,6 +1808,7 @@ div#overlay {
   font-weight: 700;
   text-transform: none;
   margin-bottom: 25px;
+  cursor: pointer;
 }
 
 p.ceb-single {
