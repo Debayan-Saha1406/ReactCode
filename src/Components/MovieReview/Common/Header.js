@@ -183,7 +183,7 @@ class Header extends Component {
     return (
       <header className={className}>
         <div className="container">
-          <a href="index.html" id="branding">
+          <a id="branding">
             <img src={image} alt="" className="logo" />
             <div className="logo-copy">
               <h1 className="site-title">The Movie Database</h1>
