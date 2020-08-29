@@ -124,9 +124,7 @@ const CelebrityDetails = (props) => {
           <div
             className="hero hero3"
             style={{
-              background: `url(${celebrity.coverPhoto})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
+              background: `url(${celebrity.coverPhoto}) center center / cover no-repeat`,
               cursor: "pointer",
             }}
             onClick={() => {

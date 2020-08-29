@@ -124,9 +124,7 @@ const DirectorDetails = (props) => {
           <div
             className="hero hero3"
             style={{
-              background: `url(${director.coverPhoto})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
+              background: `url(${director.coverPhoto}) center center / cover no-repeat`,
               cursor: "pointer",
             }}
             onClick={() => {
