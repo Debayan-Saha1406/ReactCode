@@ -21,6 +21,7 @@ import ForgotPassword from "./ForgotPasswordComponent";
 import About from "../MovieReview/Footer/About";
 import ContactUs from "../MovieReview/Footer/ContactUs";
 import NewsList from "./../MovieReview/News/NewsList";
+import PrivacyPolicy from "./../MovieReview/Footer/PrivacyPolicy";
 
 class Router extends Component {
   render() {
@@ -62,6 +63,7 @@ class Router extends Component {
           <Route path="/about" component={About} />
           <Route path="/contactUs" component={ContactUs} />
           <Route path="/currentNews" component={NewsList} />
+          <Route path="/privacyPolicy" component={PrivacyPolicy} />
           <Redirect from="*" to="/home" />
         </Switch>
       </BrowserRouter>

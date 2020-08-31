@@ -191,6 +191,7 @@ export const menuItem = {
   none: "none",
   contactUs: "contactUs",
   news: "currentNews",
+  privacyPolicy: "privacyPolicy",
 };
 
 export const userProfileSideMenuItem = {

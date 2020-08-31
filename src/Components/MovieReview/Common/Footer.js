@@ -3,7 +3,6 @@ import React from "react";
 
 import image from "../../../images/logo.png";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import { menuItem } from "../../../Shared/Constants";
 
 const Footer = () => {
@@ -14,7 +13,6 @@ const Footer = () => {
     });
   };
 
-  const history = useHistory();
   return (
     <footer className="ht-footer">
       <div className="container">
@@ -103,7 +101,27 @@ const Footer = () => {
           <div className="flex-child-ft item5">
             <h4>Legal</h4>
             <ul>
-              <li style={{ color: "#abb7c4" }}>Privacy Policy</li>
+              {window.location.pathname.includes(menuItem.privacyPolicy) ? (
+                <li>
+                  <Link
+                    style={{ color: "#dcf836", cursor: "pointer" }}
+                    to="/privacyPolicy"
+                    className="footer-content"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    style={{ color: "#abb7c4", cursor: "pointer" }}
+                    to="/privacyPolicy"
+                    className="footer-content"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+              )}
               <li style={{ color: "#abb7c4" }}>Terms Of Use</li>
             </ul>
           </div>
