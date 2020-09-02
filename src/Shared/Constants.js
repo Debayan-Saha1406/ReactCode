@@ -192,6 +192,7 @@ export const menuItem = {
   contactUs: "contactUs",
   news: "currentNews",
   privacyPolicy: "privacyPolicy",
+  termsOfUse: "termsOfUse",
 };
 
 export const userProfileSideMenuItem = {

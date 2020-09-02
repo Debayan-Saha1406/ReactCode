@@ -105,7 +105,7 @@ const Footer = () => {
                 <li>
                   <Link
                     style={{ color: "#dcf836", cursor: "pointer" }}
-                    to="/privacyPolicy"
+                    to="/privacy-policy"
                     className="footer-content"
                   >
                     Privacy Policy
@@ -115,14 +115,34 @@ const Footer = () => {
                 <li>
                   <Link
                     style={{ color: "#abb7c4", cursor: "pointer" }}
-                    to="/privacyPolicy"
+                    to="/privacy-policy"
                     className="footer-content"
                   >
                     Privacy Policy
                   </Link>
                 </li>
               )}
-              <li style={{ color: "#abb7c4" }}>Terms Of Use</li>
+              {window.location.pathname.includes(menuItem.termsOfUse) ? (
+                <li>
+                  <Link
+                    style={{ color: "#dcf836", cursor: "pointer" }}
+                    to="/terms-of-use"
+                    className="footer-content"
+                  >
+                    Terms Of Use
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    style={{ color: "#abb7c4", cursor: "pointer" }}
+                    to="/terms-of-use"
+                    className="footer-content"
+                  >
+                    Terms Of Use
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
