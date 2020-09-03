@@ -114,7 +114,6 @@ const AddCelebrities = () => {
       setName({ ...name, value: name, isErrorExist: true });
       isErrorExist = true;
     }
-    debugger;
     if (nationality.length <= 0) {
       setNationality({
         ...nationality,

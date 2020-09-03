@@ -300,7 +300,7 @@ class SideBar extends Component {
                     Add
                   </Link>
                   <Link
-                    to={"/admin/view-and-edit-celebrities"}
+                    to={"/admin/view-celebs"}
                     onClick={() => this.handleSideMenuClick(route.celebrity)}
                   >
                     View And Edit
@@ -334,7 +334,7 @@ class SideBar extends Component {
                     Add
                   </Link>
                   <Link
-                    to={"/admin/view-and-edit-celebrities"}
+                    to={"/admin/view-celebs"}
                     onClick={() => this.handleSideMenuClick(route.celebrity)}
                   >
                     View And Edit

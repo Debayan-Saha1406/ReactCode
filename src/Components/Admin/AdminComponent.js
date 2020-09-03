@@ -15,6 +15,7 @@ import SideBar from "../Admin/Common/SideBarComponent";
 import AddDirectors from "./AddDirectorsComponent";
 import AddMovies from "./AddMoviesComponent";
 import ViewEditCelebrity from "./ViewEditCelebrity";
+import EditCelebrities from "./EditCelebritiesComponent";
 
 class Admin extends Component {
   state = {
@@ -69,8 +70,11 @@ class Admin extends Component {
                 this.props.subChildRoute === route.addCelebrity ? (
                 <AddCelebrities></AddCelebrities>
               ) : this.props.subRoute === route.celebrity &&
-                this.props.subChildRoute !== route.addCelebrity ? (
+                this.props.subChildRoute === route.viewCelebrity ? (
                 <ViewEditCelebrity></ViewEditCelebrity>
+              ) : this.props.subRoute === route.celebrity &&
+                this.props.subChildRoute === route.editCelebrity ? (
+                <EditCelebrities></EditCelebrities>
               ) : this.props.subRoute === route.directors ? (
                 <AddDirectors></AddDirectors>
               ) : this.props.subRoute === route.movie ? (

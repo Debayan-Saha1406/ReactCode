@@ -411,7 +411,8 @@ export const route = {
   directors: "directors",
   movie: "movie",
   addCelebrity: "addCelebrity",
-  viewEditCelebrity: "viewEditCelebrity",
+  viewCelebrity: "viewCelebrity",
+  editCelebrity: "editCelebrity",
 };
 
 export const userStatus = {
