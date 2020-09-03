@@ -34,6 +34,7 @@ class SideBar extends Component {
     showDeleteProfileImagePopup: false,
     showTrashIcon: true,
     activeLink: "Dashboard",
+    celebSideBarClass: "show",
   };
 
   handleEditPopup = () => {
@@ -251,7 +252,10 @@ class SideBar extends Component {
               <li className="active">
                 <Link
                   to={"/admin/movies"}
-                  onClick={() => this.handleSideMenuClick(route.movie)}
+                  onClick={() => {
+                    this.handleSideMenuClick(route.movie);
+                    this.setState({ celebSideBarClass: "" });
+                  }}
                 >
                   Movies
                 </Link>
@@ -260,7 +264,10 @@ class SideBar extends Component {
               <li>
                 <Link
                   to={"/admin/movies"}
-                  onClick={() => this.handleSideMenuClick(route.movie)}
+                  onClick={() => {
+                    this.handleSideMenuClick(route.movie);
+                    this.setState({ celebSideBarClass: "" });
+                  }}
                 >
                   Movies
                 </Link>
@@ -269,20 +276,70 @@ class SideBar extends Component {
             {this.state.activeLink === route.celebrity ? (
               <li className="active">
                 <Link
-                  to={"/admin/celebrities"}
-                  onClick={() => this.handleSideMenuClick(route.celebrity)}
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle"
+                  onClick={() => {
+                    if (this.state.celebSideBarClass === "") {
+                      this.setState({ celebSideBarClass: "show" });
+                    } else {
+                      this.setState({ celebSideBarClass: "" });
+                    }
+                  }}
                 >
                   Celebrities
                 </Link>
+                <ul
+                  class={`list-unstyled side-collapse ${this.state.celebSideBarClass}`}
+                  id="homeSubmenu"
+                >
+                  <Link
+                    to={"/admin/add-celebrities"}
+                    onClick={() => this.handleSideMenuClick(route.celebrity)}
+                  >
+                    Add
+                  </Link>
+                  <Link
+                    to={"/admin/view-and-edit-celebrities"}
+                    onClick={() => this.handleSideMenuClick(route.celebrity)}
+                  >
+                    View And Edit
+                  </Link>
+                </ul>
               </li>
             ) : (
               <li>
                 <Link
-                  to={"/admin/celebrities"}
-                  onClick={() => this.handleSideMenuClick(route.celebrity)}
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle collapsed"
+                  onClick={() => {
+                    if (this.state.celebSideBarClass === "") {
+                      this.setState({ celebSideBarClass: "show" });
+                    } else {
+                      this.setState({ celebSideBarClass: "" });
+                    }
+                  }}
                 >
                   Celebrities
                 </Link>
+                <ul
+                  class={`list-unstyled side-collapse ${this.state.celebSideBarClass}`}
+                  id="homeSubmenu"
+                >
+                  <Link
+                    to={"/admin/add-celebrities"}
+                    onClick={() => this.handleSideMenuClick(route.celebrity)}
+                  >
+                    Add
+                  </Link>
+                  <Link
+                    to={"/admin/view-and-edit-celebrities"}
+                    onClick={() => this.handleSideMenuClick(route.celebrity)}
+                  >
+                    View And Edit
+                  </Link>
+                </ul>
               </li>
             )}
             {this.state.activeLink === route.directors ? (

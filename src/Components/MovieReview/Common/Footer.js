@@ -68,7 +68,7 @@ const Footer = () => {
                 {" "}
                 <Link
                   style={{ color: "#abb7c4" }}
-                  to="/about"
+                  //to="/about"
                   // className="footer-content"
                 >
                   Help Center

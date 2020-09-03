@@ -14,6 +14,7 @@ import { route } from "../../Shared/Constants";
 import SideBar from "../Admin/Common/SideBarComponent";
 import AddDirectors from "./AddDirectorsComponent";
 import AddMovies from "./AddMoviesComponent";
+import ViewEditCelebrity from "./ViewEditCelebrity";
 
 class Admin extends Component {
   state = {
@@ -64,8 +65,12 @@ class Admin extends Component {
               <Navbar></Navbar>
               {this.props.subRoute === route.users ? (
                 <UsersList></UsersList>
-              ) : this.props.subRoute === route.celebrity ? (
+              ) : this.props.subRoute === route.celebrity &&
+                this.props.subChildRoute === route.addCelebrity ? (
                 <AddCelebrities></AddCelebrities>
+              ) : this.props.subRoute === route.celebrity &&
+                this.props.subChildRoute !== route.addCelebrity ? (
+                <ViewEditCelebrity></ViewEditCelebrity>
               ) : this.props.subRoute === route.directors ? (
                 <AddDirectors></AddDirectors>
               ) : this.props.subRoute === route.movie ? (

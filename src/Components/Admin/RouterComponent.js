@@ -35,8 +35,23 @@ class Router extends Component {
             render={() => <Admin subRoute={route.users} />}
           />
           <Route
-            path="/admin/celebrities"
-            render={() => <Admin subRoute={route.celebrity} />}
+            path="/admin/add-celebrities"
+            render={() => (
+              <Admin
+                subRoute={route.celebrity}
+                subChildRoute={route.addCelebrity}
+              />
+            )}
+          />
+
+          <Route
+            path="/admin/view-and-edit-celebrities"
+            render={() => (
+              <Admin
+                subRoute={route.celebrity}
+                subChildRoute={route.viewEditCelebrity}
+              />
+            )}
           />
           <Route
             path="/admin/directors"

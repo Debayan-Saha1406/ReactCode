@@ -410,6 +410,8 @@ export const route = {
   users: "users",
   directors: "directors",
   movie: "movie",
+  addCelebrity: "addCelebrity",
+  viewEditCelebrity: "viewEditCelebrity",
 };
 
 export const userStatus = {

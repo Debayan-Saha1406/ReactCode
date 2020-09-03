@@ -4032,3 +4032,11 @@ figure {
 h4.news-title:hover {
   color: #ffaa3c !important;
 }
+
+.side-collapse {
+  display: none !important;
+}
+
+ul.list-unstyled.side-collapse.show {
+  display: block !important;
+}
