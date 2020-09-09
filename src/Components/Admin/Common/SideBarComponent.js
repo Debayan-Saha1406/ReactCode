@@ -141,7 +141,7 @@ class SideBar extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
+    this.setActiveSideBarLink();
     const userInfo = getLocalStorageItem(constants.userDetails);
     if (userInfo) {
       if (!userInfo.profileImageUrl) {
@@ -155,6 +155,25 @@ class SideBar extends Component {
   handleSideMenuClick = (activeLink) => {
     this.setState({ activeLink });
   };
+
+  setActiveSideBarLink() {
+    if (window.location.pathname.includes(route.movie)) {
+      this.setState({ activeLink: route.movie });
+    } else if (window.location.pathname.includes(route.users)) {
+      this.setState({ activeLink: route.users });
+    } else if (window.location.pathname.includes(route.dashboard)) {
+      this.setState({ activeLink: route.dashboard });
+    } else if (window.location.pathname.includes(route.celebrity)) {
+      this.setState({ activeLink: route.celebrity });
+    } else if (window.location.pathname.includes(route.addCelebrity)) {
+      this.setState({ activeLink: route.addCelebrity });
+    } else if (
+      window.location.pathname.includes(route.viewCelebrity) ||
+      window.location.pathname.includes(route.editCelebrity)
+    ) {
+      this.setState({ activeLink: route.viewCelebrity });
+    }
+  }
 
   render() {
     return (
@@ -293,18 +312,52 @@ class SideBar extends Component {
                   class={`list-unstyled side-collapse ${this.state.celebSideBarClass}`}
                   id="homeSubmenu"
                 >
-                  <Link
-                    to={"/admin/add-celebrities"}
-                    onClick={() => this.handleSideMenuClick(route.celebrity)}
-                  >
-                    Add
-                  </Link>
-                  <Link
-                    to={"/admin/view-celebs"}
-                    onClick={() => this.handleSideMenuClick(route.celebrity)}
-                  >
-                    View And Edit
-                  </Link>
+                  {this.state.activeLink === route.addCelebrity ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/add-celebrities"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addCelebrity)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/add-celebrities"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addCelebrity)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.activeLink === route.viewCelebrity ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/view-celebs"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewCelebrity)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/view-celebs"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewCelebrity)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </li>
             ) : (
@@ -327,18 +380,52 @@ class SideBar extends Component {
                   class={`list-unstyled side-collapse ${this.state.celebSideBarClass}`}
                   id="homeSubmenu"
                 >
-                  <Link
-                    to={"/admin/add-celebrities"}
-                    onClick={() => this.handleSideMenuClick(route.celebrity)}
-                  >
-                    Add
-                  </Link>
-                  <Link
-                    to={"/admin/view-celebs"}
-                    onClick={() => this.handleSideMenuClick(route.celebrity)}
-                  >
-                    View And Edit
-                  </Link>
+                  {this.state.activeLink === route.addCelebrity ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/add-celebrities"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addCelebrity)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/add-celebrities"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addCelebrity)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.activeLink === route.viewCelebrity ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/view-celebs"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewCelebrity)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/view-celebs"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewCelebrity)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </li>
             )}

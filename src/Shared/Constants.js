@@ -405,15 +405,14 @@ export const doughnutOptions = {
 };
 
 export const route = {
-  admin: "admin",
   celebrity: "celebrity",
-  dashboard: "dashboard",
+  dashboard: "admin",
   users: "users",
   directors: "directors",
   movie: "movie",
-  addCelebrity: "addCelebrity",
-  viewCelebrity: "viewCelebrity",
-  editCelebrity: "editCelebrity",
+  addCelebrity: "add-celebrities",
+  viewCelebrity: "view-celebs",
+  editCelebrity: "edit-celeb",
 };
 
 export const userStatus = {
