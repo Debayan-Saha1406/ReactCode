@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import Information from "./../MovieReview/Popups/Information";
 import { useSelector } from "react-redux";
@@ -8,8 +9,9 @@ import nationalities from "../../Shared/Nationality.json";
 import DatePicker from "react-datepicker";
 import { ToastContainer } from "react-toastify";
 import ServiceProvider from "./../../Provider/ServiceProvider";
-import { apiUrl } from "./../../Shared/Constants";
+import { apiUrl, monthNames } from "./../../Shared/Constants";
 import { toggleLoader } from "./../../Store/Actions/actionCreator";
+import { showErrorMessage } from "../../Provider/ToastProvider";
 
 const initialState = {
   value: "",
@@ -36,7 +38,10 @@ const EditCelebrities = (props) => {
     initialState
   );
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
-
+  let celebId = window.location.pathname.substring(
+    window.location.pathname.lastIndexOf("/") + 1,
+    window.location.pathname.length
+  );
   const closePopup = () => {
     setShowPopup(false);
   };
@@ -71,14 +76,132 @@ const EditCelebrities = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const isValid = validateInputFields();
+    if (isValid) {
+      const formattedDate = formatDate(dateOfBirth.value);
+      let formattedS3Photo = null,
+        formattedCoverS3Photo = null;
+      if (photoS3 !== "") {
+        formattedS3Photo = handleFileData(photoS3);
+      }
+
+      if (photoS3 !== "") {
+        formattedCoverS3Photo = handleFileData(coverPhotoS3);
+      }
+
+      const body = {
+        name: name.value.trim(),
+        gender: gender.value.trim(),
+        photo: photo.value.trim(),
+        photoS3: formattedS3Photo,
+        coverPhoto: coverPhoto.value.trim(),
+        coverPhotoS3: formattedCoverS3Photo,
+        nationality: nationality.value.trim(),
+        biography: biography.value.trim(),
+        netWorth: netWorth.value.trim(),
+        dateOfBirth: formattedDate,
+      };
+      dispatch(toggleLoader(true, 0));
+      sendEditCelebrityRequest(body);
+    }
+  };
+
+  const sendEditCelebrityRequest = (body) => {
+    ServiceProvider.put(apiUrl.editCelebrity, celebId, body).then(
+      (response) => {
+        if (response.status === 200) {
+          dispatch(toggleLoader(false, 1));
+          setShowPopup(true);
+          resetState();
+        } else if (response.status === 409) {
+          dispatch(toggleLoader(false, 1));
+          showErrorMessage(response.data.errorMessage);
+        }
+      }
+    );
+  };
+
+  const resetState = () => {
+    setPhoto(initialState);
+    setCoverPhoto(initialState);
+    setPhotoS3("");
+    setCoverPhotoS3("");
+    photoInputRef.current.value = "";
+    coverPhotoInputRef.current.value = "";
+  };
+
+  const formatDate = (date) => {
+    var d = new Date(date),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (day.length < 2) day = "0" + day;
+    const month = monthNames[date.getMonth()];
+    return `${day} ${month}, ${year}`;
+  };
+
+  const handleFileData = (image) => {
+    let updatedImage;
+    if (image[image.indexOf("/") + 1] === "j")
+      updatedImage = image.replace("data:image/jpeg;base64,", "");
+    else {
+      updatedImage = image.replace("data:image/png;base64,", "");
+    }
+    return updatedImage;
+  };
+
+  const validateInputFields = () => {
+    let isErrorExist = false;
+    if (name.value.length <= 0) {
+      setName({ ...name, value: name.value, isErrorExist: true });
+      isErrorExist = true;
+    }
+    if (nationality.value.length <= 0) {
+      setNationality({
+        ...nationality,
+        value: nationality.value,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (biography.value.length <= 150) {
+      setBiography({
+        ...biography,
+        value: biography.value,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (netWorth.value <= 0) {
+      setNetWorth({ ...netWorth, value: netWorth.value, isErrorExist: true });
+      isErrorExist = true;
+    }
+
+    if (gender.value === "NA") {
+      setGender({ ...gender, value: gender.value, isErrorExist: true });
+      isErrorExist = true;
+    }
+
+    if (dateOfBirth.value === "" || dateOfBirth.value > new Date()) {
+      setDateOfBirth({
+        ...dateOfBirth,
+        value: dateOfBirth.value,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (isErrorExist) {
+      return false;
+    }
+    return true;
   };
 
   useEffect(() => {
     dispatch(toggleLoader(true, 0));
-    const celebId = window.location.pathname.substring(
-      window.location.pathname.lastIndexOf("/") + 1,
-      window.location.pathname.length
-    );
+
     ServiceProvider.getWithParam(apiUrl.celebrity, celebId).then((response) => {
       if (response.status === 200) {
         setDefaultValues(response.data.data.celebrityResponse);
@@ -141,11 +264,11 @@ const EditCelebrities = (props) => {
     <React.Fragment>
       {showPopup && (
         <Information
-          title="Celebrity Added"
+          title="Celebrity Updated"
           popupClassName={"openform"}
           btnText="Ok"
           closePopup={closePopup}
-          content="You have successfully added the celebrity"
+          content="You have successfully updated the celebrity"
         ></Information>
       )}
 
