@@ -51,6 +51,7 @@ export const apiUrl = {
   userReviewedMovies: "/userReviewedMovies",
   contactUs: "/contactUs",
   editCelebrity: "/editCelebrity/",
+  editDirector: "/editDirector/",
 };
 
 export const constants = {

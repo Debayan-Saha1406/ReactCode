@@ -15,7 +15,7 @@ import SideBar from "../Admin/Common/SideBarComponent";
 import AddDirectors from "./AddDirectorsComponent";
 import AddMovies from "./AddMoviesComponent";
 import ViewCelebrities from "./ViewCelebrities";
-import EditCelebrities from "./EditCelebritiesComponent";
+import EditCelebrities from "./EditCelebrities";
 import ViewDirectors from "./ViewDirectors";
 import EditDirectors from "./EditDirectors";
 

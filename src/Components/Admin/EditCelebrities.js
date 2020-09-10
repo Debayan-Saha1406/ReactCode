@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import Information from "./../MovieReview/Popups/Information";
+import Information from "../MovieReview/Popups/Information";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useRef } from "react";
@@ -8,9 +8,9 @@ import { useDispatch } from "react-redux";
 import nationalities from "../../Shared/Nationality.json";
 import DatePicker from "react-datepicker";
 import { ToastContainer } from "react-toastify";
-import ServiceProvider from "./../../Provider/ServiceProvider";
-import { apiUrl, monthNames } from "./../../Shared/Constants";
-import { toggleLoader } from "./../../Store/Actions/actionCreator";
+import ServiceProvider from "../../Provider/ServiceProvider";
+import { apiUrl, monthNames } from "../../Shared/Constants";
+import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { showErrorMessage } from "../../Provider/ToastProvider";
 
 const initialState = {
