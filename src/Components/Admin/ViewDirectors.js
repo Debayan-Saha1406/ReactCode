@@ -1,44 +1,35 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
-import SearchBar from "./Common/SearchBar";
+import { sortColumns, sortDirection, apiUrl } from "./../../Shared/Constants";
 import Pagination from "./Common/Pagination";
+import SearchBar from "./Common/SearchBar";
+import { Link } from "react-router-dom";
 import LoaderProvider from "./../../Provider/LoaderProvider";
 import { ToastContainer } from "react-toastify";
-import ServiceProvider from "./../../Provider/ServiceProvider";
-import { apiUrl, sortDirection } from "./../../Shared/Constants";
-import { sortColumns } from "./../../Shared/Constants";
 import { toggleLoader } from "./../../Store/Actions/actionCreator";
 import { connect } from "react-redux";
-import { celebritySearchType } from "./../../Shared/Constants";
-import { Link } from "react-router-dom";
+import ServiceProvider from "./../../Provider/ServiceProvider";
 
 const requestParams = {
-  celebrityInitial: 0,
-  fromBirthYear: 0,
-  gender: 0,
-
-  sortColumn: sortColumns.celebrityName,
+  sortColumn: sortColumns.directorName,
   sortDirection: sortDirection.asc,
-  toBirthYear: 0,
 };
 
-class ViewEditCelebrity extends Component {
+class ViewDirectors extends Component {
   state = {
-    celebrities: [],
+    directors: [],
     isDropdownOpen: false,
     indexClicked: -1,
     showPopup: false,
     currentPage: 1,
-    celebritiesPerPage: 5,
-    totalCelebritiesCount: 0,
+    directorsPerPage: 5,
+    totalDirectorsCount: 0,
     isFilteredDataPresent: true,
-    celebrityName: "",
-    searchType: "",
+    directorName: "",
   };
 
   componentDidMount() {
     this.props.toggleLoader(true, "15%");
-    this.fetchCelebsData();
+    this.fetchDirectorsData();
   }
 
   previousPageClick = () => {
@@ -49,7 +40,7 @@ class ViewEditCelebrity extends Component {
       },
       () => {
         this.props.toggleLoader(true, 0);
-        this.fetchCelebsData();
+        this.fetchDirectorsData();
       }
     );
   };
@@ -62,7 +53,7 @@ class ViewEditCelebrity extends Component {
       },
       () => {
         this.props.toggleLoader(true, 0);
-        this.fetchCelebsData();
+        this.fetchDirectorsData();
       }
     );
   };
@@ -70,12 +61,11 @@ class ViewEditCelebrity extends Component {
   handleSearchIcon = (searchData) => {
     this.setState(
       {
-        celebrityName: searchData,
-        searchType: celebritySearchType.celebrityName,
+        directorName: searchData,
       },
       () => {
         this.props.toggleLoader(true, 0);
-        this.fetchCelebsData();
+        this.fetchDirectorsData();
       }
     );
   };
@@ -83,7 +73,7 @@ class ViewEditCelebrity extends Component {
   handlePageNumberClick = (currentPage) => {
     this.setState({ currentPage: currentPage, isDropdownOpen: false }, () => {
       this.props.toggleLoader(true, 0);
-      this.fetchCelebsData();
+      this.fetchDirectorsData();
     });
   };
 
@@ -94,25 +84,19 @@ class ViewEditCelebrity extends Component {
     });
   };
 
-  fetchCelebsData() {
+  fetchDirectorsData() {
     const body = {
       pageNumber: this.state.currentPage,
-      pageSize: this.state.celebritiesPerPage,
-      searchQuery: this.state.searchData,
-      celebrityInitial: requestParams.celebrityInitial,
-      celebrityName: this.state.celebrityName,
-      fromBirthYear: requestParams.fromBirthYear,
-      toBirthYear: requestParams.toBirthYear,
-      gender: requestParams.gender,
-      searchType: this.state.searchType,
+      pageSize: this.state.directorsPerPage,
+      directorName: this.state.directorName,
       sortColumn: requestParams.sortColumn,
       sortDirection: requestParams.sortDirection,
     };
-    ServiceProvider.post(apiUrl.celebrities, body).then((response) => {
+    ServiceProvider.post(apiUrl.directors, body).then((response) => {
       if (response.status === 200) {
         this.setState({
-          celebrities: response.data.data.details,
-          totalCelebritiesCount: response.data.data.totalCount,
+          directors: response.data.data.details,
+          totalDirectorsCount: response.data.data.totalCount,
         });
         this.props.toggleLoader(false, 1);
       }
@@ -125,15 +109,15 @@ class ViewEditCelebrity extends Component {
         <div className="user-data m-b-40">
           <div className="title-3 m-b-30">
             <i className="fa fa-user" aria-hidden="true"></i>
-            {"  "}Celeb Data
+            {"  "}Director Data
             <SearchBar handleSearchIcon={this.handleSearchIcon}></SearchBar>
-            {this.state.totalCelebritiesCount > 0 && (
+            {this.state.totalDirectorsCount > 0 && (
               <div className="pagination">
                 <Pagination
-                  totalCount={this.state.totalCelebritiesCount}
+                  totalCount={this.state.totalDirectorsCount}
                   pageNumberClicked={this.handlePageNumberClick}
                   currentPage={this.state.currentPage}
-                  pageSize={this.state.celebritiesPerPage}
+                  pageSize={this.state.directorsPerPage}
                   previousPageClicked={this.previousPageClick}
                   nextPageClicked={this.nextPageClick}
                 ></Pagination>
@@ -145,13 +129,13 @@ class ViewEditCelebrity extends Component {
               <thead>
                 <tr className="header">
                   <td>id</td>
-                  <td>Celeb Name</td>
+                  <td>Director Name</td>
                   <td>Date Of Birth</td>
                   <td></td>
                 </tr>
               </thead>
               <tbody>
-                {this.state.celebrities.length === 0 &&
+                {this.state.directors.length === 0 &&
                 !this.state.isFilteredDataPresent ? (
                   <tr>
                     <td></td>
@@ -159,15 +143,15 @@ class ViewEditCelebrity extends Component {
                     <td>{"No Record Found..."}</td>
                   </tr>
                 ) : (
-                  this.state.celebrities.map((celebrity, index) => (
+                  this.state.directors.map((director, index) => (
                     <tr key={index}>
-                      <td>{celebrity.id}</td>
+                      <td>{director.id}</td>
                       <td>
                         <div className="table-data__info">
-                          <h6>{celebrity.celebrityName}</h6>
+                          <h6>{director.directorName}</h6>
                         </div>
                       </td>
-                      <td>{celebrity.dateOfBirth}</td>
+                      <td>{director.dateOfBirth}</td>
                       <td>
                         <div
                           className="dropdown"
@@ -187,7 +171,7 @@ class ViewEditCelebrity extends Component {
                             >
                               <Link
                                 className="dropdown-item"
-                                to={`/celebrity-details/${celebrity.id}`}
+                                to={`/director-details/${director.id}`}
                                 style={{ cursor: "pointer" }}
                               >
                                 View All Details
@@ -195,7 +179,7 @@ class ViewEditCelebrity extends Component {
                               <Link
                                 className="dropdown-item"
                                 style={{ cursor: "pointer" }}
-                                to={`/admin/edit-celeb/${celebrity.id}`}
+                                to={`/admin/edit-director/${director.id}`}
                               >
                                 Edit
                               </Link>
@@ -248,4 +232,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewEditCelebrity);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewDirectors);

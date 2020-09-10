@@ -5,8 +5,8 @@ import slider3 from "../images/slider3.jpg";
 
 export const apiUrl = {
   baseUrl:
-    //  "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
-    "https://localhost:44357/api",
+    "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
+  //"https://localhost:44357/api",
   newsApiUrl: `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10`,
   login: "/adminlogin",
   userInfo: `/userInfo/`,
@@ -413,6 +413,9 @@ export const route = {
   addCelebrity: "add-celebrities",
   viewCelebrity: "view-celebs",
   editCelebrity: "edit-celeb",
+  addDirector: "add-directors",
+  viewDirectors: "view-directors",
+  editDirectors: "edit-directors",
 };
 
 export const userStatus = {

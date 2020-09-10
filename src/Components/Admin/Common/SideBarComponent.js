@@ -34,7 +34,8 @@ class SideBar extends Component {
     showDeleteProfileImagePopup: false,
     showTrashIcon: true,
     activeLink: "Dashboard",
-    celebSideBarClass: "show",
+    celebSideBarClass: "",
+    directorSideBarClass: "",
   };
 
   handleEditPopup = () => {
@@ -166,12 +167,31 @@ class SideBar extends Component {
     } else if (window.location.pathname.includes(route.celebrity)) {
       this.setState({ activeLink: route.celebrity });
     } else if (window.location.pathname.includes(route.addCelebrity)) {
-      this.setState({ activeLink: route.addCelebrity });
+      this.setState({
+        activeLink: route.addCelebrity,
+        celebSideBarClass: "show",
+      });
     } else if (
       window.location.pathname.includes(route.viewCelebrity) ||
       window.location.pathname.includes(route.editCelebrity)
     ) {
-      this.setState({ activeLink: route.viewCelebrity });
+      this.setState({
+        activeLink: route.viewCelebrity,
+        celebSideBarClass: "show",
+      });
+    } else if (window.location.pathname.includes(route.addDirector)) {
+      this.setState({
+        activeLink: route.addDirector,
+        directorSideBarClass: "show",
+      });
+    } else if (
+      window.location.pathname.includes(route.viewDirectors) ||
+      window.location.pathname.includes(route.editDirectors)
+    ) {
+      this.setState({
+        activeLink: route.viewDirectors,
+        directorSideBarClass: "show",
+      });
     }
   }
 
@@ -429,25 +449,145 @@ class SideBar extends Component {
                 </ul>
               </li>
             )}
+
             {this.state.activeLink === route.directors ? (
               <li className="active">
                 <Link
-                  to={"/admin/directors"}
-                  onClick={() => this.handleSideMenuClick(route.directors)}
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle"
+                  onClick={() => {
+                    if (this.state.directorSideBarClass === "") {
+                      this.setState({ directorSideBarClass: "show" });
+                    } else {
+                      this.setState({ directorSideBarClass: "" });
+                    }
+                  }}
                 >
                   Directors
                 </Link>
+                <ul
+                  class={`list-unstyled side-collapse ${this.state.directorSideBarClass}`}
+                  id="homeSubmenu"
+                >
+                  {this.state.activeLink === route.addDirector ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/add-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addDirector)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/add-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addDirector)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.activeLink === route.viewDirectors ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/view-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewDirectors)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/view-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewDirectors)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  )}
+                </ul>
               </li>
             ) : (
               <li>
                 <Link
-                  to={"/admin/directors"}
-                  onClick={() => this.handleSideMenuClick(route.directors)}
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle collapsed"
+                  onClick={() => {
+                    if (this.state.directorSideBarClass === "") {
+                      this.setState({ directorSideBarClass: "show" });
+                    } else {
+                      this.setState({ directorSideBarClass: "" });
+                    }
+                  }}
                 >
                   Directors
                 </Link>
+                <ul
+                  class={`list-unstyled side-collapse ${this.state.directorSideBarClass}`}
+                  id="homeSubmenu"
+                >
+                  {this.state.activeLink === route.addDirector ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/add-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addDirector)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/add-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.addDirector)
+                        }
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.activeLink === route.viewDirectors ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/view-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewDirectors)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/view-directors"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewDirectors)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  )}
+                </ul>
               </li>
             )}
+
             {this.state.activeLink === route.users ? (
               <li className="active">
                 <Link
