@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from "react";
 import Information from "./../MovieReview/Popups/Information";
 import { ToastContainer } from "react-toastify";
@@ -8,11 +9,15 @@ import { toggleLoader } from "./../../Store/Actions/actionCreator";
 import { apiUrl, monthNames } from "../../Shared/Constants";
 import ServiceProvider from "./../../Provider/ServiceProvider";
 import { showErrorMessage } from "../../Provider/ToastProvider";
+import Gallery from "../MovieReview/Common/Gallery";
+import { GalleryImageType } from "./../../Shared/Constants";
 
 const initialState = {
   value: "",
   isErrorExist: false,
 };
+
+let uploadedGalleryImages = [];
 
 const EditMovies = () => {
   const [releaseDate, setReleaseDate] = useState(initialState);
@@ -21,6 +26,12 @@ const EditMovies = () => {
     value: "NA",
     isErrorExist: false,
   });
+  const [previousButtonVisibility, setPreviousButtonVisibility] = useState(
+    "hidden"
+  );
+  const [nextButtonVisibility, setNextButtonVisibility] = useState("hidden");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentImage, setCurrentImage] = useState("");
   const [movieGenres, setMovieGenres] = useState({
     value: "NA",
     isErrorExist: false,
@@ -59,6 +70,39 @@ const EditMovies = () => {
     window.location.pathname.length
   );
   const [isGalleryErrorExist, setIsGalleryErrorExist] = useState(false);
+  const [isGalleryOpen, showGallery] = useState(false);
+  const [galleryImageType, setGalleryImageType] = useState("");
+  const [viewLinkImages, setViewLinkImages] = useState([]);
+
+  const changeVisibility = (showButton, setButtonVisibility) => {
+    if (showButton) {
+      setButtonVisibility("visible");
+    } else {
+      setButtonVisibility("hidden");
+    }
+  };
+
+  const fetchPreviousImage = () => {
+    toggleLoader(true);
+    if (currentIndex !== 0) {
+      setCurrentImage(viewLinkImages[currentIndex - 1]);
+      setCurrentIndex(currentIndex - 1);
+    } else {
+      setCurrentImage(viewLinkImages[viewLinkImages.length - 1]);
+      setCurrentIndex(viewLinkImages.length - 1);
+    }
+  };
+
+  const fetchNextImage = () => {
+    toggleLoader(true);
+    if (currentIndex !== viewLinkImages.length - 1) {
+      setCurrentImage(viewLinkImages[currentIndex + 1]);
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setCurrentImage(viewLinkImages[0]);
+      setCurrentIndex(0);
+    }
+  };
 
   const readFileDataAsBase64 = (e, type) => {
     const file = e.target.files[0];
@@ -233,13 +277,42 @@ const EditMovies = () => {
       }
     });
 
-    ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
-      if (response.status === 200) {
-        setDefaultValues(response.data.data);
-        dispatch(toggleLoader(false, 1));
+    ServiceProvider.getWithParam(apiUrl.movieGalleryImages, movieId).then(
+      (response) => {
+        if (response.status === 200) {
+          uploadedGalleryImages = response.data.data.imageUrls;
+          setViewLinkImages(response.data.data.imageUrls);
+        }
       }
-    });
+    );
   }, []);
+
+  useEffect(() => {
+    if (languages.length > 0) {
+      ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
+        if (response.status === 200) {
+          setDefaultValues(response.data.data);
+          dispatch(toggleLoader(false, 1));
+        }
+      });
+    }
+  }, [languages]);
+
+  const handleViewLinkClicked = (status, type, url) => {
+    showGallery(status);
+    setGalleryImageType(type);
+    if (
+      type === GalleryImageType.Photo ||
+      type === GalleryImageType.CoverPhoto
+    ) {
+      const imageUrl = [];
+      imageUrl.push(url);
+      setViewLinkImages(imageUrl);
+      setCurrentImage("");
+    } else {
+      setViewLinkImages(uploadedGalleryImages);
+    }
+  };
 
   const readGalleryImages = (e) => {
     const galleryArray = [];
@@ -270,15 +343,19 @@ const EditMovies = () => {
     let isGenrePresent = false;
     const index = e.nativeEvent.target.selectedIndex;
     const label = e.nativeEvent.target[index].text;
-    setCurrentlySelectedGenre(e.target.value);
-    selectedGenres.map((genre) => {
+    setCurrentlySelectedGenre({
+      ...currentlySelectedGenre,
+      value: 0,
+      isErrorExist: false,
+    });
+    selectedGenres.forEach((genre) => {
       if (genre.id === index) {
         isGenrePresent = true;
       }
     });
 
     if (!isGenrePresent && index !== 0) {
-      selectedGenres.push({ id: index, name: label });
+      selectedGenres.push({ id: index, genreName: label });
     }
     setSelectedGenres(selectedGenres);
   };
@@ -287,12 +364,6 @@ const EditMovies = () => {
     setName({
       ...name,
       value: response.movie.movieName,
-      isErrorExist: false,
-    });
-
-    setMovieLanguage({
-      ...movieLanguage,
-      value: response.gender,
       isErrorExist: false,
     });
 
@@ -345,15 +416,36 @@ const EditMovies = () => {
     });
 
     setSelectedGenres(response.genres);
+    let movieLanguageId;
+    languages.forEach((language) => {
+      if (language.language === response.movie.language) {
+        movieLanguageId = language.id;
+      }
+    });
     setCurrentlySelectedLanguage({
       ...currentlySelectedLanguage,
-      value: response.movie.language,
+      value: movieLanguageId,
       isErrorExist: false,
     });
   };
 
   return (
     <React.Fragment>
+      {isGalleryOpen && (
+        <Gallery
+          closeGallery={() => showGallery(false)}
+          movieId={movieId}
+          galleryImages={viewLinkImages}
+          changeVisibility={changeVisibility}
+          setPreviousButtonVisibility={setPreviousButtonVisibility}
+          setNextButtonVisibility={setNextButtonVisibility}
+          nextButtonVisibility={nextButtonVisibility}
+          previousButtonVisibility={previousButtonVisibility}
+          fetchNextImage={fetchNextImage}
+          fetchPreviousImage={fetchPreviousImage}
+          currentImage={currentImage}
+        ></Gallery>
+      )}
       {showPopup && (
         <Information
           title="Director Updated"
@@ -524,16 +616,22 @@ const EditMovies = () => {
             </div>
           </div>
           <div className="col-3">
-            <label for="exampleFormControlFile1">Uploaded Photo Url</label>
-            <input
-              type="text"
-              class="form-control"
-              disabled={true}
-              style={{ cursor: "not-allowed" }}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              value={uploadedPhotoUrl.value}
-            />
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Uploaded Photo</label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(
+                    true,
+                    GalleryImageType.Photo,
+                    uploadedPhotoUrl.value
+                  )
+                }
+              >
+                View
+              </label>
+            </div>
           </div>
           <div className="col-3">
             <div class="form-group">
@@ -567,19 +665,22 @@ const EditMovies = () => {
             </div>
           </div>
           <div className="col-3">
-            <label for="exampleFormControlFile1">
-              Uploaded Cover Photo Url
-            </label>
-
-            <input
-              type="text"
-              class="form-control"
-              disabled={true}
-              style={{ cursor: "not-allowed" }}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              value={uploadedCoverPhotoUrl.value}
-            />
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Uploaded Cover Photo</label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(
+                    true,
+                    GalleryImageType.CoverPhoto,
+                    uploadedCoverPhotoUrl.value
+                  )
+                }
+              >
+                View
+              </label>
+            </div>
           </div>
         </div>
 
@@ -621,39 +722,7 @@ const EditMovies = () => {
               )}
             </div>
           </div>
-          <div className="col-3">
-            <div class="form-group">
-              <label for="dateOfBirth" class="required-label">
-                Release Date
-              </label>
-              {releaseDate.isErrorExist ? (
-                <DatePicker
-                  selected={releaseDate.value}
-                  onChange={(date) =>
-                    setReleaseDate({
-                      ...releaseDate,
-                      value: date,
-                      isErrorExist: false,
-                    })
-                  }
-                  value={releaseDate.value}
-                  className="error-class"
-                />
-              ) : (
-                <DatePicker
-                  selected={releaseDate.value}
-                  onChange={(date) =>
-                    setReleaseDate({
-                      ...releaseDate,
-                      value: date,
-                      isErrorExist: false,
-                    })
-                  }
-                  value={releaseDate.value}
-                />
-              )}
-            </div>
-          </div>
+
           <div className="col-3">
             <div class="form-group">
               <label for="exampleFormControlFile1" class="required-label">
@@ -683,10 +752,26 @@ const EditMovies = () => {
               )}
             </div>
           </div>
+          <div className="col-3">
+            <div class="form-group">
+              <label for="exampleFormControlFile1">
+                Uploaded Gallery Images
+              </label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(true, GalleryImageType.GalleryImages)
+                }
+              >
+                View
+              </label>
+            </div>
+          </div>
         </div>
 
         <div className="row">
-          <div className="col-6">
+          <div className="col-3">
             <div class="form-group">
               <label for="exampleFormControlSelect1" class="required-label">
                 Movie Language
@@ -737,7 +822,39 @@ const EditMovies = () => {
               )}
             </div>
           </div>
-
+          <div className="col-3">
+            <div class="form-group">
+              <label for="dateOfBirth" class="required-label">
+                Release Date
+              </label>
+              {releaseDate.isErrorExist ? (
+                <DatePicker
+                  selected={releaseDate.value}
+                  onChange={(date) =>
+                    setReleaseDate({
+                      ...releaseDate,
+                      value: date,
+                      isErrorExist: false,
+                    })
+                  }
+                  value={releaseDate.value}
+                  className="error-class"
+                />
+              ) : (
+                <DatePicker
+                  selected={releaseDate.value}
+                  onChange={(date) =>
+                    setReleaseDate({
+                      ...releaseDate,
+                      value: date,
+                      isErrorExist: false,
+                    })
+                  }
+                  value={releaseDate.value}
+                />
+              )}
+            </div>
+          </div>
           <div className="col-6">
             <div class="form-group">
               <label for="exampleFormControlSelect1" class="required-label">

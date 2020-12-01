@@ -1,70 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { apiUrl } from "./../../../Shared/Constants";
 import ImageGalleryLoader from "./ImageGalleryLoader";
 import windowSize from "react-window-size";
 
 const Gallery = (props) => {
-  const [nextButtonVisibility, setNextButtonVisibility] = useState("hidden");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentImage, setCurrentImage] = useState("");
-  const [previousButtonVisibility, setPreviousButtonVisibility] = useState(
-    "hidden"
-  );
-  const [showloader, toggleLoader] = useState(false);
-  const [opacity, toggleOpacity] = useState(0);
-  const [galleryImages, setGalleryImages] = useState([]);
-
-  useEffect(() => {
-    toggleLoader(true);
-    ServiceProvider.getWithParam(apiUrl.movieGalleryImages, props.movieId).then(
-      (response) => {
-        if (response.status === 200) {
-          setGalleryImages(response.data.data.imageUrls);
-        }
-      }
-    );
-  }, []);
-
-  const changeVisibility = (showButton, setButtonVisibility) => {
-    if (showButton) {
-      setButtonVisibility("visible");
-    } else {
-      setButtonVisibility("hidden");
-    }
-  };
-
-  const fetchPreviousImage = () => {
-    toggleLoader(true);
-    if (currentIndex !== 0) {
-      setCurrentImage(galleryImages[currentIndex - 1]);
-      setCurrentIndex(currentIndex - 1);
-    } else {
-      setCurrentImage(galleryImages[galleryImages.length - 1]);
-      setCurrentIndex(galleryImages.length - 1);
-    }
-  };
-
-  const fetchNextImage = () => {
-    toggleLoader(true);
-    toggleOpacity(0.2);
-    if (currentIndex !== galleryImages.length - 1) {
-      setCurrentImage(galleryImages[currentIndex + 1]);
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      setCurrentImage(galleryImages[0]);
-      setCurrentIndex(0);
-    }
-  };
-
-  const handleImageLoad = () => {
-    toggleLoader(false);
-    toggleOpacity(1);
-  };
   return (
     <React.Fragment>
       <div
@@ -101,45 +41,71 @@ const Gallery = (props) => {
               >
                 <div id="loaderContainer">
                   <div id="loader">
-                    {showloader && <ImageGalleryLoader></ImageGalleryLoader>}
+                    {props.showloader && (
+                      <ImageGalleryLoader></ImageGalleryLoader>
+                    )}
                   </div>
                 </div>
                 <img
                   class="fancybox-image"
-                  src={currentImage ? currentImage : galleryImages[0]}
+                  src={
+                    props.currentImage
+                      ? props.currentImage
+                      : props.galleryImages[0]
+                  }
                   alt=""
-                  onLoad={handleImageLoad}
-                  style={{ opacity: opacity }}
+                  onLoad={props.handleImageLoad}
+                  style={{ opacity: props.opacity }}
                 />
               </div>
-              <a
-                title="Previous"
-                class="fancybox-nav fancybox-prev"
-                data-ol-has-click-handler=""
-                onMouseOver={() =>
-                  changeVisibility(true, setPreviousButtonVisibility)
-                }
-                onMouseOut={() =>
-                  changeVisibility(false, setPreviousButtonVisibility)
-                }
-                onClick={fetchPreviousImage}
-              >
-                <span style={{ visibility: previousButtonVisibility }}></span>
-              </a>
-              <a
-                title="Next"
-                class="fancybox-nav fancybox-next"
-                data-ol-has-click-handler=""
-                onMouseOver={() =>
-                  changeVisibility(true, setNextButtonVisibility)
-                }
-                onMouseOut={() =>
-                  changeVisibility(false, setNextButtonVisibility)
-                }
-                onClick={fetchNextImage}
-              >
-                <span style={{ visibility: nextButtonVisibility }}></span>
-              </a>
+              {props.galleryImages.length > 1 && (
+                <React.Fragment>
+                  <a
+                    title="Previous"
+                    class="fancybox-nav fancybox-prev"
+                    data-ol-has-click-handler=""
+                    onMouseOver={() =>
+                      props.changeVisibility(
+                        true,
+                        props.setPreviousButtonVisibility
+                      )
+                    }
+                    onMouseOut={() =>
+                      props.changeVisibility(
+                        false,
+                        props.setPreviousButtonVisibility
+                      )
+                    }
+                    onClick={props.fetchPreviousImage}
+                  >
+                    <span
+                      style={{ visibility: props.previousButtonVisibility }}
+                    ></span>
+                  </a>
+                  <a
+                    title="Next"
+                    class="fancybox-nav fancybox-next"
+                    data-ol-has-click-handler=""
+                    onMouseOver={() =>
+                      props.changeVisibility(
+                        true,
+                        props.setNextButtonVisibility
+                      )
+                    }
+                    onMouseOut={() =>
+                      props.changeVisibility(
+                        false,
+                        props.setNextButtonVisibility
+                      )
+                    }
+                    onClick={props.fetchNextImage}
+                  >
+                    <span
+                      style={{ visibility: props.nextButtonVisibility }}
+                    ></span>
+                  </a>
+                </React.Fragment>
+              )}
             </div>
             <a
               title="Close"

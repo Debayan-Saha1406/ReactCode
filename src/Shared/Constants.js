@@ -439,3 +439,9 @@ export const WhatToWatchType = {
   MostReviewed: 2,
   ComingSoon: 3,
 };
+
+export const GalleryImageType = {
+  Photo: 1,
+  CoverPhoto: 2,
+  GalleryImages: 3,
+};

@@ -37,6 +37,7 @@ import { compose } from "redux";
 import Information from "../Popups/Information";
 import { saveUserInfo } from "./../../../Store/Actions/actionCreator";
 import CoverPhoto from "../Common/CoverPhoto";
+import ImageGallery from "./ImageGallery";
 
 let releaseYear = "",
   loginDetails = {},
@@ -316,7 +317,10 @@ class MovieDetails extends Component {
     return (
       <React.Fragment>
         {this.state.showGallery && (
-          <Gallery closeGallery={this.closeGallery} movieId={movieId}></Gallery>
+          <ImageGallery
+            closeGallery={this.closeGallery}
+            movieId={movieId}
+          ></ImageGallery>
         )}
         <div
           style={{
