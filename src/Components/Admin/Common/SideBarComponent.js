@@ -36,6 +36,7 @@ class SideBar extends Component {
     activeLink: "Dashboard",
     celebSideBarClass: "",
     directorSideBarClass: "",
+    movieSideBarClass: "",
   };
 
   handleEditPopup = () => {
@@ -158,8 +159,19 @@ class SideBar extends Component {
   };
 
   setActiveSideBarLink() {
-    if (window.location.pathname.includes(route.movie)) {
-      this.setState({ activeLink: route.movie });
+    if (window.location.pathname.includes(route.addMovie)) {
+      this.setState({
+        activeLink: route.addMovie,
+        movieSideBarClass: "show",
+      });
+    } else if (
+      window.location.pathname.includes(route.viewMovies) ||
+      window.location.pathname.includes(route.editMovies)
+    ) {
+      this.setState({
+        activeLink: route.viewMovies,
+        movieSideBarClass: "show",
+      });
     } else if (window.location.pathname.includes(route.users)) {
       this.setState({ activeLink: route.users });
     } else if (window.location.pathname.includes(route.dashboard)) {
@@ -268,7 +280,7 @@ class SideBar extends Component {
           </div>
 
           <ul className="list-unstyled components mb-5">
-            {this.state.activeLink === route.dashboard ? (
+            {/* {this.state.activeLink === route.dashboard ? (
               <li className="active">
                 <Link
                   to={"/admin"}
@@ -311,7 +323,139 @@ class SideBar extends Component {
                   Movies
                 </Link>
               </li>
+            )} */}
+
+            {this.state.activeLink === route.movie ? (
+              <li className="active">
+                <Link
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle"
+                  onClick={() => {
+                    if (this.state.movieSideBarClass === "") {
+                      this.setState({ movieSideBarClass: "show" });
+                    } else {
+                      this.setState({ movieSideBarClass: "" });
+                    }
+                  }}
+                >
+                  Movies
+                </Link>
+                <ul
+                  class={`list-unstyled side-collapse ${this.state.movieSideBarClass}`}
+                  id="homeSubmenu"
+                >
+                  {this.state.activeLink === route.addMovie ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/add-movie"}
+                        onClick={() => this.handleSideMenuClick(route.addMovie)}
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/add-movie"}
+                        onClick={() => this.handleSideMenuClick(route.addMovie)}
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.activeLink === route.viewMovies ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/view-movies"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewMovies)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/view-movies"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewMovies)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  data-toggle="collapse"
+                  aria-expanded="false"
+                  class="dropdown-toggle collapsed"
+                  onClick={() => {
+                    if (this.state.movieSideBarClass === "") {
+                      this.setState({ movieSideBarClass: "show" });
+                    } else {
+                      this.setState({ movieSideBarClass: "" });
+                    }
+                  }}
+                >
+                  Movies
+                </Link>
+                <ul
+                  class={`list-unstyled side-collapse ${this.state.movieSideBarClass}`}
+                  id="homeSubmenu"
+                >
+                  {this.state.activeLink === route.addMovie ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/add-movie"}
+                        onClick={() => this.handleSideMenuClick(route.addMovie)}
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/add-movie"}
+                        onClick={() => this.handleSideMenuClick(route.addMovie)}
+                      >
+                        Add
+                      </Link>
+                    </li>
+                  )}
+                  {this.state.activeLink === route.viewMovies ? (
+                    <li className="active">
+                      <Link
+                        to={"/admin/view-movies"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewMovies)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link
+                        to={"/admin/view-movies"}
+                        onClick={() =>
+                          this.handleSideMenuClick(route.viewMovies)
+                        }
+                      >
+                        View And Edit
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </li>
             )}
+
+            {/* Here it is */}
             {this.state.activeLink === route.celebrity ? (
               <li className="active">
                 <Link

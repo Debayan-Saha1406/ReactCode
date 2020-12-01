@@ -52,6 +52,7 @@ export const apiUrl = {
   contactUs: "/contactUs",
   editCelebrity: "/editCelebrity/",
   editDirector: "/editDirector/",
+  editMovie: "/editMovie/",
 };
 
 export const constants = {
@@ -417,6 +418,9 @@ export const route = {
   addDirector: "add-directors",
   viewDirectors: "view-directors",
   editDirectors: "edit-directors",
+  addMovie: "add-movie",
+  viewMovies: "view-movies",
+  editMovies: "edit-movies",
 };
 
 export const userStatus = {

@@ -53,6 +53,12 @@ class Router extends Component {
             )}
           />
           <Route
+            path="/admin/add-movie"
+            render={() => (
+              <Admin subRoute={route.movie} subChildRoute={route.addMovie} />
+            )}
+          />
+          <Route
             path="/admin/view-celebs"
             render={() => (
               <Admin
@@ -71,6 +77,12 @@ class Router extends Component {
             )}
           />
           <Route
+            path="/admin/view-movies"
+            render={() => (
+              <Admin subRoute={route.movie} subChildRoute={route.viewMovies} />
+            )}
+          />
+          <Route
             path="/admin/edit-director/:id"
             render={() => (
               <Admin
@@ -79,10 +91,20 @@ class Router extends Component {
               />
             )}
           />
-
           <Route
-            path="/admin/movies"
-            render={() => <Admin subRoute={route.movie} />}
+            path="/admin/edit-celeb/:id"
+            render={() => (
+              <Admin
+                subRoute={route.celebrity}
+                subChildRoute={route.editCelebrity}
+              />
+            )}
+          />
+          <Route
+            path="/admin/edit-movie/:id"
+            render={() => (
+              <Admin subRoute={route.movie} subChildRoute={route.editMovies} />
+            )}
           />
           <Route path="/admin" component={Admin} />
           <Route path="/user" component={User} />

@@ -18,6 +18,8 @@ import ViewCelebrities from "./ViewCelebrities";
 import EditCelebrities from "./EditCelebrities";
 import ViewDirectors from "./ViewDirectors";
 import EditDirectors from "./EditDirectors";
+import ViewMovies from "./ViewMovies";
+import EditMovies from "./EditMovies";
 
 class Admin extends Component {
   state = {
@@ -68,6 +70,15 @@ class Admin extends Component {
               <Navbar></Navbar>
               {this.props.subRoute === route.users ? (
                 <UsersList></UsersList>
+              ) : this.props.subRoute === route.movie &&
+                this.props.subChildRoute === route.addMovie ? (
+                <AddMovies></AddMovies>
+              ) : this.props.subRoute === route.movie &&
+                this.props.subChildRoute === route.viewMovies ? (
+                <ViewMovies></ViewMovies>
+              ) : this.props.subRoute === route.movie &&
+                this.props.subChildRoute === route.editMovies ? (
+                <EditMovies></EditMovies>
               ) : this.props.subRoute === route.celebrity &&
                 this.props.subChildRoute === route.addCelebrity ? (
                 <AddCelebrities></AddCelebrities>
@@ -86,8 +97,6 @@ class Admin extends Component {
               ) : this.props.subRoute === route.directors &&
                 this.props.subChildRoute === route.editDirectors ? (
                 <EditDirectors></EditDirectors>
-              ) : this.props.subRoute === route.movie ? (
-                <AddMovies></AddMovies>
               ) : (
                 <Main></Main>
               )}
