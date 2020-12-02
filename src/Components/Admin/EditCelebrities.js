@@ -12,6 +12,8 @@ import ServiceProvider from "../../Provider/ServiceProvider";
 import { apiUrl, monthNames } from "../../Shared/Constants";
 import { toggleLoader } from "../../Store/Actions/actionCreator";
 import { showErrorMessage } from "../../Provider/ToastProvider";
+import { GalleryImageType } from "./../../Shared/Constants";
+import Gallery from "../MovieReview/Common/Gallery";
 
 const initialState = {
   value: "",
@@ -38,6 +40,9 @@ const EditCelebrities = (props) => {
     initialState
   );
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
+  const [isGalleryOpen, showGallery] = useState(false);
+  const [viewLinkImages, setViewLinkImages] = useState([]);
+
   let celebId = window.location.pathname.substring(
     window.location.pathname.lastIndexOf("/") + 1,
     window.location.pathname.length
@@ -72,6 +77,18 @@ const EditCelebrities = (props) => {
 
       reader.readAsDataURL(file);
     });
+  };
+
+  const handleViewLinkClicked = (status, type, url) => {
+    showGallery(status);
+    if (
+      type === GalleryImageType.Photo ||
+      type === GalleryImageType.CoverPhoto
+    ) {
+      const imageUrl = [];
+      imageUrl.push(url);
+      setViewLinkImages(imageUrl);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -262,6 +279,12 @@ const EditCelebrities = (props) => {
 
   return (
     <React.Fragment>
+      {isGalleryOpen && (
+        <Gallery
+          closeGallery={() => showGallery(false)}
+          galleryImages={viewLinkImages}
+        ></Gallery>
+      )}
       {showPopup && (
         <Information
           title="Celebrity Updated"
@@ -396,16 +419,22 @@ const EditCelebrities = (props) => {
             </div>
           </div>
           <div className="col-3">
-            <label for="exampleFormControlFile1">Uploaded Photo Url</label>
-            <input
-              type="text"
-              class="form-control"
-              disabled={true}
-              style={{ cursor: "not-allowed" }}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              value={uploadedPhotoUrl.value}
-            />
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Uploaded Photo</label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(
+                    true,
+                    GalleryImageType.Photo,
+                    uploadedPhotoUrl.value
+                  )
+                }
+              >
+                View
+              </label>
+            </div>
           </div>
           <div className="col-3">
             <div class="form-group">
@@ -439,19 +468,22 @@ const EditCelebrities = (props) => {
             </div>
           </div>
           <div className="col-3">
-            <label for="exampleFormControlFile1">
-              Uploaded Cover Photo Url
-            </label>
-
-            <input
-              type="text"
-              class="form-control"
-              disabled={true}
-              style={{ cursor: "not-allowed" }}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              value={uploadedCoverPhotoUrl.value}
-            />
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Uploaded Cover Photo</label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(
+                    true,
+                    GalleryImageType.CoverPhoto,
+                    uploadedCoverPhotoUrl.value
+                  )
+                }
+              >
+                View
+              </label>
+            </div>
           </div>
         </div>
 

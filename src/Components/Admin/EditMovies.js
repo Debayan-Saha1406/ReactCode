@@ -71,7 +71,6 @@ const EditMovies = () => {
   );
   const [isGalleryErrorExist, setIsGalleryErrorExist] = useState(false);
   const [isGalleryOpen, showGallery] = useState(false);
-  const [galleryImageType, setGalleryImageType] = useState("");
   const [viewLinkImages, setViewLinkImages] = useState([]);
 
   const changeVisibility = (showButton, setButtonVisibility) => {
@@ -300,7 +299,6 @@ const EditMovies = () => {
 
   const handleViewLinkClicked = (status, type, url) => {
     showGallery(status);
-    setGalleryImageType(type);
     if (
       type === GalleryImageType.Photo ||
       type === GalleryImageType.CoverPhoto
@@ -434,7 +432,6 @@ const EditMovies = () => {
       {isGalleryOpen && (
         <Gallery
           closeGallery={() => showGallery(false)}
-          movieId={movieId}
           galleryImages={viewLinkImages}
           changeVisibility={changeVisibility}
           setPreviousButtonVisibility={setPreviousButtonVisibility}

@@ -9,6 +9,8 @@ import { toggleLoader } from "./../../Store/Actions/actionCreator";
 import { apiUrl, monthNames } from "../../Shared/Constants";
 import ServiceProvider from "./../../Provider/ServiceProvider";
 import { showErrorMessage } from "../../Provider/ToastProvider";
+import { GalleryImageType } from "./../../Shared/Constants";
+import Gallery from "../MovieReview/Common/Gallery";
 
 const initialState = {
   value: "",
@@ -39,6 +41,8 @@ const EditDirectors = () => {
     window.location.pathname.lastIndexOf("/") + 1,
     window.location.pathname.length
   );
+  const [isGalleryOpen, showGallery] = useState(false);
+  const [viewLinkImages, setViewLinkImages] = useState([]);
 
   const readFileDataAsBase64 = (e, type) => {
     const file = e.target.files[0];
@@ -100,6 +104,18 @@ const EditDirectors = () => {
       };
       dispatch(toggleLoader(true, 0));
       sendEditDirectorRequest(body);
+    }
+  };
+
+  const handleViewLinkClicked = (status, type, url) => {
+    showGallery(status);
+    if (
+      type === GalleryImageType.Photo ||
+      type === GalleryImageType.CoverPhoto
+    ) {
+      const imageUrl = [];
+      imageUrl.push(url);
+      setViewLinkImages(imageUrl);
     }
   };
 
@@ -250,6 +266,12 @@ const EditDirectors = () => {
 
   return (
     <React.Fragment>
+      {isGalleryOpen && (
+        <Gallery
+          closeGallery={() => showGallery(false)}
+          galleryImages={viewLinkImages}
+        ></Gallery>
+      )}
       {showPopup && (
         <Information
           title="Director Updated"
@@ -384,16 +406,22 @@ const EditDirectors = () => {
             </div>
           </div>
           <div className="col-3">
-            <label for="exampleFormControlFile1">Uploaded Photo Url</label>
-            <input
-              type="text"
-              class="form-control"
-              disabled={true}
-              style={{ cursor: "not-allowed" }}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              value={uploadedPhotoUrl.value}
-            />
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Uploaded Photo</label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(
+                    true,
+                    GalleryImageType.Photo,
+                    uploadedPhotoUrl.value
+                  )
+                }
+              >
+                View
+              </label>
+            </div>
           </div>
           <div className="col-3">
             <div class="form-group">
@@ -427,19 +455,22 @@ const EditDirectors = () => {
             </div>
           </div>
           <div className="col-3">
-            <label for="exampleFormControlFile1">
-              Uploaded Cover Photo Url
-            </label>
-
-            <input
-              type="text"
-              class="form-control"
-              disabled={true}
-              style={{ cursor: "not-allowed" }}
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              value={uploadedCoverPhotoUrl.value}
-            />
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Uploaded Cover Photo</label>
+              <br></br>
+              <label
+                className="view-link"
+                onClick={() =>
+                  handleViewLinkClicked(
+                    true,
+                    GalleryImageType.CoverPhoto,
+                    uploadedCoverPhotoUrl.value
+                  )
+                }
+              >
+                View
+              </label>
+            </div>
           </div>
         </div>
 
