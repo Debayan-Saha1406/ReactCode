@@ -11,6 +11,8 @@ import ServiceProvider from "./../../Provider/ServiceProvider";
 import { showErrorMessage } from "../../Provider/ToastProvider";
 import Gallery from "../MovieReview/Common/Gallery";
 import { GalleryImageType } from "./../../Shared/Constants";
+import Autocomplete from "react-autocomplete";
+import { useCallback } from "react";
 
 const initialState = {
   value: "",
@@ -65,13 +67,34 @@ const EditMovies = () => {
     initialState
   );
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+  const [isGalleryErrorExist, setIsGalleryErrorExist] = useState(false);
+  const [isGalleryOpen, showGallery] = useState(false);
+  const [viewLinkImages, setViewLinkImages] = useState([]);
+  const [celebList, setCelebList] = useState([]);
+  const [currentlySelectedCeleb, setCurrentlySelectedCeleb] = useState(
+    initialState
+  );
+  const [selectedCelebs, setSelectedCelebs] = useState([]); //To be Sent in The Payload of celeb
+  const [isCelebSuggestionBoxOpen, setIsCelebSuggestionBoxOpen] = useState(
+    false
+  );
+  const [
+    isDirectorSuggestionBoxOpen,
+    setIsDirectorSuggestionBoxOpen,
+  ] = useState(false);
+  const [directorList, setDirectorList] = useState([]);
+  const [currentlySelectedDirector, setCurrentlySelectedDirector] = useState(
+    initialState
+  );
+  const [selectedDirectors, setSelectedDirectors] = useState([]);
+
   let movieId = window.location.pathname.substring(
     window.location.pathname.lastIndexOf("/") + 1,
     window.location.pathname.length
   );
-  const [isGalleryErrorExist, setIsGalleryErrorExist] = useState(false);
-  const [isGalleryOpen, showGallery] = useState(false);
-  const [viewLinkImages, setViewLinkImages] = useState([]);
 
   const changeVisibility = (showButton, setButtonVisibility) => {
     if (showButton) {
@@ -101,6 +124,124 @@ const EditMovies = () => {
       setCurrentImage(viewLinkImages[0]);
       setCurrentIndex(0);
     }
+  };
+
+  const handleCelebSelect = (value) => {
+    let celebId = 0;
+    let isCelebPresent = false;
+    celebList.forEach((celeb) => {
+      if (celeb.celebrityName === value) {
+        celebId = celeb.id;
+      }
+    });
+    selectedCelebs.forEach((selectedCeleb) => {
+      if (selectedCeleb.id === celebId) {
+        isCelebPresent = true;
+      }
+    });
+    if (!isCelebPresent) {
+      selectedCelebs.push({
+        id: celebId,
+        name: value,
+        characterName: "",
+        isErrorExist: false,
+      });
+    }
+    setCurrentlySelectedCeleb({
+      ...currentlySelectedCeleb,
+      value: "",
+      isErrorExist: false,
+    });
+    setSelectedCelebs(selectedCelebs);
+    setIsCelebSuggestionBoxOpen(false);
+  };
+
+  const handleCelebChange = (value) => {
+    setCurrentlySelectedCeleb({
+      ...currentlySelectedCeleb,
+      value: value,
+      isErrorExist: false,
+    });
+    if (value.length > 2) {
+      ServiceProvider.getWithParam(apiUrl.allCelebs, value).then((response) => {
+        if (response.status === 200) {
+          setCelebList(response.data.data);
+          setIsCelebSuggestionBoxOpen(true);
+        } else if (response.status === 404) {
+          setCelebList([]);
+        }
+      });
+    } else {
+      setCelebList([]);
+    }
+  };
+
+  const handleDirectorSelect = (value) => {
+    let directorId = 0;
+    let isDirectorPresent = false;
+    directorList.forEach((director) => {
+      if (director.directorName === value) {
+        directorId = director.id;
+      }
+    });
+    selectedDirectors.forEach((selectedDirector) => {
+      if (selectedDirector.id === directorId) {
+        isDirectorPresent = true;
+      }
+    });
+
+    if (!isDirectorPresent) {
+      selectedDirectors.push({ id: directorId, name: value });
+    }
+    setCurrentlySelectedDirector({
+      ...currentlySelectedDirector,
+      value: "",
+      isErrorExist: false,
+    });
+    setSelectedDirectors(selectedDirectors);
+    setIsDirectorSuggestionBoxOpen(false);
+  };
+
+  const handleDirectorChange = (value) => {
+    setCurrentlySelectedDirector({
+      ...currentlySelectedDirector,
+      value: value,
+      isErrorExist: false,
+    });
+    if (value.length > 2) {
+      ServiceProvider.getWithParam(apiUrl.allDirectors, value).then(
+        (response) => {
+          if (response.status === 200) {
+            setDirectorList(response.data.data);
+            setIsDirectorSuggestionBoxOpen(true);
+          } else if (response.status === 404) {
+            setDirectorList([]);
+          }
+        }
+      );
+    } else {
+      setDirectorList([]);
+    }
+  };
+
+  const handleCharacterNameChange = (celeb, e) => {
+    const selectedCeleb = selectedCelebs.find((x) => x.id === celeb.id);
+    selectedCeleb.characterName = e.target.value;
+    selectedCeleb.isErrorExist = false;
+    setSelectedCelebs(selectedCelebs);
+    forceUpdate();
+  };
+
+  const deleteCelebChip = (id) => {
+    const remainingCelebs = selectedCelebs.filter((x) => x.id !== id);
+    setSelectedCelebs(remainingCelebs);
+    setCurrentlySelectedCeleb({ ...currentlySelectedCeleb, value: "" });
+  };
+
+  const deleteDirectorChip = (id) => {
+    const remainingDirectors = selectedDirectors.filter((x) => x.id !== id);
+    setSelectedDirectors(remainingDirectors);
+    setCurrentlySelectedDirector({ ...currentlySelectedDirector, value: "" });
   };
 
   const readFileDataAsBase64 = (e, type) => {
@@ -425,6 +566,30 @@ const EditMovies = () => {
       value: movieLanguageId,
       isErrorExist: false,
     });
+
+    response.celebrities.forEach((celebrity) => {
+      let selectedCeleb = {
+        id: celebrity.id,
+        name: celebrity.celebrityName,
+        characterName: celebrity.characterName,
+        isErrorExist: false,
+      };
+      selectedCelebs.push(selectedCeleb);
+    });
+
+    setSelectedCelebs(selectedCelebs);
+
+    response.directors.forEach((director) => {
+      let selectedDirector = {
+        id: director.id,
+        name: director.directorName,
+        isErrorExist: false,
+      };
+      selectedDirectors.push(selectedDirector);
+    });
+
+    setSelectedCelebs(selectedCelebs);
+    setSelectedDirectors(selectedDirectors);
   };
 
   return (
@@ -942,6 +1107,194 @@ const EditMovies = () => {
             ></textarea>
           )}
         </div>
+
+        <div className="row">
+          <div className="col-6">
+            <h4>Celebrity Details</h4>
+            <div class="form-group">
+              <label
+                for="exampleFormControlSelect1"
+                class="required-label"
+                style={{ width: "100%", textAlign: "left" }}
+              >
+                Actors/Actress
+                <div class="tooltip-info">
+                  <i class="fa fa-question-circle" aria-hidden="true"></i>
+                  <span class="tooltiptext-info" style={{ width: "250px" }}>
+                    Start Typing in and you will see the list in which u have to
+                    select at least 1{" "}
+                  </span>
+                </div>
+              </label>
+              {currentlySelectedCeleb.isErrorExist ? (
+                <span style={{ borderLeft: "5px solid red" }}>
+                  <Autocomplete
+                    className="hello"
+                    getItemValue={(item) => item.celebrityName}
+                    items={celebList}
+                    open={isCelebSuggestionBoxOpen}
+                    renderItem={(item, isHighlighted) => (
+                      <div
+                        style={{
+                          background: isHighlighted ? "lightgray" : "white",
+                        }}
+                      >
+                        {item.celebrityName}
+                      </div>
+                    )}
+                    value={currentlySelectedCeleb.value}
+                    onSelect={(val) => handleCelebSelect(val)}
+                    onChange={(e) => handleCelebChange(e.target.value)}
+                  />
+                </span>
+              ) : (
+                <Autocomplete
+                  getItemValue={(item) => item.celebrityName}
+                  items={celebList}
+                  open={isCelebSuggestionBoxOpen}
+                  renderItem={(item, isHighlighted) => (
+                    <div
+                      style={{
+                        background: isHighlighted ? "lightgray" : "white",
+                      }}
+                    >
+                      {item.celebrityName}
+                    </div>
+                  )}
+                  value={currentlySelectedCeleb.value}
+                  onSelect={(val) => handleCelebSelect(val)}
+                  onChange={(e) => handleCelebChange(e.target.value)}
+                />
+              )}
+            </div>
+          </div>
+          <div className="col-6">
+            <h4>Director Details</h4>
+            <div class="form-group">
+              <label
+                for="exampleFormControlSelect1"
+                class="required-label"
+                style={{ width: "100%", textAlign: "left" }}
+              >
+                Directors
+                <div class="tooltip-info">
+                  <i class="fa fa-question-circle" aria-hidden="true"></i>
+                  <span class="tooltiptext-info" style={{ width: "250px" }}>
+                    Start Typing in and you will see the list in which u have to
+                    select at least 1{" "}
+                  </span>
+                </div>
+              </label>
+
+              {currentlySelectedDirector.isErrorExist ? (
+                <span style={{ borderLeft: "5px solid red" }}>
+                  <Autocomplete
+                    getItemValue={(item) => item.directorName}
+                    items={directorList}
+                    open={isDirectorSuggestionBoxOpen}
+                    renderItem={(item, isHighlighted) => (
+                      <div
+                        style={{
+                          background: isHighlighted ? "lightgray" : "white",
+                        }}
+                      >
+                        {item.directorName}
+                      </div>
+                    )}
+                    value={currentlySelectedDirector.value}
+                    onSelect={(val) => handleDirectorSelect(val)}
+                    onChange={(e) => handleDirectorChange(e.target.value)}
+                  />
+                </span>
+              ) : (
+                <Autocomplete
+                  getItemValue={(item) => item.directorName}
+                  items={directorList}
+                  open={isDirectorSuggestionBoxOpen}
+                  renderItem={(item, isHighlighted) => (
+                    <div
+                      style={{
+                        background: isHighlighted ? "lightgray" : "white",
+                      }}
+                    >
+                      {item.directorName}
+                    </div>
+                  )}
+                  value={currentlySelectedDirector.value}
+                  onSelect={(val) => handleDirectorSelect(val)}
+                  onChange={(e) => handleDirectorChange(e.target.value)}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-6">
+            {selectedCelebs.length > 0 &&
+              selectedCelebs.map((celeb, index) => (
+                <React.Fragment key={index}>
+                  <div className="first">
+                    <div class="chip" style={{ marginTop: "25px" }}>
+                      {celeb.name}
+                      <span
+                        class="closebtn"
+                        onClick={() => deleteCelebChip(celeb.id)}
+                      >
+                        &times;
+                      </span>
+                    </div>
+                  </div>
+                  <div className="second">
+                    <div class="form-group">
+                      <label
+                        for="exampleFormControlSelect1"
+                        class="required-label"
+                      >
+                        Character Name
+                      </label>
+                      {celeb.isErrorExist ? (
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="exampleInputEmail1"
+                          aria-describedby="emailHelp"
+                          onChange={(e) => handleCharacterNameChange(celeb, e)}
+                          value={celeb.characterName}
+                          style={{ border: "1px solid red" }}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="exampleInputEmail1"
+                          aria-describedby="emailHelp"
+                          onChange={(e) => handleCharacterNameChange(celeb, e)}
+                          value={celeb.characterName}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </React.Fragment>
+              ))}
+          </div>
+          <div className="col-6">
+            {selectedDirectors.length > 0 &&
+              selectedDirectors.map((director, index) => (
+                <React.Fragment key={index}>
+                  <div class="chip" style={{ marginTop: "25px" }}>
+                    {director.name}
+                    <span
+                      class="closebtn"
+                      onClick={() => deleteDirectorChip(director.id)}
+                    >
+                      &times;
+                    </span>
+                  </div>
+                </React.Fragment>
+              ))}
+          </div>
+        </div>
+        <br></br>
         <div class="form-group" style={{ textAlign: "center" }}>
           <button
             type="submit"

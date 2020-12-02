@@ -907,9 +907,10 @@ const AddMovies = () => {
             ></textarea>
           )}
         </div>
-        <h4>Celebrity Details</h4>
+
         <div className="row">
           <div className="col-6">
+            <h4>Celebrity Details</h4>
             <div class="form-group">
               <label
                 for="exampleFormControlSelect1"
@@ -968,57 +969,7 @@ const AddMovies = () => {
             </div>
           </div>
           <div className="col-6">
-            {selectedCelebs.length > 0 &&
-              selectedCelebs.map((celeb, index) => (
-                <React.Fragment key={index}>
-                  <div className="first">
-                    <div class="chip" style={{ marginTop: "25px" }}>
-                      {celeb.name}
-                      <span
-                        class="closebtn"
-                        onClick={() => deleteCelebChip(celeb.id)}
-                      >
-                        &times;
-                      </span>
-                    </div>
-                  </div>
-                  <div className="second">
-                    <div class="form-group">
-                      <label
-                        for="exampleFormControlSelect1"
-                        class="required-label"
-                      >
-                        Character Name
-                      </label>
-                      {celeb.isErrorExist ? (
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          onChange={(e) => handleCharacterNameChange(celeb, e)}
-                          value={celeb.characterName}
-                          style={{ border: "1px solid red" }}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          onChange={(e) => handleCharacterNameChange(celeb, e)}
-                          value={celeb.characterName}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </React.Fragment>
-              ))}
-          </div>
-        </div>
-        <h4>Director Details</h4>
-        <div className="row">
-          <div className="col-6">
+            <h4>Director Details</h4>
             <div class="form-group">
               <label
                 for="exampleFormControlSelect1"
@@ -1076,6 +1027,56 @@ const AddMovies = () => {
               )}
             </div>
           </div>
+        </div>
+        <div className="row">
+          <div className="col-6">
+            {selectedCelebs.length > 0 &&
+              selectedCelebs.map((celeb, index) => (
+                <React.Fragment key={index}>
+                  <div className="first">
+                    <div class="chip" style={{ marginTop: "25px" }}>
+                      {celeb.name}
+                      <span
+                        class="closebtn"
+                        onClick={() => deleteCelebChip(celeb.id)}
+                      >
+                        &times;
+                      </span>
+                    </div>
+                  </div>
+                  <div className="second">
+                    <div class="form-group">
+                      <label
+                        for="exampleFormControlSelect1"
+                        class="required-label"
+                      >
+                        Character Name
+                      </label>
+                      {celeb.isErrorExist ? (
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="exampleInputEmail1"
+                          aria-describedby="emailHelp"
+                          onChange={(e) => handleCharacterNameChange(celeb, e)}
+                          value={celeb.characterName}
+                          style={{ border: "1px solid red" }}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="exampleInputEmail1"
+                          aria-describedby="emailHelp"
+                          onChange={(e) => handleCharacterNameChange(celeb, e)}
+                          value={celeb.characterName}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </React.Fragment>
+              ))}
+          </div>
           <div className="col-6">
             {selectedDirectors.length > 0 &&
               selectedDirectors.map((director, index) => (
@@ -1093,6 +1094,7 @@ const AddMovies = () => {
               ))}
           </div>
         </div>
+        <br></br>
         <div class="form-group" style={{ textAlign: "center" }}>
           <button
             type="submit"
