@@ -24,20 +24,12 @@ let uploadedGalleryImages = [];
 const EditMovies = () => {
   const [releaseDate, setReleaseDate] = useState(initialState);
   const [name, setName] = useState(initialState);
-  const [movieLanguage, setMovieLanguage] = useState({
-    value: "NA",
-    isErrorExist: false,
-  });
   const [previousButtonVisibility, setPreviousButtonVisibility] = useState(
     "hidden"
   );
   const [nextButtonVisibility, setNextButtonVisibility] = useState("hidden");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImage, setCurrentImage] = useState("");
-  const [movieGenres, setMovieGenres] = useState({
-    value: "NA",
-    isErrorExist: false,
-  });
   const [genres, setGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [currentlySelectedGenre, setCurrentlySelectedGenre] = useState({
@@ -69,8 +61,6 @@ const EditMovies = () => {
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
-
-  const [isGalleryErrorExist, setIsGalleryErrorExist] = useState(false);
   const [isGalleryOpen, showGallery] = useState(false);
   const [viewLinkImages, setViewLinkImages] = useState([]);
   const [celebList, setCelebList] = useState([]);
@@ -274,6 +264,12 @@ const EditMovies = () => {
 
   const closePopup = () => {
     setShowPopup(false);
+    ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
+      if (response.status === 200) {
+        setDefaultValues(response.data.data, false);
+        dispatch(toggleLoader(false, 1));
+      }
+    });
   };
 
   const handleSubmit = (e) => {
@@ -291,24 +287,34 @@ const EditMovies = () => {
         formattedCoverS3Photo = handleFileData(coverPhotoS3);
       }
 
-      const body = {
+      const movieDetails = {
         name: name.value.trim(),
-        gender: movieLanguage.value.trim(),
+        description: description.value.trim(),
         photo: photo.value.trim(),
         photoS3: formattedS3Photo,
         coverPhoto: coverPhoto.value.trim(),
         coverPhotoS3: formattedCoverS3Photo,
-        nationality: runTimeHrs.value.trim(),
-        biography: description.value.trim(),
-        dateOfBirth: formattedDate,
+        youtubeUrl: youtubeUrl.value.trim(),
+        releaseDate: formattedDate,
+        languageId: Number(currentlySelectedLanguage.value),
+        totalRunTime: `${runTimeHrs.value}h ${runTimeMins.value}m`,
       };
+
+      const body = {
+        movieDetails: movieDetails,
+        movieGenres: selectedGenres,
+        movieGalleryImages: galleryImages,
+        celebrities: selectedCelebs,
+        directors: selectedDirectors,
+      };
+
       dispatch(toggleLoader(true, 0));
       sendEditMovieRequest(body);
     }
   };
 
   const sendEditMovieRequest = (body) => {
-    ServiceProvider.put(apiUrl.editDirector, movieId, body).then((response) => {
+    ServiceProvider.put(apiUrl.editMovie, movieId, body).then((response) => {
       if (response.status === 200) {
         dispatch(toggleLoader(false, 1));
         setShowPopup(true);
@@ -350,6 +356,7 @@ const EditMovies = () => {
   };
 
   const validateInputFields = () => {
+    debugger;
     let isErrorExist = false;
     if (name.value.length <= 0) {
       setName({ ...name, value: name.value, isErrorExist: true });
@@ -364,6 +371,28 @@ const EditMovies = () => {
       isErrorExist = true;
     }
 
+    if (runTimeMins.value.length <= 0) {
+      setRunTimeMins({
+        ...runTimeMins,
+        value: runTimeMins.value,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (youtubeUrl.value.length <= 0) {
+      setYoutubeUrl({ ...youtubeUrl, isErrorExist: true });
+      isErrorExist = true;
+    }
+
+    if (Number(currentlySelectedLanguage.value) === 0) {
+      setCurrentlySelectedLanguage({
+        ...currentlySelectedLanguage,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
     if (description.value.length <= 150) {
       setDescription({
         ...description,
@@ -373,16 +402,7 @@ const EditMovies = () => {
       isErrorExist = true;
     }
 
-    if (movieLanguage.value === "NA") {
-      setMovieLanguage({
-        ...movieLanguage,
-        value: movieLanguage.value,
-        isErrorExist: true,
-      });
-      isErrorExist = true;
-    }
-
-    if (releaseDate.value === "" || releaseDate.value > new Date()) {
+    if (!releaseDate.value || releaseDate.value > new Date()) {
       setReleaseDate({
         ...releaseDate,
         value: releaseDate.value,
@@ -390,6 +410,39 @@ const EditMovies = () => {
       });
       isErrorExist = true;
     }
+
+    if (selectedGenres.length === 0) {
+      setCurrentlySelectedGenre({
+        ...currentlySelectedGenre,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (selectedCelebs.length === 0) {
+      setCurrentlySelectedCeleb({
+        ...currentlySelectedCeleb,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    if (selectedDirectors.length === 0) {
+      setCurrentlySelectedDirector({
+        ...currentlySelectedDirector,
+        isErrorExist: true,
+      });
+      isErrorExist = true;
+    }
+
+    selectedCelebs.forEach((selectedCeleb) => {
+      if (selectedCeleb.characterName.length === 0) {
+        selectedCeleb.isErrorExist = true;
+        isErrorExist = true;
+      }
+    });
+
+    forceUpdate();
 
     if (isErrorExist) {
       return false;
@@ -431,7 +484,7 @@ const EditMovies = () => {
     if (languages.length > 0) {
       ServiceProvider.getWithParam(apiUrl.movie, movieId).then((response) => {
         if (response.status === 200) {
-          setDefaultValues(response.data.data);
+          setDefaultValues(response.data.data, true);
           dispatch(toggleLoader(false, 1));
         }
       });
@@ -461,7 +514,6 @@ const EditMovies = () => {
 
         reader.onload = (event) => {
           resolve(event.target.result);
-          setIsGalleryErrorExist(false);
           galleryArray.push({
             fileName: file.name,
             base64String: handleFileData(event.target.result),
@@ -499,7 +551,7 @@ const EditMovies = () => {
     setSelectedGenres(selectedGenres);
   };
 
-  const setDefaultValues = (response) => {
+  const setDefaultValues = (response, updateCelebDirectorData) => {
     setName({
       ...name,
       value: response.movie.movieName,
@@ -567,29 +619,31 @@ const EditMovies = () => {
       isErrorExist: false,
     });
 
-    response.celebrities.forEach((celebrity) => {
-      let selectedCeleb = {
-        id: celebrity.id,
-        name: celebrity.celebrityName,
-        characterName: celebrity.characterName,
-        isErrorExist: false,
-      };
-      selectedCelebs.push(selectedCeleb);
-    });
+    if (updateCelebDirectorData) {
+      response.celebrities.forEach((celebrity) => {
+        let selectedCeleb = {
+          id: celebrity.id,
+          name: celebrity.celebrityName,
+          characterName: celebrity.characterName,
+          isErrorExist: false,
+        };
+        selectedCelebs.push(selectedCeleb);
+      });
 
-    setSelectedCelebs(selectedCelebs);
+      setSelectedCelebs(selectedCelebs);
 
-    response.directors.forEach((director) => {
-      let selectedDirector = {
-        id: director.id,
-        name: director.directorName,
-        isErrorExist: false,
-      };
-      selectedDirectors.push(selectedDirector);
-    });
+      response.directors.forEach((director) => {
+        let selectedDirector = {
+          id: director.id,
+          name: director.directorName,
+          isErrorExist: false,
+        };
+        selectedDirectors.push(selectedDirector);
+      });
 
-    setSelectedCelebs(selectedCelebs);
-    setSelectedDirectors(selectedDirectors);
+      setSelectedCelebs(selectedCelebs);
+      setSelectedDirectors(selectedDirectors);
+    }
   };
 
   return (
@@ -610,11 +664,11 @@ const EditMovies = () => {
       )}
       {showPopup && (
         <Information
-          title="Director Updated"
+          title="Movie Updated"
           popupClassName={"openform"}
           btnText="Ok"
           closePopup={closePopup}
-          content="You have successfully updated the director"
+          content="You have successfully updated the movie"
         ></Information>
       )}
 
@@ -748,33 +802,20 @@ const EditMovies = () => {
         <div className="row">
           <div className="col-3">
             <div class="form-group">
-              <label for="exampleFormControlFile1" class="required-label">
-                Photo
-              </label>
+              <label for="exampleFormControlFile1">Photo</label>
               <div class="tooltip-info">
                 <i class="fa fa-question-circle" aria-hidden="true"></i>
                 <span class="tooltiptext-info">Upload New Photo</span>
               </div>
-              {photo.isErrorExist ? (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="photo"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  style={{ border: "1px solid red" }}
-                  ref={photoInputRef}
-                />
-              ) : (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="photo"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  ref={photoInputRef}
-                />
-              )}
+
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="photo"
+                onChange={(e) => readFileDataAsBase64(e, e.target.name)}
+                ref={photoInputRef}
+              />
             </div>
           </div>
           <div className="col-3">
@@ -797,33 +838,19 @@ const EditMovies = () => {
           </div>
           <div className="col-3">
             <div class="form-group">
-              <label for="exampleFormControlFile1" class="required-label">
-                Cover Photo
-              </label>
+              <label for="exampleFormControlFile1">Cover Photo</label>
               <div class="tooltip-info">
                 <i class="fa fa-question-circle" aria-hidden="true"></i>
                 <span class="tooltiptext-info">Upload New Cover</span>
               </div>
-              {coverPhoto.isErrorExist ? (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="coverphoto"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  style={{ border: "1px solid red" }}
-                  ref={coverPhotoInputRef}
-                />
-              ) : (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="coverphoto"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  ref={coverPhotoInputRef}
-                />
-              )}
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="coverphoto"
+                onChange={(e) => readFileDataAsBase64(e, e.target.name)}
+                ref={coverPhotoInputRef}
+              />
             </div>
           </div>
           <div className="col-3">
@@ -887,31 +914,17 @@ const EditMovies = () => {
 
           <div className="col-3">
             <div class="form-group">
-              <label for="exampleFormControlFile1" class="required-label">
-                Upload Gallery Images
-              </label>
-              {isGalleryErrorExist ? (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="photo"
-                  onChange={(e) => readGalleryImages(e, e.target.name)}
-                  style={{ border: "1px solid red" }}
-                  ref={photoInputRef}
-                  multiple
-                />
-              ) : (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="photo"
-                  onChange={(e) => readGalleryImages(e, e.target.name)}
-                  ref={photoInputRef}
-                  multiple
-                />
-              )}
+              <label for="exampleFormControlFile1">Upload Gallery Images</label>
+
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="photo"
+                onChange={(e) => readGalleryImages(e, e.target.name)}
+                ref={photoInputRef}
+                multiple
+              />
             </div>
           </div>
           <div className="col-3">

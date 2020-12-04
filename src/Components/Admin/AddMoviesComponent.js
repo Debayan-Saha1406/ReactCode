@@ -279,7 +279,6 @@ const AddMovies = () => {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch(toggleLoader(true, 0));
     const isValid = validateInputFields();
     if (isValid) {
       const formattedDate = formatDate(releaseDate.value);
@@ -442,6 +441,7 @@ const AddMovies = () => {
         ...currentlySelectedCeleb,
         isErrorExist: true,
       });
+      isErrorExist = true;
     }
 
     if (selectedDirectors.length === 0) {
@@ -449,6 +449,7 @@ const AddMovies = () => {
         ...currentlySelectedDirector,
         isErrorExist: true,
       });
+      isErrorExist = true;
     }
 
     selectedCelebs.forEach((selectedCeleb) => {
