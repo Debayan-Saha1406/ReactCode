@@ -155,10 +155,51 @@ class SideBar extends Component {
   }
 
   handleSideMenuClick = (activeLink) => {
-    this.setState({ activeLink });
+    if (
+      activeLink === route.addDirector ||
+      activeLink === route.editDirectors ||
+      activeLink === route.viewDirectors
+    ) {
+      this.setState({
+        directorSideBarClass: "show",
+        celebSideBarClass: "",
+        movieSideBarClass: "",
+        activeLink,
+      });
+    } else if (
+      activeLink === route.addCelebrity ||
+      activeLink === route.editCelebrity ||
+      activeLink === route.viewCelebrity
+    ) {
+      this.setState({
+        directorSideBarClass: "",
+        celebSideBarClass: "show",
+        movieSideBarClass: "",
+        activeLink,
+      });
+    } else if (
+      activeLink === route.addMovie ||
+      activeLink === route.editMovies ||
+      activeLink === route.viewMovies
+    ) {
+      this.setState({
+        directorSideBarClass: "",
+        celebSideBarClass: "",
+        movieSideBarClass: "show",
+        activeLink,
+      });
+    } else {
+      this.setState({
+        directorSideBarClass: "",
+        celebSideBarClass: "",
+        movieSideBarClass: "",
+        activeLink,
+      });
+    }
   };
 
   setActiveSideBarLink() {
+    debugger;
     if (window.location.pathname.includes(route.addMovie)) {
       this.setState({
         activeLink: route.addMovie,
@@ -174,8 +215,6 @@ class SideBar extends Component {
       });
     } else if (window.location.pathname.includes(route.users)) {
       this.setState({ activeLink: route.users });
-    } else if (window.location.pathname.includes(route.dashboard)) {
-      this.setState({ activeLink: route.dashboard });
     } else if (window.location.pathname.includes(route.celebrity)) {
       this.setState({ activeLink: route.celebrity });
     } else if (window.location.pathname.includes(route.addCelebrity)) {
@@ -204,6 +243,8 @@ class SideBar extends Component {
         activeLink: route.viewDirectors,
         directorSideBarClass: "show",
       });
+    } else if (window.location.pathname.includes(route.dashboard)) {
+      this.setState({ activeLink: route.dashboard });
     }
   }
 
@@ -280,51 +321,6 @@ class SideBar extends Component {
           </div>
 
           <ul className="list-unstyled components mb-5">
-            {/* {this.state.activeLink === route.dashboard ? (
-              <li className="active">
-                <Link
-                  to={"/admin"}
-                  onClick={() => this.handleSideMenuClick(route.dashboard)}
-                >
-                  Dashboard
-                </Link>
-              </li>
-            ) : (
-              <li>
-                <Link
-                  to={"/admin"}
-                  onClick={() => this.handleSideMenuClick(route.dashboard)}
-                >
-                  Dashboard
-                </Link>
-              </li>
-            )}
-            {this.state.activeLink === route.movie ? (
-              <li className="active">
-                <Link
-                  to={"/admin/movies"}
-                  onClick={() => {
-                    this.handleSideMenuClick(route.movie);
-                    this.setState({ celebSideBarClass: "" });
-                  }}
-                >
-                  Movies
-                </Link>
-              </li>
-            ) : (
-              <li>
-                <Link
-                  to={"/admin/movies"}
-                  onClick={() => {
-                    this.handleSideMenuClick(route.movie);
-                    this.setState({ celebSideBarClass: "" });
-                  }}
-                >
-                  Movies
-                </Link>
-              </li>
-            )} */}
-
             {this.state.activeLink === route.movie ? (
               <li className="active">
                 <Link
@@ -333,7 +329,9 @@ class SideBar extends Component {
                   class="dropdown-toggle"
                   onClick={() => {
                     if (this.state.movieSideBarClass === "") {
-                      this.setState({ movieSideBarClass: "show" });
+                      this.setState({
+                        movieSideBarClass: "show",
+                      });
                     } else {
                       this.setState({ movieSideBarClass: "" });
                     }
@@ -397,7 +395,9 @@ class SideBar extends Component {
                   class="dropdown-toggle collapsed"
                   onClick={() => {
                     if (this.state.movieSideBarClass === "") {
-                      this.setState({ movieSideBarClass: "show" });
+                      this.setState({
+                        movieSideBarClass: "show",
+                      });
                     } else {
                       this.setState({ movieSideBarClass: "" });
                     }
@@ -464,7 +464,9 @@ class SideBar extends Component {
                   class="dropdown-toggle"
                   onClick={() => {
                     if (this.state.celebSideBarClass === "") {
-                      this.setState({ celebSideBarClass: "show" });
+                      this.setState({
+                        celebSideBarClass: "show",
+                      });
                     } else {
                       this.setState({ celebSideBarClass: "" });
                     }
@@ -532,7 +534,9 @@ class SideBar extends Component {
                   class="dropdown-toggle collapsed"
                   onClick={() => {
                     if (this.state.celebSideBarClass === "") {
-                      this.setState({ celebSideBarClass: "show" });
+                      this.setState({
+                        celebSideBarClass: "show",
+                      });
                     } else {
                       this.setState({ celebSideBarClass: "" });
                     }
@@ -602,7 +606,9 @@ class SideBar extends Component {
                   class="dropdown-toggle"
                   onClick={() => {
                     if (this.state.directorSideBarClass === "") {
-                      this.setState({ directorSideBarClass: "show" });
+                      this.setState({
+                        directorSideBarClass: "show",
+                      });
                     } else {
                       this.setState({ directorSideBarClass: "" });
                     }
@@ -670,7 +676,9 @@ class SideBar extends Component {
                   class="dropdown-toggle collapsed"
                   onClick={() => {
                     if (this.state.directorSideBarClass === "") {
-                      this.setState({ directorSideBarClass: "show" });
+                      this.setState({
+                        directorSideBarClass: "show",
+                      });
                     } else {
                       this.setState({ directorSideBarClass: "" });
                     }
@@ -735,7 +743,7 @@ class SideBar extends Component {
             {this.state.activeLink === route.users ? (
               <li className="active">
                 <Link
-                  to={"/admin/Users"}
+                  to={"/admin/users"}
                   onClick={() => this.handleSideMenuClick(route.users)}
                 >
                   Users
@@ -744,7 +752,7 @@ class SideBar extends Component {
             ) : (
               <li>
                 <Link
-                  to={"/admin/Users"}
+                  to={"/admin/users"}
                   onClick={() => this.handleSideMenuClick(route.users)}
                 >
                   Users

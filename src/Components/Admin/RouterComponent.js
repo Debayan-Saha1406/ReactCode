@@ -31,7 +31,7 @@ class Router extends Component {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route
-            path="/admin/Users"
+            path="/admin/users"
             render={() => <Admin subRoute={route.users} />}
           />
           <Route

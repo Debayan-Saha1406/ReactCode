@@ -420,7 +420,7 @@ export const route = {
   editDirectors: "edit-directors",
   addMovie: "add-movie",
   viewMovies: "view-movies",
-  editMovies: "edit-movies",
+  editMovies: "edit-movie",
 };
 
 export const userStatus = {
