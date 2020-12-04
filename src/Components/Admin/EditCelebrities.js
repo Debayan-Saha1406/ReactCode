@@ -389,33 +389,20 @@ const EditCelebrities = (props) => {
         <div className="row">
           <div className="col-3">
             <div class="form-group">
-              <label for="exampleFormControlFile1" class="required-label">
-                Photo
-              </label>
+              <label for="exampleFormControlFile1">Photo</label>
               <div class="tooltip-info">
                 <i class="fa fa-question-circle" aria-hidden="true"></i>
                 <span class="tooltiptext-info">Upload New Photo</span>
               </div>
-              {photo.isErrorExist ? (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="photo"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  style={{ border: "1px solid red" }}
-                  ref={photoInputRef}
-                />
-              ) : (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="photo"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  ref={photoInputRef}
-                />
-              )}
+
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="photo"
+                onChange={(e) => readFileDataAsBase64(e, e.target.name)}
+                ref={photoInputRef}
+              />
             </div>
           </div>
           <div className="col-3">
@@ -438,33 +425,20 @@ const EditCelebrities = (props) => {
           </div>
           <div className="col-3">
             <div class="form-group">
-              <label for="exampleFormControlFile1" class="required-label">
-                Cover Photo
-              </label>
+              <label for="exampleFormControlFile1">Cover Photo</label>
               <div class="tooltip-info">
                 <i class="fa fa-question-circle" aria-hidden="true"></i>
                 <span class="tooltiptext-info">Upload New Cover</span>
               </div>
-              {coverPhoto.isErrorExist ? (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="coverphoto"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  style={{ border: "1px solid red" }}
-                  ref={coverPhotoInputRef}
-                />
-              ) : (
-                <input
-                  type="file"
-                  class="form-control-file"
-                  id="exampleFormControlFile1"
-                  name="coverphoto"
-                  onChange={(e) => readFileDataAsBase64(e, e.target.name)}
-                  ref={coverPhotoInputRef}
-                />
-              )}
+
+              <input
+                type="file"
+                class="form-control-file"
+                id="exampleFormControlFile1"
+                name="coverphoto"
+                onChange={(e) => readFileDataAsBase64(e, e.target.name)}
+                ref={coverPhotoInputRef}
+              />
             </div>
           </div>
           <div className="col-3">

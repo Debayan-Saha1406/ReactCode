@@ -417,7 +417,7 @@ export const route = {
   editCelebrity: "edit-celeb",
   addDirector: "add-directors",
   viewDirectors: "view-directors",
-  editDirectors: "edit-directors",
+  editDirectors: "edit-director",
   addMovie: "add-movie",
   viewMovies: "view-movies",
   editMovies: "edit-movie",

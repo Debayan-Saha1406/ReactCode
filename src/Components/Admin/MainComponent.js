@@ -13,6 +13,8 @@ import {
   doughnutOptions,
   doughnutLabels,
 } from "../../Shared/Constants";
+import { toggleLoader } from "./../../Store/Actions/actionCreator";
+import LoaderProvider from "./../../Provider/LoaderProvider";
 
 const brandProduct = "rgba(0,181,233,0.8)";
 const brandService = "rgba(0,173,95,0.8)";
@@ -104,8 +106,10 @@ class Main extends Component {
     directorsCount: 0,
     celebsCount: 0,
     isDataFetched: false,
+    usersCount: 0,
   };
   componentDidMount() {
+    this.props.toggleLoader(true, 0);
     ServiceProvider.get(apiUrl.moviesDirectorsCelebsCount).then((response) => {
       if (response.status === 200) {
         this.setState(
@@ -113,7 +117,6 @@ class Main extends Component {
             moviesCount: response.data.data.moviesCount,
             celebsCount: response.data.data.celebsCount,
             directorsCount: response.data.data.directorsCount,
-            isDataFetched: true,
           },
           () => {
             this.createDoughnutChartCalculations();
@@ -121,6 +124,19 @@ class Main extends Component {
           }
         );
       }
+    });
+
+    ServiceProvider.get(apiUrl.users).then((response) => {
+      let count = 0;
+      response.data.data.forEach((user) => {
+        if (!user.isAdmin) {
+          count++;
+        }
+      });
+
+      this.setState({ usersCount: count, isDataFetched: true }, () => {
+        this.props.toggleLoader(false, 1);
+      });
     });
   }
 
@@ -144,58 +160,82 @@ class Main extends Component {
 
   render() {
     return (
-      <div
-        style={{
-          opacity: this.props.screenOpacity,
-        }}
-      >
-        <div className="row m-t-25">
-          {this.state.isDataFetched && (
-            <React.Fragment>
-              <QuickInfo
-                overview={"c1"}
-                overview_inner={"c1_inner"}
-                description={"Movies"}
-                count={this.state.moviesCount}
-              ></QuickInfo>
-              <QuickInfo
-                overview={"c2"}
-                overview_inner={"c2_inner"}
-                description={"Celebs"}
-                count={this.state.celebsCount}
-              ></QuickInfo>
-              <QuickInfo
-                overview={"c3"}
-                overview_inner={"c3_inner"}
-                description={"Directors"}
-                count={this.state.directorsCount}
-              ></QuickInfo>
-            </React.Fragment>
-          )}
-        </div>
-        <div className="row">
-          <div className="col-lg-6">
-            <Report data={reportData} options={reportOptions}></Report>
-          </div>
-          {this.state.isDataFetched && (
-            <div className="col-lg-6">
-              <DoughnutChart
-                data={doughnutData}
-                options={doughnutOptions}
-                labels={doughnutLabels}
-              ></DoughnutChart>
+      <React.Fragment>
+        {this.props.showLoader && (
+          <div id="loaderContainer">
+            <div id="loader">
+              <LoaderProvider></LoaderProvider>
             </div>
-          )}
+          </div>
+        )}
+        <div
+          style={{
+            opacity: this.props.screenOpacity,
+          }}
+        >
+          <div className="row m-t-25">
+            {this.state.isDataFetched && (
+              <React.Fragment>
+                <QuickInfo
+                  overview={"c1"}
+                  overview_inner={"c1_inner"}
+                  description={"Movies"}
+                  count={this.state.moviesCount}
+                ></QuickInfo>
+                <QuickInfo
+                  overview={"c2"}
+                  overview_inner={"c2_inner"}
+                  description={"Celebs"}
+                  count={this.state.celebsCount}
+                ></QuickInfo>
+                <QuickInfo
+                  overview={"c3"}
+                  overview_inner={"c3_inner"}
+                  description={"Directors"}
+                  count={this.state.directorsCount}
+                ></QuickInfo>
+                <QuickInfo
+                  overview={"c4"}
+                  overview_inner={"c4_inner"}
+                  description={"Users"}
+                  count={this.state.usersCount}
+                ></QuickInfo>
+              </React.Fragment>
+            )}
+          </div>
+          <div className="row">
+            <div className="col-lg-6">
+              <Report data={reportData} options={reportOptions}></Report>
+            </div>
+            {this.state.isDataFetched && (
+              <div className="col-lg-6">
+                <DoughnutChart
+                  data={doughnutData}
+                  options={doughnutOptions}
+                  labels={doughnutLabels}
+                ></DoughnutChart>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    showLoader: state.uiDetails.showLoader,
     screenOpacity: state.uiDetails.screenOpacity,
   };
 };
 
-export default connect(mapStateToProps, null)(Main);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLoader: (showLoader, screenOpacity) => {
+      dispatch(toggleLoader(showLoader, screenOpacity));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
