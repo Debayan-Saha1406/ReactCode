@@ -321,6 +321,25 @@ class SideBar extends Component {
           </div>
 
           <ul className="list-unstyled components mb-5">
+            {this.state.activeLink === route.dashboard ? (
+              <li className="active">
+                <Link
+                  to={"/admin"}
+                  onClick={() => this.handleSideMenuClick(route.dashboard)}
+                >
+                  Dashboard
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to={"/admin"}
+                  onClick={() => this.handleSideMenuClick(route.dashboard)}
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
             {this.state.activeLink === route.movie ? (
               <li className="active">
                 <Link

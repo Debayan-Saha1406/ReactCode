@@ -98,7 +98,10 @@ class Admin extends Component {
                 this.props.subChildRoute === route.editDirectors ? (
                 <EditDirectors></EditDirectors>
               ) : (
-                <Main></Main>
+                <React.Fragment>
+                  <Main></Main>
+                  <Redirect to="/admin" />
+                </React.Fragment>
               )}
             </div>
           </div>
