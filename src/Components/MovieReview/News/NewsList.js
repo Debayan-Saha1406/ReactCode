@@ -33,7 +33,7 @@ const NewsList = () => {
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
     const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    const url = `${proxyUrl}http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10&page=${currentPage}&country=${country}`;
+    const url = `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10&page=${currentPage}&country=${country}`;
     const request = new Request(url);
 
     fetch(request)
