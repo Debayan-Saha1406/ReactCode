@@ -112,17 +112,11 @@ class Main extends Component {
     this.props.toggleLoader(true, 0);
     ServiceProvider.get(apiUrl.moviesDirectorsCelebsCount).then((response) => {
       if (response.status === 200) {
-        this.setState(
-          {
-            moviesCount: response.data.data.moviesCount,
-            celebsCount: response.data.data.celebsCount,
-            directorsCount: response.data.data.directorsCount,
-          },
-          () => {
-            this.createDoughnutChartCalculations();
-            this.forceUpdate();
-          }
-        );
+        this.setState({
+          moviesCount: response.data.data.moviesCount,
+          celebsCount: response.data.data.celebsCount,
+          directorsCount: response.data.data.directorsCount,
+        });
       }
     });
 
@@ -135,6 +129,7 @@ class Main extends Component {
       });
 
       this.setState({ usersCount: count, isDataFetched: true }, () => {
+        this.createDoughnutChartCalculations();
         this.props.toggleLoader(false, 1);
       });
     });

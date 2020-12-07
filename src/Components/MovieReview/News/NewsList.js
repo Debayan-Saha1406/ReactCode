@@ -32,16 +32,34 @@ const NewsList = () => {
 
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
-    ServiceProvider.newsApiUrlGet(apiUrl.newsApiUrl, currentPage, country).then(
-      (response) => {
-        setNewsData(response.data.articles);
-        setTotalNews(response.data.totalResults);
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+    const url = `${proxyUrl}http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10&page=${currentPage}&country=${country}`;
+    const request = new Request(url);
+
+    fetch(request)
+      .then((response) => response.json())
+      .then((news) => {
+        setNewsData(news.articles);
+        setTotalNews(news.totalResults);
         dispatch(toggleLoader(false, 1));
         window.scrollTo({
           top: 0,
         });
-      }
-    );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // ServiceProvider.newsApiUrlGet(apiUrl.newsApiUrl, currentPage, country).then(
+    //   (response) => {
+    //     setNewsData(response.data.articles);
+    //     setTotalNews(response.data.totalResults);
+    //     dispatch(toggleLoader(false, 1));
+    //     window.scrollTo({
+    //       top: 0,
+    //     });
+    //   }
+    // );
   }, [currentPage, country]);
 
   const pageNumberClicked = (page) => {
