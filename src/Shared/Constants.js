@@ -53,6 +53,7 @@ export const apiUrl = {
   editCelebrity: "/editCelebrity/",
   editDirector: "/editDirector/",
   editMovie: "/editMovie/",
+  TmdbImageUrl:"https://image.tmdb.org/t/p/w500/"
 };
 
 export const constants = {

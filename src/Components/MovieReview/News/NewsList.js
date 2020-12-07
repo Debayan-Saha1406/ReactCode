@@ -33,14 +33,18 @@ const NewsList = () => {
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
     const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    const url = `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10&page=${currentPage}&country=${country}`;
+    // const url = `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10&page=${currentPage}&country=${country}`;
+
+    const url = `https://api.themoviedb.org/3/trending/all/day?api_key=0310701bc95f6fccb81c4666548b2092&page=${currentPage}`;
+
     const request = new Request(url);
 
     fetch(request)
       .then((response) => response.json())
+
       .then((news) => {
-        setNewsData(news.articles);
-        setTotalNews(news.totalResults);
+        setNewsData(news.results);
+        setTotalNews(news.total_results / 100);
         dispatch(toggleLoader(false, 1));
         window.scrollTo({
           top: 0,
@@ -147,7 +151,9 @@ const NewsList = () => {
                       >
                         <img
                           src={
-                            newsItem.urlToImage ? newsItem.urlToImage : noImage
+                            `${apiUrl.TmdbImageUrl}${newsItem.backdrop_path}`
+                              ? `${apiUrl.TmdbImageUrl}${newsItem.backdrop_path}`
+                              : noImage
                           }
                           alt=""
                           className="search-record-image"
@@ -163,10 +169,10 @@ const NewsList = () => {
                             </a>
 
                             <span class="time">
-                              {new Date(newsItem.publishedAt).toUTCString()}
+                              {new Date(newsItem.release_date).toUTCString()}
                             </span>
                             <p className="news-description">
-                              {newsItem.description}
+                              {newsItem.overview}
                             </p>
                           </React.Fragment>
                         </div>
