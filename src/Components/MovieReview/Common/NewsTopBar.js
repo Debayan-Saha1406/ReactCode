@@ -6,14 +6,14 @@ const NewsTopBar = (props) => {
       <p>
         Found <span>{props.totalCount}</span> in total
       </p>
-      <label className="filterBy">Fetch News From</label>
+      <label className="filterBy">Category</label>
       <select
         className="popularity"
-        onChange={(e) => props.changeCountry(e.target.value)}
+        onChange={(e) => props.changeMediaType(e.target.value)}
       >
-        {props.countryList.map((country, index) => (
-          <option key={index} value={country.id}>
-            {country.value}
+        {props.mediaTypes.map((mediaType, index) => (
+          <option key={index} value={mediaType.value}>
+            {mediaType.value}
           </option>
         ))}
       </select>

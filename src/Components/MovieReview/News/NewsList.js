@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
-import { apiUrl } from "./../../../Shared/Constants";
+import { apiUrl, MediaTypes, tmdbImageUrl } from "./../../../Shared/Constants";
 import NewsTopBar from "../Common/NewsTopBar";
 import CountryList from "../../../Shared/CountryList.json";
 import noImage from "../../../images/noImage.jpg";
@@ -19,7 +19,7 @@ const NewsList = () => {
   const [newsData, setNewsData] = useState([]);
   const [totalNews, setTotalNews] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [country, setCountry] = useState(CountryList[0].id);
+  const [mediaType, setMediaType] = useState(MediaTypes[0].value);
   const showLoader = useSelector((state) => state.uiDetails.showLoader);
   const screenOpacity = useSelector((state) => state.uiDetails.screenOpacity);
   const dispatch = useDispatch();
@@ -32,39 +32,24 @@ const NewsList = () => {
 
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
-    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    // const url = `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10&page=${currentPage}&country=${country}`;
-
-    const url = `https://api.themoviedb.org/3/trending/all/day?api_key=0310701bc95f6fccb81c4666548b2092&page=${currentPage}`;
-
-    const request = new Request(url);
-
-    fetch(request)
-      .then((response) => response.json())
-
-      .then((news) => {
-        setNewsData(news.results);
-        setTotalNews(news.total_results / 100);
+    ServiceProvider.newsApiUrlGet(
+      apiUrl.newsApiUrl,
+      currentPage,
+      mediaType.toLowerCase()
+    )
+      .then((response) => {
+        setNewsData(response.data.results);
+        setTotalNews(response.data.total_results / 100);
         dispatch(toggleLoader(false, 1));
         window.scrollTo({
           top: 0,
         });
       })
       .catch((error) => {
-        console.log(error);
+        setNewsData([]);
+        dispatch(toggleLoader(false, 1));
       });
-
-    // ServiceProvider.newsApiUrlGet(apiUrl.newsApiUrl, currentPage, country).then(
-    //   (response) => {
-    //     setNewsData(response.data.articles);
-    //     setTotalNews(response.data.totalResults);
-    //     dispatch(toggleLoader(false, 1));
-    //     window.scrollTo({
-    //       top: 0,
-    //     });
-    //   }
-    // );
-  }, [currentPage, country]);
+  }, [currentPage, mediaType]);
 
   const pageNumberClicked = (page) => {
     if (page !== currentPage) {
@@ -89,8 +74,8 @@ const NewsList = () => {
     scrollToTop();
   };
 
-  const changeCountry = (val) => {
-    setCountry(val);
+  const changeMediaType = (val) => {
+    setMediaType(val);
   };
 
   return (
@@ -117,8 +102,8 @@ const NewsList = () => {
                 <NewsTopBar
                   forNews={true}
                   totalCount={totalNews}
-                  countryList={CountryList}
-                  changeCountry={changeCountry}
+                  mediaTypes={MediaTypes}
+                  changeMediaType={changeMediaType}
                 ></NewsTopBar>
                 {newsData.length === 0 ? (
                   <h2
@@ -141,7 +126,7 @@ const NewsList = () => {
                         textAlign: "center",
                       }}
                     >
-                      Current News
+                      Trending
                     </h1>
 
                     {newsData.map((newsItem, index) => (
@@ -151,8 +136,8 @@ const NewsList = () => {
                       >
                         <img
                           src={
-                            `${apiUrl.TmdbImageUrl}${newsItem.backdrop_path}`
-                              ? `${apiUrl.TmdbImageUrl}${newsItem.backdrop_path}`
+                            newsItem.backdrop_path
+                              ? `${tmdbImageUrl}${newsItem.backdrop_path}`
                               : noImage
                           }
                           alt=""
@@ -164,13 +149,13 @@ const NewsList = () => {
                         />
                         <div className="blog-it-infor">
                           <React.Fragment>
-                            <a href={newsItem.url} target="_blank">
-                              <h4 className="news-title">{newsItem.title}</h4>
-                            </a>
+                            <h4 className="news-title">
+                              {newsItem.title ? newsItem.title : newsItem.name}
+                            </h4>
 
-                            <span class="time">
-                              {new Date(newsItem.release_date).toUTCString()}
-                            </span>
+                            {newsItem.release_date && (
+                              <span class="time">{newsItem.release_date}</span>
+                            )}
                             <p className="news-description">
                               {newsItem.overview}
                             </p>
@@ -185,7 +170,7 @@ const NewsList = () => {
           </div>
           {totalNews > 0 && (
             <BoxPagination
-              pageSize={10}
+              pageSize={20}
               totalCount={totalNews}
               currentPage={currentPage}
               pageNumberClicked={pageNumberClicked}

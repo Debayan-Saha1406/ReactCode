@@ -7,7 +7,7 @@ export const apiUrl = {
   baseUrl:
     "http://moviereviewapi-env.eba-p6ivj893.us-west-2.elasticbeanstalk.com/api",
   //"https://localhost:44357/api",
-  newsApiUrl: `http://newsapi.org/v2/top-headlines?apiKey=01f9b39795fb4729812099653bdbe6c4&category=entertainment&pageSize=10`,
+  newsApiUrl: `https://api.themoviedb.org/3/trending/`,
   login: "/adminlogin",
   userInfo: `/userInfo/`,
   profileImage: "/profileImage/",
@@ -53,8 +53,9 @@ export const apiUrl = {
   editCelebrity: "/editCelebrity/",
   editDirector: "/editDirector/",
   editMovie: "/editMovie/",
-  TmdbImageUrl:"https://image.tmdb.org/t/p/w500/"
 };
+
+export const tmdbImageUrl = "https://image.tmdb.org/t/p/w500/";
 
 export const constants = {
   userDetails: "userDetails",
@@ -446,3 +447,16 @@ export const GalleryImageType = {
   CoverPhoto: 2,
   GalleryImages: 3,
 };
+
+export const MediaTypes = [
+  {
+    id: 1,
+    value: "Movie",
+  },
+  {
+    id: 2,
+    value: "Tv",
+  },
+];
+
+export const apiKey = "0310701bc95f6fccb81c4666548b2092";

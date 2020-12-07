@@ -3397,6 +3397,11 @@ footer .flex-parent-ft .flex-child-ft img {
   padding: 20px 0px 20px 20px;
 }
 
+.trending-item {
+  padding: 20px 0px 20px 20px;
+  width: 380px !important;
+}
+
 .react-multiple-carousel__arrow {
   top: calc(35%);
 }

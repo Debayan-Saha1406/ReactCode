@@ -1,5 +1,5 @@
 import request from "../Shared/Services/RequestService";
-import { httpVerbs } from "../Shared/Constants";
+import { httpVerbs, apiKey } from "../Shared/Constants";
 
 function get(url) {
   return request({
@@ -45,9 +45,9 @@ function deleteItem(url, id) {
   });
 }
 
-function newsApiUrlGet(url, currentPage, country) {
+function newsApiUrlGet(url, currentPage, mediaType) {
   return request({
-    url: url + "&page=" + currentPage + "&country=" + country,
+    url: url + mediaType + `/day?api_key=${apiKey}&page=` + currentPage,
     method: httpVerbs.Get,
   });
 }

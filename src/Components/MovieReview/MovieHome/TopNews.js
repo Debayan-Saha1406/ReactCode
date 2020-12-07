@@ -6,13 +6,16 @@ import { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "../../../css/movie-single.css";
-import { responsive } from "./../../../Shared/Constants";
+import {
+  MediaTypes,
+  responsive,
+  tmdbImageUrl,
+} from "./../../../Shared/Constants";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "./../../../Store/Actions/actionCreator";
 import ServiceProvider from "./../../../Provider/ServiceProvider";
 import { apiUrl } from "./../../../Shared/Constants";
-import CountryList from "./../../../Shared/CountryList.json";
 import noImage from "../../../images/noImage.jpg";
 import { useHistory } from "react-router-dom";
 
@@ -25,14 +28,19 @@ const TopNews = () => {
 
   useEffect(() => {
     dispatch(toggleLoader(true, "15%"));
-    ServiceProvider.newsApiUrlGet(apiUrl.newsApiUrl, 1, CountryList[0].id).then(
-      (response) => {
-        if (response.status === 200) {
-          dispatch(toggleLoader(false, 1));
-          setTopNews(response.data.articles);
-        }
-      }
-    );
+    ServiceProvider.newsApiUrlGet(
+      apiUrl.newsApiUrl,
+      1,
+      MediaTypes[0].value.toLowerCase()
+    )
+      .then((response) => {
+        setTopNews(response.data.results);
+        dispatch(toggleLoader(false, 1));
+      })
+      .catch((error) => {
+        setTopNews([]);
+        dispatch(toggleLoader(false, 1));
+      });
   }, []);
 
   const toggleOpacity = (opacity, indexHovered) => {
@@ -51,7 +59,7 @@ const TopNews = () => {
         <div className="title-hd" style={{ paddingTop: "20px" }}>
           {
             <h2>
-              Top News
+              Trending
               {topNews.length > 0 && (
                 <span
                   className="clear-recently-viewed-items"
@@ -75,41 +83,41 @@ const TopNews = () => {
               <Carousel
                 ssr
                 partialVisbile
-                itemClass="image-item"
+                itemClass="trending-item"
                 responsive={responsive}
               >
                 {topNews.map((newsItem, index) => {
                   return (
                     <React.Fragment key={index}>
                       {indexHovered === index ? (
-                        <a href={newsItem.url} target="_blank">
-                          <img
-                            draggable={false}
-                            style={{
-                              height: "280px",
-                              width: "300px",
-                              opacity: imageOpacity,
-                              cursor: "pointer",
-                            }}
-                            src={
-                              newsItem.urlToImage
-                                ? newsItem.urlToImage
-                                : noImage
-                            }
-                            onMouseOver={() => toggleOpacity(1, index)}
-                            onMouseOut={() => toggleOpacity(0, index)}
-                          />
-                        </a>
+                        <img
+                          draggable={false}
+                          style={{
+                            height: "280px",
+                            width: "380px",
+                            opacity: imageOpacity,
+                            cursor: "pointer",
+                          }}
+                          src={
+                            newsItem.backdrop_path
+                              ? `${tmdbImageUrl}${newsItem.backdrop_path}`
+                              : noImage
+                          }
+                          onMouseOver={() => toggleOpacity(1, index)}
+                          onMouseOut={() => toggleOpacity(0, index)}
+                        />
                       ) : (
                         <img
                           draggable={false}
                           style={{
                             height: "280px",
-                            width: "300px",
+                            width: "380px",
                             cursor: "pointer",
                           }}
                           src={
-                            newsItem.urlToImage ? newsItem.urlToImage : noImage
+                            newsItem.backdrop_path
+                              ? `${tmdbImageUrl}${newsItem.backdrop_path}`
+                              : noImage
                           }
                           onMouseOver={() => toggleOpacity(1, index)}
                           onMouseOut={() => toggleOpacity(0, index)}
@@ -124,7 +132,9 @@ const TopNews = () => {
                           }}
                           className="description"
                         >
-                          {newsItem.title}
+                          {newsItem.overview.length > 100
+                            ? newsItem.overview.substring(0, 100) + "..."
+                            : newsItem.overview}
                         </h6>
                       </div>
                     </React.Fragment>
