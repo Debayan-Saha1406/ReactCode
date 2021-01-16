@@ -5,14 +5,9 @@ import "../../css/quickInfo.css";
 import "../../css/report.css";
 import "../../css/Doughnut.css";
 import Report from "./Common/Report";
-import DoughnutChart from "./Common/DoughnutChart";
+import HighChart from "./Common/HighChart";
 import ServiceProvider from "../../Provider/ServiceProvider";
-import {
-  apiUrl,
-  doughnutData,
-  doughnutOptions,
-  doughnutLabels,
-} from "../../Shared/Constants";
+import { apiUrl, chartTypes, doughnutLabels } from "../../Shared/Constants";
 import { toggleLoader } from "./../../Store/Actions/actionCreator";
 import LoaderProvider from "./../../Provider/LoaderProvider";
 
@@ -100,6 +95,8 @@ const reportOptions = {
   },
 };
 
+const highChartData = [];
+
 class Main extends Component {
   state = {
     moviesCount: 0,
@@ -146,11 +143,12 @@ class Main extends Component {
       (this.state.directorsCount / sum) * 100
     );
 
-    doughnutData.datasets[0].data = [
-      moviePercentage,
-      celebPercentage,
-      directorPercentage,
-    ];
+    highChartData.push({ y: moviePercentage, sliced: false, name: "Movies" });
+    highChartData.push({ y: celebPercentage, sliced: false, name: "Celebs" });
+    highChartData.push({
+      y: directorPercentage,
+      name: "Directors",
+    });
   }
 
   render() {
@@ -204,11 +202,12 @@ class Main extends Component {
             </div>
             {this.state.isDataFetched && (
               <div className="col-lg-6">
-                <DoughnutChart
-                  data={doughnutData}
-                  options={doughnutOptions}
-                  labels={doughnutLabels}
-                ></DoughnutChart>
+                <HighChart
+                  data={highChartData}
+                  title={"Uploaded Percentages"}
+                  type={chartTypes[0].value}
+                  sliced={false} //Sliced attribute for Pie Chart
+                ></HighChart>
               </div>
             )}
           </div>

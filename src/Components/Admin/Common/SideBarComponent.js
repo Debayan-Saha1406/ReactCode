@@ -199,7 +199,6 @@ class SideBar extends Component {
   };
 
   setActiveSideBarLink() {
-    debugger;
     if (window.location.pathname.includes(route.addMovie)) {
       this.setState({
         activeLink: route.addMovie,

@@ -375,39 +375,6 @@ export const sliderItems = [
 
 export const sliderXCoordinate = 471;
 
-export const doughnutLabels = ["Movies", "Celebs", "Directors"];
-export const doughnutData = {
-  datasets: [
-    {
-      label: "My First dataset",
-      backgroundColor: ["#00b5e9", "#fa4251", "#008000"],
-      hoverBackgroundColor: ["#00b5e9", "#fa4251", "#008000"],
-      borderWidth: [0, 0, 0],
-      hoverBorderColor: ["transparent", "transparent", "transparent"],
-    },
-  ],
-  labels: ["Movies", "Celebs", "Directors"],
-};
-export const doughnutOptions = {
-  maintainAspectRatio: false,
-  responsive: true,
-  cutoutPercentage: 55,
-  animation: {
-    animateScale: true,
-    animateRotate: true,
-  },
-  legend: {
-    display: false,
-  },
-  tooltips: {
-    titleFontFamily: "Poppins",
-    xPadding: 15,
-    yPadding: 10,
-    caretPadding: 0,
-    bodyFontSize: 16,
-  },
-};
-
 export const route = {
   celebrity: "celebrity",
   dashboard: "admin",
@@ -458,5 +425,28 @@ export const MediaTypes = [
     value: "Tv",
   },
 ];
+
+export const chartTypes = [
+  {
+    id: 1,
+  value: "Pie",
+  }, 
+  {
+    id: 2,
+    value: "Bar",
+  },
+  {
+    id: 3,
+    value: "Column",
+  },
+  {
+    id: 4,
+    value: "Line",
+  },
+  {
+    id: 5,
+    value: "Area",
+  }
+]
 
 export const apiKey = "0310701bc95f6fccb81c4666548b2092";
