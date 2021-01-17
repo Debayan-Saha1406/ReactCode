@@ -809,7 +809,7 @@ class SideBar extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    sideBarClassName: state.sideBarReducer.sideBarClassName,
+    sideBarClassName: state.sideBarDetails.sideBarClassName,
     email: state.userDetails.email,
     userId: state.userDetails.userId,
     firstName: state.userDetails.firstName,

@@ -54,6 +54,7 @@ class Navbar extends Component {
         className="navbar navbar-expand-lg navbar-light bg-light"
         style={{
           opacity: this.props.screenOpacity,
+          borderRadius: "10px",
         }}
       >
         <div className="container-fluid">
@@ -121,6 +122,7 @@ class Navbar extends Component {
 const mapStateToProps = (state) => {
   return {
     screenOpacity: state.uiDetails.screenOpacity,
+    isSideBarOpen: state.sideBarDetails.isSideBarOpen,
   };
 };
 

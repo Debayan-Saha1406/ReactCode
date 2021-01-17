@@ -4052,3 +4052,7 @@ ul.list-unstyled.side-collapse.show {
   font-size: 20px;
   margin-top: 5px;
 }
+
+.row-center {
+  margin: 0 auto;
+}

@@ -429,8 +429,8 @@ export const MediaTypes = [
 export const chartTypes = [
   {
     id: 1,
-  value: "Pie",
-  }, 
+    value: "Pie",
+  },
   {
     id: 2,
     value: "Bar",
@@ -446,7 +446,11 @@ export const chartTypes = [
   {
     id: 5,
     value: "Area",
-  }
-]
+  },
+  {
+    id: 6,
+    value: "AreaSpline",
+  },
+];
 
 export const apiKey = "0310701bc95f6fccb81c4666548b2092";

@@ -142,13 +142,14 @@ class Main extends Component {
     const directorPercentage = Math.round(
       (this.state.directorsCount / sum) * 100
     );
-
-    highChartData.push({ y: moviePercentage, sliced: false, name: "Movies" });
-    highChartData.push({ y: celebPercentage, sliced: false, name: "Celebs" });
-    highChartData.push({
-      y: directorPercentage,
-      name: "Directors",
-    });
+    if (highChartData.length === 0) {
+      highChartData.push({ y: moviePercentage, sliced: false, name: "Movies" });
+      highChartData.push({ y: celebPercentage, sliced: false, name: "Celebs" });
+      highChartData.push({
+        y: directorPercentage,
+        name: "Directors",
+      });
+    }
   }
 
   render() {
@@ -204,7 +205,7 @@ class Main extends Component {
               <div className="col-lg-6">
                 <HighChart
                   data={highChartData}
-                  title={"Uploaded Percentages"}
+                  title={"Uploaded Entities"}
                   type={chartTypes[0].value}
                   sliced={false} //Sliced attribute for Pie Chart
                 ></HighChart>

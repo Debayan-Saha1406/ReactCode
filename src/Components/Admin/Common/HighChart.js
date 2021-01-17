@@ -6,20 +6,40 @@ import { chartTypes } from "./../../../Shared/Constants";
 const HighChart = ({ data, title, type, sliced }) => {
   const [chartType, setChartType] = useState();
   const [options, setOptions] = useState({});
+  const [xAxisCategories, setXAxixCategories] = useState([]);
   const handleChartChange = (chartType) => {
-    debugger;
     setChartType(chartType);
   };
   useEffect(() => {
-    data.forEach((element) => {
-      element.sliced = sliced;
-    });
+    if (chartType === chartTypes[0].value) {
+      data.forEach((element) => {
+        element.sliced = sliced;
+      });
+    } else {
+      if (xAxisCategories.length === 0) {
+        data.forEach((element) => {
+          xAxisCategories.push(element.name);
+        });
+        setXAxixCategories(xAxisCategories);
+      }
+    }
+
     setOptions({
       chart: {
         type: chartType ? chartType.toLowerCase() : type.toLowerCase(),
+        zoomType: "x",
       },
       title: {
         text: title,
+      },
+      // colors: ["red", "yellow", "green"], //Show For Custom Colors
+      yAxis: {
+        title: {
+          text: chartType !== chartTypes[0].value ? "Percentage" : "",
+        },
+      },
+      xAxis: {
+        categories: xAxisCategories,
       },
       credits: {
         enabled: false,
@@ -69,7 +89,7 @@ const HighChart = ({ data, title, type, sliced }) => {
             id="exampleFormControlSelect1"
             name="language"
             style={{
-              width: "20%",
+              width: "25%",
               display: "inline-block",
               marginLeft: "10px",
               height: "41px",
@@ -85,7 +105,7 @@ const HighChart = ({ data, title, type, sliced }) => {
           </select>
         </div>
         <div className="row no-gutters">
-          <div className="row">
+          <div className="row-center">
             <div className="col-xl-6">
               <div
                 style={{

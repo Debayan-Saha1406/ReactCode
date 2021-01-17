@@ -13,7 +13,7 @@ import { UserReducer } from "./Store/Reducers/userReducer";
 import Router from "./Components/Admin/RouterComponent";
 
 const rootReducer = combineReducers({
-  sideBarReducer,
+  sideBarDetails: sideBarReducer,
   navBarReducer,
   userDetails: adminReducer, //Need To change the userDetails to adminDetails
   uiDetails: UIReducer,
